@@ -9,12 +9,14 @@
 #
 # 环境边界（用户要求，也是 CLAUDE.md 的规则）：容器里只做轻量验证——haxe 编译
 # （html5 目标，不需要浏览器/NDK/SDK）和 eval 单测。需要 Java（FFDec）、Docker
-# （旧后端）、无头浏览器（冒烟/截图）、Android 工具链（APK）的都在 GitHub CI：
-# implement 开 PR 后等 web-build、web-smoke。
+# （旧后端）、无头浏览器（冒烟/截图/资产比对）、Android 工具链（APK）的都在
+# GitHub CI：implement 开 PR 后等 web-build、web-smoke。
+# 画面保真是硬需求：T2（逐资产渲染比对）跑通后把 visual-diff 加进 required_checks，
+# 此后视觉跑偏的 PR 不能合并。
 version: 1
 base: main
 agent_dockerfile: agent.Dockerfile
-required_checks: [web-build, web-smoke]   # .github/workflows/web.yml 的 job
+required_checks: [web-build, web-smoke]   # .github/workflows/web.yml 的 job；T2 后加 visual-diff
 
 protected:
   - legacy/            # 原版部署包、manifest、反编译结果、行为轨迹：只读

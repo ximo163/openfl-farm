@@ -47,7 +47,6 @@ stages:
   - id: merge
     kind: merge
     method: squash
-    exclude_from_limits: ["assets/legacy/"]
     max_changed_lines: 1000
     max_changed_files: 30
     require_distinct_reviewer: true

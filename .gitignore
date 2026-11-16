@@ -3,6 +3,10 @@ export/
 .obj/
 *.lock
 
+# 从 legacy/deploy 按 assets/legacy-assets.txt 同步的资产副本（构建时生成，不入库：
+# 原件已在 legacy/deploy/ 里，入库等于资产翻倍）。CI 构建前跑 scripts/sync-legacy-assets.sh。
+assets/legacy/
+
 # haxelib 本地缓存
 .haxelib/
 

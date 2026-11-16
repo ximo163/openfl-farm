@@ -38,6 +38,9 @@ jobs:
           path: ~/.haxelib
           key: haxelib-${{ runner.os }}-${{ hashFiles('.github/workflows/web.yml') }}
 
+      - name: 同步资产副本（assets/legacy/ 不入库，构建时生成）
+        run: bash scripts/sync-legacy-assets.sh
+
       - name: 安装依赖并构建 html5
         run: |
           haxelib setup ~/".haxelib" 2>/dev/null || true

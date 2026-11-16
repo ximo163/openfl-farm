@@ -20,7 +20,7 @@
 | `spec/` | 规格：`modules/`（模块移植清单）、`protocol.json`、`interaction-map.json`、`deviations.json`、`swf-inventory.json` | `pipeline:spec` 提取、人审核后只读 |
 | `src/` | 移植的 Haxe 代码，包结构对应 `legacy/decompiled/**/scripts/` | agent |
 | `src/shim/` | 唯一允许的原版没有的代码：平台差异薄胶水（悬停→长按、ExternalInterface 等），每个文件头注释写明为什么 | agent |
-| `assets/legacy/` | 从 `legacy/deploy/QFarmFlash/` 拷贝的原 swf 资产（清单见 `assets/legacy-assets.txt`） | 脚本生成，不手改 |
+| `assets/legacy/` | 从 `legacy/deploy/QFarmFlash/` 拷贝的原 swf 资产副本（**不入库**：构建时由脚本同步，清单见 `assets/legacy-assets.txt`） | 脚本生成，不手改、不提交 |
 | `assets/legacy-assets.txt` | 资产同步清单：一行一个 `legacy/deploy/QFarmFlash/` 相对路径（如 `module/main3_v_221.swf`） | agent（按模块需要增删） |
 | `test/` | utest 单元测试（eval 目标，纯逻辑） | agent |
 | `tools/` | 转换与比对工具 | agent |

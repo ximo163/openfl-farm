@@ -62,7 +62,11 @@ jobs:
         run: |
           haxelib setup "$HOME/haxelib"   # 注意 ~/.haxelib 是 haxelib 的配置文件路径，不能当仓库
           haxelib install lime    # haxelib install 不装依赖，lime 必须显式装
-          haxelib install hxcpp   # android 目标要编译 C++，需要 hxcpp（html5 不需要）
+          # android 目标要编译 C++：用 libhxcpp（hxcpp 的继任者，支持新 NDK 布局）。
+          # 老的 hxcpp 4.3.2 在 NDK 26 下编 PCH 报 'typeinfo' file not found。
+          # setup 之后，引用 hxcpp 的库（openfl/lime）自动解析到 libhxcpp。
+          haxelib install libhxcpp
+          haxelib run libhxcpp setup
           haxelib install openfl
           haxelib install swf
           # lime 的 Android 环境用非交互方式写进配置（lime setup 是交互式的）。

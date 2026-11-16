@@ -14,13 +14,15 @@
 # 6270 个资产 swf 不在这里反编译（资产走 openfl/swf 库原样消费；清单见
 # spec/swf-inventory.json，由 scripts/swf-inventory.py 生成）。
 #
-# 需要 Java 和 JPEXS FFDec：https://github.com/jindrapetrik/jpexs-decompiler/releases
-# 用法：FFDEC_JAR=/path/to/ffdec.jar scripts/decompile-legacy.sh
+# 需要 JPEXS FFDec：https://github.com/jindrapetrik/jpexs-decompiler/releases
+# 用法：FFDEC_CMD=/path/to/ffdec/ffdec.sh scripts/decompile-legacy.sh
+#   （FFDEC_CMD 也可以是 "java -cp <dir>/ffdec.jar:<dir>/lib/* com.jpexs.decompiler.flash.gui.Main"，
+#    ffdec.jar 依赖同目录 lib/ 下的 jar，不能单独 java -jar）
 # 参数对照 FFDec 源码的 CommandLineArgumentParser；旧版本可能不支持 xfl、button、
 # symbolclass 这几项，它们单独导出，失败只提示、不中断。
 set -euo pipefail
-: "${FFDEC_JAR:?请设置 FFDEC_JAR=/path/to/ffdec.jar}"
-ffdec() { java -jar "$FFDEC_JAR" "$@"; }
+: "${FFDEC_CMD:?请设置 FFDEC_CMD=<FFDec 的 ffdec.sh 路径或 java -cp 前缀>}"
+ffdec() { $FFDEC_CMD "$@"; }
 src=legacy/deploy/QFarmFlash/source/core/module
 # 主代码 swf（翻译依据）。新增活动主程序时往这里加。
 main_swfs=(

@@ -34,16 +34,17 @@ jobs:
         run: |
           set -eu
           cd "$RUNNER_TEMP"
-          # release 资产名带版本号（如 ffdec_26.5.0.zip），包内含 ffdec.jar
+          # 完整解压：ffdec.jar 依赖压缩包里的 lib/*.jar，不能单抠 jar（java -jar 会 NoClassDefFound）
           gh release download --repo jindrapetrik/jpexs-decompiler --pattern 'ffdec_[0-9]*.zip' --clobber
           zipfile=$(ls ffdec_[0-9]*.zip | head -1)
-          unzip -j -o "$zipfile" 'ffdec.jar' -d . || {
-            # 兜底：jar 不在压缩包根目录时按文件名找
-            inner=$(unzip -l "$zipfile" | awk '$4 ~ /ffdec\.jar$/ {print $4; exit}')
-            [ -n "$inner" ] && unzip -j -o "$zipfile" "$inner" -d .
-          }
-          [ -f "$RUNNER_TEMP/ffdec.jar" ] || { echo "ffdec.jar 不存在"; exit 1; }
-          echo "FFDEC_JAR=$RUNNER_TEMP/ffdec.jar" >> "$GITHUB_ENV"
+          unzip -q -o "$zipfile" -d ffdec
+          if [ -f ffdec/ffdec.sh ]; then
+            chmod +x ffdec/ffdec.sh
+            echo "FFDEC_CMD=$RUNNER_TEMP/ffdec/ffdec.sh" >> "$GITHUB_ENV"
+          else
+            [ -f ffdec/ffdec.jar ] || { echo "压缩包里没有 ffdec.jar"; exit 1; }
+            echo "FFDEC_CMD=java -cp $RUNNER_TEMP/ffdec/ffdec.jar:$RUNNER_TEMP/ffdec/lib/* com.jpexs.decompiler.flash.gui.Main" >> "$GITHUB_ENV"
+          fi
 
       - name: 反编译主代码 swf
         run: bash scripts/decompile-legacy.sh

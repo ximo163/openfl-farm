@@ -29,18 +29,15 @@ jobs:
           java-version: "21"
 
       - name: 下载 FFDec 最新版
+        env:
+          GH_TOKEN: ${{ github.token }}   # 匿名调 api.github.com 会被限流 403，用 gh 带 token
         run: |
           set -eu
-          json=$(curl -fsSL https://api.github.com/repos/jindrapetrik/jpexs-decompiler/releases/latest)
+          cd "$RUNNER_TEMP"
           # 优先裸 ffdec.jar 资产；release 只有 ffdec.zip 时下载解压取里面的 ffdec.jar
-          jar_url=$(echo "$json" | jq -r '.assets[] | select(.name | test("ffdec\\.jar$")) | .browser_download_url' | head -1)
-          if [ -n "$jar_url" ]; then
-            curl -fsSL -o "$RUNNER_TEMP/ffdec.jar" "$jar_url"
-          else
-            zip_url=$(echo "$json" | jq -r '.assets[] | select(.name | test("ffdec\\.zip$")) | .browser_download_url' | head -1)
-            [ -n "$zip_url" ] || { echo "latest release 里既没 ffdec.jar 也没 ffdec.zip"; exit 1; }
-            curl -fsSL -o "$RUNNER_TEMP/ffdec.zip" "$zip_url"
-            unzip -j -o "$RUNNER_TEMP/ffdec.zip" 'ffdec.jar' -d "$RUNNER_TEMP"
+          if ! gh release download --repo jindrapetrik/jpexs-decompiler --pattern 'ffdec.jar' --clobber 2>/dev/null; then
+            gh release download --repo jindrapetrik/jpexs-decompiler --pattern 'ffdec.zip' --clobber
+            unzip -j -o ffdec.zip 'ffdec.jar' -d .
           fi
           [ -f "$RUNNER_TEMP/ffdec.jar" ] || { echo "ffdec.jar 不存在"; exit 1; }
           echo "FFDEC_JAR=$RUNNER_TEMP/ffdec.jar" >> "$GITHUB_ENV"

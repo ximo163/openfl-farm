@@ -12,7 +12,8 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends haxe php-cli nodejs \
  && rm -rf /var/lib/apt/lists/* \
  && haxelib setup /usr/local/lib/haxelib \
- && haxelib install openfl  \
+ && haxelib install lime \
+ && haxelib install openfl \
  && haxelib install swf \
  && haxelib install utest
 USER agent

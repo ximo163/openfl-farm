@@ -61,6 +61,7 @@ jobs:
       - name: 构建 APK
         run: |
           haxelib setup "$HOME/haxelib"   # 注意 ~/.haxelib 是 haxelib 的配置文件路径，不能当仓库
+          haxelib install lime    # haxelib install 不装依赖，lime 必须显式装
           haxelib install openfl
           haxelib install swf
           haxelib run openfl build android -release

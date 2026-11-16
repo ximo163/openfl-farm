@@ -35,7 +35,7 @@ jobs:
       - name: 缓存 haxelib
         uses: actions/cache@v4
         with:
-          path: ~/.haxelib
+          path: ~/haxelib
           key: haxelib-${{ runner.os }}-${{ hashFiles('.github/workflows/web.yml') }}
 
       - name: 同步资产副本（assets/legacy/ 不入库，构建时生成）
@@ -43,7 +43,7 @@ jobs:
 
       - name: 安装依赖并构建 html5
         run: |
-          haxelib setup ~/".haxelib" 2>/dev/null || true
+          haxelib setup "$HOME/haxelib"   # 注意 ~/.haxelib 是 haxelib 的配置文件路径，不能当仓库
           haxelib install openfl
           haxelib install swf
           haxelib install utest

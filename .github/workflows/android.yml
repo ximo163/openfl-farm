@@ -20,6 +20,9 @@ env:
   SDK_PLATFORM: "platforms;android-34"
   BUILD_TOOLS: "build-tools;34.0.0"
   NDK_VERSION: "26.3.11579264"
+  ANDROID_HOME: /usr/local/lib/android/sdk
+  ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+  ANDROID_NDK_ROOT: /usr/local/lib/android/sdk/ndk/26.3.11579264
 
 jobs:
   android-build:
@@ -40,24 +43,24 @@ jobs:
 
       - name: 安装 Android SDK/NDK
         run: |
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager --install "$SDK_PLATFORM" "$BUILD_TOOLS" "platform-tools" "ndk;${NDK_VERSION}"
+          set -eu
+          sdkmgr=$(ls "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager | sort -V | tail -1)
+          [ -n "$sdkmgr" ] || { echo "找不到 sdkmanager（cmdline-tools 未安装）"; exit 1; }
+          yes | "$sdkmgr" --licenses > /dev/null || true
+          "$sdkmgr" --install "$SDK_PLATFORM" "$BUILD_TOOLS" "platform-tools" "ndk;${NDK_VERSION}"
 
       - name: 缓存 haxelib
         uses: actions/cache@v4
         with:
-          path: ~/.haxelib
+          path: ~/haxelib
           key: haxelib-android-${{ hashFiles('.github/workflows/android.yml') }}
 
       - name: 同步资产副本（assets/legacy/ 不入库，构建时生成）
         run: bash scripts/sync-legacy-assets.sh
 
       - name: 构建 APK
-        env:
-          ANDROID_SDK_ROOT: $ANDROID_HOME
-          ANDROID_NDK_ROOT: $ANDROID_HOME/ndk/${{ env.NDK_VERSION }}
         run: |
-          haxelib setup ~/".haxelib" 2>/dev/null || true
+          haxelib setup "$HOME/haxelib"   # 注意 ~/.haxelib 是 haxelib 的配置文件路径，不能当仓库
           haxelib install openfl
           haxelib install swf
           haxelib run openfl build android -release

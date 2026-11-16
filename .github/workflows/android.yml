@@ -64,6 +64,10 @@ jobs:
           haxelib install lime    # haxelib install 不装依赖，lime 必须显式装
           haxelib install openfl
           haxelib install swf
+          # lime 的 Android 环境用非交互方式写进配置（lime setup 是交互式的）
+          haxelib run lime config ANDROID_SDK "$ANDROID_HOME"
+          haxelib run lime config ANDROID_NDK_ROOT "$ANDROID_NDK_ROOT"
+          haxelib run lime config JAVA_HOME "$JAVA_HOME"
           haxelib run openfl build android -release
 
       - name: 找 APK

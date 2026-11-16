@@ -34,11 +34,14 @@ jobs:
         run: |
           set -eu
           cd "$RUNNER_TEMP"
-          # 优先裸 ffdec.jar 资产；release 只有 ffdec.zip 时下载解压取里面的 ffdec.jar
-          if ! gh release download --repo jindrapetrik/jpexs-decompiler --pattern 'ffdec.jar' --clobber 2>/dev/null; then
-            gh release download --repo jindrapetrik/jpexs-decompiler --pattern 'ffdec.zip' --clobber
-            unzip -j -o ffdec.zip 'ffdec.jar' -d .
-          fi
+          # release 资产名带版本号（如 ffdec_26.5.0.zip），包内含 ffdec.jar
+          gh release download --repo jindrapetrik/jpexs-decompiler --pattern 'ffdec_[0-9]*.zip' --clobber
+          zipfile=$(ls ffdec_[0-9]*.zip | head -1)
+          unzip -j -o "$zipfile" 'ffdec.jar' -d . || {
+            # 兜底：jar 不在压缩包根目录时按文件名找
+            inner=$(unzip -l "$zipfile" | awk '$4 ~ /ffdec\.jar$/ {print $4; exit}')
+            [ -n "$inner" ] && unzip -j -o "$zipfile" "$inner" -d .
+          }
           [ -f "$RUNNER_TEMP/ffdec.jar" ] || { echo "ffdec.jar 不存在"; exit 1; }
           echo "FFDEC_JAR=$RUNNER_TEMP/ffdec.jar" >> "$GITHUB_ENV"
 

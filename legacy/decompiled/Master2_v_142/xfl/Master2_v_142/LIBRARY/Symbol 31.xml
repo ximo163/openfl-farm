@@ -1,0 +1,24 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 31" itemID="6afb0b00-0000001c" lastModified="1794837180" linkageClassName="com.qzone.qui.skins.HScrollBarTrackSkin" linkageIdentifier="com.qzone.qui.skins.HScrollBarTrackSkin" linkageExportForAS="true" scaleGridLeft="0.05" scaleGridRight="147.85" scaleGridTop="1" scaleGridBottom="14">
+     <timeline>
+          <DOMTimeline name="Symbol 31">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#c894fc">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 30" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

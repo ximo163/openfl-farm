@@ -17,7 +17,7 @@
 | `legacy/deploy/QFarmFlash/` | 原版部署包，原样放置（152 MB）：PHP 后端（规则权威）、客户端 swf、配置 | 人，只读 |
 | `legacy/manifest.json` | 部署包说明：入口 PHP、swf 位置、配置目录、运行环境 | 人，只读 |
 | `legacy/decompiled/` | FFDec 从 5 个主代码 swf 导出的内容（`scripts/` 反编译 AS3、`swf.xml`、`header.txt`…）。**翻译的唯一依据** | CI 生成，只读 |
-| `legacy/references/` | 逐资产/场景的**原版参考截图**（Ruffle 录出）。画面验收的标准答案 | CI 生成，只读 |
+| `legacy/references/` | 逐资产/场景的**原版参考库**（真 Flash + probe.swf 采集为主源，Ruffle 交叉验证）。画面验收的标准答案 | 采集脚本生成，只读 |
 | `spec/` | 规格：`modules/`（模块移植清单）、`protocol.json`、`interaction-map.json`、`deviations.json`、`swf-inventory.json` | `pipeline:spec` 提取、人审核后只读 |
 | `src/` | 移植的 Haxe 代码，包结构对应 `legacy/decompiled/**/scripts/` | agent |
 | `src/shim/` | 唯一允许的原版没有的代码：平台差异薄胶水（悬停→长按、ExternalInterface 等），每个文件头注释写明为什么 | agent |

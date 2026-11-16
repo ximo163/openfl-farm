@@ -1,0 +1,8 @@
+# 原版资产同步清单：一行一个路径，相对 legacy/deploy/QFarmFlash/。
+# scripts/sync-legacy-assets.sh 据此把文件拷到 assets/legacy/ 下同样的相对路径
+# （module/ui/... → assets/legacy/module/ui/...）。流水线在每次 agent 运行后自动同步。
+# agent 按模块需要增删；目录则整目录拷贝。以 # 开头是注释。
+#
+# V1 探路样本（三类代表性资产，路径待 swf-inventory 生成后按实际挑）：
+# module/happyfarm3_v_149.swf
+# module/main3_v_221.swf

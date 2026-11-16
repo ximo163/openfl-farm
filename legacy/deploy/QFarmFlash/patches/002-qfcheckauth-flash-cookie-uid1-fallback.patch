@@ -1,0 +1,15 @@
+--- a/home/qqfarm/core/api/uchome/main.php
++++ b/home/qqfarm/core/api/uchome/main.php
+@@ -139,7 +139,11 @@
+ 		setcookie('update_'.$_QFG['uid'], 'true', time()+86400);
+ 		return '';//已登陆
+ 	}
+-	return '请先登录.';//未登录
++	// Fallback: Flash Player / Ruffle 不共享浏览器 cookie，SWF 请求一律没 auth
++	// 自玩环境兜底用 uid=1（admin）。如改别的用户改这里。
++	$_QFG['uid'] = 1;
++	$_QFG['uname'] = qf_getUserName(1, 0);
++	return '';
+ }
+ 
+ /**

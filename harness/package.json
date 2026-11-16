@@ -1,0 +1,9 @@
+{
+  "name": "openfl-farm-harness",
+  "private": true,
+  "type": "module",
+  "description": "自动验收（无头浏览器冒烟、截图）。由人维护，不进游戏构建。",
+  "dependencies": {
+    "playwright": "^1.49.0"
+  }
+}

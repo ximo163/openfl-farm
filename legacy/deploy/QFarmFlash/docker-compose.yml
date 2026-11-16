@@ -1,0 +1,48 @@
+# QFarmFlash Docker 编排 —— 镜像与参数沿用已验证的参考部署（qqfarm-7.0 工作区）
+#   db   : mysql:5.5        （TYPE=MyISAM 老语法 + 空 sql-mode）
+#   php  : php:5.6-fpm 自建 （mysql_* 扩展 + short_open_tag=On，见 php/Dockerfile）
+#   web  : nginx:1.24-alpine
+# 使用：cp env.example .env && ./build.sh && docker compose up -d --build
+services:
+  db:
+    image: mysql:5.5
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: qqfarm
+      TZ: Asia/Shanghai
+    command:
+      - --character-set-server=utf8
+      - --collation-server=utf8_general_ci   # 注意：不是 default-collation-server
+      - --sql-mode=                          # 必须显式空：STRICT_TRANS_TABLES 会让老代码插入失败
+      - --default-time-zone=+08:00
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      # 农场 7 张表（install/qfarm.sql 已预改 uchome_qqfarm_ 前缀）：
+      # 仅首次初始化（data/mysql 为空）时自动导入；UCenter/UCHome/Discuz 的表由安装向导建
+      - ./install/qfarm.sql:/docker-entrypoint-initdb.d/01-qqfarm.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  php:
+    build: ./php
+    user: root
+    volumes:
+      - ./www:/var/www/html
+      - ./data/sessions:/var/lib/php/sessions
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    image: nginx:1.24-alpine
+    ports:
+      - "${BIND_IP:-0.0.0.0}:${PORT:-8089}:80"     # 默认全网卡 8089；要仅本机在 .env 设 BIND_IP=127.0.0.1
+    volumes:
+      - ./www:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php

@@ -1,0 +1,20 @@
+--- a/home/qqfarm/core/config/api/uchome.php
++++ b/home/qqfarm/core/config/api/uchome.php
+@@ -4,11 +4,13 @@
+ 
+ define('PAP_ROOT', str_replace('/qqfarm/core', '', FARM_ROOT));
+ 
+-if(!$_QSC['UC_KEY']) {
++// 始终加载 UCHome config.php，确保 UC_API / UC_KEY / UC_APPID 等
++// 全局常量被 define（uc_client/client.php 依赖 defined('UC_API')，
++// 否则 exit('Access denied')）。原代码缓存命中时跳过此加载是 bug。
++@include_once(PAP_ROOT . '/config.php');
++$_SC || $_SC = $GLOBALS['_SC'];
+ 
+-	if(@include_once(PAP_ROOT . '/config.php')) {
+-		$_SC || $_SC = $GLOBALS['_SC'];
+-	} else die('无法加载必要的UCHome配置文件.');
++if(!$_QSC['UC_KEY']) {
+ 
+ 	//添加UCH创始人到管理员列表
+ 	$founder = @explode(',', $_SC['founder']);

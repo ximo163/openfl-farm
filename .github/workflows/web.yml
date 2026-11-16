@@ -1,0 +1,83 @@
+# html5 构建与冒烟，全部在 GitHub 上完成（重操作不进编排器容器）。
+#
+#   web-build   Linux：haxe + openfl 构建 html5，产物上传
+#   web-smoke   Linux：无头浏览器加载构建产物，确认能渲染、无报错、冒烟标记出现
+#
+# 这两个 job 是流水线等待的检查（pipeline.yaml 的 required_checks）。
+# 首次跑通（H1）后：把 haxelib 解析出的版本组写进 openfl-farm-docs 决策页，
+# 并在此处和 .orchestrator/agent.Dockerfile 显式锁同一组。
+name: web
+
+on:
+  push:
+    branches: ["**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 haxe
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends haxe
+
+      - name: 缓存 haxelib
+        uses: actions/cache@v4
+        with:
+          path: ~/.haxelib
+          key: haxelib-${{ runner.os }}-${{ hashFiles('.github/workflows/web.yml') }}
+
+      - name: 安装依赖并构建 html5
+        run: |
+          haxelib setup ~/".haxelib" 2>/dev/null || true
+          haxelib install openfl
+          haxelib install swf
+          haxelib install utest
+          haxelib list
+          haxelib run openfl build html5
+
+      - name: 记录版本组（写进日志，H1 定版本用）
+        run: haxelib list
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: export/html5/bin/
+          retention-days: 7
+
+  web-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: web-build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-build
+          path: export/html5/bin
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: 安装无头浏览器
+        working-directory: harness
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: 冒烟测试
+        working-directory: harness
+        run: node smoke.mjs ../export/html5/bin/index.html

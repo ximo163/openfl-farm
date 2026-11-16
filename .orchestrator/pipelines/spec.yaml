@@ -1,0 +1,41 @@
+# pipeline:spec —— 从 legacy/ 提取规格到 spec/（协议、数值、交互、模块清单）。
+# 只能改 spec/，由另一个模型审核后自动合并；合并后的 spec/ 在其他流水线里只读。
+version: 1
+base: main
+agent_dockerfile: agent.Dockerfile
+required_checks: []
+protected: [legacy/, checks/, scripts/, harness/, ci/, .github/, "*.md", Project.xml, "*.hxml"]
+suites:
+  spec: { cmd: "bash checks/spec-valid.sh", timeout: 2m }
+  manifest: { cmd: "bash checks/manifest-valid.sh", timeout: 2m }
+preflight: [manifest]
+budget: { max_runs: 12, max_time: 4h }
+stages:
+  - id: extract
+    kind: agent
+    model: strong
+    prompt: prompts/spec.md
+    max_turns: 200
+    timeout: 60m
+    allowed_paths: ["spec/"]
+    verify: [spec]
+    ci: local
+    attempts: 3
+    escalate: { after: 2, models: [strong2] }
+  - id: review-spec
+    kind: review
+    model: judge
+    prompt: prompts/review-spec.md
+    max_turns: 120
+    on_reject: extract
+    max_rejects: 4
+    escalate: { after: 2, models: [judge2] }
+  # 规格由另一个模型审核后自动合并。标 unknown 的条目和 approved:false 的默认决定
+  # 留到 95% 验收时由人看。
+  - id: merge
+    kind: merge
+    method: squash
+    max_changed_lines: 4000
+    max_changed_files: 30
+    require_distinct_reviewer: true
+    allowed_paths: ["spec/"]

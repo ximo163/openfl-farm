@@ -1,0 +1,15 @@
+# OpenFL/Lime 构建产物
+export/
+.obj/
+*.lock
+
+# haxelib 本地缓存
+.haxelib/
+
+# 组装产物（build.sh 生成，见 legacy/deploy/QFarmFlash/.gitignore）
+legacy/deploy/QFarmFlash/www/
+legacy/deploy/QFarmFlash/data/
+
+# 系统杂物
+.DS_Store
+Thumbs.db

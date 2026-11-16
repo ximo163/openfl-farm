@@ -1,0 +1,11 @@
+# 单元测试编译脚本（--interp 解释器，秒级，零外部依赖）。由人管（受保护路径）。
+# 用法：haxe test.hxml
+# 约束：只放纯逻辑测试——不碰显示对象、不联网、不读真实时间、不 sleep。
+# utest 的 Report.create 跑完按结果以退出码收尾（全绿 0、有失败 1），
+# orchestrator 的 expect:fail / verify 都按退出码判定（无 junit）。
+-cp src
+-cp test
+-lib utest
+-lib openfl
+-main TestMain
+--interp

@@ -1,0 +1,121 @@
+# openfl-farm 默认流水线：翻译一个模块，先写测试再翻译实现。
+#
+#   write-tests (strong) -> review-tests (judge) -> implement (cheap) -> review-impl (judge) -> merge
+#
+# 写不出失败测试的任务走别的流水线，打对应标签：
+#   pipeline:spec   从 legacy/ 提取规格到 spec/
+#   pipeline:chore  脚手架、依赖、配置（如 V1 资产通道探路）
+#   pipeline:plan   大需求先拆分
+#
+# 环境边界（用户要求，也是 CLAUDE.md 的规则）：容器里只做轻量验证——haxe 编译
+# （html5 目标，不需要浏览器/NDK/SDK）和 eval 单测。需要 Java（FFDec）、Docker
+# （旧后端）、无头浏览器（冒烟/截图）、Android 工具链（APK）的都在 GitHub CI：
+# implement 开 PR 后等 web-build、web-smoke。
+version: 1
+base: main
+agent_dockerfile: agent.Dockerfile
+required_checks: [web-build, web-smoke]   # .github/workflows/web.yml 的 job
+
+protected:
+  - legacy/            # 原版部署包、manifest、反编译结果、行为轨迹：只读
+  - spec/              # 规格：由 pipeline:spec 提取、人审核
+  - checks/            # 校验脚本：人写
+  - scripts/           # 反编译、资产同步等脚本：人管
+  - harness/           # 自动验收：agent 不能改
+  - ci/
+  - .github/
+  - "*.md"             # 这个仓库不写给人看的文档，计划和文档在 openfl-farm-docs
+  - Project.xml        # OpenFL 工程配置（library 声明等）由人管
+  - "*.hxml"
+
+# assets/legacy/ 是从 legacy/deploy/ 按清单拷贝的生成物。agent 只改
+# assets/legacy-assets.txt（清单），流水线每次 agent 运行后自动重新同步。
+generated:
+  paths: ["assets/legacy/"]
+  how: "把要引用的资产路径加进 assets/legacy-assets.txt，然后运行 bash scripts/sync-legacy-assets.sh"
+  cmd: "bash scripts/sync-legacy-assets.sh"
+
+triage:
+  model: judge
+  max_files: 30
+  max_lines: 800
+  on_large: plan
+
+budget:
+  max_runs: 30
+  max_time: 8h
+max_jumps: 3
+
+suites:
+  manifest: { cmd: "bash checks/manifest-valid.sh", timeout: 2m }
+  # 全量编译检查：翻译错误的第一道网。html5 目标只需 haxe + haxelib（镜像里已装）。
+  compile: { cmd: "haxelib run openfl build html5", timeout: 10m }
+  # 单元测试：utest + eval 解释器，秒级。test.hxml 里失败时以非零退出码结束。
+  test: { cmd: "haxe test.hxml", timeout: 5m }
+
+preflight: [manifest, compile, test]   # test 无 junit，靠退出码做 expect: fail 基线
+
+# 以后加上（工具/规格合并后再写进来）：
+#   port-coverage: bash checks/port-coverage.sh    spec/modules 的类 vs src/ 的移植类对账
+#   asset-refs:    haxe --run tools/AssetRefs      资产引用与 swf-inventory 对账
+
+stages:
+  - id: write-tests
+    kind: agent
+    model: strong
+    prompt: prompts/write-tests.md
+    max_turns: 160
+    timeout: 60m
+    verify:
+      - compile                       # 测试和 stub 能编译
+      - { suite: test, expect: fail } # 新测试在实现之前失败（靠退出码判定）
+    attempts: 4
+    escalate: { after: 2, models: [strong2] }
+
+  - id: review-tests
+    kind: review
+    model: judge
+    prompt: prompts/review-tests.md
+    max_turns: 120
+    on_reject: write-tests
+    max_rejects: 5
+    escalate: { after: 3, models: [judge2] }
+
+  - id: implement
+    kind: agent
+    model: cheap
+    prompt: prompts/implement.md
+    max_turns: 200
+    timeout: 60m
+    protect_since: write-tests
+    append_only: ["test/**"]
+    protected: ["test/fixtures/"]
+    verify: [compile, test]
+    ci: true    # 开 PR 并等 required_checks：html5 构建和冒烟在 GitHub 上
+    attempts: 4
+    escalate: { after: 2, models: [strong, strong2] }
+    on_exhausted: write-tests
+
+  - id: review-impl
+    kind: review
+    model: judge
+    prompt: prompts/review-impl.md
+    max_turns: 120
+    on_reject: implement
+    on_reject_tests: write-tests
+    max_rejects: 5
+    escalate: { after: 3, models: [judge2] }
+
+  # 审核通过、检查全过后自动 squash 合并。超出范围的 PR 留着并说明原因，不强行合并。
+  - id: merge
+    kind: merge
+    method: squash
+    exclude_from_limits: ["test/**", "assets/legacy/"]
+    max_changed_lines: 1500
+    max_changed_files: 40
+    require_distinct_reviewer: true
+    allowed_paths:
+      - src/
+      - assets/legacy-assets.txt
+      - test/
+      - tools/

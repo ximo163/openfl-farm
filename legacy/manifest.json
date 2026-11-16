@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "web_root": "deploy/QFarmFlash/source/core",
+  "server": {
+    "entries": [
+      "deploy/QFarmFlash/source/core/mync.php",
+      "deploy/QFarmFlash/source/core/mymc.php",
+      "deploy/QFarmFlash/source/core/nmc.php",
+      "deploy/QFarmFlash/source/core/xml.php"
+    ],
+    "include_roots": [
+      "deploy/QFarmFlash/source/core/source",
+      "deploy/QFarmFlash/source/core/config"
+    ]
+  },
+  "client": {
+    "swf": [
+      "deploy/QFarmFlash/source/core/module/happyfarm3_v_149.swf",
+      "deploy/QFarmFlash/source/core/module/main3_v_221.swf",
+      "deploy/QFarmFlash/source/core/module/mcloader_v_53.swf",
+      "deploy/QFarmFlash/source/core/module/Master2_v_142.swf",
+      "deploy/QFarmFlash/source/core/module/loading2_v_3.swf"
+    ]
+  },
+  "config_xml": [],
+  "assets": [
+    "deploy/QFarmFlash/source/core/module/ui",
+    "deploy/QFarmFlash/source/core/module/mc",
+    "deploy/QFarmFlash/source/core/module/plugin",
+    "deploy/QFarmFlash/source/core/module/wildAdv",
+    "deploy/QFarmFlash/source/core/module/collect",
+    "deploy/QFarmFlash/source/core/module/labor"
+  ],
+  "db_schema": ["deploy/QFarmFlash/install/qfarm.sql"],
+  "runtime": {
+    "php": "5.6",
+    "mysql": "5.5",
+    "source": "deploy/QFarmFlash/docker-compose.yml"
+  },
+  "notes": {
+    "deploy/QFarmFlash/README.md": "最完整的现代说明：结构、部署步骤（第四节）、已知坑（closefarm、(-6) 加载错误、GBK→UTF-8 历史）。读 legacy 前先读它。",
+    "deploy/QFarmFlash/source/core": "游戏本体（PHP 后端 + 客户端全部 swf）。部署时由 build.sh 组装：host/ → www/，source/4uchome/qqfarm → www/home/qqfarm，source/core → www/home/qqfarm/core。swf 里的相对 URL 对应站点 URL /home/qqfarm/core/ 下的路径。",
+    "deploy/QFarmFlash/source/core/source/nc/mod": "农场全部 mod 的实现（cgi_farm_*.php、farmlandstatus_*.php…），由 mync.php 按 mod+act 参数分发；牧场在 source/mc/。",
+    "deploy/QFarmFlash/source/core/config/nc": "农场数值权威：cropstype.php（作物）、cropstime.php（生长时间）、fishtype.php、itemtype.php、toolstype.php、upgrade.php；牧场数值在 config/mc/。经 xml.php 以 XML 下发给客户端。",
+    "deploy/QFarmFlash/source/core/view/qf_default/nc.htm": "农场页面模板：FLASH_VARS（约 70 个键）+ swfobject 嵌 happyfarm3_v_149.swf。牧场对应 mc.htm。",
+    "deploy/QFarmFlash/source/core/module/ui/allcrops": "4042 个作物资产 swf，命名 Crop_<作物ID>_<阶段0-4>.swf 和 Crop_<作物ID>_Seed.swf。",
+    "deploy/QFarmFlash/source/core/module/mc/farm/aswf": "594 个动物动画 swf，命名 a<动物ID>_<阶段>.swf。",
+    "deploy/QFarmFlash/install/qfarm.sql": "农场 7 张表的建表脚本（uchome_qqfarm_ 前缀），mysql 容器首次初始化时自动导入；宿主（UCHome/Discuz）的表要跑安装向导才有。",
+    "deploy/QFarmFlash/patches/002-qfcheckauth-flash-cookie-uid1-fallback.patch": "免 cookie 的 uid=1 回退（build.sh 组装时自动应用）。自动化联调/差分直接 POST mync.php 不需要登录态。",
+    "deploy/QFarmFlash/build.sh": "部署组装脚本（host+source → www/，应用补丁，修目录权限）。CI 里旧后端按 README 第四节走：build.sh → docker compose up → 安装向导（参数：db、dbname=qqfarm）→ config/_qsc.php 的 closefarm 改 0。",
+    "deploy/QFarmFlash/host": "宿主站点（Discuz 7 + UCHome 1.5 + UCenter 1.5）。差分测试不需要完整宿主（002 补丁绕过登录），保留作参考，不部署。"
+  }
+}

@@ -1,0 +1,56 @@
+# 反编译主代码 swf（要 Java + FFDec，重操作走 CI）：
+#   1. 5 个主代码 swf 全量导出到 legacy/decompiled/（scripts/decompile-legacy.sh）
+#   2. 6290 个资产 swf 生成清单 spec/swf-inventory.json（scripts/swf-inventory.py）
+#   3. 有变化就提交（[skip ci] 防循环触发）
+# 触发：legacy/deploy/ 变化，或手动。
+name: legacy-decompile
+
+on:
+  push:
+    paths: ["legacy/deploy/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: write   # 提交反编译产物
+
+concurrency:
+  group: legacy-decompile
+
+jobs:
+  decompile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: 下载 FFDec 最新版
+        run: |
+          set -eu
+          url=$(curl -fsSL https://api.github.com/repos/jindrapetrik/jpexs-decompiler/releases/latest \
+            | jq -r '.assets[] | select(.name | test("ffdec\\.jar$")) | .browser_download_url' | head -1)
+          [ -n "$url" ] || { echo "latest release 里没找到 ffdec.jar 资产"; exit 1; }
+          curl -fsSL -o "$RUNNER_TEMP/ffdec.jar" "$url"
+          echo "FFDEC_JAR=$RUNNER_TEMP/ffdec.jar" >> "$GITHUB_ENV"
+
+      - name: 反编译主代码 swf
+        run: bash scripts/decompile-legacy.sh
+
+      - name: 生成资产清单
+        run: python3 scripts/swf-inventory.py
+
+      - name: 提交（有变化时）
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add legacy/decompiled spec/swf-inventory.json
+          if git diff --cached --quiet; then
+            echo "反编译产物无变化"
+          else
+            git commit -m "legacy: 反编译主代码 swf + 资产清单 [skip ci]"
+            git push
+          fi

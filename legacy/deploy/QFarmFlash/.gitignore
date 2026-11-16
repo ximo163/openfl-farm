@@ -1,0 +1,8 @@
+# 组装产物（./build.sh 生成）
+www/
+
+# 运行时数据（MySQL 数据、PHP session）
+data/
+
+# 本机环境配置（含密码）
+.env

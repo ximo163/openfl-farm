@@ -1,0 +1,18 @@
+# pipeline:plan —— 大需求先拆分（拆分阶段必须是一条流水线里唯一的阶段）。
+version: 1
+base: main
+agent_dockerfile: agent.Dockerfile
+required_checks: []
+protected: [legacy/, spec/, checks/, scripts/, harness/, ci/, .github/, "*.md", Project.xml, "*.hxml"]
+suites: {}
+preflight: []
+budget: { max_runs: 8, max_time: 2h }
+stages:
+  - id: plan
+    kind: plan
+    model: strong
+    prompt: prompts/plan.md
+    max_turns: 120
+    timeout: 60m
+    attempts: 3
+    escalate: { after: 2, models: [strong2] }

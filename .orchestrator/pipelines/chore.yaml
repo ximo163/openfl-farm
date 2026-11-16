@@ -1,0 +1,58 @@
+# pipeline:chore —— 脚手架、依赖、配置、探路这类写不出失败测试的改动。
+# V1（swf 资产通道探路）走这条。
+version: 1
+base: main
+agent_dockerfile: agent.Dockerfile
+required_checks: [web-build, web-smoke]
+protected:
+  - legacy/
+  - spec/
+  - checks/
+  - scripts/
+  - harness/
+  - ci/
+  - .github/
+  - "*.md"
+  - Project.xml
+  - "*.hxml"
+generated:
+  paths: ["assets/legacy/"]
+  how: "把要引用的资产路径加进 assets/legacy-assets.txt，然后运行 bash scripts/sync-legacy-assets.sh"
+  cmd: "bash scripts/sync-legacy-assets.sh"
+suites:
+  manifest: { cmd: "bash checks/manifest-valid.sh", timeout: 2m }
+  compile: { cmd: "haxelib run openfl build html5", timeout: 10m }
+  test: { cmd: "haxe test.hxml", timeout: 5m }
+preflight: [manifest, compile, test]
+budget: { max_runs: 15, max_time: 4h }
+stages:
+  - id: implement
+    kind: agent
+    model: strong
+    prompt: prompts/chore.md
+    max_turns: 160
+    timeout: 60m
+    verify: [compile, test]
+    ci: true
+    attempts: 4
+    escalate: { after: 2, models: [strong2] }
+  - id: review
+    kind: review
+    model: judge
+    prompt: prompts/review-chore.md
+    max_turns: 100
+    on_reject: implement
+    max_rejects: 4
+    escalate: { after: 2, models: [judge2] }
+  - id: merge
+    kind: merge
+    method: squash
+    exclude_from_limits: ["assets/legacy/"]
+    max_changed_lines: 1000
+    max_changed_files: 30
+    require_distinct_reviewer: true
+    allowed_paths:
+      - src/
+      - assets/legacy-assets.txt
+      - test/
+      - tools/

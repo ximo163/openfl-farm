@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- OpenFL 工程描述。由人管（受保护路径）：agent 需要新增 <library>/<assets> 声明时
+     在 PR 说明里列出或 BLOCKED，不自己改。
+     舞台尺寸 860x500、背景白色来自反编译 header（happyfarm3/mcloader 舞台），帧率 24。 -->
+<project>
+
+    <meta title="openfl-farm" package="com.qfarm.openflfarm" version="0.1.0" />
+
+    <app main="Main" file="OpenflFarm" path="export" />
+
+    <window width="860" height="500" if="html5" background="#FFFFFF" fps="24" />
+    <window width="860" height="500" unless="html5" background="#FFFFFF" fps="24"
+            orientation="landscape" resizable="false" />
+
+    <source path="src" />
+
+    <haxelib name="openfl" />
+    <haxelib name="swf" />
+
+    <!-- 原版资产 swf：assets/legacy/ 由 scripts/sync-legacy-assets.sh 按
+         assets/legacy-assets.txt 从 legacy/deploy/ 同步。按模块声明、不全量预载，
+         控制启动内存（原版本来就是运行时按需加载）。
+         V1 探路通过后由人解开下面的注释并补 library 列表：
+    <library path="assets/legacy/module/main3_v_221.swf" id="main3" preload="false" />
+    -->
+
+</project>

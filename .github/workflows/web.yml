@@ -52,6 +52,9 @@ jobs:
           haxelib list
           haxelib run openfl build html5
 
+      - name: 单元测试（与编排器 preflight 同一条命令，main 上必须绿）
+        run: haxe test.hxml
+
       - name: 记录版本组（写进日志，H1 定版本用）
         run: haxelib list
 

@@ -4,11 +4,18 @@
 //
 // 必须走 http 而不是 file://：swf 库把每个 <library> 编成 lib/<id>.zip，
 // 运行时 XHR 加载，file:// 下会被 CORS 拦（真实部署也是 http 提供）。
-import { createServer } from "node:http";
+//
+// 旧后端代理：环境变量 LEGACY_BACKEND_URL（如 http://127.0.0.1:8089）设置时，
+// *.php 请求转发给旧 PHP 后端。页面和后端因此同源——和原版部署里 swf 与
+// xml.php 同站、游戏代码用相对 URL 的语义一致，移植侧不用改 URL 形态。
+// 未设置时（V1 无后端模式）行为不变。
+import { createServer, request } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize, isAbsolute, resolve, dirname } from "node:path";
 import { existsSync } from "node:fs";
 import { chromium } from "playwright";
+
+const backendUrl = process.env.LEGACY_BACKEND_URL || "";
 
 const target = process.argv[2];
 if (!target || !existsSync(target)) {
@@ -26,8 +33,25 @@ const MIME = {
 };
 const server = createServer(async (req, res) => {
   try {
+    const pathname = decodeURIComponent(new URL(req.url, "http://x").pathname);
+    // *.php → 旧后端（方法、查询串、请求体原样转发）
+    if (backendUrl && pathname.endsWith(".php")) {
+      const upstream = request(`${backendUrl}${req.url}`, {
+        method: req.method,
+        headers: { ...req.headers, host: new URL(backendUrl).host },
+      }, (up) => {
+        res.writeHead(up.statusCode || 502, up.headers);
+        up.pipe(res);
+      });
+      upstream.on("error", () => {
+        res.writeHead(502, { "Content-Type": "text/plain" });
+        res.end("smoke proxy: legacy backend unreachable");
+      });
+      req.pipe(upstream);
+      return;
+    }
     // 解码 + 挡目录穿越，回到 root 内
-    let p = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname));
+    let p = normalize(pathname);
     if (isAbsolute(p)) p = p.replace(/^([\\/])+/, "");
     const file = join(root, p);
     if (!file.startsWith(root)) { res.writeHead(403); res.end(); return; }

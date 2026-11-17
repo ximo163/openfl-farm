@@ -1,0 +1,51 @@
+# H3：旧 PHP 后端在 CI 里常备可起（差分标准答案 + V2+ 的 config 端点）。
+# 拉起逻辑在 ci/legacy-backend-up.sh：数据用 legacy/snapshot/ 的人导出快照，
+# 不跑安装向导。快照未提供时脚本退 3，本 workflow 以 notice 跳过（保持中性绿，
+# 快照落地后断言自动生效）。
+# PR 时间的验证不在这里——web.yml 的 web-smoke 会用同一脚本起后端（设了
+# LEGACY_BACKEND_URL 才有代理），这里只在 main / 快照与脚本变化时单独把
+# 后端本身验一遍。
+name: legacy-backend
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - legacy/snapshot/**
+      - legacy/deploy/QFarmFlash/**
+      - ci/legacy-backend-up.sh
+      - .github/workflows/legacy-backend.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: legacy-backend-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend-up:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 拉起旧后端并冒烟 xml.php
+        run: |
+          set +e
+          bash ci/legacy-backend-up.sh
+          rc=$?
+          set -e
+          if [ "$rc" -eq 3 ]; then
+            echo "::notice::legacy/snapshot 快照未提供，跳过（导出方法见 legacy/snapshot/README.md）"
+            exit 0
+          fi
+          exit "$rc"
+
+      - name: 留证：mync.php 的 mod 列表端点形态（非断言，只看一眼）
+        if: success()
+        run: |
+          curl -s -o /dev/null -w "mync.php farmlandstatus: HTTP %{http_code}, %{size_download} bytes\n" \
+            -X POST "http://127.0.0.1:8089/home/qqfarm/core/mync.php" \
+            --data "mod=farmlandstatus&act=getMemberInfo" || true

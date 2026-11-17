@@ -48,6 +48,7 @@
     "deploy/QFarmFlash/install/qfarm.sql": "农场 7 张表的建表脚本（uchome_qqfarm_ 前缀），mysql 容器首次初始化时自动导入；宿主（UCHome/Discuz）的表要跑安装向导才有。",
     "deploy/QFarmFlash/patches/002-qfcheckauth-flash-cookie-uid1-fallback.patch": "免 cookie 的 uid=1 回退（build.sh 组装时自动应用）。自动化联调/差分直接 POST mync.php 不需要登录态。",
     "deploy/QFarmFlash/build.sh": "部署组装脚本（host+source → www/，应用补丁，修目录权限）。CI 里旧后端按 README 第四节走：build.sh → docker compose up → 安装向导（参数：db、dbname=qqfarm）→ config/_qsc.php 的 closefarm 改 0。",
-    "deploy/QFarmFlash/host": "宿主站点（Discuz 7 + UCHome 1.5 + UCenter 1.5）。差分测试不需要完整宿主（002 补丁绕过登录），保留作参考，不部署。"
+    "deploy/QFarmFlash/host": "宿主站点（Discuz 7 + UCHome 1.5 + UCenter 1.5）。差分测试不需要完整宿主（002 补丁绕过登录），保留作参考，不部署。",
+    "snapshot": "旧后端初始化快照（initialized.sql + home-config.php + ucenter-config.inc.php，人从参考部署导出，方法见 snapshot/README.md）。CI 拉起后端用它替代安装向导：拉起即用、状态固定，也是协议差分的标准基线。"
   }
 }

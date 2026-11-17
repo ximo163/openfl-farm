@@ -86,6 +86,26 @@ jobs:
           npm install --no-audit --no-fund
           npx playwright install --with-deps chromium
 
+      # H3：拉起旧 PHP 后端（legacy/snapshot/ 快照在时才起，约 3-5 分钟）。
+      # V2 起页面要向 xml.php 要 config，smoke.mjs 据此把 *.php 代理到后端
+      # （页面与后端同源，游戏相对 URL 不用改）。快照未提供 → 按无后端模式跑
+      # （V1 探针页不受影响），V2 的 issue 在快照落地前不开跑。
+      - name: 拉起旧后端（快照在时）
+        run: |
+          set +e
+          bash ci/legacy-backend-up.sh
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "LEGACY_BACKEND_URL=http://127.0.0.1:8089" >> "$GITHUB_ENV"
+          elif [ "$rc" -eq 3 ]; then
+            echo "::notice::legacy/snapshot 快照未提供，冒烟按无后端模式跑"
+          else
+            exit "$rc"
+          fi
+
       - name: 冒烟测试
         working-directory: harness
+        env:
+          LEGACY_BACKEND_URL: ${{ env.LEGACY_BACKEND_URL }}
         run: node smoke.mjs ../export/html5/bin/index.html

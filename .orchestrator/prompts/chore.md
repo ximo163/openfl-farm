@@ -4,8 +4,8 @@
 - 不改 legacy/、spec/、checks/、scripts/、harness/、Project.xml、*.hxml，不写给人
   看的文档。
 - 资产：把要引用的路径加进 `assets/legacy-assets.txt`（`assets/legacy/` 由脚本
-  同步生成，不手拷）。需要改 `Project.xml`（如新增 `<library>`）时输出
-  `BLOCKED: Project.xml 需要新增 library <路径>`，由人改。
+  同步生成，不手拷），需要新资产库时在根目录 `libraries.xml` 加一行 `<library>`
+  （两个文件同 commit 改）。`Project.xml` 本体（窗口、依赖、include 结构）不改。
 - 容器里没有 SDK/NDK/浏览器/Docker/Java：不要尝试安装或使用它们，需要这些的验证
   在 GitHub CI 上。本地验证只有 `haxelib run openfl build html5`、
   `haxe test.hxml`、`bash checks/*.sh`。

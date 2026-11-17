@@ -26,6 +26,7 @@
 | `test/` | utest 单元测试（eval 目标，纯逻辑） | agent |
 | `tools/` | 转换与比对工具 | agent |
 | `checks/`、`scripts/`、`harness/` | 校验脚本、反编译/资产同步脚本、自动验收 | 人，只读 |
+| `libraries.xml` | 原版资产库声明（`<library>` 一行一库），被 `Project.xml` include | agent（和 legacy-assets.txt 同 commit 改） |
 | `Project.xml`、`test.hxml` | OpenFL 工程与测试编译配置 | 人，只读 |
 | `.github/workflows/` | CI：反编译、html5 构建+冒烟（`web-build`/`web-smoke`）、Android APK | 人，只读 |
 
@@ -106,8 +107,9 @@
 - 需要新资产时：把路径加进 `assets/legacy-assets.txt`（相对
   `legacy/deploy/QFarmFlash/` 的完整路径），同步脚本会拷进 `assets/legacy/`。
   **不要手拷文件、不要改资产内容**。
-- `Project.xml` 的 `<library>` 声明由人管：需要新 library 时在 PR 说明里列出，
-  输出 `BLOCKED: Project.xml 需要新增 library <路径>` 也行。
+- 需要新资产库时：在根目录 `libraries.xml` 加一行 `<library path="assets/legacy/..." id="..."/>`
+  （id 用 swf 文件名去 `.swf`），并和 `assets/legacy-assets.txt` 的对应行**同 commit 改**
+  ——library 指向的文件不存在时构建直接红。`Project.xml` 本体不动。
 
 ### 交互
 

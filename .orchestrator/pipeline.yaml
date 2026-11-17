@@ -119,5 +119,6 @@ stages:
     allowed_paths:
       - src/
       - assets/legacy-assets.txt
+      - libraries.xml
       - test/
       - tools/

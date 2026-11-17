@@ -17,14 +17,9 @@
     <haxelib name="openfl" />
     <haxelib name="swf" />
 
-    <!-- 原版资产 swf：assets/legacy/ 由 scripts/sync-legacy-assets.sh 按
-         assets/legacy-assets.txt 从 legacy/deploy/ 同步，两个文件必须同 commit 改
-         （library 指向的文件不存在时 lime 构建直接红）。
-         id 即库名：Assets.getMovieClip("<id>:符号名")，空符号名取整个时间轴
-         （swf 库 README 写法）。V1 四样本（issue #1）： -->
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_1056_3.swf" id="Crop_1056_3" preload="true" />
-    <library path="assets/legacy/source/core/module/mc/farm/aswf/a6291_1.swf" id="a6291_1" preload="true" />
-    <library path="assets/legacy/source/core/module/ui/shop_v_7.swf" id="shop_v_7" preload="true" />
-    <library path="assets/legacy/source/core/module/ui/dogs/FDog100_v_1.swf" id="FDog100_v_1" preload="true" />
+    <!-- 原版资产 swf 的 <library> 声明在根目录 libraries.xml（agent 可改），
+         这里 include 合并；本文件（窗口、依赖、source）仍由人管。 -->
+
+    <include path="libraries.xml" />
 
 </project>

@@ -10,7 +10,8 @@ import shim.SymbolClass;
  * （issue #3）只需要它「拉起到第一帧」：
  *
  * - ResourceManager.getClassInstance("module.Main") 走 ApplicationDomain
- *   getDefinition，openfl 里即 Type.resolveClass——本类 @:keep 保住不被裁剪；
+ *   getDefinition，openfl 里即 Type.resolveClass——@:keep 保裁剪，FarmLite 头上
+ *   的 import 保编译（纯字符串引用两头都不保）；
  * - 原版实例 = 文档类绑着 main3 根时间轴（SymbolClass id 0 绑定），这里用
  *   SymbolClass.bindRoot 等价挂上，主程序第一帧照常显示；
  * - startGame（Main.as:308 起，StartupDataParser/FarmApplication 全链）待

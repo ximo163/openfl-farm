@@ -12,6 +12,12 @@ import common.CommonData;
 import common.Settings;
 import common.misc.Cookies;
 import common.misc.QzoneJSAPI;
+// PORT-NOTE(keep)：onMainLoaded 反射实例化 main3 文档类
+// （ResourceManager.getClassInstance → Type.resolveClass("module.Main")）。
+// 纯字符串引用不进编译图，@:keep 只保裁剪不保加载——这里 import 一次把
+// module.Main 拉进编译，@:keep 再让它留在产物里（CLAUDE.md 的 getDefinitionByName
+// 映射就是这对组合）
+import module.Main;
 import module.lite.FarmLiteModel;
 import module.lite.FarmLiteView;
 import openfl.Lib.getTimer;
@@ -201,7 +207,10 @@ class FarmLite extends Sprite {
 		res = ResourceManager.gi().getResource(url);
 		if (res != null && res.loaded == true) {
 			try {
-				xml = Xml.parse(res.data);
+				// E4X 的 new XML(data) 得到根元素 <data>；haxe Xml.parse 得到
+				// Document 节点（唯一元素子节点才是 <data>）。startLiteUI 的
+				// moduleList 查找按「_mainXML 就是 <data>」遍历，取 firstElement 对齐
+				xml = Xml.parse(res.data).firstElement();
 			} catch (te:Dynamic) {
 				trace("ERROR: invalid XML file:" + te.message);
 			}

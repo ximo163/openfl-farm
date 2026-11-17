@@ -54,9 +54,12 @@ class LocalSwfLoader extends Loader {
 		}
 		Assets.loadLibrary(libraryId).onComplete(function(lib) {
 			var content = lib.getMovieClip("");
-			addChild(content);
+			// Flash 里 content 由播放器挂进 Loader（loader.content / contentLoaderInfo.content
+			// 可读，content 的 parent 是 loader）；openfl 的 Loader 按原版语义把
+			// addChild 覆写为抛 #2069，所以走字段直设而不是 addChild
+			Reflect.setField(this, "content", content);
 			// contentLoaderInfo 上补齐 LoadManager.processFile 读取的字段
-			//（openfl 的 LoaderInfo 可经 Reflect 写实体字段，getter 能读到）
+			//（(default,null) 在 JS 里是普通实例字段，Reflect 可写）
 			Reflect.setField(this.contentLoaderInfo, "url", request.url);
 			Reflect.setField(this.contentLoaderInfo, "content", content);
 			Reflect.setField(this.contentLoaderInfo, "applicationDomain", ApplicationDomain.currentDomain);

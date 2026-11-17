@@ -190,6 +190,12 @@ class LoadManager extends EventDispatcher {
 					var _loc9_:LocalSwfLoader = new LocalSwfLoader();
 					_loc2_.loaderInfo = _loc9_.contentLoaderInfo;
 					this.setListeners(_loc9_.contentLoaderInfo);
+					// PORT-NOTE(open-sync)：openfl 的 URLLoader/Loader 在 load() 返回前
+					// 就同步派发 Event.OPEN（Flash 全部异步、最早也在 load() 返回后），
+					// openHandler 查 _map 必须已登记。原版把 _map 赋值放在两分支之后，
+					// Flash 语义下「load() 后」与「load() 前」观察等价（之间不会有任何
+					// 事件处理器运行），这里按 openfl 的事件时序把登记提到 load() 之前
+					this._map.set(_loc9_.contentLoaderInfo, _loc1_);
 					_loc9_.load(_loc3_, _loc4_);
 					_loc5_ = _loc9_.contentLoaderInfo;
 				} else {
@@ -200,9 +206,10 @@ class LoadManager extends EventDispatcher {
 						_loc5_.dataFormat = URLLoaderDataFormat.TEXT;
 					}
 					this.setListeners(_loc5_);
+					// PORT-NOTE(open-sync)：同上——登记提前到 load() 之前
+					this._map.set(_loc5_, _loc1_);
 					cast(_loc5_, URLLoader).load(_loc3_);
 				}
-				this._map.set(_loc5_, _loc1_);
 				_loc6_++;
 				++this._loadingThreadCount;
 			}

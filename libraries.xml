@@ -24,5 +24,9 @@
     <library path="assets/legacy/source/core/module/ui/main/farmui_full_v_40.swf" id="farmui_full_v_40" />
     <library path="assets/legacy/source/core/module/ui/main/farmui2_v_58.swf" id="farmui2_v_58" />
     <library path="assets/legacy/source/core/module/ui/water_ui_v_0.swf" id="water_ui_v_0" />
+    <!-- FarmLiteView 背景图（FarmLiteModel.get_background：默认
+         module/ui/farm/diy/1.swf；快照 uid=1 的 decorative items["1"].itemId
+         也是 1，user_run.php 输出同一 URL） -->
+    <library path="assets/legacy/source/core/module/ui/farm/diy/1.swf" id="1" />
 
 </project>

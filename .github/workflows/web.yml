@@ -44,10 +44,11 @@ jobs:
       - name: 安装依赖并构建 html5
         run: |
           haxelib setup "$HOME/haxelib"   # 注意 ~/.haxelib 是 haxelib 的配置文件路径，不能当仓库
-          haxelib install lime    # haxelib install 不装依赖，lime 必须显式装
-          haxelib install openfl
-          haxelib install swf
-          haxelib install utest
+          # 版本组锁定（2026-11-16 CI 实测跑通；与 android.yml、agent.Dockerfile 保持一致）
+          haxelib install lime 8.3.2
+          haxelib install openfl 9.5.2
+          haxelib install swf 3.4.0
+          haxelib install utest 1.13.2
           haxelib list
           haxelib run openfl build html5
 

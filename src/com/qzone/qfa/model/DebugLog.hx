@@ -32,8 +32,10 @@ class DebugLog {
 		this.msg = param1;
 		if (!As3.truthy(this.time)) {
 			_loc4_ = Date.now();
+			// PORT-NOTE: Haxe Date 没有 getMilliseconds（毫秒分量），
+			// Std.int(getTime() % 1000) 与 AS3 同值
 			this.time = _loc4_.getHours() + ":" + _loc4_.getMinutes() + ":" + _loc4_.getSeconds() + ":"
-				+ _loc4_.getMilliseconds();
+				+ Std.int(_loc4_.getTime() % 1000);
 		}
 	}
 

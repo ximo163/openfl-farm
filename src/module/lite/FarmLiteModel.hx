@@ -221,8 +221,10 @@ class FarmLiteModel extends EventDispatcher {
 				}
 				for (_loc7_ in _loc4_) {
 					if (_loc7_.nodeName == "assets") {
-						// 原版在此重赋 _loc4_（外层循环按原数组继续迭代）
-						_loc4_ = [for (node in _loc7_.elements()) node];
+						// 原版在此重赋 _loc4_（外层循环按原数组继续迭代）。_loc7_ 的
+						// 声明类型是 Xml，但 Haxe for 循环变量遮蔽后为 Dynamic，
+						// elements() 需显式标注回 Xml 才可迭代
+						_loc4_ = [for (node in (_loc7_ : Xml).elements()) node];
 						for (_loc7_ in _loc4_) {
 							if (_loc7_.get("id") == _loc8_) {
 								_loc1_ = _loc7_.get("url");

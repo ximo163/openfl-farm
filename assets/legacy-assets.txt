@@ -8,3 +8,11 @@ source/core/module/ui/allcrops/Crop_1056_3.swf
 source/core/module/mc/farm/aswf/a6291_1.swf
 source/core/module/ui/shop_v_7.swf
 source/core/module/ui/dogs/FDog100_v_1.swf
+#
+# V2 加载链路（issue #3）：预加载器 boot（lite_ui）与 startLiteUI（main +
+# 主模块 material 三件，xml.php nc_main.php 的 moduleList）按 URL 拉的库：
+source/core/module/ui/lite_ui_v_0.swf
+source/core/module/main3_v_221.swf
+source/core/module/ui/main/farmui_full_v_40.swf
+source/core/module/ui/main/farmui2_v_58.swf
+source/core/module/ui/water_ui_v_0.swf

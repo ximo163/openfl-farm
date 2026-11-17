@@ -16,4 +16,13 @@
     <library path="assets/legacy/source/core/module/ui/shop_v_7.swf" id="shop_v_7" preload="true" />
     <library path="assets/legacy/source/core/module/ui/dogs/FDog100_v_1.swf" id="FDog100_v_1" preload="true" />
 
+    <!-- V2 加载链路（issue #3）：预加载器 FarmLite.boot/startLiteUI 按相对
+         module/… URL 拉的库（LocalSwfLoader 按 URL 尾段映射库名）。不 preload：
+         原版这些是运行期网络加载，链路走 CmdLoadFile→LoadManager。 -->
+    <library path="assets/legacy/source/core/module/ui/lite_ui_v_0.swf" id="lite_ui_v_0" />
+    <library path="assets/legacy/source/core/module/main3_v_221.swf" id="main3_v_221" />
+    <library path="assets/legacy/source/core/module/ui/main/farmui_full_v_40.swf" id="farmui_full_v_40" />
+    <library path="assets/legacy/source/core/module/ui/main/farmui2_v_58.swf" id="farmui2_v_58" />
+    <library path="assets/legacy/source/core/module/ui/water_ui_v_0.swf" id="water_ui_v_0" />
+
 </project>

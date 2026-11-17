@@ -35,7 +35,7 @@ class QFAError extends Error {
 
 	// QFAError.as:29。键只有 int 错误码和 importConfig 的 String 键，落到
 	// StringMap 语义即可（对象键不会出现）
-	private static var _err_map:Dictionary<Dynamic, Dynamic> = new Dictionary();
+	private static var _err_map:Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>();
 
 	// QFAError.as:31-38
 	public function new(param1:Dynamic = 0) {

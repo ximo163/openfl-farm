@@ -7,10 +7,9 @@ import shim.As3;
 // Command.as 逐句对应。getter/setter 统一用 `var x(get, never)` + `get_x()`
 // （本文件内所有属性一致）。
 class Command extends EventDispatcher implements ICommand {
-	// Command.as:13（protected）。CmdHttpRequest.execute 里有跨包子类的直接写
-	// `super._running = true`（CmdHttpRequest.as:60），Haxe 的 private 挡不住，
-	// @:allow 精确放开 commands 包
-	@:allow(com.qzone.qfa.commands)
+	// Command.as:13（protected）。CmdHttpRequest.execute 里有跨包子类直接写
+	// `_running = true`（CmdHttpRequest.as:60）；Haxe 的 private 本就对子类
+	// 可见，无需额外放开
 	private var _running:Bool;
 
 	// Command.as:15

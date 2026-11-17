@@ -60,8 +60,9 @@ class FarmLiteView extends Sprite {
 	// DisplayObject 键取，K 取基类）
 	private var _harvestAnimationStep:Dictionary<DisplayObject, Int>;
 
-	// FarmLiteView.as:48
-	private var _pickIcon:canPickIcon_Lite;
+	// FarmLiteView.as:48。原类型名 canPickIcon_Lite，Haxe 要求大写开头
+	// （见 CanPickIcon_Lite.hx 的 PORT-NOTE）
+	private var _pickIcon:CanPickIcon_Lite;
 
 	// FarmLiteView.as:50
 	private var _model:FarmLiteModel;
@@ -85,7 +86,7 @@ class FarmLiteView extends Sprite {
 		this._currentItem = -1;
 		this._overFilters = [new ColorMatrixFilter([1.6, 0, 0, 0, -21.59, 0, 1.6, 0, 0, -21.59, 0, 0, 1.6, 0, -21.59, 0, 0, 0, 1, 0])];
 		this._items = null;
-		this._pickIcon = new canPickIcon_Lite();
+		this._pickIcon = new CanPickIcon_Lite();
 		this._pickIcon.scaleX = this._pickIcon.scaleY = 1 / SCALE;
 		this._pickIcon.mouseChildren = false;
 		this._pickIcon.mouseEnabled = false;
@@ -265,7 +266,8 @@ class FarmLiteView extends Sprite {
 		}
 		var _loc2_:DisplayObject = Std.isOfType(param1.target, DisplayObject) ? cast(param1.target, DisplayObject) : null;
 		if (_loc2_.name.indexOf("_land_") != -1) {
-			_loc2_.filters = this._overFilters;
+			// AS3 filters:Array 即 BitmapFilter 数组，Haxe 数组不变型需显式收窄
+			_loc2_.filters = cast this._overFilters;
 		}
 	}
 

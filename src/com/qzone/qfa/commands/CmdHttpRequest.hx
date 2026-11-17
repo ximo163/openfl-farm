@@ -57,7 +57,7 @@ class CmdHttpRequest extends Command {
 		this._req.addEventListener(QFAEvent.ERROR, this.handleError);
 		this._params = param1.params;
 		this._req.send(this._params);
-		// Command._running 对子类可见（Haxe private ≈ AS3 protected），super 直写
-		super._running = true;
+		// Command._running：Haxe private 对子类可见（AS3 protected 的原语义）
+		this._running = true;
 	}
 }

@@ -202,7 +202,7 @@ class EventRecorder {
 		_loc2_ += "&hottag=" + param1;
 		_loc2_ += "&hotx=9999";
 		_loc2_ += "&hoty=9999";
-		_loc2_ += "&rand=" + Math.random().toString();
+		_loc2_ += "&rand=" + Std.string(Math.random());
 		_loc2_ += "&pvid=" + _loc3_;
 		QQOutlets.sendToURL(new URLRequest(_loc2_));
 	}

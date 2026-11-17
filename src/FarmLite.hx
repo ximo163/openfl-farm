@@ -115,7 +115,7 @@ class FarmLite extends Sprite {
 			"counter": 0,
 			"time": 0
 		}, 0, true);
-		this._indexTime = getTimer() - (this._timeStamp + 200);
+		this._indexTime = Std.int(getTimer() - (this._timeStamp + 200));
 		EventRecorder.recordSueecssEvent(EventRecorder.HF_CGI_ENTER, this._indexTime, "mync.php?mod=user&act=run");
 		this.checkStart();
 	}
@@ -123,14 +123,14 @@ class FarmLite extends Sprite {
 	// FarmLite.as:111-116
 	private function onFilesLoadFailed(param1:CommandEvent):Void {
 		this._text.text = "加载农场游戏数据失败(-6)，请稍后再刷新！";
-		this._stepTime1 = getTimer() - this._timeStamp;
+		this._stepTime1 = Std.int(getTimer() - this._timeStamp);
 		EventRecorder.recordErrorEvent(EventRecorder.HF_SWFLOAD, this._stepTime1, -1, "第1步素材加载失败");
 	}
 
 	// FarmLite.as:118-125
 	private function onIndexPageError(param1:QFAEvent):Void {
 		this._text.text = "加载农场游戏数据失败(-3)";
-		this._indexTime = getTimer() - this._timeStamp;
+		this._indexTime = Std.int(getTimer() - this._timeStamp);
 		var _loc2_:Int = As3.intOf(param1.data);
 		EventRecorder.recordErrorEvent(EventRecorder.HF_CGI_ENTER, this._indexTime, _loc2_, "mync.php?mod=user&act=run");
 		this.setSnowslide();
@@ -196,7 +196,7 @@ class FarmLite extends Sprite {
 		var url:String;
 		var xml:Xml = null;
 		var e:CommandEvent = param1;
-		this._stepTime1 = getTimer() - this._timeStamp;
+		this._stepTime1 = Std.int(getTimer() - this._timeStamp);
 		url = this._settings.getStringAttribute("config_url");
 		res = ResourceManager.gi().getResource(url);
 		if (res != null && res.loaded == true) {
@@ -449,10 +449,11 @@ class FarmLite extends Sprite {
 		}
 	}
 
-	// FarmLite.as:448-453
+	// FarmLite.as:448-453。PORT-NOTE: Haxe 的 % 优先级高于 /（AS3 里同级
+	// 左结合），`x/1000%10` 会被解析成 x/(1000%10)，必须显式括号
 	private function openByFlashVar():Bool {
 		var _loc1_:String = Settings.getInstance().getStringAttribute("useflag");
-		var _loc2_:Int = As3.intOf(As3.floatOf(_loc1_) / 1000 % 10);
+		var _loc2_:Int = As3.intOf((As3.floatOf(_loc1_) / 1000) % 10);
 		return !As3.truthy(_loc2_);
 	}
 }

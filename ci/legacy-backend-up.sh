@@ -29,7 +29,7 @@ BIND_IP=127.0.0.1
 EOF
 
 echo "[3/6] 组装 www/：宿主基线 + 农场叠加 + 补丁 001/002（全新副本，不会触发 build.sh 的防误删交互）"
-./build.sh
+bash ./build.sh   # 显式 bash：脚本文件在仓库里可能没带可执行位（Windows 提交丢 +x）
 
 echo "[4/6] 覆盖宿主配置为快照版（数据库指向服务名 db；UC_KEY 与快照库配套）"
 cp "$SNAP/home-config.php" www/home/config.php

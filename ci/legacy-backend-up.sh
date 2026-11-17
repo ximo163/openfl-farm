@@ -36,6 +36,13 @@ cp "$SNAP/home-config.php" www/home/config.php
 cp "$SNAP/ucenter-config.inc.php" www/ucenter/data/config.inc.php
 # 开农场：默认 closefarm=1 是哀悼公告页
 sed -i "s/\['closefarm'\] = 1;/['closefarm'] = 0;/" www/home/qqfarm/core/config/_qsc.php
+# 数据库口令换成 CI 专用值（快照配置里带的是参考部署的口令；dbuser 一并规整成
+# root，参考部署按部署包 README 装的本来也是 root，这几行 sed 是幂等保险）。
+# 注意模板里键和 = 之间是 tab，模式要容忍任意空白。
+sed -i "s/^\$_SC\['dbuser'\][[:space:]]*=.*/\$_SC['dbuser'] = 'root';/" www/home/config.php
+sed -i "s/^\$_SC\['dbpw'\][[:space:]]*=.*/\$_SC['dbpw'] = 'farm_ci_only';/" www/home/config.php
+sed -i "s/^define[[:space:]]*([[:space:]]*'UC_DBUSER',[[:space:]].*/define('UC_DBUSER', 'root');/" www/ucenter/data/config.inc.php
+sed -i "s/^define[[:space:]]*([[:space:]]*'UC_DBPW',[[:space:]].*/define('UC_DBPW', 'farm_ci_only');/" www/ucenter/data/config.inc.php
 
 echo "[5/6] 建库改用快照（含 uchome_qqfarm_* 的 uid=1 数据），替换 qfarm.sql 挂载——两个都挂会因重复建表中断 initdb"
 sed -i "s#- \./install/qfarm\.sql:#- $SNAP/initialized.sql:#" docker-compose.yml

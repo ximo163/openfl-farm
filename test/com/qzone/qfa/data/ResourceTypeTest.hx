@@ -23,7 +23,8 @@ class ResourceTypeTest {
 	}
 
 	// ResourceType.as:22-23,28-31：config_url/config_data 是带 .xml 的文本资源
-	// （nc.htm:84-85；common.php:63-66 的 data/xml 与 xml.php?mod= 两种形态）
+	// （nc.htm:84-85；$xml 前缀的两种形态：common.php:60-61 的 data/xml/ 与
+	// common.php:68-69 的 xml.php?mod=）
 	public function test_text_urls_are_typed_text() {
 		var cases:Array<String> = [
 			"xml.php?mod=load_main_v_20120905.xml",

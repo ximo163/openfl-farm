@@ -18,15 +18,17 @@ import utest.Assert;
 class SettingsTest {
 	public function new() {}
 
-	// nc.htm:18-91 的 FLASH_VARS，只摘测试用到的键；值逐字照抄。
-	// config_url/config_data/config_addon 在 nc.htm 里是模板串，这里用 common.php:66
-	// 的 gzipcompress 分支渲染后的形态（xml.php?mod=...，FARM_DAY=20120905）。
+	// nc.htm:18-91 的 FLASH_VARS 字面量，只摘测试用到的键；值逐字照抄。
+	// mode 不在字面量里：nc.htm:92 动态注入（isQzone ? 1 : 2，qzone 站点下为 "1"）。
+	// config_url/config_data/config_addon 在 nc.htm:84-86 是 {:$xml} 模板串，这里用
+	// common.php:68-69 的 gzipcompress 分支（$xml='xml.php?mod='）渲染后的形态；
+	// FARM_DAY=20120905 出自 common.php:8-9（'7.0 Final Build 20120905.1700' 的
+	// substr(16,8)）。
 	static function ncFlashVars():Dynamic {
 		return {
 			"useflag": "11111111",
 			"mode": "1",
 			"uinMode": "1",
-			"app_key": "happyfarm",
 			"domian_qz": "farm.qzone",
 			"domian_xy": "farm.xiaoyou",
 			"config_url": "xml.php?mod=load_main_v_20120905.xml",

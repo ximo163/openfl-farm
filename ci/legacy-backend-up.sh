@@ -32,6 +32,12 @@ echo "[3/6] 组装 www/：宿主基线 + 农场叠加 + 补丁 001/002（全新�
 bash ./build.sh   # 显式 bash：脚本文件在仓库里可能没带可执行位（Windows 提交丢 +x）
 
 echo "[4/6] 覆盖宿主配置为快照版（数据库指向服务名 db；UC_KEY 与快照库配套）"
+# 部署包 .gitignore 的 data/ 没锚定，host/ucenter/data、host/home/data 等运行时
+# 目录没入库（git 检出缺目录；farm 的 core/data 例外，cache.func.php 会自建）。
+# 老代码不会全部自建，这里按安装向导 step1 的可写清单补齐。
+mkdir -p www/ucenter/data/cache www/ucenter/data/view www/ucenter/data/avatar \
+         www/ucenter/data/logs www/ucenter/data/backup www/ucenter/data/tmp \
+         www/home/data www/home/uc_client/data
 cp "$SNAP/home-config.php" www/home/config.php
 cp "$SNAP/ucenter-config.inc.php" www/ucenter/data/config.inc.php
 # 开农场：默认 closefarm=1 是哀悼公告页

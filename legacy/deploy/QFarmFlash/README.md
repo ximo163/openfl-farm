@@ -139,6 +139,7 @@ docker compose up -d --build
 ## 六、初始配置的已知坑
 
 - `closefarm` 默认 **1（关闭）**，装完不改只能看到哀悼公告 —— 必须改 0；
+- **fresh git 检出缺运行时目录**：本仓库 `.gitignore` 的 `data/` 未锚定，`host/ucenter/data`、`host/home/data`、`host/home/uc_client/data`、`source/core/data` 没入库（当初从 zip 解包的机器上有、新克隆没有）。农场自己的 `core/data` 会自建，其余按安装向导 step1 的可写清单 mkdir（CI 侧的清单见 `../../../ci/legacy-backend-up.sh`）；
 - `_QSC['adminer'] = array(1)`：UCHome 模式会自动并入 UCHome 创始人，一般无需改；
 - 缓存：`core/data/_qsc.php` 是运行时生成的配置缓存，改配置后需删除它才会重读（"请登录"死循环也先删它试试）；
 - 模板缓存：改 `.htm` 模板后需清 `core/data/view/`；

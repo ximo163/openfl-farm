@@ -106,6 +106,10 @@ def main():
                 bad.append(entry["path"])
             items.append(entry)
 
+    # 输出前按 path 排序：os.walk 的目录访问序不稳定，不排序的话同样输入
+    # 也会整文件重排（diff 全红），没法当确定性基线。
+    items.sort(key=lambda e: e["path"])
+
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     with open(args.out, "w", encoding="utf-8") as f:
         json.dump({"version": 1, "source": args.root, "count": len(items), "swfs": items},

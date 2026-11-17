@@ -2,12 +2,14 @@
 #   1. 5 个主代码 swf 全量导出到 legacy/decompiled/（scripts/decompile-legacy.sh）
 #   2. 6290 个资产 swf 生成清单 spec/swf-inventory.json（scripts/swf-inventory.py）
 #   3. 有变化就提交（[skip ci] 防循环触发）
-# 触发：legacy/deploy/ 变化，或手动。
+# 触发：特意改 legacy/deploy/recompile-trigger（升级 FFDec / 改反编译脚本后重建
+# 基线），或手动。原版包只读、swf 不会自己变——盯整个 legacy/deploy/** 会被
+# README/build.sh 之类的改动误触，白跑 20-40 分钟还刷出时间戳 churn。
 name: legacy-decompile
 
 on:
   push:
-    paths: ["legacy/deploy/**"]
+    paths: ["legacy/deploy/recompile-trigger"]
   workflow_dispatch:
 
 permissions:
@@ -28,14 +30,14 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      - name: 下载 FFDec 最新版
+      - name: 下载 FFDec（版本钉死：升级要同时改这里和 recompile-trigger）
         env:
           GH_TOKEN: ${{ github.token }}   # 匿名调 api.github.com 会被限流 403，用 gh 带 token
         run: |
           set -eu
           cd "$RUNNER_TEMP"
           # 完整解压：ffdec.jar 依赖压缩包里的 lib/*.jar，不能单抠 jar（java -jar 会 NoClassDefFound）
-          gh release download --repo jindrapetrik/jpexs-decompiler --pattern 'ffdec_[0-9]*.zip' --clobber
+          gh release download version26.5.0 --repo jindrapetrik/jpexs-decompiler --pattern 'ffdec_[0-9]*.zip' --clobber
           zipfile=$(ls ffdec_[0-9]*.zip | head -1)
           unzip -q -o "$zipfile" -d ffdec
           if [ -f ffdec/ffdec.sh ]; then

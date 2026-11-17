@@ -46,6 +46,9 @@ for name in "${main_swfs[@]}"; do
     ffdec -export "$extra" "$out/$extra" "$swf" || echo "提示：这个版本的 FFDec 不支持导出 $extra，已跳过"
   done
   ffdec -export xfl "$out/xfl" "$swf" || echo "提示：XFL 重建失败或不支持，已跳过（swf.xml 仍然可用）"
+  # XFL 的 itemID/lastModified 是导出时刻的时间戳：不抹掉的话每次重跑都全量重写
+  # 这两个属性（~3000 文件×2 行），基线没法确定性。它们是创作元数据，翻译用不到。
+  find "$out/xfl" -type f -name '*.xml' -exec sed -i -E 's/ (itemID|lastModified)="[^"]*"//' {} + 2>/dev/null || true
   echo "$swf -> $out"
   count=$((count + 1))
 done

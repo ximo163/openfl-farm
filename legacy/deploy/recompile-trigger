@@ -1,0 +1,6 @@
+# 改动本文件（内容有变即可）才会触发 legacy-decompile 工作流重跑。
+# 什么时候该改：升级 FFDec 版本（钉在 .github/workflows/legacy-decompile.yml）、
+# 改 scripts/decompile-legacy.sh 或 scripts/swf-inventory.sh 之后要重建基线时。
+# 原版包是冻结的，swf 不会自己变；别的工作（H3 后端等）碰 legacy/deploy/ 不应触发。
+#
+# 当前基线：ffdec version26.5.0 / 2026-11-17

@@ -18,10 +18,13 @@
     <haxelib name="swf" />
 
     <!-- 原版资产 swf：assets/legacy/ 由 scripts/sync-legacy-assets.sh 按
-         assets/legacy-assets.txt 从 legacy/deploy/ 同步。按模块声明、不全量预载，
-         控制启动内存（原版本来就是运行时按需加载）。
-         V1 探路通过后由人解开下面的注释并补 library 列表：
-    <library path="assets/legacy/module/main3_v_221.swf" id="main3" preload="false" />
-    -->
+         assets/legacy-assets.txt 从 legacy/deploy/ 同步，两个文件必须同 commit 改
+         （library 指向的文件不存在时 lime 构建直接红）。
+         id 即库名：Assets.getMovieClip("<id>:符号名")，空符号名取整个时间轴
+         （swf 库 README 写法）。V1 四样本（issue #1）： -->
+    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_1056_3.swf" id="Crop_1056_3" preload="true" />
+    <library path="assets/legacy/source/core/module/mc/farm/aswf/a6291_1.swf" id="a6291_1" preload="true" />
+    <library path="assets/legacy/source/core/module/ui/shop_v_7.swf" id="shop_v_7" preload="true" />
+    <library path="assets/legacy/source/core/module/ui/dogs/FDog100_v_1.swf" id="FDog100_v_1" preload="true" />
 
 </project>

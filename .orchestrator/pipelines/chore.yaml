@@ -49,7 +49,9 @@ stages:
     method: squash
     max_changed_lines: 1000
     max_changed_files: 30
-    require_distinct_reviewer: true
+    # 同模型审核放行（用户决定 2026-11-17）：单模型 API 下 distinct reviewer 永远
+    # 过不了。审查仍是独立会话 + 独立 judge 提示词。
+    require_distinct_reviewer: false
     allowed_paths:
       - src/
       - assets/legacy-assets.txt

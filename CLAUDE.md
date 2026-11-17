@@ -151,10 +151,16 @@
 - 验证命令只有：`openfl build html5`（全量编译检查）、`haxe test.hxml`（单测）、
   `bash checks/*.sh`。
 - PHP 片段可以用 `php -l`/`php -r` 试跑来读懂逻辑（容器里有 php-cli）。
+- 要解析 swf/ABC 结构时**先看 `tools/` 有没有现成的**（`dump_swf.php` 零依赖结构
+  速查、`StepAnimate.hx` node 里步进时间轴、`run-openfl-node.js` node 垫片），能复用
+  就复用；确实缺再用 `haxe -cp tools -lib format ...` 编一个一次性工具（容器里
+  format 3.7.0 可用），别再手写字节级解析器。
 
 ## 风格
 
 - Haxe 惯例命名，但**类名、方法名、字段名保持原版**（对应关系是验收标准）。
 - 注释说明为什么（尤其 `// PORT-NOTE:` 处），不复述代码做了什么。
-- 不加新依赖（haxelib）；`Project.xml` 已声明的 openfl/swf/utest 够用，缺了 BLOCKED。
+- 不往 `Project.xml`/`test.hxml` 加新依赖。容器里可用的 haxelib：openfl/lime/swf/
+  utest（工程内已声明）+ format（SWF/ABC 解析，只供 `tools/` 下的一次性工具用，
+  不进工程）。还缺别的输出 BLOCKED。
 - 改动小而集中：一个 issue 只做一件事。

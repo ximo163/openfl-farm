@@ -1,7 +1,12 @@
 // web-smoke：在无头浏览器里加载构建产物，确认能渲染、无报错、冒烟标记出现。
 // 由人维护（harness/ 受保护）。用法：node smoke.mjs <index.html 路径>
 // 退出码：0 通过；1 失败（失败原因打到 stdout，截图存 harness/smoke-failure.png）。
-import { pathToFileURL } from "node:url";
+//
+// 必须走 http 而不是 file://：swf 库把每个 <library> 编成 lib/<id>.zip，
+// 运行时 XHR 加载，file:// 下会被 CORS 拦（真实部署也是 http 提供）。
+import { createServer } from "node:http";
+import { readFile } from "node:fs/promises";
+import { extname, join, normalize, isAbsolute, resolve, dirname } from "node:path";
 import { existsSync } from "node:fs";
 import { chromium } from "playwright";
 
@@ -11,7 +16,30 @@ if (!target || !existsSync(target)) {
   process.exit(1);
 }
 
-const url = pathToFileURL(target).href;
+const root = dirname(resolve(target));
+const MIME = {
+  ".html": "text/html", ".js": "text/javascript", ".css": "text/css",
+  ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg",
+  ".gif": "image/gif", ".svg": "image/svg+xml", ".zip": "application/zip",
+  ".swf": "application/x-shockwave-flash", ".ttf": "font/ttf", ".ogg": "audio/ogg",
+  ".mp3": "audio/mpeg", ".wav": "audio/wav",
+};
+const server = createServer(async (req, res) => {
+  try {
+    // 解码 + 挡目录穿越，回到 root 内
+    let p = normalize(decodeURIComponent(new URL(req.url, "http://x").pathname));
+    if (isAbsolute(p)) p = p.replace(/^([\\/])+/, "");
+    const file = join(root, p);
+    if (!file.startsWith(root)) { res.writeHead(403); res.end(); return; }
+    const body = await readFile(file);
+    res.writeHead(200, { "Content-Type": MIME[extname(file).toLowerCase()] || "application/octet-stream" });
+    res.end(body);
+  } catch {
+    res.writeHead(404); res.end();
+  }
+});
+await new Promise((r) => server.listen(0, "127.0.0.1", r));
+const url = `http://127.0.0.1:${server.address().port}/index.html`;
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 860, height: 500 } });
 
@@ -60,4 +88,5 @@ try {
   process.exit(1);
 } finally {
   await browser.close();
+  server.close();
 }

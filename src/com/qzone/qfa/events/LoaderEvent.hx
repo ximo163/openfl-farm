@@ -1,12 +1,11 @@
 package com.qzone.qfa.events;
 
+import com.qzone.qfa.data.Resource;
+import com.qzone.qfa.managers.LoadManager;
 import openfl.events.Event;
+import openfl.media.ID3Info;
 
-/**
- * write-tests 阶段的最小 stub（issue #3）：签名按
- * legacy/decompiled/happyfarm3_v_149/scripts/com/qzone/qfa/events/LoaderEvent.as，
- * 常量照抄；实例字段（percentQueue/item/queueCount 等）由实现阶段按原版补齐。
- */
+// LoaderEvent.as 逐句对应。
 class LoaderEvent extends Event {
 	// LoaderEvent.as:24
 	public static final STATUS_CHANGED:String = "STATUS_CHANGED";
@@ -35,9 +34,50 @@ class LoaderEvent extends Event {
 	// LoaderEvent.as:40
 	public static final QUEUE_COMPLETE:String = "QUEUE_COMPLETE";
 
-	// LoaderEvent.as:49-52
+	// LoaderEvent.as:49
+	public var msg:String = "";
+
+	// LoaderEvent.as:51
+	public var id3Info:ID3Info;
+
+	// LoaderEvent.as:53
+	public var percentQueue:Float;
+
+	// LoaderEvent.as:55
+	public var bytesLoaded:Float;
+
+	// LoaderEvent.as:57
+	public var failCount:Int;
+
+	// LoaderEvent.as:59
+	public var loadTime:Int;
+
+	// LoaderEvent.as:61
+	public var queueLength:Int;
+
+	// LoaderEvent.as:63
+	public var bytesTotal:Float;
+
+	// LoaderEvent.as:65
+	public var loader:LoadManager;
+
+	// LoaderEvent.as:67
+	public var item:Resource;
+
+	// LoaderEvent.as:69
+	public var percentItem:Float;
+
+	// LoaderEvent.as:71
+	public var queueCount:Int;
+
+	// LoaderEvent.as:75-78
 	public function new(param1:String, param2:Bool = false, param3:Bool = false) {
 		super(param1, param2, param3);
-		throw new haxe.Exception("not implemented");
+	}
+
+	// LoaderEvent.as:80-83
+	override public function toString():String {
+		return formatToString("LoaderEvent", "type", "percentQueue", "percentItem", "item", "queueCount", "failCount",
+			"queueLength", "loader", "loadTime");
 	}
 }

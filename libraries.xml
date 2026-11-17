@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 原版资产库声明（<library> 一行一库）。由 agent 增删；Project.xml 通过
+     <include path="libraries.xml"/> 合并本文件，Project.xml 本身仍由人管。
+     必须放仓库根目录：lime 会把 include 文件所在目录加为 source 路径，
+     根目录文件的目录为空、被跳过。
+     path 指向 assets/legacy/ 下（scripts/sync-legacy-assets.sh 按
+     assets/legacy-assets.txt 同步生成）：本文件和 legacy-assets.txt 必须
+     同 commit 改——library 指向的文件不存在时构建直接红。
+     id 即库名：Assets.getMovieClip("<id>:符号名")；空符号名取整条时间轴。
+     id 全局唯一，用 swf 文件名去 .swf 后的原名。 -->
+<project>
+
+    <!-- V1 探路样本（issue #1） -->
+    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_1056_3.swf" id="Crop_1056_3" preload="true" />
+    <library path="assets/legacy/source/core/module/mc/farm/aswf/a6291_1.swf" id="a6291_1" preload="true" />
+    <library path="assets/legacy/source/core/module/ui/shop_v_7.swf" id="shop_v_7" preload="true" />
+    <library path="assets/legacy/source/core/module/ui/dogs/FDog100_v_1.swf" id="FDog100_v_1" preload="true" />
+
+</project>

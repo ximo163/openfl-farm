@@ -12,9 +12,9 @@
 - 只翻译 issue（或 `spec/modules/<模块>.json`）范围内的类。范围内类用到的范围外
   类：加最小 stub（编译需要），并在回答里列为「后续模块依赖」。
 - 实现的依据是原版行为，不是测试里的具体数字：不要针对测试输入写特判。
-- 资产：需要新资产时把路径加进 `assets/legacy-assets.txt`，不手拷文件；需要改
-  `Project.xml`（新增 `<library>` 等）时输出 `BLOCKED: Project.xml 需要新增 library
-  <路径>`，不要自己改。
+- 资产：需要新资产时把路径加进 `assets/legacy-assets.txt`，不手拷文件；需要新资产库时
+  在根目录 `libraries.xml` 加一行 `<library>`（两个文件同 commit 改）。`Project.xml`
+  本体不改，其他构建配置（`*.hxml`、haxelib 依赖）需要动时 BLOCKED。
 - 只读需要的部分：先 `rg -n` 找名字，再读附近的行。
 - 验证命令只有：`haxelib run openfl build html5`、`haxe test.hxml`。不要尝试
   `openfl build android`（容器里没有 SDK/NDK），不要安装任何大型工具。

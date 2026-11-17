@@ -34,11 +34,14 @@ const MIME = {
 const server = createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, "http://x").pathname);
-    // *.php → 旧后端（方法、查询串、请求体原样转发）
+    // *.php → 旧后端（方法、查询串、请求体、**Host 头**原样转发）。
+    // Host 必须保留原始值：旧后端按 HTTP_HOST 生成 config 里的绝对 URL
+    // （xml.php 的 postUrl 等），改写成后端地址会让游戏客户端直连后端端口
+    // （跨端口=跨域）。保留后下发的 URL 指回页面自身，闭环同源。
     if (backendUrl && pathname.endsWith(".php")) {
       const upstream = request(`${backendUrl}${req.url}`, {
         method: req.method,
-        headers: { ...req.headers, host: new URL(backendUrl).host },
+        headers: req.headers,
       }, (up) => {
         res.writeHead(up.statusCode || 502, up.headers);
         up.pipe(res);

@@ -69,15 +69,21 @@ if [ -z "$ok" ]; then
   exit 1
 fi
 
-# 冒烟：xml.php 出 config（V2 预加载器要的端点；002 补丁 uid=1 免登录）
+# 冒烟：xml.php 出 config（V2 预加载器要的端点；002 补丁 uid=1 免登录）。
+# 注意断言用 bash 字符串判断而不是 grep -q：pipefail 下 grep -q 提前退出会让
+# 上游 echo 吃 SIGPIPE（nc_data 上百 KB，必炸），把成功误判成失败。
 cfg="$(curl -sf "http://127.0.0.1:$PORT/home/qqfarm/core/xml.php?mod=nc_main")" || {
   echo "FAIL: xml.php?mod=nc_main 请求失败（curl 退出码 $?）"; exit 1; }
-echo "$cfg" | grep -q "main3_v_221.swf" || {
-  echo "FAIL: xml.php?mod=nc_main 内容异常（应有主程序模块地址），前 300 字节："; echo "$cfg" | head -c 300; exit 1; }
+if [[ "$cfg" != *"main3_v_221.swf"* ]]; then
+  echo "FAIL: xml.php?mod=nc_main 内容异常（应有主程序模块地址），前 300 字节："
+  echo "${cfg:0:300}"; exit 1
+fi
 
 data="$(curl -sf "http://127.0.0.1:$PORT/home/qqfarm/core/xml.php?mod=nc_data")" || {
   echo "FAIL: xml.php?mod=nc_data 请求失败（curl 退出码 $?）"; exit 1; }
-echo "$data" | head -c 100 | grep -q "<?xml" || {
-  echo "FAIL: xml.php?mod=nc_data 不是 XML，前 300 字节："; echo "$data" | head -c 300; exit 1; }
+if [[ "${data:0:100}" != "<?xml"* ]]; then
+  echo "FAIL: xml.php?mod=nc_data 不是 XML，前 300 字节："
+  echo "${data:0:300}"; exit 1
+fi
 
 echo "legacy-backend: ok（http://127.0.0.1:$PORT ，xml.php nc_main/nc_data 均出 config）"

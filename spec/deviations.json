@@ -1,0 +1,29 @@
+{
+  "_note": "有意偏差登记：没记进这里的差异都算错（见 openfl-farm CLAUDE.md）。人维护，agent 只读。",
+  "entries": [
+    {
+      "id": "no-qq-telemetry",
+      "module": "happyfarm3_v_149（V2 预加载器）",
+      "original": "EventRecorder 把埋点/事件 GET 到 nmc.php（recordUrl），pgvSendClick 读页面 pgv_pvid cookie 拼腾讯统计（PGV）URL 发送；FarmLite/module/common 共 17 处调用",
+      "ported": "类照译（事件常量、采样概率、调用点全部不动），但上报出口不发送：EventRecorder.DISABLED 置 true（原版自带开关，关掉 4 个 record 出口）；pgvSendClick 不查 DISABLED，出口单独 no-op",
+      "why": "独立部署不做 QQ 相关请求与埋点上报（2026-11-17 用户决定）",
+      "date": "2026-11-17"
+    },
+    {
+      "id": "no-qzone-jsapi",
+      "module": "happyfarm3_v_149（V2 预加载器）",
+      "original": "QzoneJSAPI 经 ExternalInterface 调 QZone 开放平台 fusion2 JS API（好友请求、免费礼物、邀请、头像列表、上传 URL，回调指向 app353.qzoneapp.com 等），13 处调用",
+      "ported": "类照译、调用点照译，ExternalInterface 出口在 src/shim/ 里 no-op：html5 下不向页面注入 fusion2 调用（页面里 fusion2 不存在，照发会抛 JS 异常）；取值型方法返回空串/null 等安全默认值，具体按调用方容错定，PORT-NOTE 标注",
+      "why": "独立页面没有 QZone 宿主，不存在 QQ 平台交互（2026-11-17 用户决定）",
+      "date": "2026-11-17"
+    },
+    {
+      "id": "allowdomain-noop",
+      "module": "happyfarm3_v_149（V2 预加载器）",
+      "original": "FarmLite 对 appbase/appimg/hydra 等 12 个 qq.com 域 Security.allowDomain",
+      "ported": "照译；openfl 的 flash.system.Security 无实际沙箱作用，等同 no-op",
+      "why": "Flash 沙箱概念在 openfl 各目标不存在，无需等效物",
+      "date": "2026-11-17"
+    }
+  ]
+}

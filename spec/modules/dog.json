@@ -1,0 +1,87 @@
+{
+ "version": 1,
+ "module": "dog",
+ "description": "农场狗：狗窝/狗粮碗/狗粮购买窗（mainScene/npc/widgets/Dog*）。狗数据实体 entities/Dog 与狗粮状态请求（mod=dog&act=feedMoney，由 uitools 发）分别在 farm-basic。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/nc/mod/dog_feedmoney.php"
+ ],
+ "counts": {
+  "classes": 3
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/npc/widgets/DogBowl.as",
+   "class": "module.mainScene.npc.widgets.DogBowl",
+   "swf": "main3_v_221",
+   "subsystem": "狗",
+   "loc": 109,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "DogFoodNull",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "DogFood",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/npc/widgets/DogFoodWindow.as",
+   "class": "module.mainScene.npc.widgets.DogFoodWindow",
+   "swf": "main3_v_221",
+   "subsystem": "狗",
+   "loc": 150,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/npc/widgets/DogRender.as",
+   "class": "module.mainScene.npc.widgets.DogRender",
+   "swf": "main3_v_221",
+   "subsystem": "狗",
+   "loc": 91,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "FDog",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "pattern": "module/ui/dogs/Dog_<id>*.swf / FDog_<id>*.swf",
+     "via": "common/GetCropID.as:idToDogUrl",
+     "evidence": "swf-inventory module/ui/dogs/ 共 59 个"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  }
+ ],
+ "notes": [
+  "功能 mod：狗粮状态 dog.feedMoney（uitools 的 UIToolsModel 经 CMD_GET_DOG_FOOD_STATUS 发）、狗粮购买走 farm-shop（usertool.buyTool，DogFoodWindow 派发 MSG_SHOW_BUY_DOG_FOOD 由 shop_v_7.swf 处理）。狗数据实体 entities/Dog 与启动解析在 farm-basic（StartupDataParser 直接构造 Dog）。"
+ ]
+}

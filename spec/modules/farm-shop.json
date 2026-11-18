@@ -1,0 +1,56 @@
+{
+ "version": 1,
+ "module": "farm-shop",
+ "description": "农场商店。UI 在外部 swf module/ui/shop_v_7.swf（module.shop.ShopController 等，不在 805 类内）；本模块只含 main3 内的桩与数据解析（种子/道具商店数据）。买入走 repertory.buySeed / usertool.buyTool / cgi_farm_buyweapon（由外部 swf 经 NetHelper 调用）。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php（Shop Module → module/ui/shop_v_7.swf）"
+ ],
+ "counts": {
+  "classes": 3
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/ItemsDataParser.as",
+   "class": "framework.net.parsers.ItemsDataParser",
+   "swf": "main3_v_221",
+   "subsystem": "解析器",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/SeedDataParser.as",
+   "class": "framework.net.parsers.SeedDataParser",
+   "swf": "main3_v_221",
+   "subsystem": "解析器",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/shop/ModuleShop.as",
+   "class": "module.shop.ModuleShop",
+   "swf": "main3_v_221",
+   "subsystem": "商店桩",
+   "loc": 63,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  }
+ ],
+ "notes": [
+  "功能 mod 清单（均经 framework/net/ServerServices.as m_cmdMap，由 shop_v_7.swf 控制器发起）：种子商店 usertool.getSeedInfo、道具商店 usertool.getTools、买种子 repertory.buySeed、买道具 usertool.buyTool / cgi_farm_tool_vip、买武器 cgi_farm_buyweapon、元宝预检/支付 cgi_farm_shop_verify / cgi_farm_shop_pay、牧场侧 cgi_pasture_shop_verify / cgi_pasture_shop_pay、买前校验白名单 cgi_farm_whitelist。",
+  "ModuleShop.load() 为空实现：真正的控制器经 Utils.getClass(\"module.shop.ShopController\") 从外部 swf 取（Module.onLoadModuleFile 按 moduleList url 下载）。"
+ ]
+}

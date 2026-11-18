@@ -1,0 +1,88 @@
+{
+ "version": 1,
+ "module": "farm-decorate",
+ "description": "农场装饰（DIY）：装饰商店（item.shop）、我的装饰（getUserItems）、激活/取消（activeItem/deactiveItem）、金币购买装饰（cgi_farm_buyitem）。UI 在 module/ui/decorate_v_0.swf；PreviewDiyWindow 在 main3。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php（Decorate Module → module/ui/decorate_v_0.swf）"
+ ],
+ "counts": {
+  "classes": 6
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/DIYDecor.as",
+   "class": "entities.DIYDecor",
+   "swf": "main3_v_221",
+   "subsystem": "装饰实体",
+   "loc": 82,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/DecorateItem.as",
+   "class": "entities.DecorateItem",
+   "swf": "main3_v_221",
+   "subsystem": "装饰实体",
+   "loc": 51,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/DIYDataParser.as",
+   "class": "framework.net.parsers.DIYDataParser",
+   "swf": "main3_v_221",
+   "subsystem": "解析器",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/DecorateItemsParser.as",
+   "class": "framework.net.parsers.DecorateItemsParser",
+   "swf": "main3_v_221",
+   "subsystem": "解析器",
+   "loc": 74,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/decorate/ModuleDecorate.as",
+   "class": "module.decorate.ModuleDecorate",
+   "swf": "main3_v_221",
+   "subsystem": "装饰桩",
+   "loc": 63,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/background/PreviewDiyWindow.as",
+   "class": "module.mainScene.background.PreviewDiyWindow",
+   "swf": "main3_v_221",
+   "subsystem": "装饰预览",
+   "loc": 43,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  }
+ ],
+ "notes": [
+  "功能 mod 清单（ServerServices.as m_cmdMap，由 decorate_v_0.swf 控制器发起）：装饰商店 item.shop、我的装饰 item.getUserItems、激活/取消 item.activeItem / item.deactiveItem、购买 cgi_farm_buyitem、VIP 装饰 cgi_farm_item_vip。"
+ ]
+}

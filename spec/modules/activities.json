@@ -1,0 +1,2421 @@
+{
+ "version": 1,
+ "module": "activities",
+ "description": "活动与小游戏：联合活动框架（com/qzone/allianceActivity，两份）、采集（app4/CollectingActivity + module/collect 外部 swf）、wild 野兽/丛林寻宝（framework/api/beast、wild/com/**、mc/api wild 部分、Cursor*/Tool_Wild、WildShell）、签到卡片（cardsgame）、快照/健康模式（quickshoot）、免费礼物（FreeGift + 礼物窗）、召回（recall）、月末/月初礼包、翻牌签到、二月礼包、神奇宝贝、任务活动、周末特卖、限时专区、Nokia 等营销活动入口。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php（beastLoaderUrl=WildShellNc_v_5.swf、wildanimal/wildaction/wildaweapon、monthEnd、freegift 列表）",
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/mc_main.php（wild=WildShell_v_33.swf + wild_v_37.xml、activity_list wildAdvanture=module/wildAdv/WildAdvMain_v_9.swf、magicalBaby、limitSales、flopSWF、updataDen）"
+ ],
+ "counts": {
+  "classes": 157
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/EvtAPI.as",
+   "class": "EvtAPI",
+   "swf": "Master2_v_142",
+   "subsystem": "wild API 接口",
+   "loc": 47,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/IBeastAPI.as",
+   "class": "IBeastAPI",
+   "swf": "Master2_v_142",
+   "subsystem": "wild API 接口",
+   "loc": 72,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/IGameAPI.as",
+   "class": "IGameAPI",
+   "swf": "Master2_v_142",
+   "subsystem": "wild API 接口",
+   "loc": 98,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/AbstractAllianceActivityContext.as",
+   "class": "com.qzone.allianceActivity.AbstractAllianceActivityContext",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 108,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/AllianceActivityAssetInfo.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityAssetInfo",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/AllianceActivityConfig.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityConfig",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 160,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/AllianceActivityController.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityController",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 258,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "platform_calls": [
+    "SwfAppLib.method.attachDefParam"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/AllianceActivityInfo.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityInfo",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 25,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/AllianceActivityManager.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityManager",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 266,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "platform_calls": [
+    "Clinic.log.report"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/MVCFacade.as",
+   "class": "com.qzone.allianceActivity.framewrok.MVCFacade",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 85,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/cache/DataCenter.as",
+   "class": "com.qzone.allianceActivity.framewrok.cache.DataCenter",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 258,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/cache/IBindableCache.as",
+   "class": "com.qzone.allianceActivity.framewrok.cache.IBindableCache",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 24,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/command/AsyncCommand.as",
+   "class": "com.qzone.allianceActivity.framewrok.command.AsyncCommand",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 134,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/command/CompositeCommand.as",
+   "class": "com.qzone.allianceActivity.framewrok.command.CompositeCommand",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 161,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/command/IAsyncCommand.as",
+   "class": "com.qzone.allianceActivity.framewrok.command.IAsyncCommand",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/command/ICommand.as",
+   "class": "com.qzone.allianceActivity.framewrok.command.ICommand",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 13,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/controller/CommandController.as",
+   "class": "com.qzone.allianceActivity.framewrok.controller.CommandController",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 73,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/controller/CommandQueue.as",
+   "class": "com.qzone.allianceActivity.framewrok.controller.CommandQueue",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 79,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/controller/EventController.as",
+   "class": "com.qzone.allianceActivity.framewrok.controller.EventController",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 36,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/controller/IEventController.as",
+   "class": "com.qzone.allianceActivity.framewrok.controller.IEventController",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 19,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/events/CacheEvent.as",
+   "class": "com.qzone.allianceActivity.framewrok.events.CacheEvent",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 29,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/events/CommandEvent.as",
+   "class": "com.qzone.allianceActivity.framewrok.events.CommandEvent",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 19,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/events/HashDataEvent.as",
+   "class": "com.qzone.allianceActivity.framewrok.events.HashDataEvent",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 78,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/events/MVCEvent.as",
+   "class": "com.qzone.allianceActivity.framewrok.events.MVCEvent",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 15,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/manager/ClickReportManager.as",
+   "class": "com.qzone.allianceActivity.framewrok.manager.ClickReportManager",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 112,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "eval"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/manager/JSAPI.as",
+   "class": "com.qzone.allianceActivity.framewrok.manager.JSAPI",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 67,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "eval"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/operation/IOperation.as",
+   "class": "com.qzone.allianceActivity.framewrok.operation.IOperation",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 26,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/IRemoteLoader.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.IRemoteLoader",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 18,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/IRemoteOperation.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.IRemoteOperation",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/IRemoteService.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.IRemoteService",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/IResponder.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.IResponder",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/IServiceLocator.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.IServiceLocator",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/RemoteOperation.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.RemoteOperation",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 38,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/RemoteResponder.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.RemoteResponder",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 55,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/ServiceLocator.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.ServiceLocator",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 31,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/TextLoader.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.TextLoader",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 117,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/framewrok/service/rpc/TextService.as",
+   "class": "com.qzone.allianceActivity.framewrok.service.rpc.TextService",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 54,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/interfaces/IAllianceActivityContext.as",
+   "class": "com.qzone.allianceActivity.interfaces.IAllianceActivityContext",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 40,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/interfaces/IAllianceAppHelper.as",
+   "class": "com.qzone.allianceActivity.interfaces.IAllianceAppHelper",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 43,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/interfaces/missionActivity/IMissionActivityAppHelper.as",
+   "class": "com.qzone.allianceActivity.interfaces.missionActivity.IMissionActivityAppHelper",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 32,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/interfaces/missionActivity/IMissionActivityConetxt.as",
+   "class": "com.qzone.allianceActivity.interfaces.missionActivity.IMissionActivityConetxt",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/missionActivity/model/MissionActivityConsts.as",
+   "class": "com.qzone.allianceActivity.missionActivity.model.MissionActivityConsts",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 25,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/com/qzone/allianceActivity/missionActivity/model/MissionActivityDataModel.as",
+   "class": "com.qzone.allianceActivity.missionActivity.model.MissionActivityDataModel",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动框架",
+   "loc": 133,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/api/AllianceAppHelper.as",
+   "class": "mc.api.AllianceAppHelper",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动",
+   "loc": 377,
+   "mods": [
+    {
+     "mod": "cgi_pasture_shop_pay",
+     "via": "类内 FRequest/HTTPRequest 调用字面量（url=mymc.php?mod= 前缀，见 xml/mod/mc_main.php postUrl）"
+    }
+   ],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf",
+      "module/mc/main/task_v_1.swf"
+     ],
+     "symbol": "ExpIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/mc/main/farmui1_v_42.swf",
+      "module/mc/main/task_v_1.swf"
+     ],
+     "symbol": "GoldBigIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "platform_calls": [
+    "SwfAppLib.pay.showBuy"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/api/BeastAPI.as",
+   "class": "mc.api.BeastAPI",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽",
+   "loc": 245,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/mc/farm/aswf/a<动物ID>_<0|1>.swf?v=<版本>",
+     "via": "mc/view/farm/GetCropID.as:getAnimalURL",
+     "evidence": "swf-inventory module/mc/farm/aswf/ 共 594 个（a<id>_0 297 + a<id>_1 297）；阶段 1|2→_0，其余→_1（getAnimalURL）"
+    },
+    {
+     "pattern": "module/mc/farm/product/p<产品ID>.swf",
+     "via": "mc/view/farm/GetCropID.as:getShopIconUrl",
+     "evidence": "swf-inventory module/mc/farm/product/ 共 293 个"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/api/WildCommand.as",
+   "class": "mc.api.WildCommand",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽",
+   "loc": 117,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/api/WildData.as",
+   "class": "mc.api.WildData",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽",
+   "loc": 74,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/control/LimitSaleCommand.as",
+   "class": "mc.control.LimitSaleCommand",
+   "swf": "Master2_v_142",
+   "subsystem": "限时专区",
+   "loc": 87,
+   "mods": [
+    {
+     "mod": "cgi_pasture_shop_pay",
+     "via": "类内 FRequest/HTTPRequest 调用字面量（url=mymc.php?mod= 前缀，见 xml/mod/mc_main.php postUrl）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/common/Tool_Wild.as",
+   "class": "mc.view.common.Tool_Wild",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽",
+   "loc": 68,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Wild_Animal_Icon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Wild_Animal_Icon_Active_2",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Wild_Animal_Icon_Active_1",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/common/WildMaterialLoaderProxy.as",
+   "class": "mc.view.common.WildMaterialLoaderProxy",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽",
+   "loc": 64,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/mc/farm/wild/<名称>_<阶段>.swf",
+     "via": "mc/view/farm/GetCropID.as:getWildAnimalIcon",
+     "evidence": "swf-inventory module/mc/farm/wild/ 共 24 个"
+    },
+    {
+     "pattern": "module/mc/farm/wild/<名称>_<阶段>.swf",
+     "via": "mc/view/farm/GetCropID.as:getWildIcon",
+     "evidence": "同上"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/farm/toolBar/Tool_Camera.as",
+   "class": "mc.view.farm.toolBar.Tool_Camera",
+   "swf": "Master2_v_142",
+   "subsystem": "快照",
+   "loc": 18,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "CameraButton",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FebruaryGift/FebruaryGiftControl.as",
+   "class": "mc.view.main.leftInfo.FebruaryGift.FebruaryGiftControl",
+   "swf": "Master2_v_142",
+   "subsystem": "二月礼包",
+   "loc": 109,
+   "mods": [
+    {
+     "mod": "cgi_pasture_shop_pay",
+     "via": "类内 FRequest/HTTPRequest 调用字面量（url=mymc.php?mod= 前缀，见 xml/mod/mc_main.php postUrl）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FebruaryGift/FebruaryGiftEvent.as",
+   "class": "mc.view.main.leftInfo.FebruaryGift.FebruaryGiftEvent",
+   "swf": "Master2_v_142",
+   "subsystem": "二月礼包",
+   "loc": 31,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FebruaryGift/FebruaryGiftIcon1.as",
+   "class": "mc.view.main.leftInfo.FebruaryGift.FebruaryGiftIcon1",
+   "swf": "Master2_v_142",
+   "subsystem": "二月礼包",
+   "loc": 23,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "FebruaryBtn1",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FebruaryGift/FebruaryGiftIcon2.as",
+   "class": "mc.view.main.leftInfo.FebruaryGift.FebruaryGiftIcon2",
+   "swf": "Master2_v_142",
+   "subsystem": "二月礼包",
+   "loc": 23,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "FebruaryBtn2",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FebruaryGift/FebruaryGiftModel.as",
+   "class": "mc.view.main.leftInfo.FebruaryGift.FebruaryGiftModel",
+   "swf": "Master2_v_142",
+   "subsystem": "二月礼包",
+   "loc": 49,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FebruaryGift/FebruaryGiftView.as",
+   "class": "mc.view.main.leftInfo.FebruaryGift.FebruaryGiftView",
+   "swf": "Master2_v_142",
+   "subsystem": "二月礼包",
+   "loc": 98,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.MOUSE_OUT"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FebruaryGift/FebruaryGiftWindow1.as",
+   "class": "mc.view.main.leftInfo.FebruaryGift.FebruaryGiftWindow1",
+   "swf": "Master2_v_142",
+   "subsystem": "二月礼包",
+   "loc": 82,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FebruaryGift/FebruaryGiftWindow2.as",
+   "class": "mc.view.main.leftInfo.FebruaryGift.FebruaryGiftWindow2",
+   "swf": "Master2_v_142",
+   "subsystem": "二月礼包",
+   "loc": 87,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FlopGift/FlopCardsGift.as",
+   "class": "mc.view.main.leftInfo.FlopGift.FlopCardsGift",
+   "swf": "Master2_v_142",
+   "subsystem": "翻牌签到",
+   "loc": 123,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FlopGift/FlopGiftControl.as",
+   "class": "mc.view.main.leftInfo.FlopGift.FlopGiftControl",
+   "swf": "Master2_v_142",
+   "subsystem": "翻牌签到",
+   "loc": 71,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FlopGift/FlopGiftData.as",
+   "class": "mc.view.main.leftInfo.FlopGift.FlopGiftData",
+   "swf": "Master2_v_142",
+   "subsystem": "翻牌签到",
+   "loc": 223,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FlopGift/FlopGiftIcon.as",
+   "class": "mc.view.main.leftInfo.FlopGift.FlopGiftIcon",
+   "swf": "Master2_v_142",
+   "subsystem": "翻牌签到",
+   "loc": 23,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "FlopIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FlopGift/FlopGiftView.as",
+   "class": "mc.view.main.leftInfo.FlopGift.FlopGiftView",
+   "swf": "Master2_v_142",
+   "subsystem": "翻牌签到",
+   "loc": 144,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.MOUSE_OUT"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/FlopGift/FlopGiftWindow.as",
+   "class": "mc.view.main.leftInfo.FlopGift.FlopGiftWindow",
+   "swf": "Master2_v_142",
+   "subsystem": "翻牌签到",
+   "loc": 668,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "cusor_tanabata",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "ref": [
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "DataLoading",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "pattern": "module/mc/farm/aswf/a<动物ID>_<0|1>.swf?v=<版本>",
+     "via": "mc/view/farm/GetCropID.as:getAnimalURL",
+     "evidence": "swf-inventory module/mc/farm/aswf/ 共 594 个（a<id>_0 297 + a<id>_1 297）；阶段 1|2→_0，其余→_1（getAnimalURL）"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "Event.COMPLETE",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.CLICK"
+   ],
+   "platform_calls": [
+    "navigateToURL"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/GiftIcon.as",
+   "class": "mc.view.main.leftInfo.GiftIcon",
+   "swf": "Master2_v_142",
+   "subsystem": "礼包",
+   "loc": 38,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "GiftIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/GiftItem.as",
+   "class": "mc.view.main.leftInfo.GiftItem",
+   "swf": "Master2_v_142",
+   "subsystem": "礼包",
+   "loc": 71,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/GiftWindow.as",
+   "class": "mc.view.main.leftInfo.GiftWindow",
+   "swf": "Master2_v_142",
+   "subsystem": "礼包",
+   "loc": 336,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui2_v_44.swf"
+     ],
+     "symbol": "Renewal",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "platform_calls": [
+    "SwfAppLib.method.getVipInfo",
+    "window.open"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/MonthBeginIcon.as",
+   "class": "mc.view.main.leftInfo.MonthBeginIcon",
+   "swf": "Master2_v_142",
+   "subsystem": "月初活动",
+   "loc": 24,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/mc/main/farmui2_v_44.swf"
+     ],
+     "symbol": "MonthBeginIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/NokiaIcon.as",
+   "class": "mc.view.main.leftInfo.NokiaIcon",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动(Nokia)",
+   "loc": 180,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "NokiaMainWindow",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "NokiaIcon",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/tool/QuickShootWindow.as",
+   "class": "mc.view.main.window.tool.QuickShootWindow",
+   "swf": "Master2_v_142",
+   "subsystem": "快照",
+   "loc": 278,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "QuickShootBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "TimerEvent.TIMER_COMPLETE",
+    "Event.CHANGE"
+   ],
+   "cross_module_imports": [
+    "pasture",
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/allianceActivitys/ActivityController.as",
+   "class": "module.allianceActivitys.ActivityController",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动",
+   "loc": 56,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/allianceActivitys/ActivityTipManager.as",
+   "class": "module.allianceActivitys.ActivityTipManager",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动",
+   "loc": 94,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "TimerEvent.TIMER",
+    "TimerEvent.TIMER_COMPLETE"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/allianceActivitys/NpcbubbleManager.as",
+   "class": "module.allianceActivitys.NpcbubbleManager",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动",
+   "loc": 44,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "MaoPaoFlag",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/allianceActivitys/olympicGames/OlympicGamesActivityHelper.as",
+   "class": "module.allianceActivitys.olympicGames.OlympicGamesActivityHelper",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动",
+   "loc": 204,
+   "mods": [
+    {
+     "mod": "cgi_fetch_strategy_rules",
+     "via": "类内 FRequest/HTTPRequest 调用字面量（url=mymc.php?mod= 前缀，见 xml/mod/mc_main.php postUrl）"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/allianceActivitys/wildAdventure/WildAdventureHelper.as",
+   "class": "module.allianceActivitys.wildAdventure.WildAdventureHelper",
+   "swf": "Master2_v_142",
+   "subsystem": "联合活动",
+   "loc": 152,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/magicBaby/MagicalBaby.as",
+   "class": "module.magicBaby.MagicalBaby",
+   "swf": "Master2_v_142",
+   "subsystem": "神奇宝贝",
+   "loc": 113,
+   "mods": [
+    {
+     "mod": "cgi_fetch_strategy_rules",
+     "via": "类内 FRequest/HTTPRequest 调用字面量（url=mymc.php?mod= 前缀，见 xml/mod/mc_main.php postUrl）"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/magicBaby/MagicalBabyData.as",
+   "class": "module.magicBaby.MagicalBabyData",
+   "swf": "Master2_v_142",
+   "subsystem": "神奇宝贝",
+   "loc": 124,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/magicBaby/MagicalBabyWindow.as",
+   "class": "module.magicBaby.MagicalBabyWindow",
+   "swf": "Master2_v_142",
+   "subsystem": "神奇宝贝",
+   "loc": 278,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/missionActivity/MissionActivity.as",
+   "class": "module.missionActivity.MissionActivity",
+   "swf": "Master2_v_142",
+   "subsystem": "任务活动",
+   "loc": 95,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/missionActivity/MissionActivityHelper.as",
+   "class": "module.missionActivity.MissionActivityHelper",
+   "swf": "Master2_v_142",
+   "subsystem": "任务活动",
+   "loc": 264,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "SwfAppLib.pay.showBuy"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/monthBegin/MonthBeginController.as",
+   "class": "module.monthBegin.MonthBeginController",
+   "swf": "Master2_v_142",
+   "subsystem": "月初活动",
+   "loc": 37,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/monthBegin/MonthBeginEvent.as",
+   "class": "module.monthBegin.MonthBeginEvent",
+   "swf": "Master2_v_142",
+   "subsystem": "月初活动",
+   "loc": 39,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/monthBegin/MonthBeginModel.as",
+   "class": "module.monthBegin.MonthBeginModel",
+   "swf": "Master2_v_142",
+   "subsystem": "月初活动",
+   "loc": 234,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "window.open"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/monthBegin/MonthBeginServer.as",
+   "class": "module.monthBegin.MonthBeginServer",
+   "swf": "Master2_v_142",
+   "subsystem": "月初活动",
+   "loc": 34,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/monthBegin/MonthBeginWin.as",
+   "class": "module.monthBegin.MonthBeginWin",
+   "swf": "Master2_v_142",
+   "subsystem": "月初活动",
+   "loc": 577,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "monthBeginItem",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "monthBeginNoGift",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [
+    "Event.ENTER_FRAME",
+    "Event.COMPLETE",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "platform_calls": [
+    "navigateToURL"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/monthBegin/MonthEndGift.as",
+   "class": "module.monthBegin.MonthEndGift",
+   "swf": "Master2_v_142",
+   "subsystem": "月初活动",
+   "loc": 60,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/weekendSale/WeekendSaleHelper.as",
+   "class": "module.weekendSale.WeekendSaleHelper",
+   "swf": "Master2_v_142",
+   "subsystem": "周末特卖",
+   "loc": 78,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/module/weekendSale/WeekendSaleModel.as",
+   "class": "module.weekendSale.WeekendSaleModel",
+   "swf": "Master2_v_142",
+   "subsystem": "周末特卖",
+   "loc": 330,
+   "mods": [
+    {
+     "mod": "cgi_get_package",
+     "via": "类内 FRequest/HTTPRequest 调用字面量（url=mymc.php?mod= 前缀，见 xml/mod/mc_main.php postUrl）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Scene/DataScene.as",
+   "class": "wild.com.Scene.DataScene",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 205,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/DataShell.as",
+   "class": "wild.com.Shell.DataShell",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 209,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/business/analyzer/IParser.as",
+   "class": "wild.com.Shell.business.analyzer.IParser",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/business/analyzer/setup/ParserBeast.as",
+   "class": "wild.com.Shell.business.analyzer.setup.ParserBeast",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 30,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/command/CmdAPI.as",
+   "class": "wild.com.Shell.command.CmdAPI",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 38,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/command/CmdSetup.as",
+   "class": "wild.com.Shell.command.CmdSetup",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 213,
+   "mods": [
+    {
+     "mod": "cgi_farm_hpage_beast",
+     "via": "类内 FRequest/HTTPRequest 调用字面量（url=mymc.php?mod= 前缀，见 xml/mod/mc_main.php postUrl）"
+    },
+    {
+     "mod": "cgi_farm_beast_getnick",
+     "via": "类内 FRequest/HTTPRequest 调用字面量（url=mymc.php?mod= 前缀，见 xml/mod/mc_main.php postUrl）"
+    }
+   ],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/model/TipText/StaticTextTip.as",
+   "class": "wild.com.Shell.model.TipText.StaticTextTip",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 84,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/model/beast/BeastBase.as",
+   "class": "wild.com.Shell.model.beast.BeastBase",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 24,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/model/beast/BeastInfo.as",
+   "class": "wild.com.Shell.model.beast.BeastInfo",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 22,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/model/beast/BeastReturn.as",
+   "class": "wild.com.Shell.model.beast.BeastReturn",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 22,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/model/crystal/CrystalDrop.as",
+   "class": "wild.com.Shell.model.crystal.CrystalDrop",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 22,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/stage/FarmStage.as",
+   "class": "wild.com.Shell.stage.FarmStage",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 200,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "WildMaoPaoFlag",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Wild_Animal_Num_txt",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Wild_Animal_Back_txt",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/stage/Weapon.as",
+   "class": "wild.com.Shell.stage.Weapon",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 31,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Shell/stage/WildAnimal.as",
+   "class": "wild.com.Shell.stage.WildAnimal",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 430,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "WildPowerBar2",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "FightFlag",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/wild/com/Tools/DataTools.as",
+   "class": "wild.com.Tools.DataTools",
+   "swf": "Master2_v_142",
+   "subsystem": "wild 野兽(丛林)",
+   "loc": 158,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/EvtAPI.as",
+   "class": "EvtAPI",
+   "swf": "main3_v_221",
+   "subsystem": "wild API 接口",
+   "loc": 47,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/IBeastAPI.as",
+   "class": "IBeastAPI",
+   "swf": "main3_v_221",
+   "subsystem": "wild API 接口",
+   "loc": 72,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/IGameAPI.as",
+   "class": "IGameAPI",
+   "swf": "main3_v_221",
+   "subsystem": "wild API 接口",
+   "loc": 98,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/app4/activities/CollectingActivity.as",
+   "class": "app4.activities.CollectingActivity",
+   "swf": "main3_v_221",
+   "subsystem": "采集活动",
+   "loc": 190,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_Seed.swf",
+     "via": "common/GetCropID.as:getSeedUrl",
+     "evidence": "swf-inventory 收录；经 asset_id.s 解析"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/app4/activities/common/ActivityController.as",
+   "class": "app4.activities.common.ActivityController",
+   "swf": "main3_v_221",
+   "subsystem": "采集活动",
+   "loc": 51,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/app4/activities/common/FarmAdvertisementAPI.as",
+   "class": "app4.activities.common.FarmAdvertisementAPI",
+   "swf": "main3_v_221",
+   "subsystem": "采集活动",
+   "loc": 282,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "TimerEvent.TIMER",
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/app4/activities/common/FarmAppHelper.as",
+   "class": "app4.activities.common.FarmAppHelper",
+   "swf": "main3_v_221",
+   "subsystem": "采集活动",
+   "loc": 240,
+   "mods": [
+    {
+     "mod": "price_goods",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "GoldCardsGame",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf",
+      "module/mc/main/task_v_1.swf"
+     ],
+     "symbol": "ExpIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/AbstractAllianceActivityContext.as",
+   "class": "com.qzone.allianceActivity.AbstractAllianceActivityContext",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 108,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/AllianceActivityAssetInfo.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityAssetInfo",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/AllianceActivityConfig.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityConfig",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 160,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/AllianceActivityController.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityController",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 258,
+   "mods": [
+    {
+     "mod": "get_actinfo",
+     "via": "类内字面量"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "platform_calls": [
+    "SwfAppLib.method.attachDefParam"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/AllianceActivityInfo.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityInfo",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 25,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/AllianceActivityManager.as",
+   "class": "com.qzone.allianceActivity.AllianceActivityManager",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 266,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "platform_calls": [
+    "Clinic.log.report"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/advertisement/ADConfig.as",
+   "class": "com.qzone.allianceActivity.advertisement.ADConfig",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 196,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/advertisement/ADManager.as",
+   "class": "com.qzone.allianceActivity.advertisement.ADManager",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 385,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.CLICK"
+   ],
+   "platform_calls": [
+    "QZFL.dialog.create(\\'\\',",
+    "Clinic.log.report"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/advertisement/IAdvertisement.as",
+   "class": "com.qzone.allianceActivity.advertisement.IAdvertisement",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 20,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/framewrok/manager/ClickReportManager.as",
+   "class": "com.qzone.allianceActivity.framewrok.manager.ClickReportManager",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 112,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "eval"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/framewrok/manager/JSAPI.as",
+   "class": "com.qzone.allianceActivity.framewrok.manager.JSAPI",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 67,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "eval"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/interfaces/IAllianceActivityContext.as",
+   "class": "com.qzone.allianceActivity.interfaces.IAllianceActivityContext",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 40,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/allianceActivity/interfaces/IAllianceAppHelper.as",
+   "class": "com.qzone.allianceActivity.interfaces.IAllianceAppHelper",
+   "swf": "main3_v_221",
+   "subsystem": "联合活动框架",
+   "loc": 43,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/GiftItem.as",
+   "class": "common.view.window.GiftItem",
+   "swf": "main3_v_221",
+   "subsystem": "免费礼物",
+   "loc": 95,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/GiftWindow.as",
+   "class": "common.view.window.GiftWindow",
+   "swf": "main3_v_221",
+   "subsystem": "免费礼物",
+   "loc": 460,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui2_v_44.swf"
+     ],
+     "symbol": "Renewal",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.CLICK"
+   ],
+   "platform_calls": [
+    "window.open"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/PickupGiftWindow.as",
+   "class": "common.view.window.PickupGiftWindow",
+   "swf": "main3_v_221",
+   "subsystem": "免费礼物",
+   "loc": 225,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "REWindowContentCrops",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_Seed.swf",
+     "via": "common/GetCropID.as:getSeedUrl",
+     "evidence": "swf-inventory 收录；经 asset_id.s 解析"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "TimerEvent.TIMER",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "platform_calls": [
+    "window.open"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/REGiftWindow.as",
+   "class": "common.view.window.REGiftWindow",
+   "swf": "main3_v_221",
+   "subsystem": "免费礼物",
+   "loc": 236,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/cursor/CursorWildArrow.as",
+   "class": "cursor.CursorWildArrow",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽",
+   "loc": 34,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/cursor/CursorWildGun.as",
+   "class": "cursor.CursorWildGun",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽",
+   "loc": 34,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/cursor/CursorWildHand.as",
+   "class": "cursor.CursorWildHand",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽",
+   "loc": 34,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/cursor/CursorWildTools.as",
+   "class": "cursor.CursorWildTools",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽",
+   "loc": 34,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/HealthMode.as",
+   "class": "entities.HealthMode",
+   "swf": "main3_v_221",
+   "subsystem": "健康模式(外部 swf module.health)",
+   "loc": 48,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/beast/BeastAPI.as",
+   "class": "framework.api.beast.BeastAPI",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽(放牛)",
+   "loc": 606,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "friends"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/beast/WildCommand.as",
+   "class": "framework.api.beast.WildCommand",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽(放牛)",
+   "loc": 96,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/beast/WildData.as",
+   "class": "framework.api.beast.WildData",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽(放牛)",
+   "loc": 74,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/beast/cmd/CmdBeastDefs.as",
+   "class": "framework.api.beast.cmd.CmdBeastDefs",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽(放牛)",
+   "loc": 144,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/FreeGift/ModuleFreeGift.as",
+   "class": "module.FreeGift.ModuleFreeGift",
+   "swf": "main3_v_221",
+   "subsystem": "免费礼物",
+   "loc": 52,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/cardsgame/ModuleCardsGame.as",
+   "class": "module.cardsgame.ModuleCardsGame",
+   "swf": "main3_v_221",
+   "subsystem": "签到卡片",
+   "loc": 52,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/npc/MonthEnd/MonthEndModel.as",
+   "class": "module.mainScene.npc.MonthEnd.MonthEndModel",
+   "swf": "main3_v_221",
+   "subsystem": "月末礼包",
+   "loc": 196,
+   "mods": [
+    {
+     "mod": "cgi_farm_shop_verify",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_month_get",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_shop_pay",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_month_list",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_month_refresh",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_qzshare_onekey",
+     "via": "类内字面量"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "window.open"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/npc/MonthEnd/MonthEndWin.as",
+   "class": "module.mainScene.npc.MonthEnd.MonthEndWin",
+   "swf": "main3_v_221",
+   "subsystem": "月末礼包",
+   "loc": 872,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "monthEndItem",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "monthEndNoGift",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.CLICK",
+    "Event.ENTER_FRAME",
+    "Event.COMPLETE",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "platform_calls": [
+    "navigateToURL"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/quickshoot/ModuleQuickShoot.as",
+   "class": "module.quickshoot.ModuleQuickShoot",
+   "swf": "main3_v_221",
+   "subsystem": "快照/健康模式",
+   "loc": 60,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/recall/ModuleRecall.as",
+   "class": "module.recall.ModuleRecall",
+   "swf": "main3_v_221",
+   "subsystem": "召回",
+   "loc": 52,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/recall/RecallController.as",
+   "class": "module.recall.RecallController",
+   "swf": "main3_v_221",
+   "subsystem": "召回",
+   "loc": 95,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/recall/RecallModel.as",
+   "class": "module.recall.RecallModel",
+   "swf": "main3_v_221",
+   "subsystem": "召回",
+   "loc": 213,
+   "mods": [
+    {
+     "mod": "request_get",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/recall/RecallView.as",
+   "class": "module.recall.RecallView",
+   "swf": "main3_v_221",
+   "subsystem": "召回",
+   "loc": 361,
+   "mods": [
+    {
+     "mod": "cgi_farm_acceptrequest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "Event.CHANGE"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/recall/widgets/BackItem.as",
+   "class": "module.recall.widgets.BackItem",
+   "swf": "main3_v_221",
+   "subsystem": "召回",
+   "loc": 164,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "recallItem",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_Seed.swf",
+     "via": "common/GetCropID.as:getSeedUrl",
+     "evidence": "swf-inventory 收录；经 asset_id.s 解析"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/recall/widgets/BackOKItem.as",
+   "class": "module.recall.widgets.BackOKItem",
+   "swf": "main3_v_221",
+   "subsystem": "召回",
+   "loc": 149,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "RequestItem",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_Seed.swf",
+     "via": "common/GetCropID.as:getSeedUrl",
+     "evidence": "swf-inventory 收录；经 asset_id.s 解析"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/recall/widgets/BackOKPage.as",
+   "class": "module.recall.widgets.BackOKPage",
+   "swf": "main3_v_221",
+   "subsystem": "召回",
+   "loc": 52,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/recall/widgets/BackPage.as",
+   "class": "module.recall.widgets.BackPage",
+   "swf": "main3_v_221",
+   "subsystem": "召回",
+   "loc": 52,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/Tool_Wild.as",
+   "class": "module.uitools.widgets.Tool_Wild",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽",
+   "loc": 123,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Wild_Animal_Icon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "WildTaskBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Wild_Animal_Icon_Active_2",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Wild_Animal_Icon_Active_1",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/plugins/FairyPluginProxy.as",
+   "class": "plugins.FairyPluginProxy",
+   "swf": "main3_v_221",
+   "subsystem": "插件代理",
+   "loc": 228,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/plugins/MailPromotionProxy.as",
+   "class": "plugins.MailPromotionProxy",
+   "swf": "main3_v_221",
+   "subsystem": "插件代理",
+   "loc": 67,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/plugins/MobileFarmPluginProxy.as",
+   "class": "plugins.MobileFarmPluginProxy",
+   "swf": "main3_v_221",
+   "subsystem": "插件代理",
+   "loc": 79,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/plugins/QShowPluginProxy.as",
+   "class": "plugins.QShowPluginProxy",
+   "swf": "main3_v_221",
+   "subsystem": "插件代理",
+   "loc": 428,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/plugins/WeekendSalePluginProxy.as",
+   "class": "plugins.WeekendSalePluginProxy",
+   "swf": "main3_v_221",
+   "subsystem": "插件代理",
+   "loc": 103,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/wild/com/Shell/command/CmdAPI.as",
+   "class": "wild.com.Shell.command.CmdAPI",
+   "swf": "main3_v_221",
+   "subsystem": "wild 野兽",
+   "loc": 38,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  }
+ ],
+ "notes": [
+  "功能 mod 清单（ServerServices.as m_cmdMap，由 pool_v_13.swf 控制器发起）：开通 cgi_fish_register、鱼塘信息 cgi_fish_index、放鱼 cgi_fish_plant、捞鱼 cgi_fish_harvest、喂鱼 cgi_fish_fertilize、偷鱼 cgi_fish_steal、输出 cgi_fish_output、商店 cgi_fish_list、解锁 cgi_fish_unlock、买鱼 cgi_fish_buy、成鱼仓库 cgi_fish_user_rep、卖鱼 cgi_fish_sale、仓库锁 cgi_fish_rep_lock、成鱼 cgi_fish_getall。",
+  "wild 子系统的入口 swf：农场侧 WildShellNc_v_5.swf（nc_addon beastLoaderUrl）、牧场侧 WildShell_v_33.swf（mc_main <wild loader>）；主类不在 805 类内（运行时加载），805 内的是 host 侧 API/命令/数据类。",
+  "EvtAPI/IBeastAPI/IGameAPI（两 swf 各一份）是 wild shell ↔ host 的 API 契约，被 farm-basic 的 ToolBar/FarmStage 等引用（cross_module_imports 已标）。"
+ ]
+}

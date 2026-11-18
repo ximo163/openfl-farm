@@ -1,0 +1,140 @@
+{
+ "version": 1,
+ "module": "tasks",
+ "description": "新手任务/欢迎引导窗口（module.task.welcome：任务接受 accept/update、欢迎流程 welcome）。GameGuide（引导控制器）在 farm-basic（启动即挂载）。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/nc/mod/task_*.php"
+ ],
+ "counts": {
+  "classes": 6
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/task/ModuleTask.as",
+   "class": "module.task.ModuleTask",
+   "swf": "main3_v_221",
+   "subsystem": "新手任务/欢迎",
+   "loc": 54,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/task/welcome/TaskOverWindow.as",
+   "class": "module.task.welcome.TaskOverWindow",
+   "swf": "main3_v_221",
+   "subsystem": "新手任务/欢迎",
+   "loc": 181,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/task/welcome/WelcomeController.as",
+   "class": "module.task.welcome.WelcomeController",
+   "swf": "main3_v_221",
+   "subsystem": "新手任务/欢迎",
+   "loc": 91,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/task/welcome/WelcomeModel.as",
+   "class": "module.task.welcome.WelcomeModel",
+   "swf": "main3_v_221",
+   "subsystem": "新手任务/欢迎",
+   "loc": 223,
+   "mods": [
+    {
+     "mod": "task",
+     "act": "accept",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "task",
+     "act": "update",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/task/welcome/WelcomeTaskWindow.as",
+   "class": "module.task.welcome.WelcomeTaskWindow",
+   "swf": "main3_v_221",
+   "subsystem": "新手任务/欢迎",
+   "loc": 225,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "task",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/task/welcome/WelcomeView.as",
+   "class": "module.task.welcome.WelcomeView",
+   "swf": "main3_v_221",
+   "subsystem": "新手任务/欢迎",
+   "loc": 338,
+   "mods": [
+    {
+     "mod": "user",
+     "act": "welcome",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [
+    {
+     "ref": [
+      "module/mc/main/task_v_1.swf"
+     ],
+     "symbol": "taskAwokeButton",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/mc/main/task_v_1.swf"
+     ],
+     "symbol": "taskingButton",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  }
+ ]
+}

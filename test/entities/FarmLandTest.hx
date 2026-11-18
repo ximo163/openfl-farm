@@ -54,11 +54,11 @@ class FarmLandTest {
 	// 空数组 → 原样引用（数组本体）
 	public function test_importObject_thief_and_action_defaults() {
 		var withArrays = new FarmLand(landJson(0));
-		Assert.isTrue(Std.is(withArrays._thief, Array)); // n:[] 原样
-		Assert.isTrue(Std.is(withArrays._action, Array)); // p:[] 原样
+		Assert.isTrue(Std.isOfType(withArrays._thief, Array)); // n:[] 原样
+		Assert.isTrue(Std.isOfType(withArrays._action, Array)); // p:[] 原样
 
 		var bare = new FarmLand({a: 1, b: 1, q: 100, r: 200, bitmap: 0, pId: 0});
-		Assert.isTrue(!Std.is(bare._thief, Array)); // n 缺省 → {}
+		Assert.isTrue(!Std.isOfType(bare._thief, Array)); // n 缺省 → {}
 		Assert.equals(null, bare._action); // p 缺省 → null
 	}
 
@@ -119,7 +119,7 @@ class FarmLandTest {
 		Assert.equals(16, land._output);
 		Assert.equals(1251351720 - 3600, land._updateTime);
 		Assert.equals(1, land._oldhumidity); // :177-180 原样拷贝
-		Assert.isTrue(!Std.is(land._thief, Array)); // thief:{}（对象）
+		Assert.isTrue(!Std.isOfType(land._thief, Array)); // thief:{}（对象）
 	}
 
 	// copyFrom :92-131：键缺省的字段不动（条件赋值）；:136-139 thief 缺省补 {}
@@ -129,7 +129,7 @@ class FarmLandTest {
 		Assert.equals(0, land._humidity);
 		Assert.equals(16, land._output); // 未给 output → 保持
 		Assert.equals(16, land._left); // 未给 leavings → 保持
-		Assert.isTrue(Std.is(land._action, Array)); // action 未给 → 保持原数组
+		Assert.isTrue(Std.isOfType(land._action, Array)); // action 未给 → 保持原数组
 		Assert.equals(0, Reflect.fields(land._thief).length); // thief 缺省 → {}
 	}
 

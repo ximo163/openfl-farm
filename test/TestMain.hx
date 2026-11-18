@@ -15,6 +15,11 @@ class TestMain {
 		runner.addCase(new com.qzone.qfa.data.ResourceTypeTest());
 		runner.addCase(new FarmLiteTest());
 		runner.addCase(new com.qzone.qfa.managers.LoadManagerTest());
+		// issue #7：V3a 启动与数据层（FarmLand/Seed 实体映射、ServerServices
+		// cmdMap/decodeResult；write-tests 阶段对 stub 失败）
+		runner.addCase(new entities.FarmLandTest());
+		runner.addCase(new entities.SeedTest());
+		runner.addCase(new framework.net.ServerServicesTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

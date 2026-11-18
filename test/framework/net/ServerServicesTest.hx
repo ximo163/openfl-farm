@@ -158,7 +158,7 @@ class ServerServicesTest {
 		var boot = new Protocol(CommandDefs.CMD_GET_BOOT_DATA);
 		boot.importResponseObject('{"serverTime":{"time":123},"farmlandStatus":[],"a":0,"b":0,"c":0,"d":0,"e":0,"exp":7,"user":{},"dog":{},"task":{},"weather":{},"items":{},"beast":{}}');
 		var vo = s.decodeResult(boot);
-		Assert.isTrue(Std.is(vo.m_extra, StartupData));
+		Assert.isTrue(Std.isOfType(vo.m_extra, StartupData));
 		Assert.equals(123, cast(vo.m_extra, StartupData)._serverTime); // StartupDataParser.as:36
 
 		var check = new Protocol(CommandDefs.CMD_OPERATE_CHECKSTATUS);

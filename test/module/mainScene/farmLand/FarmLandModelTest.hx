@@ -290,19 +290,39 @@ class FarmLandModelTest {
 		Assert.equals(-1, model.alarmTimeSort({remain: 3}, {remain: 3})); // 严格 > 才 1
 	}
 
-	// checkRequestFreq :1314-1339：空串/计数 0 → false；前两次放行，第三次起
-	// 10 秒内拒（:1327-1333）；桶键是字面量 "type"（:1322/:1327/:1336），换名
-	// 也共享同一桶（原版如此，照抄）
-	public function test_checkRequestFreq_counter_and_shared_type_bucket() {
+	// checkRequestFreq :1314-1339。守卫 :1320 查 hasOwnProperty(param1)，而桶
+	// 永远写在字面量 "type" 键（:1322/:1327/:1336/:1337）——param1 非 "type"
+	// （原版全部调用点 :198/:235/:555/:595/:1284/:1495/:1610/:1950 用的都是
+	// harvest/water/pest/spraying/scatterWeed/clearWeed）时守卫每次为 false，
+	// :1322 每次重建桶 num=0，:1327 的 num>1 永不成立，10 秒拒分支 :1327-1333
+	// 是不可达死代码 → 真实调用名恒放行。原版如此照抄，不改守卫「修好」它
+	public function test_checkRequestFreq_real_call_names_always_pass() {
 		var model = new FarmLandModel(); // 构造 :109 m_requestFreq = {}
 		Assert.isFalse(model.checkRequestFreq("", 1)); // :1316
 		Assert.isFalse(model.checkRequestFreq("water", 0)); // :1316
 
-		Assert.isTrue(model.checkRequestFreq("water", 1)); // num 0→1（:1336）
-		Assert.isTrue(model.checkRequestFreq("water", 1)); // num 1→2
-		Assert.isFalse(model.checkRequestFreq("water", 1)); // num 2>1 且 10 秒内（相邻调用）
-		// 相邻两次调用间隔远小于 :1329 的 10000ms，分支结果是确定的
-		Assert.isFalse(model.checkRequestFreq("spraying", 1)); // :1322 桶键恒为 "type"
+		// 同名连发：每次 :1320 守卫 false → :1322 重建桶 num 回 0 → :1336 num=1，
+		// 拒绝分支不可达，恒 true
+		Assert.isTrue(model.checkRequestFreq("water", 1));
+		Assert.isTrue(model.checkRequestFreq("water", 1));
+		Assert.isTrue(model.checkRequestFreq("water", 1));
+		// 换名同样放行：桶键与 param1 无关，恒为字面量 "type"
+		Assert.isTrue(model.checkRequestFreq("spraying", 1));
+		// :235/:673/:857/:1553/:1653/:1968 的 -1 递减形态：param2>0 不成立同样
+		// 跳过拒绝分支，返回 true
+		Assert.isTrue(model.checkRequestFreq("harvest", -1));
+	}
+
+	// 唯一能让 :1320 守卫命中（桶存续、num 跨调用累计）的名字是字面量 "type"
+	// 本身：num 0→1、1→2 放行（:1327 的 num>1 不成立），10 秒内第三次起
+	// :1329-1332 拒绝且 num 保持 2（:1331 只刷 time），继续拒。相邻调用间隔
+	// 远小于 :1329 的 10000ms，分支结果是确定的
+	public function test_checkRequestFreq_type_literal_key_accumulates_and_rejects() {
+		var model = new FarmLandModel();
+		Assert.isTrue(model.checkRequestFreq("type", 1)); // num 0→1（:1336）
+		Assert.isTrue(model.checkRequestFreq("type", 1)); // num 1→2（1 不 >1）
+		Assert.isFalse(model.checkRequestFreq("type", 1)); // num 2>1 且 10 秒内
+		Assert.isFalse(model.checkRequestFreq("type", 1)); // num 仍 2，继续拒
 	}
 
 	// hasLandToScarify :1825-1837：Session.me 且存在 step 6/7 的地 → true

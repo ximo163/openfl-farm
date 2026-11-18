@@ -33,6 +33,21 @@ class As3 {
 		return truthy(a) ? a : b;
 	}
 
+	/**
+	 * AS3 的 `x == "字面量"`（String 常量一侧）：另一侧是 Number 时按
+	 * Number(字符串) 比较（"1"==1 为真），是 String 时直比。
+	 * Haxe 对 Dynamic == String 走严格比较，1 == "1" 为假，不等价。
+	 */
+	public static function eqString(a:Dynamic, s:String):Bool {
+		if (a == null) {
+			return false;
+		}
+		if (Std.isOfType(a, String)) {
+			return a == s;
+		}
+		return floatOf(a) == floatOf(s);
+	}
+
 	/** AS3 的 String.replace(搜索串, 替换串)：只替换第一处。 */
 	public static function replaceFirst(s:String, search:String, replacement:String):String {
 		var i = s.indexOf(search);

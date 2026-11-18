@@ -2,20 +2,20 @@ package framework.net.vo;
 
 import com.qzone.qfa.events.CommandEvent;
 
-/**
- * framework.net.vo.ServiceResultVOHelper —— write-tests stub（issue #7）：签名
- * 与 legacy/decompiled/main3_v_221/scripts/framework/net/vo/ServiceResultVOHelper.as
- * 一致，方法体 `throw new Error("not implemented")`，实现在翻译阶段完成
- * （getVOData :13-27）。
- */
-@:final
+// framework.net.vo.ServiceResultVOHelper —— ServiceResultVOHelper.as 逐句对应。
 class ServiceResultVOHelper {
-	public function new() {
-		throw new openfl.errors.Error("not implemented");
-	}
+	public function new() {}
 
-	// ServiceResultVOHelper.as:13-27
+	// ServiceResultVOHelper.as:14-26。PORT-NOTE: AS3 `as` 失配返回 null →
+	// Std.isOfType 门 + 直取（eval 上裸 cast 不做运行时检查，语义不等价）
 	public static function getVOData(param1:CommandEvent):Dynamic {
-		throw new openfl.errors.Error("not implemented");
+		if (param1 == null || param1.result == null) {
+			return null;
+		}
+		if (!Std.isOfType(param1.result, ServiceResultVO)) {
+			return null;
+		}
+		var _loc2_:ServiceResultVO = param1.result;
+		return _loc2_.m_extra;
 	}
 }

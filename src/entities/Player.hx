@@ -13,5 +13,9 @@ class Player {
 	public var _userName:String;
 	public var _uinLogin:UInt;
 
+	// FarmLandModel.operate_addBug/floatHandler 读 host._canbad（Player.as:40，
+	// :107 从回包 canbad 解析；floatHandler :663 写回）
+	public var _canbad:Int;
+
 	public function new(param1:Dynamic = null) {}
 }

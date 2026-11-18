@@ -90,11 +90,13 @@ stages:
     kind: agent
     model: cheap
     prompt: prompts/implement.md
-    max_turns: 200
+    max_turns: 400
     # 120m：当前模型单次调用 p95 ~45s、最长 5 分钟，60m 墙在 429 恢复续跑后
     # 会把没写完的 attempt 杀掉（issue #3 attempt-1 被杀 52.8 分钟模型时间，
     # 死后连自检都没跑）。两次 429 上限之间的实际工作窗口也就一小时多。
     timeout: 120m
+    # 400 turns 和 120m 配套：实测每个 attempt 用 193-241 次调用收尾，200 上限
+    # 在时间放开后先成为瓶颈（4.6 次/分钟 → 120m 可容纳 ~550），撞上等同作废。
     protect_since: write-tests
     append_only: ["test/**"]
     protected: ["test/fixtures/"]

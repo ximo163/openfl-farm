@@ -60,8 +60,11 @@ stages:
     kind: agent
     model: strong
     prompt: prompts/write-tests.md
-    max_turns: 160
-    timeout: 60m
+    # 300 turns / 90m：issue #7 a1 实测 174 次调用（39.8m）已贴 160 上限，a3 补
+    # FarmLandModel 公式等三块测试时直接 error_max_turns 截断。测试面覆盖大模块
+    # （2071 行类）时写作量和 implement 同量级，预算对齐 implement 的思路。
+    max_turns: 300
+    timeout: 90m
     verify:
       - compile                       # 测试和 stub 能编译
       - { suite: test, expect: fail } # 新测试在实现之前失败（靠退出码判定）

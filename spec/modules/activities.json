@@ -517,9 +517,10 @@
      "evidence": "swf-inventory module/mc/farm/aswf/ 共 594 个（a<id>_0 297 + a<id>_1 297）；阶段 1|2→_0，其余→_1（getAnimalURL）"
     },
     {
-     "pattern": "module/mc/farm/product/p<产品ID>.swf",
-     "via": "mc/view/farm/GetCropID.as:getShopIconUrl",
-     "evidence": "swf-inventory module/mc/farm/product/ 共 293 个"
+     "pattern": "farm/animal/a<动物ID>.jpg（第二参=true 时 a<动物ID>b.jpg）",
+     "via": "mc/view/farm/GetCropID.as:getShopIconUrl（BeastAPI.as:116-118 只透传 (id,flag) 两参 → GetCropID.as:386-404 默认与 param2 分支；接口 IBeastAPI.as:52）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": [],
@@ -618,14 +619,22 @@
    "mods": [],
    "assets": [
     {
-     "pattern": "module/mc/farm/wild/<名称>_<阶段>.swf",
-     "via": "mc/view/farm/GetCropID.as:getWildAnimalIcon",
-     "evidence": "swf-inventory module/mc/farm/wild/ 共 24 个"
+     "pattern": "farm/wild/pic/<类型>_<ID>.jpg",
+     "via": "mc/view/farm/GetCropID.as:getWildAnimalIcon（WildMaterialLoaderProxy.as:19，setContent type=wild_animal|wild_animal_big；GetCropID.as:62-67）",
+     "in_inventory": false,
+     "evidence": "jpg 图，非 swf 资产，不在 swf-inventory；module/mc/farm/wild/ 的 26 个 swf 是场景/UI/武器（WildScene、wild_ui_*、weapon1-7、wildanimal_<n> 等），经 moduleList2 url 加载（wildanimal/wildaweapon，McAPI.as:151/159、mc_main.php:33-35），与本函数无关"
     },
     {
-     "pattern": "module/mc/farm/wild/<名称>_<阶段>.swf",
-     "via": "mc/view/farm/GetCropID.as:getWildIcon",
-     "evidence": "同上"
+     "pattern": "module/mc/farm/wild/weapon<武器ID>.swf",
+     "via": "WildMaterialLoaderProxy.as:25 loadWeapon：getModule2Url(\"wildaweapon\")[\"url\"]+\"weapon\"+武器ID+\".swf\"，RSL 类名 Weapon_Icon_<道具类型>_<武器ID>（moduleList2 wildaweapon url=…/source/xml/mod/mc_main.php:35）",
+     "in_inventory": true,
+     "evidence": "swf-inventory module/mc/farm/wild/weapon1–weapon7 共 7 个"
+    },
+    {
+     "pattern": "farm/wild/pic/<类型>_<道具类型>_<ID>.jpg",
+     "via": "mc/view/farm/GetCropID.as:getWildIcon（WildMaterialLoaderProxy.as:31，setContent type=wild_drop；GetCropID.as:93-98）",
+     "in_inventory": false,
+     "evidence": "jpg 图，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": [],

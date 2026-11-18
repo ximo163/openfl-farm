@@ -2005,9 +2005,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "猎人形象图（module/mc/farm/hunter/）",
-     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl",
-     "evidence": "同上"
+     "pattern": "farm/hunter/h_CatchImg_<序号>.png",
+     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl（MainCommand.as:4361 传 \"CatchImg_\"+param2、png=true；GetCropID.as:245-258 拼 farm/hunter/h_<名>.jpg，png=true 时替换为 .png）",
+     "in_inventory": false,
+     "evidence": "png 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": [
@@ -2560,9 +2561,16 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/product/p<产品ID>.swf",
-     "via": "mc/view/farm/GetCropID.as:getWareHouseIconUrl",
-     "evidence": "同上"
+     "pattern": "farm/animal/a<动物ID>p.jpg（ID>10000 时 a<动物ID-10000>.jpg）",
+     "via": "mc/view/farm/GetCropID.as:getWareHouseIconUrl（MaterialLoaderProxy.as:65 loadWare；GetCropID.as:172-190）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
+    },
+    {
+     "pattern": "farm/hunter/h_<守卫ID>.jpg",
+     "via": "MaterialLoaderProxy.as:81-86 loadHunter 直接拼接（setContent type=\"hunter\" 时 :218 调用）",
+     "in_inventory": false,
+     "evidence": "jpg 形象图，非 swf 资产，不在 swf-inventory；module/mc/farm/hunter/h_<守卫ID>.swf（13 个）由 Pasturelands.as:690 加载，与本类无关"
     },
     {
      "pattern": "module/mc/farm/aswf/a<动物ID>_<0|1>.swf?v=<版本>",
@@ -2570,14 +2578,28 @@
      "evidence": "swf-inventory module/mc/farm/aswf/ 共 594 个（a<id>_0 297 + a<id>_1 297）；阶段 1|2→_0，其余→_1（getAnimalURL）"
     },
     {
-     "pattern": "module/mc/farm/diy/<id>.swf",
-     "via": "mc/view/farm/GetCropID.as:getShopDiyUrl",
-     "evidence": "同上"
+     "pattern": "farm/wild/pic/<类型>_<道具类型>_<ID>.jpg",
+     "via": "MaterialLoaderProxy.as:113-118 getWildIcon（:185-189 laodWild，setContent type=\"wild_drop\" 时调用）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     },
     {
-     "pattern": "module/mc/farm/product/p<产品ID>.swf",
-     "via": "mc/view/farm/GetCropID.as:getShopIconUrl",
-     "evidence": "swf-inventory module/mc/farm/product/ 共 293 个"
+     "pattern": "farm/diy/z1_<装饰ID>_1_shop.jpg",
+     "via": "mc/view/farm/GetCropID.as:getShopDiyUrl（MaterialLoaderProxy.as:109 loadBg；GetCropID.as:533-542）",
+     "in_inventory": false,
+     "evidence": "jpg 商店缩略图，非 swf 资产，不在 swf-inventory；farm/diy/ 下的 z<区1|2|3>_<装饰ID>_<等级>.swf（178 个）是装饰场景，由 idToDiyUrl2 加载（module/Pasture.as:233/237/241），与本函数无关"
+    },
+    {
+     "pattern": "farm/animal/a<动物ID>.jpg | farm/animal/a<动物ID>b.jpg",
+     "via": "mc/view/farm/GetCropID.as:getShopIconUrl（MaterialLoaderProxy.as:122 loadAnimalIcon(_id,false,p1,p2)、:135 loadPack(_id)；GetCropID.as:378-404：param2/param3→a<id>b.jpg，默认→a<id>.jpg）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）；getSwfUrl 前缀=module/mc/（mc_main.php:8 folder url）"
+    },
+    {
+     "pattern": "module/mc/farm/animal/a<动物ID>b_s.swf",
+     "via": "mc/view/farm/GetCropID.as:getShopIconUrl 的 param4 分支（MaterialLoaderProxy.as:122 loadAnimalIcon 第四参；GetCropID.as:394-396 拼 a<id>b_s.swf）",
+     "in_inventory": true,
+     "evidence": "swf-inventory module/mc/farm/animal/ 共 4 个（a1107b_s–a1110b_s.swf）"
     }
    ],
    "interactions": [
@@ -2840,9 +2862,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/product/p<产品ID>.swf",
-     "via": "mc/view/farm/GetCropID.as:getShopIconUrl",
-     "evidence": "swf-inventory module/mc/farm/product/ 共 293 个"
+     "pattern": "farm/animal/a<动物ID>b.jpg",
+     "via": "mc/view/farm/GetCropID.as:getShopIconUrl（ResearchAnimalWin.as:223 传 (cId,true) → param2 分支；GetCropID.as:386-388）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": [
@@ -3189,9 +3212,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/hunter/<id>.swf",
-     "via": "mc/view/farm/GetCropID.as:getHunterMP",
-     "evidence": "swf-inventory module/mc/farm/hunter/ 共 13 个"
+     "pattern": "module/mc/farm/hunter/h_<守卫ID>.swf",
+     "via": "皮肤非本类加载：Pasturelands.as:690 RSLManager.requestClass(\"Hunter_<守卫ID>\",…,getModule2Url(\"hunter\")[\"url\"]+\"h_<守卫ID>.swf\")，Pasturelands.as:159-163 经 MaterialLib 取 Hunter_<守卫ID> 赋给 Hunter.skin；本类调用的 GetCropID.as:getHunterMP 只返回 cgi_animal_tips XML 的守卫对话文本（guard/info/l，源 legacy/deploy/QFarmFlash/source/core/source/mc/mod/cgi_animal_tips.php），不产生资产路径",
+     "in_inventory": true,
+     "evidence": "swf-inventory module/mc/farm/hunter/ 共 13 个（h_1…h_18）；moduleList2 hunter url=…/source/xml/mod/mc_main.php:31（module/mc/farm/hunter/）"
     }
    ],
    "interactions": [
@@ -3240,9 +3264,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "猎人形象图（module/mc/farm/hunter/）",
-     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl",
-     "evidence": "同上"
+     "pattern": "farm/hunter/h_Icon_<守卫ID>.png",
+     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl（HunterInfo.as:108 传 \"Icon_\"+守卫ID、png=true；GetCropID.as:245-258）",
+     "in_inventory": false,
+     "evidence": "png 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": []
@@ -3341,11 +3366,6 @@
      "symbol": "MaoPaoFlag",
      "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
      "in_inventory": true
-    },
-    {
-     "pattern": "module/mc/farm/diy/<id>.swf",
-     "via": "mc/view/farm/GetCropID.as:getDiyMP",
-     "evidence": "swf-inventory module/mc/farm/diy/ 共 178 个"
     }
    ],
    "interactions": [
@@ -3454,6 +3474,12 @@
      "symbol": "HouseTip",
      "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
      "in_inventory": true
+    },
+    {
+     "pattern": "module/mc/farm/hunter/h_<守卫ID>.swf",
+     "via": "Pasturelands.as:690 RSLManager.requestClass(\"Hunter_<守卫ID>\",…,getModule2Url(\"hunter\")[\"url\"]+\"h_<守卫ID>.swf\")（moduleList2 hunter url=…/source/xml/mod/mc_main.php:31）",
+     "in_inventory": true,
+     "evidence": "swf-inventory module/mc/farm/hunter/ 共 13 个；加载后 Pasturelands.as:159-163 取 MaterialLib 符号 Hunter_<守卫ID> 赋给 Hunter.skin"
     }
    ],
    "interactions": [
@@ -3475,6 +3501,12 @@
    "loc": 395,
    "mods": [],
    "assets": [
+    {
+     "pattern": "module/mc/farm/product/p<产品ID>.swf",
+     "via": "ProductContainer.as:352 文件内 package 外类 product：GetCropID.getSwfUrl()+\"farm/product/p\"+产品ID+\".swf\"，CommonData.rslManager.requestClass(\"Product\"+产品ID,…,url)（:348-353）",
+     "in_inventory": true,
+     "evidence": "swf-inventory module/mc/farm/product/ 共 293 个（p1001…）"
+    },
     {
      "ref": [
       "module/mc/main/farmui1_v_42.swf"
@@ -5173,9 +5205,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/diy/<id>.swf",
-     "via": "mc/view/farm/GetCropID.as:getShopDiyUrl",
-     "evidence": "同上"
+     "pattern": "farm/diy/z1_<装饰ID>_1_shop.jpg",
+     "via": "mc/view/farm/GetCropID.as:getShopDiyUrl（DiyItem.as:70 传 data[\"itemId\"]；GetCropID.as:533-542）",
+     "in_inventory": false,
+     "evidence": "jpg 商店图，非 swf 资产，不在 swf-inventory；farm/diy/ 的 z<区1|2|3>_<装饰ID>_<等级>.swf（178 个）由 idToDiyUrl2 加载（module/Pasture.as:233/237/241），与本函数无关"
     }
    ],
    "interactions": [
@@ -5223,9 +5256,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "猎人形象图（module/mc/farm/hunter/）",
-     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl",
-     "evidence": "同上"
+     "pattern": "farm/hunter/h_<守卫装饰道具ID>.jpg",
+     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl（HunterItem.as:124 传 data[\"itemId\"]、png=false；GetCropID.as:245-258）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": [
@@ -5362,9 +5396,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/diy/<id>.swf",
-     "via": "mc/view/farm/GetCropID.as:getShopDiyUrl",
-     "evidence": "同上"
+     "pattern": "farm/diy/z1_<装饰ID>_1_shop.jpg",
+     "via": "mc/view/farm/GetCropID.as:getShopDiyUrl（ShopDiyItem.as:124 传 data[\"itemId\"]；GetCropID.as:533-542）",
+     "in_inventory": false,
+     "evidence": "jpg 商店图，非 swf 资产，不在 swf-inventory；farm/diy/ 的 z<区1|2|3>_<装饰ID>_<等级>.swf（178 个）由 idToDiyUrl2 加载（module/Pasture.as:233/237/241），与本函数无关"
     }
    ],
    "interactions": [
@@ -5411,9 +5446,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/diy/<id>.swf",
-     "via": "mc/view/farm/GetCropID.as:getShopDiyUrl",
-     "evidence": "同上"
+     "pattern": "farm/diy/z1_<装饰ID>_1_shop.jpg",
+     "via": "mc/view/farm/GetCropID.as:getShopDiyUrl（ShopDiyWindow.as:236 传 data[\"itemId\"]；GetCropID.as:533-542）",
+     "in_inventory": false,
+     "evidence": "jpg 商店图，非 swf 资产，不在 swf-inventory；farm/diy/ 的 z<区1|2|3>_<装饰ID>_<等级>.swf（178 个）由 idToDiyUrl2 加载（module/Pasture.as:233/237/241），与本函数无关"
     }
    ],
    "interactions": [
@@ -5435,9 +5471,10 @@
    "mods": [],
    "assets": [
     {
-     "pattern": "module/mc/farm/aswf/a<动物ID>_1.swf（VIP 动物）",
-     "via": "mc/view/farm/GetCropID.as:getVipAnimalURL",
-     "evidence": "swf-inventory 收录"
+     "pattern": "farm/VipAnimal/VipSeedTabBg.jpg | farm/VipAnimal/vipUser.png | farm/VipAnimal/normalUser.png | farm/VipAnimal/VipIcon.png",
+     "via": "mc/view/farm/GetCropID.as:getVipAnimalURL（ShopSeedTile.as:296-307 传字面文件名；GetCropID.as:418-423 拼 farm/VipAnimal/<文件名>）",
+     "in_inventory": false,
+     "evidence": "非 swf 资产（jpg/png），不在 swf-inventory（清单只收 swf）；swf-inventory 无 module/mc/farm/VipAnimal/ 任何条目"
     }
    ],
    "interactions": [
@@ -5485,14 +5522,16 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/aswf/a<动物ID>_1.swf（VIP 动物）",
-     "via": "mc/view/farm/GetCropID.as:getVipAnimalURL",
-     "evidence": "swf-inventory 收录"
+     "pattern": "farm/VipAnimal/VipSeedBuyBg.jpg",
+     "via": "mc/view/farm/GetCropID.as:getVipAnimalURL（ShopSeedWindow.as:210 传字面文件名；GetCropID.as:418-423）",
+     "in_inventory": false,
+     "evidence": "非 swf 资产（jpg/png），不在 swf-inventory（清单只收 swf）；swf-inventory 无 module/mc/farm/VipAnimal/ 任何条目"
     },
     {
-     "pattern": "module/mc/farm/product/p<产品ID>.swf",
-     "via": "mc/view/farm/GetCropID.as:getShopIconUrl",
-     "evidence": "swf-inventory module/mc/farm/product/ 共 293 个"
+     "pattern": "farm/animal/a<动物ID>b.jpg",
+     "via": "mc/view/farm/GetCropID.as:getShopIconUrl（ShopSeedWindow.as:390 传 (cId,false,true)、:400 传 (cId,true)，isvip 两分支都产 a<cId>b.jpg；GetCropID.as:386-392）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": [
@@ -5534,9 +5573,10 @@
    "mods": [],
    "assets": [
     {
-     "pattern": "猎人形象图（module/mc/farm/hunter/）",
-     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl",
-     "evidence": "同上"
+     "pattern": "farm/hunter/h_<守卫道具ID>.jpg",
+     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl（ShopTinWindow.as:325，t==106 守卫道具分支；GetCropID.as:245-258）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": [
@@ -5627,9 +5667,10 @@
    "mods": [],
    "assets": [
     {
-     "pattern": "猎人形象图（module/mc/farm/hunter/）",
-     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl",
-     "evidence": "同上"
+     "pattern": "farm/hunter/h_<守卫道具ID>.jpg",
+     "via": "mc/view/farm/GetCropID.as:getHunterPicUrl（TinItem.as:166，t==106 守卫道具分支；GetCropID.as:245-258）",
+     "in_inventory": false,
+     "evidence": "jpg 图片，非 swf 资产，不在 swf-inventory（清单只收 swf）"
     }
    ],
    "interactions": [
@@ -5751,9 +5792,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/aswf/a<动物ID>_1.swf（VIP 动物）",
-     "via": "mc/view/farm/GetCropID.as:getVipAnimalURL",
-     "evidence": "swf-inventory 收录"
+     "pattern": "farm/VipAnimal/VipIcon.png",
+     "via": "mc/view/farm/GetCropID.as:getVipAnimalURL（FruitItem.as:144 传字面文件名，isvip 分支；GetCropID.as:418-423）",
+     "in_inventory": false,
+     "evidence": "非 swf 资产（jpg/png），不在 swf-inventory（清单只收 swf）；swf-inventory 无 module/mc/farm/VipAnimal/ 任何条目"
     }
    ],
    "interactions": [
@@ -5802,13 +5844,7 @@
    "subsystem": "仓库",
    "loc": 377,
    "mods": [],
-   "assets": [
-    {
-     "pattern": "module/mc/farm/product/p<产品ID>.swf",
-     "via": "mc/view/farm/GetCropID.as:getProductTip",
-     "evidence": "同上"
-    }
-   ],
+   "assets": [],
    "interactions": [
     "MouseEvent.CLICK",
     "Event.ENTER_FRAME"
@@ -5827,13 +5863,7 @@
    "subsystem": "仓库",
    "loc": 190,
    "mods": [],
-   "assets": [
-    {
-     "pattern": "module/mc/farm/product/p<产品ID>.swf",
-     "via": "mc/view/farm/GetCropID.as:getProductTip",
-     "evidence": "同上"
-    }
-   ],
+   "assets": [],
    "interactions": [
     "MouseEvent.CLICK"
    ],
@@ -5881,13 +5911,7 @@
    "subsystem": "仓库",
    "loc": 253,
    "mods": [],
-   "assets": [
-    {
-     "pattern": "module/mc/farm/product/p<产品ID>.swf",
-     "via": "mc/view/farm/GetCropID.as:getProductTip",
-     "evidence": "同上"
-    }
-   ],
+   "assets": [],
    "interactions": [
     "MouseEvent.CLICK",
     "Event.ENTER_FRAME"
@@ -6017,9 +6041,10 @@
      "in_inventory": true
     },
     {
-     "pattern": "module/mc/farm/diy/<id>.swf",
-     "via": "mc/view/farm/GetCropID.as:idToDiyUrl2",
-     "evidence": "同上"
+     "pattern": "farm/diy/z<区1|2|3>_<装饰ID>_<等级>.swf（等级可带 _ing/_ok 后缀）",
+     "via": "mc/view/farm/GetCropID.as:idToDiyUrl2（module/Pasture.as:233/237/241 传区 1/2/3；GetCropID.as:167 拼 \"z\"+区+\"_\"+装饰ID+\"_\"+等级+\".swf\"，装饰 102/103 升级中/完成时等级加 _ing/_ok：GetCropID.as:119-165）",
+     "in_inventory": true,
+     "evidence": "swf-inventory module/mc/farm/diy/ 共 178 个（z1_ 130 + z2_ 24 + z3_ 24；含 _ing 10、_ok 10）"
     }
    ],
    "interactions": [
@@ -6179,6 +6204,6 @@
  "notes": [
   "素材符号宿主：module/mc/main/farmui1_v_42.swf（108 符号）、farmui2_v_44.swf（74）、commonui_v_12.swf（57）及 Master2 自身导出（58）。",
   "外部依赖（mcloader_v_53 加载链提供，不在 805 类内）：common.CommonData/LocalData/INI/MaterialLib/CatchError、mc.FBridge.EventRecorder、mc.control.Version、com.qzone.corelib.js.JSProxy、com.qzone.qfa.managers.*、com.adobe.serialization.json.JSON。",
-  "动物资产命名规律：module/mc/farm/aswf/a<动物ID>_<0|1>.swf（594 个）+ 产品 module/mc/farm/product/p<产品ID>.swf（293 个），路径由 mc/view/farm/GetCropID.as 各构建函数生成。"
+  "动物资产命名规律：module/mc/farm/aswf/a<动物ID>_<0|1>.swf（594 个，GetCropID.getAnimalURL）；产品 module/mc/farm/product/p<产品ID>.swf（293 个，ProductContainer.as:352 直接拼接加载，RSL 类名 Product<产品ID>，GetCropID.idToWareName 的 \"p<产品ID>\" 只是 MaterialLib 符号名）；商店/仓库动物图标 farm/animal/a<动物ID>*.jpg、farm/VipAnimal/*.jpg|png、farm/wild/pic/*.jpg、farm/diy/*_shop.jpg、farm/hunter/h_*.jpg|png 均为 jpg/png 图片，非 swf，不在 swf-inventory。"
  ]
 }

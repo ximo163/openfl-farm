@@ -9,6 +9,12 @@ class TestMain {
 	static function main() {
 		var runner = new Runner();
 		runner.addCase(new SanityTest()); // 保底用例：utest 把零用例运行当失败，main 必须绿
+		// issue #3：V2 预加载器（flashvar 解析、config URL、资源类型、
+		// useflag 开关/双条件门/加载队列状态机与进度公式）
+		runner.addCase(new common.SettingsTest());
+		runner.addCase(new com.qzone.qfa.data.ResourceTypeTest());
+		runner.addCase(new FarmLiteTest());
+		runner.addCase(new com.qzone.qfa.managers.LoadManagerTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

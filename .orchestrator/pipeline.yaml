@@ -37,15 +37,6 @@ generated:
   how: "把要引用的资产路径加进 assets/legacy-assets.txt，然后运行 bash scripts/sync-legacy-assets.sh"
   cmd: "bash scripts/sync-legacy-assets.sh"
 
-triage:
-  model: judge
-  # 阈值按翻译项目的任务粒度定：一个模块 swf（如 V2 预加载器）= 40-60 文件 /
-  # 5-7k 行实现（行数本就不计 test/）。main3（5.6 万行）/Master2（7.2 万行）
-  # 这种仍然会超限转 plan 拆分——2026-11-17 V2 被 30/800 误拦后校准。
-  max_files: 60
-  max_lines: 8000
-  on_large: plan
-
 budget:
   max_runs: 30
   max_time: 8h
@@ -117,7 +108,8 @@ stages:
     escalate: { after: 3, models: [judge2] }
 
   # 审核通过、检查全过后自动 squash 合并。超出范围的 PR 留着并说明原因，不强行合并。
-  # 上限与 triage 对齐（模块 swf 粒度，test/** 已排除不计），见上面 triage 的注释。
+  # 不做前置规模评估（triage 已删，2026-11-18 用户决定：提 issue 时人已定好规模）；
+  # 这里的上限是最后防线——超限只是停下等人工合并，不烧模型轮次。
   - id: merge
     kind: merge
     method: squash

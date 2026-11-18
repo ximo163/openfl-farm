@@ -20,6 +20,13 @@ class TestMain {
 		runner.addCase(new entities.FarmLandTest());
 		runner.addCase(new entities.SeedTest());
 		runner.addCase(new framework.net.ServerServicesTest());
+		// issue #7 补齐（round 2）：FarmLandModel 数值/状态公式、qfa HttpOperation
+		// 状态机、StartupDataParser 对 uid=1 真实下发的解析、Protocol 请求侧拼装
+		runner.addCase(new module.mainScene.farmLand.FarmLandModelTest());
+		runner.addCase(new com.qzone.qfa.managers.operation.HttpOperationTest());
+		runner.addCase(new framework.net.core.HttpOperationExTest());
+		runner.addCase(new framework.net.parsers.StartupDataParserTest());
+		runner.addCase(new framework.net.protocol.ProtocolTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

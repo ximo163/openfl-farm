@@ -44,6 +44,12 @@ class FarmLandModel extends EventDispatcher {
 	public var tjShare:Array<Dynamic>;
 	private var m_farmlandData:Array<Dynamic>;
 
+	// FarmLandModel.as:93（_refreshLands，get refreshLands :1859-1862 的后背）
+	private var _refreshLands:Array<Dynamic>;
+
+	// FarmLandModel.as:99（m_requestFreq，checkRequestFreq :1314-1339 的计数桶）
+	private var m_requestFreq:Dynamic;
+
 	public function new(param1:IEventDispatcher = null) {
 		super(param1);
 		throw new openfl.errors.Error("not implemented");
@@ -73,6 +79,11 @@ class FarmLandModel extends EventDispatcher {
 
 	// FarmLandModel.as:274-298
 	public function updateLandData(param1:Int, param2:Int, param3:Int, param4:Int, param5:Int, param6:Int):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// FarmLandModel.as:300-326（被测：mod 公共请求参数拼装 ownerId/place/tName/fName/fkey）
+	private function buildCommonPostParams(param1:String):Dynamic {
 		throw new openfl.errors.Error("not implemented");
 	}
 
@@ -106,12 +117,23 @@ class FarmLandModel extends EventDispatcher {
 		throw new openfl.errors.Error("not implemented");
 	}
 
+	// FarmLandModel.as:705-717（被测：空地失败路径）
+	private function canHandler(param1:Int, param2:FarmLand):Bool {
+		throw new openfl.errors.Error("not implemented");
+	}
+
 	// FarmLandModel.as:719-743
 	public function growLoop():Void {
 		throw new openfl.errors.Error("not implemented");
 	}
 
-	// FarmLandModel.as:1314-1339
+	// FarmLandModel.as:1300-1303（onReGetOutputFail 之后）——:1305-1312
+	// 被测：QQ 浏览器闹钟排序比较器（remain 升序）
+	private function alarmTimeSort(param1:Dynamic, param2:Dynamic):Int {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// FarmLandModel.as:1314-1339（被测：请求频控计数，注意桶键是字面量 "type"）
 	private function checkRequestFreq(param1:String, param2:Int):Bool {
 		throw new openfl.errors.Error("not implemented");
 	}
@@ -188,7 +210,7 @@ class FarmLandModel extends EventDispatcher {
 		throw new openfl.errors.Error("not implemented");
 	}
 
-	// FarmLandModel.as:1825-1837
+	// FarmLandModel.as:1825-1837（被测：可铲地判定，Session.me 门）
 	public function hasLandToScarify():Bool {
 		throw new openfl.errors.Error("not implemented");
 	}
@@ -200,7 +222,7 @@ class FarmLandModel extends EventDispatcher {
 		throw new openfl.errors.Error("not implemented");
 	}
 
-	// FarmLandModel.as:2027-2038
+	// FarmLandModel.as:2027-2038（被测：湿度状态公式）
 	public function hasLandToWater():Bool {
 		throw new openfl.errors.Error("not implemented");
 	}

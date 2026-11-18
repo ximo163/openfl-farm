@@ -91,7 +91,10 @@ stages:
     model: cheap
     prompt: prompts/implement.md
     max_turns: 200
-    timeout: 60m
+    # 120m：当前模型单次调用 p95 ~45s、最长 5 分钟，60m 墙在 429 恢复续跑后
+    # 会把没写完的 attempt 杀掉（issue #3 attempt-1 被杀 52.8 分钟模型时间，
+    # 死后连自检都没跑）。两次 429 上限之间的实际工作窗口也就一小时多。
+    timeout: 120m
     protect_since: write-tests
     append_only: ["test/**"]
     protected: ["test/fixtures/"]

@@ -1,5 +1,6 @@
 {
-  "_note": "有意偏差登记：没记进这里的差异都算错（见 openfl-farm CLAUDE.md）。人维护，agent 只读。",
+  "version": 1,
+  "_note": "有意偏差登记：没记进这里的差异都算错（见 openfl-farm CLAUDE.md）。人维护，agent 只读。顶层 version 是 checks/spec-valid.sh 的要求。",
   "entries": [
     {
       "id": "no-qq-telemetry",

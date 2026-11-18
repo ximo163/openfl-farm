@@ -35,8 +35,11 @@ stages:
   - id: merge
     kind: merge
     method: squash
-    # 8000：S4 模块清单的量级——main3(339 类)+Master2(466 类) 拆进各模块 json，
-    # 每类带资产/mod/交互条目，4000 行装不下。
+    # 规格文件的体量由 legacy 语料决定（S4：805 类 13875 行；S1 协议 / S2 数值
+    # 会更大），不是范围失控信号——像默认流水线对 test/** 一样不计行数。
+    # 范围控制靠 allowed_paths（只准 spec/）+ review-spec 审内容 + 文件数上限
+    # （一个模块一个文件，逼着结构规整）。
+    exclude_from_limits: ["spec/**"]
     max_changed_lines: 8000
     max_changed_files: 30
     # 同模型审核放行（2026-11-17 决定，同 pipeline.yaml/chore.yaml；单模型 API

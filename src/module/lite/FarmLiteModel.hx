@@ -13,10 +13,18 @@ import openfl.events.EventDispatcher;
 import shim.As3;
 
 // FarmLiteModel.as 逐句对应。
-// PORT-NOTE(E4X)：XMLDocument(ignoreWhite)+parseXML → Xml.parse。firstChild
-// 取根节点、childNodes 取 elements()（ignoreWhite 下等同）、localName →
-// nodeName、firstChild.nodeValue → firstChild().nodeValue、attributes.x →
-// get("x")。
+// PORT-NOTE(E4X)：new XMLDocument() + ignoreWhite=true + parseXML → Xml.parse。
+// 两点语义差都在导航上补齐：
+// 1) ignoreWhite 丢纯空白文本节点——真实 xml.php 下发的 nc_data 里
+//    <crops>/<item_info> 都是「换行缩进 + CDATA(JSON) + 换行」形态，AS3 的
+//    firstChild 取到 CDATA，而 haxe.xml.Parser 保留空白 PCData，firstChild()
+//    会取到 "\n\t\t"。firstChild → firstChildIgnoreWhite()（首个非纯空白子
+//    节点）；childNodes 在 ignoreWhite 下与本处只按元素名比较的用法等同
+//    elements()；localName → nodeName；attributes.x → get("x")。
+// 2) 局部变量必须静态类型 Xml（原版就是 XMLNode/Array 的组合）：html5 走
+//    -dce full，Xml 的 inline 方法（firstChild 等）只被静态调用时才内联保留，
+//    Dynamic 调用会在产物里找不到原型方法（CI 实测 `_loc7_.firstChild is not
+//    a function`）。
 class FarmLiteModel extends EventDispatcher {
 	// FarmLiteModel.as:19
 	public static final EVENT_HARVEST:String = "HarvestResult";
@@ -186,7 +194,7 @@ class FarmLiteModel extends EventDispatcher {
 
 	private function get_background():String {
 		var _loc2_:Dynamic = null;
-		var _loc4_:Array<Dynamic> = null;
+		var _loc4_:Array<Xml> = null;
 		var _loc5_:Dynamic = null;
 		var _loc6_:Dynamic = null;
 		var _loc7_:Xml = null;
@@ -203,7 +211,7 @@ class FarmLiteModel extends EventDispatcher {
 				_loc7_ = null;
 				for (_loc7_ in _loc4_) {
 					if (_loc7_.nodeName == "item_info") {
-						_loc5_ = JSON.decode(_loc7_.firstChild().nodeValue);
+						_loc5_ = JSON.decode(firstChildIgnoreWhite(_loc7_).nodeValue);
 						if (_loc5_ != null) {
 							_loc6_ = Reflect.field(_loc5_, "crops");
 						}
@@ -211,20 +219,24 @@ class FarmLiteModel extends EventDispatcher {
 					}
 				}
 				_loc8_ = "";
-				// 迭代目标按 Array 显式标注（Haxe 不允许迭代 Dynamic）
-				for (_loc9_ in (_loc6_ : Array<Dynamic>)) {
-					if (Reflect.field(_loc9_, "id") == Reflect.field(_loc2_, "itemId")
-						&& Reflect.field(Reflect.field(_loc9_, "asset_id"), "m") != null) {
-						_loc8_ = Reflect.field(Reflect.field(_loc9_, "asset_id"), "m");
-						break;
+				// 原版 for each(_loc9_ in _loc6_)：_loc6_ 取 item_info JSON 的
+				// "crops" 键，真实 nc_data 的 item_info JSON（{"item_info":[…]}）没有
+				// 这个键，AS3 对 undefined 做 for-each 零次迭代；Haxe 迭代 null 在
+				// js 上抛错，null 守卫对齐原语义
+				if (_loc6_ != null) {
+					for (_loc9_ in (_loc6_ : Array<Dynamic>)) {
+						if (Reflect.field(_loc9_, "id") == Reflect.field(_loc2_, "itemId")
+							&& Reflect.field(Reflect.field(_loc9_, "asset_id"), "m") != null) {
+							_loc8_ = Reflect.field(Reflect.field(_loc9_, "asset_id"), "m");
+							break;
+						}
 					}
 				}
 				for (_loc7_ in _loc4_) {
 					if (_loc7_.nodeName == "assets") {
-						// 原版在此重赋 _loc4_（外层循环按原数组继续迭代）。_loc7_ 的
-						// 声明类型是 Xml，但 Haxe for 循环变量遮蔽后为 Dynamic，
-						// elements() 需显式标注回 Xml 才可迭代
-						_loc4_ = [for (node in (_loc7_ : Xml).elements()) node];
+						// 原版在此重赋 _loc4_（外层循环随后立即 break，重赋不影响
+						// 外层迭代次数，与 AS3「for-each 启动时取一次数组」等价）
+						_loc4_ = [for (node in _loc7_.elements()) node];
 						for (_loc7_ in _loc4_) {
 							if (_loc7_.get("id") == _loc8_) {
 								_loc1_ = _loc7_.get("url");
@@ -309,8 +321,7 @@ class FarmLiteModel extends EventDispatcher {
 	// FarmLiteModel.as:345-387
 	private function getCropByID(param1:String):Dynamic {
 		var _loc2_:Dynamic = null;
-		var _loc3_:Xml = null;
-		var _loc4_:Array<Dynamic> = null;
+		var _loc4_:Array<Xml> = null;
 		var _loc5_:Dynamic = null;
 		var _loc6_:Xml = null;
 		if (this._config == null || this._config == "") {
@@ -321,7 +332,7 @@ class FarmLiteModel extends EventDispatcher {
 			_loc4_ = [for (node in root.elements()) node];
 			for (_loc6_ in _loc4_) {
 				if (_loc6_.nodeName == "crops") {
-					_loc5_ = JSON.decode(_loc6_.firstChild().nodeValue);
+					_loc5_ = JSON.decode(firstChildIgnoreWhite(_loc6_).nodeValue);
 					if (_loc5_ != null) {
 						this._seedConfig = Reflect.field(_loc5_, "crops");
 					}
@@ -347,6 +358,33 @@ class FarmLiteModel extends EventDispatcher {
 			return null;
 		}
 		return _loc2_[param1];
+	}
+
+	// XMLDocument(ignoreWhite=true) 语义下的 firstChild：AS3 解析时丢弃纯空白
+	// 文本节点（空格/\t/\n/\r，XMLNode.ignoreWhite 的字符集），firstChild 即
+	// CDATA/正文；haxe.xml.Parser 保留空白 PCData，这里导航时跳过它们
+	private static function firstChildIgnoreWhite(param1:Xml):Xml {
+		var _loc1_:Xml = null;
+		for (_loc1_ in param1) {
+			if (_loc1_.nodeType == Xml.PCData && isWhiteSpace(_loc1_.nodeValue)) {
+				continue;
+			}
+			return _loc1_;
+		}
+		return null;
+	}
+
+	private static function isWhiteSpace(param1:String):Bool {
+		var _loc1_:Int = 0;
+		var _loc2_:String = null;
+		while (_loc1_ < param1.length) {
+			_loc2_ = param1.charAt(_loc1_);
+			if (_loc2_ != " " && _loc2_ != "\t" && _loc2_ != "\n" && _loc2_ != "\r") {
+				return false;
+			}
+			_loc1_++;
+		}
+		return true;
 	}
 
 	// FarmLiteModel.as:399-404

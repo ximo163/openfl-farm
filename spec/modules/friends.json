@@ -1,0 +1,182 @@
+{
+ "version": 1,
+ "module": "friends",
+ "description": "农场好友栏：好友列表（mod=friend）、好友农场状态（cgi_farm_getstatus_filter）、好友过滤（listFilter/addFilter/delFilter）。好友切换进好友农场是 V3 后偷菜/浇水（scrounge）的入口。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/nc/mod/friend.php 等"
+ ],
+ "counts": {
+  "classes": 6
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/FriendsDataParser.as",
+   "class": "framework.net.parsers.FriendsDataParser",
+   "swf": "main3_v_221",
+   "subsystem": "解析器",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/friend/FriendItemRender.as",
+   "class": "module.friend.FriendItemRender",
+   "swf": "main3_v_221",
+   "subsystem": "好友模块",
+   "loc": 728,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/commonui_v_12.swf"
+     ],
+     "symbol": "List_Item",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "TimerEvent.TIMER",
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "activities",
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/friend/FriendsController.as",
+   "class": "module.friend.FriendsController",
+   "swf": "main3_v_221",
+   "subsystem": "好友模块",
+   "loc": 391,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/friend/FriendsModel.as",
+   "class": "module.friend.FriendsModel",
+   "swf": "main3_v_221",
+   "subsystem": "好友模块",
+   "loc": 1489,
+   "mods": [
+    {
+     "mod": "cgi_farm_get_userprofile",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "checkStatus",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "friend",
+     "act": "delFilter",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "friend",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_getstatus_filter",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "friend",
+     "act": "addFilter",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/friend/FriendsView.as",
+   "class": "module.friend.FriendsView",
+   "swf": "main3_v_221",
+   "subsystem": "好友模块",
+   "loc": 1057,
+   "mods": [
+    {
+     "mod": "cgi_farm_sendrequest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/commonui_v_12.swf"
+     ],
+     "symbol": "List_UI",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "List_Close_WB",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "List_Open_WB",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT",
+    "MouseEvent.CLICK",
+    "Event.ENTER_FRAME",
+    "Event.RESIZE",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_UP"
+   ],
+   "platform_calls": [
+    "window.open"
+   ],
+   "cross_module_imports": [
+    "activities",
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/friend/ModuleFriends.as",
+   "class": "module.friend.ModuleFriends",
+   "swf": "main3_v_221",
+   "subsystem": "好友模块",
+   "loc": 41,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  }
+ ],
+ "notes": [
+  "功能 mod 清单：好友列表 mod=friend（FriendsModel 经 CMD_GET_FRIENDLIST）、好友农场状态 cgi_farm_getstatus_filter、过滤 friend.listFilter/addFilter/delFilter（均见 ServerServices.as m_cmdMap；FriendsModel/FriendsView 直接持 cmd）。",
+  "entities/Friend 归 farm-basic（启动链 Session/FarmApplication 直接用）。"
+ ]
+}

@@ -1,0 +1,459 @@
+{
+ "version": 1,
+ "module": "messages",
+ "description": "消息/留言/日志：农场（module.messages：chat.getAllInfo/sendChat/clearLog/clearChat、sysmsg、hydra feeds）+ 牧场留言档案（mc/view/main/window/profile/**）+ 公告窗（PostWindow/PostIcon/MsgIcon）。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/nc/mod/chat_*.php",
+  "legacy/deploy/QFarmFlash/source/core/source/mc/mod/chat_*.php"
+ ],
+ "counts": {
+  "classes": 25
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/MsgIcon.as",
+   "class": "mc.view.main.leftInfo.MsgIcon",
+   "swf": "Master2_v_142",
+   "subsystem": "公告/消息",
+   "loc": 34,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "MsgIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/PostIcon.as",
+   "class": "mc.view.main.leftInfo.PostIcon",
+   "swf": "Master2_v_142",
+   "subsystem": "公告/消息",
+   "loc": 34,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "PostIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/leftInfo/PostWindow.as",
+   "class": "mc.view.main.leftInfo.PostWindow",
+   "swf": "Master2_v_142",
+   "subsystem": "公告/消息",
+   "loc": 82,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/HistoryItem.as",
+   "class": "mc.view.main.window.profile.HistoryItem",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 82,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/HistoryTip.as",
+   "class": "mc.view.main.window.profile.HistoryTip",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 111,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "TipBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/ProfileCost.as",
+   "class": "mc.view.main.window.profile.ProfileCost",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 235,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/ProfileHead.as",
+   "class": "mc.view.main.window.profile.ProfileHead",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 255,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "DefaultHead",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "platform_calls": [
+    "navigateToURL"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/ProfileHistory.as",
+   "class": "mc.view.main.window.profile.ProfileHistory",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 109,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE"
+   ],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/ProfileLog.as",
+   "class": "mc.view.main.window.profile.ProfileLog",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 224,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/ProfileMsg.as",
+   "class": "mc.view.main.window.profile.ProfileMsg",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 343,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "KeyboardEvent.KEY_DOWN",
+    "MouseEvent.CLICK",
+    "KeyboardEvent.*"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/ProfileSystemMsg.as",
+   "class": "mc.view.main.window.profile.ProfileSystemMsg",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 118,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/ProfileWindow.as",
+   "class": "mc.view.main.window.profile.ProfileWindow",
+   "swf": "Master2_v_142",
+   "subsystem": "留言/日志",
+   "loc": 259,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/PostWindow.as",
+   "class": "common.view.window.PostWindow",
+   "swf": "main3_v_221",
+   "subsystem": "公告窗",
+   "loc": 244,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/MessageController.as",
+   "class": "module.messages.MessageController",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 65,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/MessageModel.as",
+   "class": "module.messages.MessageModel",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 482,
+   "mods": [
+    {
+     "mod": "chat",
+     "act": "sendChat",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "chat",
+     "act": "clearChat",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "chat",
+     "act": "getAllInfo",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_exchange",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "fcg_ws_get_costfeeds",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "sysmsg_select",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_getall",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "hydra_feeds_select",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "hydra_feeds_delete",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/MessageView.as",
+   "class": "module.messages.MessageView",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 364,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/ModuleMessages.as",
+   "class": "module.messages.ModuleMessages",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 42,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/widgets/HistoryItem.as",
+   "class": "module.messages.widgets.HistoryItem",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 101,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/widgets/HistoryItemTip.as",
+   "class": "module.messages.widgets.HistoryItemTip",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 116,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "TipBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/widgets/ProfileCost.as",
+   "class": "module.messages.widgets.ProfileCost",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 147,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/widgets/ProfileHead.as",
+   "class": "module.messages.widgets.ProfileHead",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 301,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/widgets/ProfileHistory.as",
+   "class": "module.messages.widgets.ProfileHistory",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 42,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/widgets/ProfileLog.as",
+   "class": "module.messages.widgets.ProfileLog",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 223,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "window.open(\\"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/widgets/ProfileMsg.as",
+   "class": "module.messages.widgets.ProfileMsg",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 319,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "KeyboardEvent.KEY_DOWN",
+    "MouseEvent.CLICK",
+    "KeyboardEvent.*"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/messages/widgets/ProfileSystemMsg.as",
+   "class": "module.messages.widgets.ProfileSystemMsg",
+   "swf": "main3_v_221",
+   "subsystem": "消息/留言",
+   "loc": 116,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  }
+ ]
+}

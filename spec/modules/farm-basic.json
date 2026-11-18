@@ -1,0 +1,3992 @@
+{
+ "version": 1,
+ "module": "farm-basic",
+ "description": "V3 垂直切片：进农场 → 地块 → 种一种作物 → 浇水/除草 → 成熟 → 收获 的最小链路。含启动链（Main/FarmApplication/FarmStage/StartupDataParser）、主场景与农田（ModuleMainScene/farmLand 全部）、工具区（uitools）、网络栈（framework/net + ServerServices cmd 表）、实体、通用视图（光标/提示/飘字/窗口框架）、qui/qfa/greensock 等基础库、升级模块（启动即载、收获可触发）。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php（moduleList：main=main3_v_221.swf + 素材 farmui_full_v_40/farmui2_v_58/water_ui_v_0）",
+  "legacy/deploy/QFarmFlash/source/core/mync.php（mod_list 白名单 + mod+act 组名规则）",
+  "legacy/deploy/QFarmFlash/source/core/source/nc/mod/（各 mod 实现）",
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_data.php（<assets> 表：作物 asset_id→swf 路径）",
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php（addon 配置：Fertilizer 等素材 url、beastLoaderUrl、cropUrl）"
+ ],
+ "counts": {
+  "classes": 235
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/adobe/crypto/MD5.as",
+   "class": "com.adobe.crypto.MD5",
+   "swf": "main3_v_221",
+   "subsystem": "第三方库",
+   "loc": 190,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/adobe/utils/IntUtil.as",
+   "class": "com.adobe.utils.IntUtil",
+   "swf": "main3_v_221",
+   "subsystem": "第三方库",
+   "loc": 52,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/adobe/utils/StringUtil.as",
+   "class": "com.adobe.utils.StringUtil",
+   "swf": "main3_v_221",
+   "subsystem": "第三方库",
+   "loc": 112,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/greensock/TweenLite.as",
+   "class": "com.greensock.TweenLite",
+   "swf": "main3_v_221",
+   "subsystem": "第三方库(TweenLite)",
+   "loc": 506,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ENTER_FRAME"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/greensock/core/PropTween.as",
+   "class": "com.greensock.core.PropTween",
+   "swf": "main3_v_221",
+   "subsystem": "第三方库(TweenLite)",
+   "loc": 43,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/greensock/core/SimpleTimeline.as",
+   "class": "com.greensock.core.SimpleTimeline",
+   "swf": "main3_v_221",
+   "subsystem": "第三方库(TweenLite)",
+   "loc": 94,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/greensock/core/TweenCore.as",
+   "class": "com.greensock.core.TweenCore",
+   "swf": "main3_v_221",
+   "subsystem": "第三方库(TweenLite)",
+   "loc": 337,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/corelib/controls/ExtLoader.as",
+   "class": "com.qzone.corelib.controls.ExtLoader",
+   "swf": "main3_v_221",
+   "subsystem": "corelib",
+   "loc": 194,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/farm/api/interfaces/IFarmAPI.as",
+   "class": "com.qzone.farm.api.interfaces.IFarmAPI",
+   "swf": "main3_v_221",
+   "subsystem": "插件接口",
+   "loc": 51,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/farm/api/interfaces/IPlugin.as",
+   "class": "com.qzone.farm.api.interfaces.IPlugin",
+   "swf": "main3_v_221",
+   "subsystem": "插件接口",
+   "loc": 18,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/farm/api/interfaces/IPluginProxy.as",
+   "class": "com.qzone.farm.api.interfaces.IPluginProxy",
+   "swf": "main3_v_221",
+   "subsystem": "插件接口",
+   "loc": 14,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/control/Application.as",
+   "class": "com.qzone.qfa.control.Application",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 148,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/debug/DebuggerWindow.as",
+   "class": "com.qzone.qfa.debug.DebuggerWindow",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 99,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "KeyboardEvent.KEY_UP",
+    "KeyboardEvent.*"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/events/DebugEvent.as",
+   "class": "com.qzone.qfa.events.DebugEvent",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 20,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/interfaces/IApplication.as",
+   "class": "com.qzone.qfa.interfaces.IApplication",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 26,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/managers/errors/ConnectionError.as",
+   "class": "com.qzone.qfa.managers.errors.ConnectionError",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 27,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/managers/events/RequestEvent.as",
+   "class": "com.qzone.qfa.managers.events.RequestEvent",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 32,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/managers/operation/HttpOperation.as",
+   "class": "com.qzone.qfa.managers.operation.HttpOperation",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 169,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/managers/operation/IOperation.as",
+   "class": "com.qzone.qfa.managers.operation.IOperation",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/managers/operation/Operation.as",
+   "class": "com.qzone.qfa.managers.operation.Operation",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 35,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/model/AppData.as",
+   "class": "com.qzone.qfa.model.AppData",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 156,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/view/AppStage.as",
+   "class": "com.qzone.qfa.view.AppStage",
+   "swf": "main3_v_221",
+   "subsystem": "qfa 应用框架",
+   "loc": 90,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "Event.RESIZE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/Canvas.as",
+   "class": "com.qzone.qui.containers.Canvas",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 68,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/Container.as",
+   "class": "com.qzone.qui.containers.Container",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 126,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/ControlBar.as",
+   "class": "com.qzone.qui.containers.ControlBar",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 22,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/HBox.as",
+   "class": "com.qzone.qui.containers.HBox",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/Panel.as",
+   "class": "com.qzone.qui.containers.Panel",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 176,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.RESIZE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/TileList.as",
+   "class": "com.qzone.qui.containers.TileList",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 168,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/TitleWindow.as",
+   "class": "com.qzone.qui.containers.TitleWindow",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 107,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/VBox.as",
+   "class": "com.qzone.qui.containers.VBox",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/ViewStack.as",
+   "class": "com.qzone.qui.containers.ViewStack",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 104,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/boxClasses/Box.as",
+   "class": "com.qzone.qui.containers.boxClasses.Box",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 626,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/tileClasses/TileBase.as",
+   "class": "com.qzone.qui.containers.tileClasses.TileBase",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 242,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/tileClasses/TileButton.as",
+   "class": "com.qzone.qui.containers.tileClasses.TileButton",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 40,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/Button.as",
+   "class": "com.qzone.qui.controls.Button",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 203,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/HScrollBar.as",
+   "class": "com.qzone.qui.controls.HScrollBar",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 26,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/Label.as",
+   "class": "com.qzone.qui.controls.Label",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 180,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/RadioButton.as",
+   "class": "com.qzone.qui.controls.RadioButton",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 67,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/TabBar.as",
+   "class": "com.qzone.qui.controls.TabBar",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 147,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/Text.as",
+   "class": "com.qzone.qui.controls.Text",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 35,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/TextArea.as",
+   "class": "com.qzone.qui.controls.TextArea",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 213,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "Event.SCROLL"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/TextInput.as",
+   "class": "com.qzone.qui.controls.TextInput",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 216,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/ToolTip.as",
+   "class": "com.qzone.qui.controls.ToolTip",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 81,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "pasture"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/UIComponent.as",
+   "class": "com.qzone.qui.controls.UIComponent",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 170,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED",
+    "Event.RENDER",
+    "Event.ADDED_TO_STAGE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/VScrollBar.as",
+   "class": "com.qzone.qui.controls.VScrollBar",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 26,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/scrollClasses/ScrollBar.as",
+   "class": "com.qzone.qui.controls.scrollClasses.ScrollBar",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 425,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.MOUSE_MOVE",
+    "MouseEvent.ROLL_OUT",
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/scrollClasses/ScrollBarMode.as",
+   "class": "com.qzone.qui.controls.scrollClasses.ScrollBarMode",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/scrollClasses/ScrollBase.as",
+   "class": "com.qzone.qui.controls.scrollClasses.ScrollBase",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 449,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.MOUSE_WHEEL"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/scrollClasses/ScrollPolicy.as",
+   "class": "com.qzone.qui.controls.scrollClasses.ScrollPolicy",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 19,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/scrollClasses/ScrollThumb.as",
+   "class": "com.qzone.qui.controls.scrollClasses.ScrollThumb",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 91,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/core/Align.as",
+   "class": "com.qzone.qui.core.Align",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 25,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/core/Direction.as",
+   "class": "com.qzone.qui.core.Direction",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/effects/Move.as",
+   "class": "com.qzone.qui.effects.Move",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 84,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/effects/TweenEffect.as",
+   "class": "com.qzone.qui.effects.TweenEffect",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 41,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/events/ResizeEvent.as",
+   "class": "com.qzone.qui.events.ResizeEvent",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 28,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/events/ScrollEvent.as",
+   "class": "com.qzone.qui.events.ScrollEvent",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 54,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/makers/ButtonMaker.as",
+   "class": "com.qzone.qui.makers.ButtonMaker",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 105,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.ROLL_OVER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/makers/RadioGroup.as",
+   "class": "com.qzone.qui.makers.RadioGroup",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 106,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/makers/TipInputMaker.as",
+   "class": "com.qzone.qui.makers.TipInputMaker",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 85,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/managers/DragManager.as",
+   "class": "com.qzone.qui.managers.DragManager",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 113,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.MOUSE_MOVE",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.MOUSE_DOWN"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/managers/EffectManager.as",
+   "class": "com.qzone.qui.managers.EffectManager",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 51,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/managers/PopUpLayer.as",
+   "class": "com.qzone.qui.managers.PopUpLayer",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 159,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "KeyboardEvent.KEY_UP",
+    "Event.CLOSE",
+    "KeyboardEvent.*"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/managers/PopUpManager.as",
+   "class": "com.qzone.qui.managers.PopUpManager",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 175,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/managers/ToolTipLayer.as",
+   "class": "com.qzone.qui.managers.ToolTipLayer",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 159,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_MOVE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/managers/ToolTipManager.as",
+   "class": "com.qzone.qui.managers.ToolTipManager",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 53,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/skins/ButtonDefaultSkin.as",
+   "class": "com.qzone.qui.skins.ButtonDefaultSkin",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/skins/HScrollBarDefaultSkin.as",
+   "class": "com.qzone.qui.skins.HScrollBarDefaultSkin",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 23,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/skins/ListDefaultSkin.as",
+   "class": "com.qzone.qui.skins.ListDefaultSkin",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 15,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/skins/PanelDefaultSkin.as",
+   "class": "com.qzone.qui.skins.PanelDefaultSkin",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 19,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/skins/RadioButtonDefaultSkin.as",
+   "class": "com.qzone.qui.skins.RadioButtonDefaultSkin",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/skins/TextInputDefaultSkin.as",
+   "class": "com.qzone.qui.skins.TextInputDefaultSkin",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/skins/VScrollBarDefaultSkin.as",
+   "class": "com.qzone.qui.skins.VScrollBarDefaultSkin",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 23,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/styles/Style.as",
+   "class": "com.qzone.qui.styles.Style",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 316,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/utils/EventUtil.as",
+   "class": "com.qzone.qui.utils.EventUtil",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 37,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/utils/FrameTimer.as",
+   "class": "com.qzone.qui.utils.FrameTimer",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 193,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ENTER_FRAME"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/qui/utils/TextFormatUtil.as",
+   "class": "com.qzone.qui.utils.TextFormatUtil",
+   "swf": "main3_v_221",
+   "subsystem": "qui 组件库",
+   "loc": 26,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/sns/QQPay.as",
+   "class": "com.qzone.sns.QQPay",
+   "swf": "main3_v_221",
+   "subsystem": "支付",
+   "loc": 175,
+   "mods": [
+    {
+     "mod": "cgi_farm_shop_verify",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_shop_pay",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/sns/entities/Payment.as",
+   "class": "com.qzone.sns.entities.Payment",
+   "swf": "main3_v_221",
+   "subsystem": "支付",
+   "loc": 65,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/AlignUtil.as",
+   "class": "com.qzone.utils.AlignUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 43,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/DateTimeUtils.as",
+   "class": "com.qzone.utils.DateTimeUtils",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 148,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/DateUtil.as",
+   "class": "com.qzone.utils.DateUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 30,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/DisplayUtil.as",
+   "class": "com.qzone.utils.DisplayUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 102,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/GraphicsUtil.as",
+   "class": "com.qzone.utils.GraphicsUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 68,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/HtmlUtil.as",
+   "class": "com.qzone.utils.HtmlUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 37,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/ImageSizeUtil.as",
+   "class": "com.qzone.utils.ImageSizeUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 135,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/NumberUtil.as",
+   "class": "com.qzone.utils.NumberUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 86,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/ObjectUtil.as",
+   "class": "com.qzone.utils.ObjectUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 23,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/RightMenu.as",
+   "class": "com.qzone.utils.RightMenu",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 57,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "ContextMenuEvent.MENU_ITEM_SELECT"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/com/qzone/utils/StringUtil.as",
+   "class": "com.qzone.utils.StringUtil",
+   "swf": "main3_v_221",
+   "subsystem": "工具函数",
+   "loc": 142,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/Consts.as",
+   "class": "common.Consts",
+   "swf": "main3_v_221",
+   "subsystem": "通用",
+   "loc": 609,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/FeartureManager.as",
+   "class": "common.FeartureManager",
+   "swf": "main3_v_221",
+   "subsystem": "通用",
+   "loc": 90,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/GetCropID.as",
+   "class": "common.GetCropID",
+   "swf": "main3_v_221",
+   "subsystem": "通用",
+   "loc": 772,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "notes": "资产命名/数值工具（V3 必备）：getCropUrl/getSeedUrl/getHarvrstUrl/getFishUrl/idToDogUrl/idToDiyUrl（asset_id→nc_data assets 表→目录前缀规则：/Crop→allcrops、/Dog|FDog→dogs、/Card→allcards、/diy|fish→module/ui/farm）、idState 生长阶段推导、idToToolName 工具 id→符号名表（照抄）。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/Language.as",
+   "class": "common.Language",
+   "swf": "main3_v_221",
+   "subsystem": "通用",
+   "loc": 282,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/Session.as",
+   "class": "common.Session",
+   "swf": "main3_v_221",
+   "subsystem": "通用",
+   "loc": 521,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/misc/ConfigMerger.as",
+   "class": "common.misc.ConfigMerger",
+   "swf": "main3_v_221",
+   "subsystem": "通用/配置",
+   "loc": 222,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/misc/VersionUtil.as",
+   "class": "common.misc.VersionUtil",
+   "swf": "main3_v_221",
+   "subsystem": "通用/配置",
+   "loc": 37,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/misc/VersionUtil_versionXml.as",
+   "class": "common.misc.VersionUtil_versionXml",
+   "swf": "main3_v_221",
+   "subsystem": "通用/配置",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/misc/time/CountDown.as",
+   "class": "common.misc.time.CountDown",
+   "swf": "main3_v_221",
+   "subsystem": "通用/时间",
+   "loc": 40,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/misc/time/GameTime.as",
+   "class": "common.misc.time.GameTime",
+   "swf": "main3_v_221",
+   "subsystem": "通用/时间",
+   "loc": 88,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/DataLoading.as",
+   "class": "common.view.DataLoading",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图",
+   "loc": 106,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/MaterialProxy.as",
+   "class": "common.view.MaterialProxy",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图",
+   "loc": 536,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_Seed.swf",
+     "via": "common/GetCropID.as:getSeedUrl",
+     "evidence": "swf-inventory 收录；经 asset_id.s 解析"
+    },
+    {
+     "pattern": "module/ui/dogs/Dog_<id>*.swf / FDog_<id>*.swf",
+     "via": "common/GetCropID.as:idToDogUrl",
+     "evidence": "swf-inventory module/ui/dogs/ 共 59 个"
+    },
+    {
+     "pattern": "module/ui/farm/fish/fish_<id>.swf / fish_seed_<id>.swf",
+     "via": "common/GetCropID.as:getFishUrl",
+     "evidence": "swf-inventory module/ui/farm/fish/ 共 35 个"
+    },
+    {
+     "pattern": "module/ui/farm/diy/<id>.swf（小图无后缀/大图 b）",
+     "via": "common/GetCropID.as:idToDiyUrl",
+     "evidence": "swf-inventory module/ui/farm/diy/ 共 762 个"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/MoneyIcon.as",
+   "class": "common.view.MoneyIcon",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图",
+   "loc": 65,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/NumAnimation.as",
+   "class": "common.view.NumAnimation",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图",
+   "loc": 86,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/cursor/CursorControl.as",
+   "class": "common.view.cursor.CursorControl",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/光标",
+   "loc": 104,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/cursor/CursorCropSeed.as",
+   "class": "common.view.cursor.CursorCropSeed",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/光标",
+   "loc": 59,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/cursor/CursorTool.as",
+   "class": "common.view.cursor.CursorTool",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/光标",
+   "loc": 65,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/AddExpFloating.as",
+   "class": "common.view.floating.AddExpFloating",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 29,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/AddHealthAnimation.as",
+   "class": "common.view.floating.AddHealthAnimation",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 62,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "AddHealth",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.REMOVED_FROM_STAGE",
+    "Event.ENTER_FRAME"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/AddMoneyFloating.as",
+   "class": "common.view.floating.AddMoneyFloating",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 69,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "AddAnimationEx",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.REMOVED_FROM_STAGE",
+    "Event.ENTER_FRAME"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/FarmOperateFloating.as",
+   "class": "common.view.floating.FarmOperateFloating",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 136,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "TalkBoxMy1",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "TalkBoxHe1",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.REMOVED_FROM_STAGE",
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/FloatControl.as",
+   "class": "common.view.floating.FloatControl",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 61,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/FloatingBase.as",
+   "class": "common.view.floating.FloatingBase",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 82,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/HarvestAnimation.as",
+   "class": "common.view.floating.HarvestAnimation",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 97,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ENTER_FRAME"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/HarvestAnimationCustom.as",
+   "class": "common.view.floating.HarvestAnimationCustom",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 120,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_<收获态>.swf",
+     "via": "common/GetCropID.as:getHarvrstUrl",
+     "evidence": "经 asset_id.h 解析（nc_data.php assets 表）"
+    }
+   ],
+   "interactions": [
+    "Event.REMOVED_FROM_STAGE",
+    "Event.COMPLETE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/HarvestAnimationPlus.as",
+   "class": "common.view.floating.HarvestAnimationPlus",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 172,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ENTER_FRAME"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/floating/TextTipFloating.as",
+   "class": "common.view.floating.TextTipFloating",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/飘字",
+   "loc": 185,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "SuccessIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "ErrorIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "TipIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/tip/CropInfoTip.as",
+   "class": "common.view.tip.CropInfoTip",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/提示",
+   "loc": 35,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/tip/DiyMouseTip.as",
+   "class": "common.view.tip.DiyMouseTip",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/提示",
+   "loc": 75,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "TipBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/tip/LandInfoTip.as",
+   "class": "common.view.tip.LandInfoTip",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/提示",
+   "loc": 466,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "FarmInfoPlus",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_Seed.swf",
+     "via": "common/GetCropID.as:getSeedUrl",
+     "evidence": "swf-inventory 收录；经 asset_id.s 解析"
+    }
+   ],
+   "interactions": [
+    "Event.REMOVED_FROM_STAGE",
+    "Event.ENTER_FRAME"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/tip/MouseTip.as",
+   "class": "common.view.tip.MouseTip",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/提示",
+   "loc": 92,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "TipBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/tip/Tip.as",
+   "class": "common.view.tip.Tip",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/提示",
+   "loc": 94,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/tip/TipControl.as",
+   "class": "common.view.tip.TipControl",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/提示",
+   "loc": 69,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/AddButtonWindow.as",
+   "class": "common.view.window.AddButtonWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 177,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/AlertWindow.as",
+   "class": "common.view.window.AlertWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 327,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "SuccessIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "ErrorIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "TipIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "platform_calls": [
+    "window.open",
+    "navigateToURL"
+   ],
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/BaseWindow.as",
+   "class": "common.view.window.BaseWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 125,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/ConfirmWindow.as",
+   "class": "common.view.window.ConfirmWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 300,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "ConfirmIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/ContentWindow.as",
+   "class": "common.view.window.ContentWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 82,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/RedUpWindow.as",
+   "class": "common.view.window.RedUpWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 1031,
+   "mods": [
+    {
+     "mod": "cgi_farm_upgrade_black",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "price_goods",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "ShopTabNewIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "symbol": "redUpBanner",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "Event.REMOVED_FROM_STAGE",
+    "Event.CHANGE",
+    "MouseEvent.CLICK",
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/RequestErrorWindow.as",
+   "class": "common.view.window.RequestErrorWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 251,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/UpgradeBlackWindow.as",
+   "class": "common.view.window.UpgradeBlackWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 121,
+   "mods": [
+    {
+     "mod": "cgi_qzshare_onekey",
+     "via": "类内字面量"
+    }
+   ],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "BlackUpgradeShare",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/ValidateCodeWindow.as",
+   "class": "common.view.window.ValidateCodeWindow",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 208,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/commonui_v_12.swf"
+     ],
+     "symbol": "ValidateCodeContent",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "KeyboardEvent.KEY_UP",
+    "KeyboardEvent.*"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/WindowControl.as",
+   "class": "common.view.window.WindowControl",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 89,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/WindowLabelMaker.as",
+   "class": "common.view.window.WindowLabelMaker",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 39,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/common/view/window/WindowTabBarMaker.as",
+   "class": "common.view.window.WindowTabBarMaker",
+   "swf": "main3_v_221",
+   "subsystem": "通用视图/窗口",
+   "loc": 52,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/Dog.as",
+   "class": "entities.Dog",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 33,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/FarmLand.as",
+   "class": "entities.FarmLand",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 258,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "notes": "单块地数据实体：farmlandStatus 数组元素的字段解析（状态/作物/时间），字段名照抄。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/Friend.as",
+   "class": "entities.Friend",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 149,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/Item.as",
+   "class": "entities.Item",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 131,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/Player.as",
+   "class": "entities.Player",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 169,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/Seed.as",
+   "class": "entities.Seed",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 178,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/StartupData.as",
+   "class": "entities.StartupData",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 46,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/Task.as",
+   "class": "entities.Task",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 30,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/Weather.as",
+   "class": "entities.Weather",
+   "swf": "main3_v_221",
+   "subsystem": "实体",
+   "loc": 30,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/events/CommonEvent.as",
+   "class": "events.CommonEvent",
+   "swf": "main3_v_221",
+   "subsystem": "事件",
+   "loc": 41,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/events/CursorEvent.as",
+   "class": "events.CursorEvent",
+   "swf": "main3_v_221",
+   "subsystem": "事件",
+   "loc": 43,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/events/FloatingEvent.as",
+   "class": "events.FloatingEvent",
+   "swf": "main3_v_221",
+   "subsystem": "事件",
+   "loc": 58,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/events/TipEvent.as",
+   "class": "events.TipEvent",
+   "swf": "main3_v_221",
+   "subsystem": "事件",
+   "loc": 69,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/events/ViewEvent.as",
+   "class": "events.ViewEvent",
+   "swf": "main3_v_221",
+   "subsystem": "事件",
+   "loc": 67,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/events/WindowEvent.as",
+   "class": "events.WindowEvent",
+   "swf": "main3_v_221",
+   "subsystem": "事件",
+   "loc": 80,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/FarmAPI.as",
+   "class": "framework.api.FarmAPI",
+   "swf": "main3_v_221",
+   "subsystem": "框架/API",
+   "loc": 420,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/PluginManager.as",
+   "class": "framework.api.PluginManager",
+   "swf": "main3_v_221",
+   "subsystem": "框架/API",
+   "loc": 281,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "notes": "插件装载：按 addon config plugins[].proxy 经 applicationDomain.getDefinition 取代理类（plugins/ 下 5 个代理在 activities 模块）。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/PluginProxy.as",
+   "class": "framework.api.PluginProxy",
+   "swf": "main3_v_221",
+   "subsystem": "框架/API",
+   "loc": 106,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/base/BaseArrayParser.as",
+   "class": "framework.base.BaseArrayParser",
+   "swf": "main3_v_221",
+   "subsystem": "框架/基类",
+   "loc": 64,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/base/BaseLayer.as",
+   "class": "framework.base.BaseLayer",
+   "swf": "main3_v_221",
+   "subsystem": "框架/基类",
+   "loc": 31,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/base/BasePage.as",
+   "class": "framework.base.BasePage",
+   "swf": "main3_v_221",
+   "subsystem": "框架/基类",
+   "loc": 106,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/base/BaseTileItem.as",
+   "class": "framework.base.BaseTileItem",
+   "swf": "main3_v_221",
+   "subsystem": "框架/基类",
+   "loc": 144,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/base/Controller.as",
+   "class": "framework.base.Controller",
+   "swf": "main3_v_221",
+   "subsystem": "框架/基类",
+   "loc": 118,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/base/Module.as",
+   "class": "framework.base.Module",
+   "swf": "main3_v_221",
+   "subsystem": "框架/基类",
+   "loc": 179,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/commands/CmdServiceRequest.as",
+   "class": "framework.commands.CmdServiceRequest",
+   "swf": "main3_v_221",
+   "subsystem": "框架/命令",
+   "loc": 206,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/commands/CommandList.as",
+   "class": "framework.commands.CommandList",
+   "swf": "main3_v_221",
+   "subsystem": "框架/命令",
+   "loc": 15,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/layers/CursorLayer.as",
+   "class": "framework.layers.CursorLayer",
+   "swf": "main3_v_221",
+   "subsystem": "框架/层",
+   "loc": 203,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.MOUSE_MOVE",
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/layers/FarmLayer.as",
+   "class": "framework.layers.FarmLayer",
+   "swf": "main3_v_221",
+   "subsystem": "框架/层",
+   "loc": 230,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.MOUSE_MOVE",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/layers/FloatingLayer.as",
+   "class": "framework.layers.FloatingLayer",
+   "swf": "main3_v_221",
+   "subsystem": "框架/层",
+   "loc": 108,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/layers/TipLayer.as",
+   "class": "framework.layers.TipLayer",
+   "swf": "main3_v_221",
+   "subsystem": "框架/层",
+   "loc": 177,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.MOUSE_MOVE",
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/layers/WindowLayer.as",
+   "class": "framework.layers.WindowLayer",
+   "swf": "main3_v_221",
+   "subsystem": "框架/层",
+   "loc": 165,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OVER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/CommandDefs.as",
+   "class": "framework.net.CommandDefs",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 277,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/NetHelper.as",
+   "class": "framework.net.NetHelper",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 97,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/ServerServices.as",
+   "class": "framework.net.ServerServices",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 373,
+   "mods": [
+    {
+     "mod": "user",
+     "act": "run",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_ws_com",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "water",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "clearWeed",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "scatterSeed",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "pest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "spraying",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "scrounge",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "harvest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "scarify",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "planting",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "fertilize",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "checkStatus",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "getOutput",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "repertory",
+     "act": "getUserSeed",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "usertool",
+     "act": "getSeedInfo",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "usertool",
+     "act": "getTools",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_list",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_unlock",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "item",
+     "act": "shop",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_getusercrop",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "raw": "cgi_farm_get_usercrystal&phpye=phpye",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_sell_crystal",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_seed_list",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_user_rep",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_sale",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "repertory",
+     "act": "saleAll",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "item",
+     "act": "getUserItems",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "item",
+     "act": "activeItem",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "item",
+     "act": "deactiveItem",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "repertory",
+     "act": "sale",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_seed_sell",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "dog",
+     "act": "feedMoney",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "reclaimPay",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "reclaim",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_upgrade",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "friend",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_getstatus_filter",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "friend",
+     "act": "listFilter",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "friend",
+     "act": "addFilter",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "friend",
+     "act": "delFilter",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "getNotice",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "Feast",
+     "act": "getPackageList",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "Feast",
+     "act": "getPackage",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "chat",
+     "act": "getAllInfo",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "chat",
+     "act": "clearLog",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "chat",
+     "act": "clearChat",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_exchange",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "fcg_ws_get_costfeeds",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "chat",
+     "act": "sendChat",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "repertory",
+     "act": "buySeed",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_buy",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "usertool",
+     "act": "buyTool",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_tool_vip",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_buyweapon",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_getall",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_get_userprofile",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "request_get",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_sendrequest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_acceptrequest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "request_get_count",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_buyitem",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "item",
+     "act": "healthMode",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "feast",
+     "act": "levelup",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "welcome",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "task",
+     "act": "accept",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "task",
+     "act": "update",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_shop_verify",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_shop_pay",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_pasture_shop_verify",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_pasture_shop_pay",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_flower_received",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_flower_get_card",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_item_vip",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_flower_del_msg",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_flower_send",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_set_lock",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_rep_lock",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_login_home",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_login_click",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_pasture_signin",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_register",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_return_gift",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_2years",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_twoyear_mblog",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_twoyear_blog",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_twoyear_flag",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "sysmsg_select",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "hydra_feeds_select",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "hydra_feeds_delete",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_mission_num",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_landext_fund",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_housekeeper",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_guang_gun",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "raw": "mod=view_fcg&",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "raw": "http://c.gdt.qq.com/gdt_cookie.fcg",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_index",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_plant",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_harvest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_steal",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_output",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_register",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_fish_fertilize",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_whitelist",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_request_count",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_request_list",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_request_gift_send",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_request_gift_recv",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_upgrade_black",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_get_basic",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_tree",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_month_list",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_month_refresh",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_month_get",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_login_draw",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_get_bit",
+     "extra": "bit=6",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "price_goods",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_upgrade_gold",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_olympic_game",
+     "via": "类内字面量"
+    },
+    {
+     "mod": "cgi_fetch_strategy_rules",
+     "via": "类内字面量"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "notes": "main3 全部 mod 调用的中央映射：m_cmdMap[CommandDefs.CMD_*] = \"mod=xxx(&act=yyy)\"（120+ 条，含平台前缀 qzone.qq/pengyou.qq，由 getRequestUrl 按 mode 选择 postUrl）；m_parsers 注册各 CMD 的解析器（含分属其他模块的 fish/warehouse/friends/decorate parser——构造时全部实例化）。协议 spec/protocol.json 未建前，这张表就是 mod 清单的权威出处。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/core/HttpConnectionPool.as",
+   "class": "framework.net.core.HttpConnectionPool",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 44,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/core/HttpOperationEx.as",
+   "class": "framework.net.core.HttpOperationEx",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 226,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "TimerEvent.TIMER",
+    "Event.COMPLETE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/core/RequestChecker.as",
+   "class": "framework.net.core.RequestChecker",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 141,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/CommonParser.as",
+   "class": "framework.net.parsers.CommonParser",
+   "swf": "main3_v_221",
+   "subsystem": "网络/解析器",
+   "loc": 25,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/NullParser.as",
+   "class": "framework.net.parsers.NullParser",
+   "swf": "main3_v_221",
+   "subsystem": "网络/解析器",
+   "loc": 21,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/StartupDataParser.as",
+   "class": "framework.net.parsers.StartupDataParser",
+   "swf": "main3_v_221",
+   "subsystem": "网络/解析器",
+   "loc": 91,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "notes": "V3 数据层入口：user&run（mod=user&act=run）响应 → StartupData：dog→Dog、user→Player、task→Task、weather→Weather、farmlandStatus[]→FarmLand[]、items→装饰表、welcome/unread/beast/actInfo.goldLandCard。字段名与分支照抄。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/protocol/Protocol.as",
+   "class": "framework.net.protocol.Protocol",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 140,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/vo/ServiceResultVO.as",
+   "class": "framework.net.vo.ServiceResultVO",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 27,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/vo/ServiceResultVOHelper.as",
+   "class": "framework.net.vo.ServiceResultVOHelper",
+   "swf": "main3_v_221",
+   "subsystem": "网络",
+   "loc": 29,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/interfaces/ILogicParser.as",
+   "class": "interfaces.ILogicParser",
+   "swf": "main3_v_221",
+   "subsystem": "接口",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/interfaces/IModule.as",
+   "class": "interfaces.IModule",
+   "swf": "main3_v_221",
+   "subsystem": "接口",
+   "loc": 29,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/interfaces/IMsgCenter.as",
+   "class": "interfaces.IMsgCenter",
+   "swf": "main3_v_221",
+   "subsystem": "接口",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/interfaces/ITip.as",
+   "class": "interfaces.ITip",
+   "swf": "main3_v_221",
+   "subsystem": "接口",
+   "loc": 34,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/FarmApplication.as",
+   "class": "module.FarmApplication",
+   "swf": "main3_v_221",
+   "subsystem": "启动",
+   "loc": 1102,
+   "mods": [
+    {
+     "mod": "cgi_farm_shop_verify",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_upgrade",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_upgrade_black",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_upgrade_gold",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_shop_pay",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE",
+    "TimerEvent.TIMER"
+   ],
+   "notes": "应用中枢：initModules() 注册 15 个模块（ModuleMainScene/UITools/Friends/Messages/Task/Recall/LevelUp 启动即载；Warehouse/Shop/Decorate/QuickShoot/FreeGift/CardsGame/Water loadLater 懒加载，触发事件与容器层见 initModules）；MSG_SWITCH_USER 好友切换、MSG_ENTER_MC 进牧场（加载 mcloader 链）、wildShell/BeastAPI 接入、ADManager 广告、QQPay 注册、主循环 Timer（Consts.MAIN_TIMER_FREQ）+ GameTime。模块 swf URL 由 xml/mod/nc_main.php moduleList 提供。",
+   "cross_module_imports": [
+    "activities",
+    "farm-decorate",
+    "friends",
+    "messages",
+    "farm-shop",
+    "tasks",
+    "inventory",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/FarmStage.as",
+   "class": "module.FarmStage",
+   "swf": "main3_v_221",
+   "subsystem": "启动",
+   "loc": 335,
+   "mods": [],
+   "assets": [
+    {
+     "ref": "module/ui/main/farmui_full_v_40.swf",
+     "via": "注册的光标视觉类 CursorWater/CursorHoe/CursorHook/... 与窗口皮肤是该 swf 的 SymbolClass 导出符号（dump_swf.php 符号表）",
+     "in_inventory": true
+    },
+    {
+     "ref": "module/ui/main/farmui2_v_58.swf",
+     "via": "CursorWild 符号（wild 光标，activities 模块用）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "notes": "舞台层结构（Consts.LAYER_*）与四大控件注册：WindowControl（Alert/Confirm/AddButton/PickupGift/Gift/REGift/RedUp/RequestError/Validate 窗口名→类）、TipControl（Mouse/DiyMouse/CropInfo/LandInfo/HistoryItemTip）、FloatControl（收获/操作/健康/文字/金钱/经验飘字）、CursorControl（Tool/Arrow/Weed/Insect/Hoe/Hook/Pesticide/Water/Hand/OneHand/CropSeed 光标类 + CursorFishNet(FishNetAll) 经 Utils.getClass 动态取类；光标视觉类是 farmui_full_v_40.swf 的 SymbolClass 导出符号）。",
+   "cross_module_imports": [
+    "activities",
+    "messages"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/GameGuide.as",
+   "class": "module.GameGuide",
+   "swf": "main3_v_221",
+   "subsystem": "启动",
+   "loc": 283,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf",
+      "module/mc/main/farmui2_v_44.swf"
+     ],
+     "symbol": "Arrow",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "notes": "新手引导（FarmApplication 启动即挂载到 LAYER_TOPMOST）。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/Main.as",
+   "class": "module.Main",
+   "swf": "main3_v_221",
+   "subsystem": "启动",
+   "loc": 471,
+   "mods": [
+    {
+     "mod": "cgi_farm_get_userprofile",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "request_get_count",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "Event.COMPLETE",
+    "TimerEvent.TIMER",
+    "RightMenu.addMenuItem"
+   ],
+   "platform_calls": [
+    "top.window.location.href.toString"
+   ],
+   "notes": "main3 文档类。启动链：init() 设 CommonData.getKey（farmKey=MD5(serverTime+密钥尾串)，密钥串照抄）→ new FarmApplication → ConfigMerger 合并 dataConfig+addon → happyfarm3 侧取 user&run 数据后回调 startGame()：StartupDataParser 解析 → Session 注入 host/dog → gameStart() → theApp.startup()。含 loadAsyncWildModule（异步加载 WildShellNc_v_5.swf，activities 依赖）、右键菜单画质切换、120s Timer LocalConnection『MoonSpirit』GC hack（移植点见 CLAUDE.md shim 规则）。",
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/Main_EMBED_FONT_A.as",
+   "class": "module.Main_EMBED_FONT_A",
+   "swf": "main3_v_221",
+   "subsystem": "启动",
+   "loc": 25,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "notes": "[Embed 字体资源类] Main.setup 里 Font.registerFont(EMBED_FONT_A)；移植时用 OpenFL 字体声明等价替代（保持注册调用形态）。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/levelup/AlignUtils.as",
+   "class": "module.levelup.AlignUtils",
+   "swf": "main3_v_221",
+   "subsystem": "升级",
+   "loc": 49,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/levelup/LandRender.as",
+   "class": "module.levelup.LandRender",
+   "swf": "main3_v_221",
+   "subsystem": "升级",
+   "loc": 54,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "Update.landRender",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/levelup/LevelUpModel.as",
+   "class": "module.levelup.LevelUpModel",
+   "swf": "main3_v_221",
+   "subsystem": "升级",
+   "loc": 125,
+   "mods": [
+    {
+     "mod": "usertool",
+     "act": "getSeedInfo",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/levelup/LevelUpModule.as",
+   "class": "module.levelup.LevelUpModule",
+   "swf": "main3_v_221",
+   "subsystem": "升级",
+   "loc": 35,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/levelup/LevelUpWindow.as",
+   "class": "module.levelup.LevelUpWindow",
+   "swf": "main3_v_221",
+   "subsystem": "升级",
+   "loc": 521,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "Update.bigPanel",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "Update.seedsPanel",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "Update.landPanel",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "Update.nextLandPanel",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "Update.emptyPanel",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/levelup/SeedItemRender.as",
+   "class": "module.levelup.SeedItemRender",
+   "swf": "main3_v_221",
+   "subsystem": "升级",
+   "loc": 44,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "Update.seedsRender",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/load/UserChangingBar.as",
+   "class": "module.load.UserChangingBar",
+   "swf": "main3_v_221",
+   "subsystem": "启动",
+   "loc": 87,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/ModuleMainScene.as",
+   "class": "module.mainScene.ModuleMainScene",
+   "swf": "main3_v_221",
+   "subsystem": "场景/主模块",
+   "loc": 194,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "notes": "主场景模块：BackgroundController（背景）+ FarmLandController（农田）+ NPCController（NPC/狗）组合进 LAYER_SCENE_CONTENT，SCENE_ZINDEX_MIDDLE/FOREGROUND 层、缩放（MSG_ZOOM/bigMode）。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/background/BackgroundController.as",
+   "class": "module.mainScene.background.BackgroundController",
+   "swf": "main3_v_221",
+   "subsystem": "场景/背景",
+   "loc": 173,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-decorate"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/background/BackgroundModel.as",
+   "class": "module.mainScene.background.BackgroundModel",
+   "swf": "main3_v_221",
+   "subsystem": "场景/背景",
+   "loc": 222,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/farm/diy/<id>.swf",
+     "via": "common/GetCropID.as:idToDiyUrl2",
+     "evidence": "同上，经 item_info asset_id.m 解析"
+    },
+    {
+     "pattern": "module/ui/farm/diy/board/<id>.swf",
+     "via": "common/GetCropID.as:idToBoardUrl",
+     "evidence": "swf-inventory module/ui/farm/diy/board/ 共 34 个"
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/background/BackgroundScreen.as",
+   "class": "module.mainScene.background.BackgroundScreen",
+   "swf": "main3_v_221",
+   "subsystem": "场景/背景",
+   "loc": 501,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT",
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/FarmLandController.as",
+   "class": "module.mainScene.farmLand.FarmLandController",
+   "swf": "main3_v_221",
+   "subsystem": "场景/农田数据与视图",
+   "loc": 1075,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "PlaneWindow",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "Event.COMPLETE"
+   ],
+   "notes": "农田控制器：按当前光标样式（CURSOR_STYLE_WATER/HOOK/WEED/INSET/PESTICIDE/HAND/ONEHAND/HOE/CROPSEED/TOOL）把地块点击分发给 FarmLandModel/OperationQueue 对应操作。",
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/FarmLandModel.as",
+   "class": "module.mainScene.farmLand.FarmLandModel",
+   "swf": "main3_v_221",
+   "subsystem": "场景/农田数据与视图",
+   "loc": 2071,
+   "mods": [
+    {
+     "mod": "farmlandstatus",
+     "act": "getOutput",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "harvest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "scrounge",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "reclaimPay",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_shop_pay",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "water",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "scarify",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "planting",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "fertilize",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_shop_verify",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "reclaim",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "TimerEvent.TIMER"
+   ],
+   "platform_calls": [
+    "function BrowserAgent(){return navigator.userAgent;}",
+    "eval"
+   ],
+   "notes": "农田数据层（2071 行）：地块状态机 + 全部农田操作请求（浇水/收获/偷取/开垦/种植/施肥/锄地/红地升级/元宝支付/checkStatus/getOutput/reload），Timer 驱动生长推进；EVENT_* 事件供视图订阅。V3 垂直切片的后端核心。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/FarmLandsView.as",
+   "class": "module.mainScene.farmLand.FarmLandsView",
+   "swf": "main3_v_221",
+   "subsystem": "场景/农田数据与视图",
+   "loc": 961,
+   "mods": [
+    {
+     "mod": "cgi_qzshare_onekey",
+     "via": "类内字面量"
+    }
+   ],
+   "assets": [
+    {
+     "symbol": "PlaneAnimation",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "LandCropEffect",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_<阶段0-4>.swf",
+     "via": "common/GetCropID.as:getCropUrl",
+     "evidence": "swf-inventory module/ui/allcrops/ 共 4042 个；阶段映射：状态>2且<6→3，6→4（GetCropID.getCropUrl）；路径经 nc_data.php <assets> 表 asset_id(m1-m3)→src 解析，兜底 cropUrl+publicCropPrefix"
+    }
+   ],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "TimerEvent.TIMER"
+   ],
+   "notes": "农田视图：LandTile 网格渲染、MOUSE 点击/悬停（ROLL_OVER/OUT 显示 LandInfoTip）、收获点击命中、cgi_qzshare_onekey 分享。V3 交互主入口。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/OperationQueue.as",
+   "class": "module.mainScene.farmLand.OperationQueue",
+   "swf": "main3_v_221",
+   "subsystem": "场景/农田数据与视图",
+   "loc": 294,
+   "mods": [
+    {
+     "mod": "farmlandstatus",
+     "act": "scatterSeed",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "clearWeed",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "pest",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "farmlandstatus",
+     "act": "spraying",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "TimerEvent.TIMER"
+   ],
+   "notes": "除草/放草/放虫/杀虫操作队列（clearWeed/scatterSeed/pest/spraying），Timer 串行去重。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/widgets/Byproduct.as",
+   "class": "module.mainScene.farmLand.widgets.Byproduct",
+   "swf": "main3_v_221",
+   "subsystem": "场景/地块控件",
+   "loc": 157,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "Weed",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "Insect",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/widgets/Crop.as",
+   "class": "module.mainScene.farmLand.widgets.Crop",
+   "swf": "main3_v_221",
+   "subsystem": "场景/地块控件",
+   "loc": 246,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/allcrops/Crop_<cId>_<阶段0-4>.swf",
+     "via": "common/GetCropID.as:getCropUrl",
+     "evidence": "swf-inventory module/ui/allcrops/ 共 4042 个；阶段映射：状态>2且<6→3，6→4（GetCropID.getCropUrl）；路径经 nc_data.php <assets> 表 asset_id(m1-m3)→src 解析，兜底 cropUrl+publicCropPrefix"
+    }
+   ],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "Event.REMOVED_FROM_STAGE"
+   ],
+   "notes": "作物元件：GetCropID.getCropUrl(id,阶段) 加载作物 swf（allcrops 命名规律）、specialGrow 特殊生长态、ADDED_TO_STAGE/REMOVED_FROM_STAGE 生命周期。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/widgets/LandItemRender.as",
+   "class": "module.mainScene.farmLand.widgets.LandItemRender",
+   "swf": "main3_v_221",
+   "subsystem": "场景/地块控件",
+   "loc": 205,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/widgets/LandPickIcon.as",
+   "class": "module.mainScene.farmLand.widgets.LandPickIcon",
+   "swf": "main3_v_221",
+   "subsystem": "场景/地块控件",
+   "loc": 100,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "canPickIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/widgets/LandTalkTip.as",
+   "class": "module.mainScene.farmLand.widgets.LandTalkTip",
+   "swf": "main3_v_221",
+   "subsystem": "场景/地块控件",
+   "loc": 90,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/widgets/LandTile.as",
+   "class": "module.mainScene.farmLand.widgets.LandTile",
+   "swf": "main3_v_221",
+   "subsystem": "场景/地块控件",
+   "loc": 171,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "com.qzone.ui",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "com.qzone.ui.JPLandS",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "com.qzone.ui.JPLandG",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "com.qzone.ui.JPLandS2",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "com.qzone.ui.JPLandG2",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [],
+   "notes": "地块底元件（土地/红地/黑地视觉，farmui 素材）。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/farmLand/widgets/Wasteland.as",
+   "class": "module.mainScene.farmLand.widgets.Wasteland",
+   "swf": "main3_v_221",
+   "subsystem": "场景/地块控件",
+   "loc": 70,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "com.qzone.ui.Wasteland",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "Reclaim",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/npc/NPCController.as",
+   "class": "module.mainScene.npc.NPCController",
+   "swf": "main3_v_221",
+   "subsystem": "场景/NPC",
+   "loc": 134,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/npc/NPCModel.as",
+   "class": "module.mainScene.npc.NPCModel",
+   "swf": "main3_v_221",
+   "subsystem": "场景/NPC",
+   "loc": 141,
+   "mods": [
+    {
+     "mod": "dog",
+     "act": "feedMoney",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/mainScene/npc/NPCView.as",
+   "class": "module.mainScene.npc.NPCView",
+   "swf": "main3_v_221",
+   "subsystem": "场景/NPC",
+   "loc": 342,
+   "mods": [],
+   "assets": [
+    {
+     "ref": "module/ui/361.swf",
+     "via": "类内字面量",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT",
+    "Event.COMPLETE",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "platform_calls": [
+    "QZFL.dialog.create(\\'\\',"
+   ],
+   "cross_module_imports": [
+    "activities",
+    "dog"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/ModuleUITools.as",
+   "class": "module.uitools.ModuleUITools",
+   "swf": "main3_v_221",
+   "subsystem": "工具区",
+   "loc": 52,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/UIController.as",
+   "class": "module.uitools.UIController",
+   "swf": "main3_v_221",
+   "subsystem": "工具区",
+   "loc": 653,
+   "mods": [],
+   "assets": [
+    {
+     "symbol": "PoolInfoBtn",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "HeadBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf",
+      "module/mc/main/farmui2_v_44.swf"
+     ],
+     "symbol": "newIconTip",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/UIToolsModel.as",
+   "class": "module.uitools.UIToolsModel",
+   "swf": "main3_v_221",
+   "subsystem": "工具区",
+   "loc": 563,
+   "mods": [
+    {
+     "mod": "cgi_return_gift",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "Feast",
+     "act": "getPackage",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "Feast",
+     "act": "getPackageList",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "user",
+     "act": "getNotice",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "cgi_farm_request_count",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    },
+    {
+     "mod": "feast",
+     "act": "levelup",
+     "via": "CommandDefs 常量 → framework/net/ServerServices.as m_cmdMap（main3 中央映射表）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "notes": "工具区数据：背包种子数据（供播种选择）、每日礼包（Feast.getPackageList/getPackage）、公告（user.getNotice）、VIP 回礼（cgi_return_gift）、升级（feast.levelup）、免费请求计数。"
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/vo/OfflineData.as",
+   "class": "module.uitools.vo.OfflineData",
+   "swf": "main3_v_221",
+   "subsystem": "工具区",
+   "loc": 28,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/vo/ProfileData.as",
+   "class": "module.uitools.vo.ProfileData",
+   "swf": "main3_v_221",
+   "subsystem": "工具区",
+   "loc": 31,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/FreeGiftIcon.as",
+   "class": "module.uitools.widgets.FreeGiftIcon",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/控件",
+   "loc": 72,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "Freegift",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "FreeGiftAni",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/LeftSideToolBar.as",
+   "class": "module.uitools.widgets.LeftSideToolBar",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/控件",
+   "loc": 453,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "PostIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "InformationIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "CardsGameActivityIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "CardsGameIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "messages"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/NavigationBar.as",
+   "class": "module.uitools.widgets.NavigationBar",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/控件",
+   "loc": 437,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "monthEndArrow",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "symbol": "NavigationLeftArrow",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    },
+    {
+     "symbol": "NavigationRightArrow",
+     "via": "Utils.getMaterial 符号",
+     "unknown_host": "符号宿主 swf 未确定（不在 farmui/farmui2 等已采样 swf 的导出表内，可能由 RSL 动态库或作物/动物资产库提供）"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "Event.ENTER_FRAME",
+    "Event.ADDED_TO_STAGE"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/PersonInfo.as",
+   "class": "module.uitools.widgets.PersonInfo",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/控件",
+   "loc": 531,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "MsgIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "Event.REMOVED_FROM_STAGE",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.CLICK",
+    "Event.COMPLETE"
+   ],
+   "platform_calls": [
+    "navigateToURL"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/ShortcutBar.as",
+   "class": "module.uitools.widgets.ShortcutBar",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/控件",
+   "loc": 847,
+   "mods": [],
+   "assets": [
+    {
+     "ref": "module/ui/kfc.swf",
+     "via": "类内字面量",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "LevelUpIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "MonthEndIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui2_v_58.swf"
+     ],
+     "symbol": "monthEndArrow",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "GiftIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf"
+     ],
+     "symbol": "FlowerIcon",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT",
+    "MouseEvent.CLICK",
+    "Event.COMPLETE"
+   ],
+   "platform_calls": [
+    "QZFL.dialog.create",
+    "QZFL.dialog.create(\\'\\',"
+   ],
+   "unknown_assets": [
+    {
+     "literal": "module/ui/teBuRes.swf",
+     "why": "营销活动资源，部署包与 swf-inventory 均未收录"
+    }
+   ],
+   "cross_module_imports": [
+    "activities",
+    "messages"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/ToolBar.as",
+   "class": "module.uitools.widgets.ToolBar",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/控件",
+   "loc": 485,
+   "mods": [],
+   "assets": [
+    {
+     "ref": "module/ui/main/farmui_full_v_40.swf",
+     "via": "TOOLS 数组的工具图标符号 ToolArrow/ToolHoe/ToolInsect/ToolPack/... 在该 swf 符号表",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "KeyboardEvent.KEY_UP",
+    "KeyboardEvent.*"
+   ],
+   "notes": "工具条：TOOLS = [ToolArrow,ToolHand,OneClickHand,ToolHoe,ToolInsect,ToolPack,ToolBox,ToolTheft,ToolUpgradeNew,ToolWeed,Tool_Wild,ToolFishNet,ToolFishNetAll]（视觉符号在 farmui_full_v_40.swf），点击设光标样式、快捷键（KeyboardEvent）、红地升级按钮。播种入口=选种子（CURSOR_STYLE_CROPSEED，CursorCropSeed）。",
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/ToolBase.as",
+   "class": "module.uitools.widgets.ToolBase",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/控件",
+   "loc": 69,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/ToolBoxBar.as",
+   "class": "module.uitools.widgets.ToolBoxBar",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/控件",
+   "loc": 303,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/profile/ExpBar.as",
+   "class": "module.uitools.widgets.profile.ExpBar",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/资料条",
+   "loc": 178,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "ExpBlueBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "ExpBlue",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "ExpYellowBg",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "ExpYellow",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/profile/Level.as",
+   "class": "module.uitools.widgets.profile.Level",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/资料条",
+   "loc": 108,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "LevelBlue",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    },
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "LevelYellow",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/profile/LevelAndExperience.as",
+   "class": "module.uitools.widgets.profile.LevelAndExperience",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/资料条",
+   "loc": 62,
+   "mods": [],
+   "assets": [
+    {
+     "ref": [
+      "module/ui/main/farmui_full_v_40.swf",
+      "module/mc/main/farmui1_v_42.swf"
+     ],
+     "symbol": "LevelAndExperienss",
+     "via": "Utils.getMaterial 符号（宿主 swf 的 SymbolClass 导出，tools/dump_swf.php 采集）",
+     "in_inventory": true
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/profile/NameText.as",
+   "class": "module.uitools.widgets.profile.NameText",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/资料条",
+   "loc": 107,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/profile/PropertyText.as",
+   "class": "module.uitools.widgets.profile.PropertyText",
+   "swf": "main3_v_221",
+   "subsystem": "工具区/资料条",
+   "loc": 69,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/mx/core/ByteArrayAsset.as",
+   "class": "mx.core.ByteArrayAsset",
+   "swf": "main3_v_221",
+   "subsystem": "Flex 资产类",
+   "loc": 19,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/mx/core/FontAsset.as",
+   "class": "mx.core.FontAsset",
+   "swf": "main3_v_221",
+   "subsystem": "Flex 资产类",
+   "loc": 19,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/mx/core/IFlexAsset.as",
+   "class": "mx.core.IFlexAsset",
+   "swf": "main3_v_221",
+   "subsystem": "Flex 资产类",
+   "loc": 10,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/mx/core/mx_internal.as",
+   "class": "mx.core.mx_internal",
+   "swf": "main3_v_221",
+   "subsystem": "Flex 资产类",
+   "loc": 6,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/report/ClickReportManager.as",
+   "class": "report.ClickReportManager",
+   "swf": "main3_v_221",
+   "subsystem": "上报",
+   "loc": 84,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "platform_calls": [
+    "eval"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/report/UserActionRecorder.as",
+   "class": "report.UserActionRecorder",
+   "swf": "main3_v_221",
+   "subsystem": "上报",
+   "loc": 160,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  }
+ ],
+ "notes": [
+  "外部模块桩：FarmApplication.initModules 还会 new ModuleShop/ModuleWarehouse/ModuleDecorate/ModuleQuickShoot/ModuleFreeGift/ModuleCardsGame/ModuleWater（懒加载外部 swf，见各自模块 json）；V3 翻译 FarmApplication 时这些桩类先占位，功能后续 issue 补。",
+  "ServerServices 构造时实例化全部解析器（含 water/inventory/farm-shop/friends/farm-decorate 模块的 parser），V3 需把这些 parser 一并占位或顺带翻译（ServerServices.as:181-196）。",
+  "素材符号宿主：nc_main.php moduleList main 的 material——module/ui/main/farmui_full_v_40.swf（207 符号：Tool*/Cursor*/Dog*/Gold* 等）、farmui2_v_58.swf（39 符号）、water_ui_v_0.swf。各条目 assets.symbol 标注符号名。",
+  "跨模块依赖（本模块类 import 了其他模块类）：见各条目 cross_module_imports；主要集中在 FarmStage（礼物窗/wild 光标）、NPCView（dog 控件）、ToolBar（Tool_Wild）。",
+  "本模块不包含 mod=user&act=run 的发起（由 happyfarm3 预加载器拉起后回调 Main.startGame，V2 已实现）；farmKey 算法在 Main.init 内联定义。"
+ ]
+}

@@ -1,0 +1,98 @@
+{
+ "version": 1,
+ "module": "inventory",
+ "description": "农场背包/仓库：种子包（getUserSeed）、作物仓库（getusercrop）、种子仓库（seed_list）实体与解析器；卖出 repertory.sale/saleAll、cgi_farm_seed_sell 由外部仓库 swf 发起。UI 在 module/ui/warehouse_v_23.swf（module.warehouse.bag.MyBagController / module.warehouse.house.WarehouseController）。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php（Warehouse Module → module/ui/warehouse_v_23.swf）"
+ ],
+ "counts": {
+  "classes": 7
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/BagItem.as",
+   "class": "entities.BagItem",
+   "swf": "main3_v_221",
+   "subsystem": "仓库实体",
+   "loc": 75,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/WarehouseCrop.as",
+   "class": "entities.WarehouseCrop",
+   "swf": "main3_v_221",
+   "subsystem": "仓库实体",
+   "loc": 84,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/entities/WarehouseSeed.as",
+   "class": "entities.WarehouseSeed",
+   "swf": "main3_v_221",
+   "subsystem": "仓库实体",
+   "loc": 62,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/BagDataParser.as",
+   "class": "framework.net.parsers.BagDataParser",
+   "swf": "main3_v_221",
+   "subsystem": "解析器",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/WarehouseCropsParser.as",
+   "class": "framework.net.parsers.WarehouseCropsParser",
+   "swf": "main3_v_221",
+   "subsystem": "解析器",
+   "loc": 43,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/framework/net/parsers/WarehouseSeedsParser.as",
+   "class": "framework.net.parsers.WarehouseSeedsParser",
+   "swf": "main3_v_221",
+   "subsystem": "解析器",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/main3_v_221/scripts/module/warehouse/ModuleWarehouse.as",
+   "class": "module.warehouse.ModuleWarehouse",
+   "swf": "main3_v_221",
+   "subsystem": "仓库桩",
+   "loc": 66,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  }
+ ],
+ "notes": [
+  "工具条播种用的种子数据来自本模块 BagDataParser 解析的背包（uitools 经 CMD_GET_BAG_DATA 拉取——cross_module_imports 已标）。"
+ ]
+}

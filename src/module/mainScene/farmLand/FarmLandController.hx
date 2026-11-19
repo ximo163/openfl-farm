@@ -24,6 +24,7 @@ import framework.base.Controller;
 import interfaces.IModule;
 import interfaces.IMsgCenter;
 import module.mainScene.farmLand.widgets.LandItemRender;
+import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
 import openfl.display.Sprite;
@@ -738,10 +739,13 @@ class FarmLandController extends Controller {
 		if (_loc2_ == null) {
 			return;
 		}
-		if (param1.target.name == "btnOK") {
+		// PORT-NOTE: e.target 静态是 openfl Object（=Dynamic），`.name` 裸读在
+		// js/eval 上恒 undefined（openfl 的 name 是 get/set、无物理字段，机制
+		// 见 handbook/lessons）——强类型读恢复 AS3 的 getter 语义
+		if ((param1.target : DisplayObject).name == "btnOK") {
 			this.model.callPlane();
 		}
-		if (param1.target.name == "btnClose" || param1.target.name == "btnOK") {
+		if ((param1.target : DisplayObject).name == "btnClose" || (param1.target : DisplayObject).name == "btnOK") {
 			var _loc3d:Dynamic = _loc2_.getChildByName("__plane__");
 			_loc3_ = Std.isOfType(_loc3d, MovieClip) ? cast _loc3d : null;
 			if (_loc3_ != null) {

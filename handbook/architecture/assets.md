@@ -14,6 +14,14 @@
   preload="true"）；代码里的 `Loader.load(远端URL)` 只在加载器类里换成
   `src/shim/LocalSwfLoader.hx`（`libraryIdForUrl` 按 URL 尾段映射库名），
   其余代码保持原调用形态。
+- **SymbolClass 符号 shim**（`src/shim/SymbolClass.hx` + 各同名类）：原版
+  swf 的 SymbolClass 把导出符号绑到同名 AS3 类，视图 `new Farmland_Lite()`
+  直构带时间轴；openfl 只有 `Assets.getMovieClip` 实例化才挂时间轴。同
+  名 Haxe 类（`@:keep`）构造器里补 `SymbolClass.bind(this, 库id, 符号名)`
+  挂回。**两个登记义务**：① 新符号 shim 必须同步加进
+  `SymbolClass.dceAnchor` 数组（仅生产目标，`#if !eval`）——零引用的
+  `@:keep` 类不进 `-dce full` 产物（见 lessons）；② 符号名小写开头的
+  （如 canPickIcon）类名大写 + `@:native("原名")` 回键。
 - 当前已入库的库和每个库的来源依据，看 `libraries.xml` 和
   `assets/legacy-assets.txt` 里的分组注释（V1 样本 / V2 加载链 / V3a
   启动链）。

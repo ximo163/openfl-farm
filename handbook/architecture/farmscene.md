@@ -17,6 +17,10 @@ legacy 出处：`decompiled main3 module/mainScene/farmLand/`。
   **地块实例名是交互路由键**：`__FarmlandItem__<行>.<列>`（额外第 4 行是
   `.3` 后缀）、荒地 `__reclaim__`、飞机 `__plane__`、遮罩 `__mask__`——
   `onMouseEvent`/`onLandClicked` 全靠 `name` 分流，**实例名一个字符都不能改**。
+  `e.target`/`e.currentTarget` 静态是 openfl 的 Object（=Dynamic），name 经
+  Dynamic 裸读在 js 恒 undefined——路由键的读法必须
+  `(e.target : DisplayObject).name` 强类型（机制与修法见 lessons for-each
+  条目，#8 attempt 2 修的 7 处之一）。
   `SCALE=0.75`，`ITEM_WIDTH/HEIGHT = 204/102 * SCALE`，静态量先 `SCALE`
   再派生（Haxe 静态初始化按声明序）。悬停高亮走 ColorMatrixFilter（数组
   逐字照抄，`m_overFilters`）。

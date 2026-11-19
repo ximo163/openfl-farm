@@ -29,4 +29,19 @@
   （按 URL 尾段映射库名），其余代码保持原 `Loader.load` 调用形态——这是
   CLAUDE.md「API 映射只写在加载器类里」规则的实例（#7 的
   `Main.loadWildShell` / `FarmApplication.loadWildShell` 两处）。
+- `FarmStage.getLayerByName` / `FarmApplication.getModuleByName` 按 name 查
+  层/模块，调用方（NPCView 等）拿到 null 直接崩——循环变量的
+  Dynamic 裸读陷阱和修法见 [lessons/index.md](../lessons/index.md) 的
+  for-each 条目（#8 CI 红的根因，改动这两处时别把强类型读退化回去）。
 - 资产入库与声明的机制见 [assets.md](assets.md)。
+
+## 本地无浏览器验证启动链（nodeboot）
+
+`node tools/nodeboot/nodeboot.mjs [--timeout 45]`：node 里垫 DOM/Canvas/XHR
+拉起 `export/html5/bin`，`render_xml.php` 仿 xml.php、
+`fixtures/mync-user-run.json` 仿 mync 用户数据，等 `__openflFarmReady`
+（**与 CI `harness/smoke.mjs` 同一就绪标记**）后退出 0。CI web-smoke 红了
+先在本地跑它看完整 trace，别盲猜。干净基线：8 次 `[CmdLoadFile]`、无
+`SymbolClass:` 留痕、无报错；`/N?数字` 的 404 是原版 QQ 统计信标（游戏自己
+容忍），字体 WARNING（Arial/微软雅黑）是 openfl 嵌字缺失、只影响动态文本
+度量，就绪标记不受影响。

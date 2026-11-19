@@ -14,6 +14,7 @@ import framework.base.BaseLayer;
 import module.mainScene.farmLand.widgets.LandItemRender;
 import module.mainScene.farmLand.widgets.LandPickIcon;
 import module.mainScene.farmLand.widgets.LandTalkTip;
+import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
 import openfl.display.Sprite;
@@ -812,7 +813,11 @@ class FarmLandsView extends Sprite {
 				return;
 			}
 		}
-		var _loc3_:String = param1.target.name;
+		// PORT-NOTE: e.target/currentTarget 静态是 openfl Object（=Dynamic），
+		// `.name` 裸读在 js/eval 上恒 undefined（openfl 的 name 是 get/set、
+		// 无物理字段，机制见 handbook/lessons）——强类型读恢复 AS3 的 getter
+		// 语义，本处理器按原版只从显示对象收事件
+		var _loc3_:String = (param1.target : DisplayObject).name;
 		if (param1.type == MouseEvent.ROLL_OVER) {
 			if (_loc3_ == "__reclaim__") {
 				this.m_controller.useSystemCursor(true);
@@ -829,13 +834,13 @@ class FarmLandsView extends Sprite {
 				this.loseMouse();
 			}
 		} else if (param1.type == MouseEvent.CLICK) {
-			_loc3_ = param1.target.name;
+			_loc3_ = (param1.target : DisplayObject).name;
 			if (_loc3_ == "__reclaim__") {
 				var _loc4d:Dynamic = param1.target.parent;
 				_loc4_ = Std.isOfType(_loc4d, LandItemRender) ? cast _loc4d : null;
 				this.onReclaimClicked(_loc4_);
 			} else {
-				_loc3_ = param1.currentTarget.name;
+				_loc3_ = (param1.currentTarget : DisplayObject).name;
 				if (_loc3_.indexOf("__FarmlandItem__") != -1) {
 					var _loc5d:Dynamic = param1.currentTarget;
 					this.m_currentItem = Std.isOfType(_loc5d, LandItemRender) ? cast _loc5d : null;

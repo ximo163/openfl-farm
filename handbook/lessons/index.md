@@ -68,3 +68,50 @@
   MaoPaoFlag 的 frame1 `infoTxt.text = talkInfo` 不再执行——气泡文本缺失是
   既知视觉偏差（deviations 候选）。防：涉及符号内嵌脚本的显示行为，先看
   `haxelib run swf` 处理产物的 scriptSource 是否为空再下结论。
+- **Haxe for 循环变量按元素类型重新绑定，AS3「for each 写进已声明强类型
+  局部」是假等价**：AS3 `var _loc2_:BaseLayer; for each (_loc2_ in arr)
+  { _loc2_.name }` 把元素写进**已声明的强类型局部**，`.name` 是 getter
+  调用；Haxe `for (_loc2_ in (arr:Array<Dynamic>))` 重新绑定一个**按元素
+  类型（Dynamic）的新循环变量**，先声明的 `var _loc2_:BaseLayer` 是被遮
+  蔽的死代码，且 Dynamic 上的属性访问编成**裸字段读写**。openfl 自家的
+  get/set 属性（name/x/y/alpha/visible/scaleX/width/cacheAsBitmap）无物理
+  js 字段 → 裸读恒 undefined → #8 CI 的 NPCView 崩溃就是这么来的：
+  `FarmStage.getLayerByName` 查名恒落空返回 null，NPCView 构造器
+  `param1.module.container.getChildByName` 抛 TypeError。修法（probe 在
+  4.3.6 上验证过 codegen）：`(_loc2_ : BaseLayer).name`——ECheckType 在 js
+  上抹平成强类型 `get_name()` 调用；`cast(x, T)` 是 `js_Boot.__cast` 检查
+  转换（对应 AS3 会抛错的 `T(x)`）；`var c:T = cast x` 直接强类型。同因
+  同修的还有 FarmApplication.getModuleByName、Crop 的 name/cacheAsBitmap
+  写、FarmLandsView/FarmLandController 的 e.target.name 读（共 7 处生产
+  代码）。防：译 AS3 for-each 时循环体若经元素碰 openfl 属性，访问一律
+  `(元素 : 应有类型)` 强类型化；CI 红先看 pageerror 的栈帧类名链再猜。
+- **`@:keep` 救不了「从未被类型化」的类，反射字符串专属类全被裁**：Haxe
+  只编译从 main 可达（被引用/import）的类型；符号 shim 只经
+  `getMaterial("com.qzone.ui.FarmlandS")` 这类反射字符串取用，编译期零引
+  用——in-pipeline probe 证实零引用的 `@:keep` 类在 `-dce full` 产物里整
+  体不存在，33 个符号 shim（FarmlandS/S2/G/G2 全色系、JPLand 四式、
+  Wasteland、Crop_1_*/Crop_6_* 十档、Insect/Weed/Reclaim、
+  CursorFishNet/All、canPickIcon）全被裁，LandTile 为此抛
+  "Can not get land res!"。AS3 无此问题：Loader 装 swf 即把 SymbolClass
+  类注册进 ApplicationDomain。修法：`SymbolClass.bind` 在启动链上必然执
+  行，首次调用初始化 `dceAnchor` 类数组（运行时可达的引用）把全部 shim
+  拉进类型图，各自的 @:keep 负责在 dce full 下保命——**新增符号 shim
+  必须同步补一行**。锚整体 `#if !eval`：eval 按 LandItemRenderTest 的前
+  提是「无资源」环境（测试断言 updateLandStatus 素材缺失会抛），锚把符
+  号类编进 eval 会翻掉该前提（4 断言连红实锤）；test/ 是 append-only，
+  环境前提由实现侧保。
+- **小写开头的类名在 Haxe 里只能当孤儿，引用它是编译错**：原符号
+  canPickIcon 小写开头。Haxe 跨模块引用小写类全形态皆编译错（import、表
+  达式位置、类型位置，probe 逐一证实）；小写类文件「能编译」只是因为它
+  从未被引用——即永远不进产物、反射恒 null，attempt 1 的
+  src/canPickIcon.hx 就是这种死文件。修法：类名改大写 `CanPickIcon` +
+  `@:native("canPickIcon")` 把 js 运行时注册键改回原符号名（probe 证实
+  `$hxClasses["canPickIcon"]` 命中、`resolveClass("canPickIcon")` 可取），
+  反射调用点的字符串一字不动。eval/cpp 的 resolveClass 不看 @:native 键，
+  但 eval 单测不解析显示符号、cpp/android 门只编译不跑场景，不受影响。
+- **删临时代码（探针/TEMP）时按 hunk 对 legacy 核，别按记忆删**：#8
+  attempt 2 清 buildLayers 的探针时顺手删掉了 LAYER_DAILYMISSION 层和
+  WindowLayer 两段**原版真代码**（FarmStage.as:194-197/202-204）——本地
+  nodeboot 照样就绪（启动不查这两层），差一点带着显示结构回归收工。
+  防：动过「先加后删」代码的文件，收工前 `git diff HEAD` 逐 hunk 问一遍
+  「这个改动对应 legacy 哪一行」，对不上的还原。

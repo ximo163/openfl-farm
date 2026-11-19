@@ -5,6 +5,7 @@ import com.qzone.corelib.net.RSLManager;
 import common.CommonData;
 import common.GetCropID;
 import common.Settings;
+import openfl.display.DisplayObject;
 import openfl.display.MovieClip;
 import openfl.display.Sprite;
 import openfl.events.Event;
@@ -108,8 +109,11 @@ class Crop extends Sprite {
 		}
 	}
 
-	// PORT-NOTE：时间轴具名子实例的检取（见 setState 处注释）
-	private function cropStepChild(param1:Dynamic, param2:String):Dynamic {
+	// PORT-NOTE：时间轴具名子实例的检取（见 setState 处注释）。返回值取
+	// 强类型 DisplayObject：AS3 里 `MovieClip(...).step1` 本就是强类型属性
+	// 访问（visible 走 setter），经 Dynamic 在 js/eval 上是裸字段写、setter
+	// 不触发（机制见 handbook/lessons），调用点 setStepChildVisible 依赖它
+	private function cropStepChild(param1:Dynamic, param2:String):DisplayObject {
 		if (Std.isOfType(param1, MovieClip)) {
 			return cast(param1, MovieClip).getChildByName(param2);
 		}
@@ -118,7 +122,7 @@ class Crop extends Sprite {
 
 	// PORT-NOTE：同上——step1/2/3 显隐经具名子实例
 	private function setStepChildVisible(param1:Dynamic, param2:String, param3:Bool):Void {
-		var _loc1_:Dynamic = cropStepChild(param1, param2);
+		var _loc1_:DisplayObject = cropStepChild(param1, param2);
 		if (_loc1_ != null) {
 			_loc1_.visible = param3;
 		}
@@ -199,14 +203,20 @@ class Crop extends Sprite {
 			this.removeCurrentCrop();
 			this._loaded = true;
 			this._currentCrop = Type.createInstance(_loc2_, []);
-			this._currentCrop.name = "__crop__";
+			// PORT-NOTE: _currentCrop 是 AS3 `*`（Crop.as:33），`.name` 经
+			// Dynamic 在 js/eval 上是裸字段写、不触发 openfl 的 set_name（机制
+			// 见 handbook/lessons）；原版下一行起就是对同一对象做
+			// `MovieClip(this._currentCrop)` 强转（step1/2/3 与 cacheAsBitmap），
+			// 此处照原版的强转形态取强类型写
+			cast(this._currentCrop, MovieClip).name = "__crop__";
 			if (this._classStep == 3) {
 				// PORT-NOTE：step1/2/3 具名子实例，见 setState 处注释
 				setStepChildVisible(this._currentCrop, "step1", this._step == 3);
 				setStepChildVisible(this._currentCrop, "step2", this._step == 4);
 				setStepChildVisible(this._currentCrop, "step3", this._step != 3 && this._step != 4);
 			}
-			this._currentCrop.cacheAsBitmap = true;
+			// AS3 原句：MovieClip(this._currentCrop).cacheAsBitmap = true;
+			cast(this._currentCrop, MovieClip).cacheAsBitmap = true;
 			this._cropLayers = [];
 			this._cropLayers.push(this._currentCrop);
 			this._cropLayers.reverse();

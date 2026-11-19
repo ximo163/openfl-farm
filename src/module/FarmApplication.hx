@@ -155,8 +155,12 @@ class FarmApplication extends Application implements IMsgCenter {
 	public function getModuleByName(param1:String):IModule {
 		var _loc2_:Module = null;
 		for (_loc2_ in (this.m_modules:Array<Dynamic>)) {
-			if (_loc2_.name == param1) {
-				return _loc2_;
+			// PORT-NOTE: AS3 的 for each 把元素写进已声明的 _loc2_:Module，
+			// `.name` 走 getter；Haxe 的 for 循环变量按元素类型重新绑定为
+			// Dynamic，裸读 .name 在 js/eval 上恒 undefined（openfl 的 name 是
+			// get/set、无物理字段），查名恒落空——取强类型读恢复 AS3 语义
+			if ((_loc2_ : Module).name == param1) {
+				return cast _loc2_;
 			}
 		}
 		return null;

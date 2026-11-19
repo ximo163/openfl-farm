@@ -37,7 +37,36 @@ class SymbolClass {
 	// 按需加载中的库：libraryId → 等待绑定的 (symbolName, target) 列表
 	private static var pending:Array<{libraryId:String, symbolName:String, target:MovieClip}> = [];
 
+	// DCE 引用锚。Haxe 只编译从 main 可达（被引用/import）的类型；符号 shim
+	// 只经反射字符串取用（getMaterial/getClass → ApplicationDomain →
+	// Type.resolveClass），编译期零引用时 @:keep 也救不了——类整体不进产物
+	// （in-pipeline probe 证实：零引用的 @:keep 类在 bundle 里不存在，反射恒
+	// null，LandTile 为此抛 "Can not get land res!"）。AS3 无此问题：Loader
+	// 装载 swf 即把 SymbolClass 类注册进 ApplicationDomain。bind 在启动链上
+	// 必然执行，首次调用把全部符号 shim 拉进类型图，各自的 @:keep 负责在
+	// dce full 下保命。新增符号 shim 时同步补一行。
+	// 仅生产目标：eval 按惯例是「无资源」环境（LandItemRenderTest 以
+	// updateLandStatus 的素材缺失抛出为前提断言），锚不能把这个前提翻掉。
+	#if !eval
+	private static var dceAnchor:Array<Class<Dynamic>>;
+	#end
+
 	public static function bind(target:MovieClip, libraryId:String, symbolName:String):Void {
+	#if !eval
+		if (dceAnchor == null) {
+			dceAnchor = [
+				com.qzone.ui.FarmlandS, com.qzone.ui.FarmlandS2, com.qzone.ui.FarmlandG, com.qzone.ui.FarmlandG2,
+				com.qzone.ui.red.FarmlandS, com.qzone.ui.red.FarmlandS2, com.qzone.ui.red.FarmlandG, com.qzone.ui.red.FarmlandG2,
+				com.qzone.ui.black.FarmlandS, com.qzone.ui.black.FarmlandS2, com.qzone.ui.black.FarmlandG, com.qzone.ui.black.FarmlandG2,
+				com.qzone.ui.JPLandS, com.qzone.ui.JPLandS2, com.qzone.ui.JPLandG, com.qzone.ui.JPLandG2,
+				com.qzone.ui.Wasteland,
+				CursorFishNet, CursorFishNetAll,
+				Crop_1_0, Crop_1_1, Crop_1_2, Crop_1_3, Crop_1_4,
+				Crop_6_0, Crop_6_1, Crop_6_2, Crop_6_3, Crop_6_4,
+				Insect, Weed, Reclaim, CanPickIcon
+			];
+		}
+#end
 #if eval
 		// eval 单测（test.hxml 无 -lib swf）：无库可查，保持空剪辑并留痕，
 		// 不抛——原版纯符号构造也不抛

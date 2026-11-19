@@ -77,7 +77,7 @@ class NPCModelTest {
 		model.changeDog(7);
 		Assert.equals(7, model.dogID);
 		Assert.isFalse(model.dogHungry); // :100-102 不动 _isHungry
-		Assert.equals(2, loaded.length); // :103 派发
+		Assert.equals(3, loaded.length); // changeDog(3)、setDogData、changeDog(7) 各派发一次（:88/:103）
 		Assert.equals(7, Reflect.field(Reflect.field(Session.getInstance().sceneDecorates, "8"), "itemId"));
 	}
 }

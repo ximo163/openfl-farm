@@ -90,12 +90,10 @@ class LandItemRenderTest {
 		Assert.equals(9, render._cropID);
 	}
 
-	// createCrop :117-134：cropID==0 抛 "Invalid crop id."（:119-121）；
-	// 名字或 url 为空直接返回（:122-126），不建作物实例——cropLoaded 走
-	// "无实例恒 true" 一侧
-	public function test_createCrop_rejects_invalid_id_and_empty_arguments() {
-		var render = new LandItemRender();
-		render.setGrowStep(1, 2); // _cropID=2
+	// createCrop :119-121：守卫读**实例字段** _cropID（非 param1）——全新
+	// render ctor 默认 _cropID=0（:32），param1 传什么都抛 "Invalid crop id."
+	public function test_createCrop_throws_while_render_crop_id_is_zero() {
+		var render = new LandItemRender(); // :32 默认 _cropID=0
 		var message = "";
 		try {
 			render.createCrop(0, "Crop_2", "url");
@@ -103,10 +101,25 @@ class LandItemRenderTest {
 			message = e.message;
 		}
 		Assert.equals("Invalid crop id.", message);
+		var second = "";
+		try {
+			render.createCrop(2, "Crop_2", "url"); // param1 非 0：守卫不看它
+		} catch (e:openfl.errors.Error) {
+			second = e.message;
+		}
+		Assert.equals("Invalid crop id.", second);
+		Assert.isNull(render._crop); // 没建实例
+	}
+
+	// createCrop :123-126：_cropID!=0（过 :119 守卫）时名字或 url 为空直接
+	// 返回，不建作物实例——cropLoaded 走 "无实例恒 true" 一侧（:169-176）
+	public function test_createCrop_empty_name_or_url_returns_without_creating_crop() {
+		var render = new LandItemRender();
+		render.setGrowStep(1, 2); // :50 _cropID=2
 		render.createCrop(2, "", "url"); // :123 名字空
 		Assert.isTrue(render.cropLoaded);
 		render.createCrop(2, "Crop_2", ""); // :123 url 空
 		Assert.isTrue(render.cropLoaded);
-		Assert.isNull(render._crop); // 三次都没建实例
+		Assert.isNull(render._crop); // 两次都没建实例
 	}
 }

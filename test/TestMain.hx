@@ -40,6 +40,13 @@ class TestMain {
 		runner.addCase(new module.mainScene.background.BackgroundModelTest());
 		runner.addCase(new module.mainScene.npc.NPCModelTest());
 		runner.addCase(new entities.PlayerTest());
+		// issue #8（review 要求补的注册行，lessons append-only 条目：implement
+		// 阶段新增测试文件只能由本阶段注册）——GetCropID.idState/timeToMature
+		// 生长档推导、Crop 生命周期/看板 swf ↔ libraries.xml 一致性门、启动
+		// 窗口装饰 swf ↔ libraries.xml 一致性门
+		runner.addCase(new common.GetCropIDTest());
+		runner.addCase(new CropLifecycleLibrariesTest());
+		runner.addCase(new SceneDecorLibrariesTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

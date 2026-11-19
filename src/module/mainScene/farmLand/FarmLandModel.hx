@@ -1277,9 +1277,18 @@ class FarmLandModel extends EventDispatcher {
 
 	private function get_isAllGoldLand():Int {
 		var _loc1_:FarmLand = null;
-		for (_loc1_ in (this.m_farmlandData:Array<Dynamic>)) {
-			if (_loc1_._goldLand != 1) {
-				return 2;
+		// PORT-NOTE(AS3→Haxe)：原版 for each 的循环变量是编译期 FarmLand，
+		// `_loc1_._goldLand` 必调计算属性 getter（FarmLand.as:225-245 金地判定
+		// 依赖 Settings 的 jinPaiLand 活动窗口）；从 Array<Dynamic> 迭代出的元素
+		// 是 Dynamic，直读不触发 getter（eval 得 null→恒判非金地），故先把数组按
+		// Array<FarmLand> 取回再迭代。for each 对 null 数组零次迭代，Haxe 迭代
+		// null 会抛 Null Access，需显式判空。
+		if (this.m_farmlandData != null) {
+			var typed:Array<FarmLand> = cast this.m_farmlandData;
+			for (_loc1_ in typed) {
+				if (_loc1_._goldLand != 1) {
+					return 2;
+				}
 			}
 		}
 		if (As3.truthy(this.m_farmlandData) && this.m_farmlandData.length < 24) {

@@ -2,12 +2,7 @@ package com.qzone.qfa.managers.errors;
 
 import openfl.errors.Error;
 
-/**
- * com.qzone.qfa.managers.errors.ConnectionError —— write-tests stub（issue #7）：
- * 常量照抄
- * legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/managers/errors/ConnectionError.as
- * （:6-18），构造体在翻译阶段实现。
- */
+// com.qzone.qfa.managers.errors.ConnectionError —— ConnectionError.as 逐句对应。
 class ConnectionError extends Error {
 	// ConnectionError.as:6-18
 	public static final ERR_IO:String = "io_err";
@@ -20,6 +15,5 @@ class ConnectionError extends Error {
 
 	public function new(param1:Dynamic = "", param2:Int = 0) {
 		super(param1, param2);
-		throw new openfl.errors.Error("not implemented");
 	}
 }

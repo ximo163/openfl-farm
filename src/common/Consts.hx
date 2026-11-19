@@ -30,12 +30,26 @@ class Consts {
 	public static final LAYER_WILD:String = "Wild Layer";
 	public static final LAYER_DAILYMISSION:String = "DailyMission UI Layer";
 	public static final LAYER_STRONG_GUIDE:String = "LAYER_STRONG_GUIDE";
+	public static final LAYER_WINDOW:String = "Window Layer";
+	public static final LAYER_TIP:String = "Tip Layer";
+	public static final LAYER_FLOATING:String = "Floating Layer";
+	public static final LAYER_CURSOR:String = "Cursor Layer";
 
 	// 主循环与模块名
 	public static final MAIN_TIMER_FREQ:Int = 100;
 	public static final MODULE_MAINSCENE:String = "Main Scene";
 	public static final MODULE_MESSAGES:String = "Messages Module";
 	public static final MODULE_RECALL:String = "Recall Module";
+	public static final MODULE_UITOOLS:String = "UI Tools";
+	public static final MODULE_FRIENDS:String = "Firends List";
+	public static final MODULE_SHOP:String = "Shop Module";
+	public static final MODULE_DIY:String = "Decorate Module";
+	public static final MODULE_WAREHOUSE:String = "Warehouse Module";
+	public static final MODULE_TASK:String = "Task Module";
+	public static final MODULE_WATER:String = "Water Pool Module";
+	public static final MODULE_CARDS_GAME:String = "Cards Module";
+	public static final MODULE_QUICK_SHOOT:String = "Quick Shoot Module";
+	public static final MODULE_FREE_GIFT:String = "FreeGift Module";
 	public static final PLUGIN_AMOUNT_BG:Int = 0;
 
 	// 消息名
@@ -60,6 +74,22 @@ class Consts {
 	public static final MSG_PLAY_UPGRADE_RED_LAND:String = "PlayUpgradeLandAnimation";
 	public static final MSG_TRUNK_SYSTEM_TOOLBAR:String = "TrunkSystemToolbar";
 	public static final CLOSE_RECALL_WINDOW:String = "closerecallwindow";
+	public static final MSG_SET_LAND_CURSOR:String = "SetLandCursor";
+	public static final MSG_SHOW_UPGRADE_RED:String = "ShowUpgradeRedWindow";
+	public static final MSG_SHOW_RECALL:String = "ShowRecall";
+	public static final MSG_SHOW_PROFILE:String = "ShowProfile";
+	public static final MSG_SHOW_PACK:String = "ShowMyPackage";
+	public static final MSG_SHOW_SHOP:String = "ShowShop";
+	public static final MSG_SHOW_BUY_DOG_FOOD:String = "ShowBuyDogFood";
+	public static final MSG_SHOW_BUY_SEED:String = "ShowBuySeed";
+	public static final MSG_SHOW_WAREHOUSE_SELL:String = "ShowWarehouseSell";
+	public static final MSG_SHOW_FREEGIFT:String = "ShowFreegift";
+	public static final MSG_SHOW_DIY:String = "ShowDIY";
+	public static final MSG_SHOW_HEALTHMODE:String = "ShowHealthModeWindow";
+	public static final MSG_SHOW_CARDSGAMEWINDOW:String = "ShowCardsGameWindow";
+
+	// 模型数据键
+	public static final USER_DECORATE_OBJECT:String = "UserDecorate";
 
 	// 窗口/提示/飘字/光标名（FarmStage/FarmApplication 注册用）
 	public static final WINDOW_NAME_ALERT:String = "AlertWindow";
@@ -71,6 +101,10 @@ class Consts {
 	public static final WINDOW_NAME_UPGRADE_RED:String = "UpgradeRedLandWindow";
 	public static final WINDOW_NAME_VALIDATE:String = "ValidateCodeWindow";
 	public static final WINDOW_NAME_ABUTTON:String = "AddButtonWindow";
+	public static final WINDOW_NAME_SHOP:String = "shop";
+	public static final WINDOW_NAME_WAREHOUSE:String = "warehouse";
+	public static final WINDOW_NAME_PROFILE:String = "profile";
+	public static final WINDOW_NAME_BUYDIY:String = "BuyDiyWindow";
 	public static final TIP_NAME_MOUSE:String = "MouseTip";
 	public static final TIP_NAME_LAND_INFOR:String = "LandInfoTip";
 	public static final TIP_NAME_CROPINFO_MOUSE:String = "CropInfoTip";
@@ -101,6 +135,7 @@ class Consts {
 	public static final CURSOR_WILD_GUN:String = "Cursor_Wild_Gun";
 	public static final CURSOR_WILD_HAND:String = "Wild_Cursor";
 	public static final CURSOR_WILD_TOOL:String = "Cursor_Wild_Tool";
+	public static final CURSOR_SYSTEM:String = "system";
 
 	// 道具/功能开关
 	public static final ITEM_TYPE_SEED:String = "1";

@@ -1,6 +1,9 @@
 package common;
 
+import entities.Dog;
 import entities.Player;
+import module.FarmApplication;
+import openfl.errors.ArgumentError;
 
 /**
  * common.Session —— 闭包 stub（issue #7，后续模块翻译，stub 同 module/Main 先例）。
@@ -182,5 +185,71 @@ class Session {
 	// V3b 片翻译，stub 恒 false = 不在健康模式）
 	public function checkHealthMode():Bool {
 		return false;
+	}
+
+	// ---- issue #7 启动链补的闭包成员（同样字段存取语义）----
+
+	// Session.as:36+265-268/:284-286（app：宿主应用引用，module.Main.init 注入）
+	public var app(get, set):FarmApplication;
+
+	private var m_app:FarmApplication;
+
+	private function get_app():FarmApplication {
+		return this.m_app;
+	}
+
+	private function set_app(param1:FarmApplication):FarmApplication {
+		this.m_app = param1;
+		return param1;
+	}
+
+	// Session.as:38（public var dog:Dog）——Main.startGame 存 StartupData._dog
+	public var dog:Dog;
+
+	// Session.as:28（public var isInWildStage:Boolean = false）——FarmStage
+	// 场景切换处理器读写
+	public var isInWildStage:Bool = false;
+
+	// Session.as:44（public var isFromMail:Boolean = false）——Main.doMiscThings
+	public var isFromMail:Bool = false;
+
+	// Session.as:58（public var m_lockFishMouse:Boolean）——FarmApplication
+	// 切换用户后复位
+	public var m_lockFishMouse:Bool;
+
+	// Session.as:22（public var m_buildVersion:String）——Main.init 存
+	// VersionUtil.versionString
+	public var m_buildVersion:String;
+
+	// Session.as:270-277/:346-349（sceneDecorates：场景装饰走 model 的
+	// UserDecorate 键，setter 空数据抛 ArgumentError 照抄）
+	public var sceneDecorates(get, set):Dynamic;
+
+	private function get_sceneDecorates():Dynamic {
+		return this.m_app.model.getData(Consts.USER_DECORATE_OBJECT);
+	}
+
+	private function set_sceneDecorates(param1:Dynamic):Dynamic {
+		if (param1 == null) {
+			throw new ArgumentError("Invalid scene decorates data");
+		}
+		this.m_app.model.setData(Consts.USER_DECORATE_OBJECT, param1);
+		return param1;
+	}
+
+	// Session.as:473-489（currentUserIdByUinMode：QZone uin 模式下取 uin）
+	public var currentUserIdByUinMode(get, never):UInt;
+
+	private function get_currentUserIdByUinMode():UInt {
+		var _loc1_:UInt = 0;
+		var _loc2_:Player = this.currentUser;
+		if (_loc2_ == null) {
+			return _loc1_;
+		}
+		_loc1_ = this.currentUser._uId;
+		if (Settings.isQZoneUinMode == true) {
+			_loc1_ = _loc2_.uin;
+		}
+		return _loc1_;
 	}
 }

@@ -13,7 +13,7 @@ class StartupData {
 	public var _unread:Dynamic;
 	public var _serverTime:Int;
 	public var _user:Player;
-	public var upGoldLandTime:Int;
+	public var upGoldLandTime:Int = 0; // AS3 int 默认值（原版构造器不置）
 	public var _weather:Weather;
 	public var _landStatus:Array<Dynamic>;
 	public var _dog:Dog;

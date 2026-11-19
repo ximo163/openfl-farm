@@ -120,6 +120,62 @@ class As3 {
 		}
 	}
 
+	/**
+	 * flash.utils.getTimer：播放器启动以来的毫秒数（恒非负）。
+	 * openfl.Lib.getTimer 在 eval 目标上是纪元毫秒溢出 Int32 的负值，AS3 里
+	 * set 用 int(x/1000)、get 用 Math.floor(x/1000)（CommonData.serverTime
+	 * 漂移公式），负数让两者分歧 1 秒——flash 播放器上 getTimer 恒非负、两者
+	 * 恒一致。以首次调用为基线复刻「自启动毫秒」；js 上 Timer.stamp 与
+	 * openfl 的 performance.now 同基，数值不变。
+	 */
+	private static var timerBase:Float = Math.NaN;
+
+	public static function getTimer():Int {
+		if (Math.isNaN(timerBase)) {
+			timerBase = haxe.Timer.stamp();
+		}
+		return Std.int((haxe.Timer.stamp() - timerBase) * 1000);
+	}
+
+	/**
+	 * AS3 `new Date(字符串)` 的日期串解析。Haxe Date.fromString 只认 ISO
+	 * "Y-M-D H:M:S"，而原版配置里走这一支的是美式串（xml/mod/nc_addon.php:113
+	 * `<jinPaiLand>7/10/2012-11/12/2012 23:59:59</jinPaiLand>`，FarmLand.as:233
+	 * `new Date(_loc3_[0])`），只复刻配置用到的 m/d/Y[ H:M[:S]] 形态。解析失败
+	 * 返回 null：AS3 里是 time=NaN 的 Invalid Date，调用点只做 getTime 比较，
+	 * NaN 比较恒 false，null＋调用方跳过等价。
+	 */
+	public static function dateOf(s:String):Date {
+		if (s == null) {
+			return null;
+		}
+		var dateParts:Array<String> = s.split(" ");
+		var d:Array<String> = dateParts[0].split("/");
+		if (d.length < 3) {
+			return null;
+		}
+		var year:Int = As3.intOf(d[2]);
+		var month:Int = As3.intOf(d[0]);
+		var day:Int = As3.intOf(d[1]);
+		var h:Int = 0;
+		var m:Int = 0;
+		var sec:Int = 0;
+		if (dateParts.length > 1) {
+			var t:Array<String> = dateParts[1].split(":");
+			h = As3.intOf(t[0]);
+			if (t.length > 1) {
+				m = As3.intOf(t[1]);
+			}
+			if (t.length > 2) {
+				sec = As3.intOf(t[2]);
+			}
+		}
+		if (year <= 0 || month <= 0 || day <= 0) {
+			return null;
+		}
+		return new Date(year, month - 1, day, h, m, sec);
+	}
+
 	static function toNumber(v:Dynamic):Float {
 		if (v == null) {
 			return Math.NaN;

@@ -11,14 +11,16 @@ import openfl.events.IEventDispatcher;
  * 这里常量取值照抄，delayRequest 空实现（不发起任何网络）。
  */
 class OperationQueue extends EventDispatcher {
-	// OperationQueue.as:17-27（internal static const → private static final）
-	static final EVENT_OPERATE_SUCCES:String = "OperateSuccess";
-	static final EVENT_OPERATE_ERROR:String = "OperateError";
-	static final ADD_WEED:Int = 0;
-	static final CLEAR_WEED:Int = 1;
-	static final ADD_BUG:Int = 2;
-	static final CLEAR_BUG:Int = 3;
-	static final QUEUE_LEN:Int = 4;
+	// OperationQueue.as:17-27（internal static const → public static final：
+	// AS3 internal 是包内可见，Haxe 没有包可见性，FarmLandModel（同包、原版同样
+	// 引用这些常量）需要 public 才能访问）
+	public static final EVENT_OPERATE_SUCCES:String = "OperateSuccess";
+	public static final EVENT_OPERATE_ERROR:String = "OperateError";
+	public static final ADD_WEED:Int = 0;
+	public static final CLEAR_WEED:Int = 1;
+	public static final ADD_BUG:Int = 2;
+	public static final CLEAR_BUG:Int = 3;
+	public static final QUEUE_LEN:Int = 4;
 
 	public function new(param1:UInt = 1000, param2:IEventDispatcher = null) {
 		super(param2);

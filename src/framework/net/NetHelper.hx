@@ -2,14 +2,14 @@ package framework.net;
 
 import com.qzone.qfa.control.Application;
 import com.qzone.qfa.events.CommandEvent;
+import common.Consts;
+import common.misc.Utils;
+import framework.commands.CommandList;
+import framework.net.vo.ServiceResultVO;
 import openfl.net.URLVariables;
 
-/**
- * framework.net.NetHelper —— write-tests stub（issue #7）：签名与
- * legacy/decompiled/main3_v_221/scripts/framework/net/NetHelper.as 一致，方法体
- * `throw new Error("not implemented")`，实现在翻译阶段完成
- * （reSendRequest :23-43、sendRequest :45-59、getRequest :61-75、getVOData :77-93）。
- */
+// framework.net.NetHelper —— NetHelper.as 逐句对应。
+// PORT-NOTE: for-in over Object → Reflect.fields；STATE["x"] → Reflect.field。
 @:final
 class NetHelper {
 	// NetHelper.as:10
@@ -18,27 +18,67 @@ class NetHelper {
 	// NetHelper.as:12
 	private static var STATE:Dynamic;
 
-	public function new() {
-		throw new openfl.errors.Error("not implemented");
-	}
+	public function new() {}
 
 	// NetHelper.as:23-43
 	public static function reSendRequest(param1:Dynamic):Void {
-		throw new openfl.errors.Error("not implemented");
+		var _loc3_:String = null;
+		if (STATE == null) {
+			return;
+		}
+		var _loc2_:Dynamic = Reflect.field(STATE, "arg");
+		if (_loc2_ != null) {
+			for (_loc3_ in Reflect.fields(param1)) {
+				Reflect.setField(_loc2_, _loc3_, Reflect.field(param1, _loc3_));
+			}
+		} else {
+			_loc2_ = param1;
+		}
+		sendRequest(Reflect.field(STATE, "cmd"), Reflect.field(STATE, "arg"), Reflect.field(STATE, "success"), Reflect.field(STATE, "fail"));
 	}
 
 	// NetHelper.as:45-59
 	public static function sendRequest(param1:Int, param2:Dynamic, param3:Dynamic, param4:Dynamic = null):Void {
-		throw new openfl.errors.Error("not implemented");
+		if (theApp == null) {
+			return;
+		}
+		STATE = {
+			"cmd": param1,
+			"arg": param2,
+			"success": param3,
+			"fail": param4
+		};
+		var _loc5_:Dynamic = Utils.buildRequest(param1, param2);
+		theApp.run(CommandList.SERVICE_REQUEST, _loc5_, "", null, param3, param4);
 	}
 
 	// NetHelper.as:61-75
 	public static function getRequest(param1:Int, param2:URLVariables, param3:Dynamic, param4:Dynamic = null):Void {
-		throw new openfl.errors.Error("not implemented");
+		if (theApp == null) {
+			return;
+		}
+		STATE = {
+			"cmd": param1,
+			"arg": param2,
+			"success": param3,
+			"fail": param4
+		};
+		var _loc5_:Dynamic = Utils.buildRequest(param1, param2, Consts.NET_HTTP_METHOD_GET);
+		theApp.run(CommandList.SERVICE_REQUEST, _loc5_, "", null, param3, param4);
 	}
 
 	// NetHelper.as:77-93
 	public static function getVOData(param1:CommandEvent):Dynamic {
-		throw new openfl.errors.Error("not implemented");
+		if (param1 == null || param1.result == null) {
+			return null;
+		}
+		var _loc2_:ServiceResultVO = cast param1.result;
+		if (_loc2_ == null) {
+			if (Std.isOfType(param1.result, Array)) {
+				return param1.result;
+			}
+			return null;
+		}
+		return _loc2_.m_extra;
 	}
 }

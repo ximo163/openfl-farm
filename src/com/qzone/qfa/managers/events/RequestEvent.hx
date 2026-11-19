@@ -2,12 +2,9 @@ package com.qzone.qfa.managers.events;
 
 import openfl.events.Event;
 
-/**
- * com.qzone.qfa.managers.events.RequestEvent —— write-tests stub（issue #7）：
- * 常量与字段签名照抄
- * legacy/decompiled/main3_v_221/scripts/com/qzone/qfa/managers/events/RequestEvent.as
- * （FAULT/RESULT :8/:10、_data :12、构造 :14-22），构造体在翻译阶段实现。
- */
+// com.qzone.qfa.managers.events.RequestEvent —— RequestEvent.as 逐句对应。
+// PORT-NOTE: AS3 构造器里 _data 在 super() 之前赋值，Haxe 要求 super 先行，
+// 赋值语句顺序对观察者不可见，等价。
 class RequestEvent extends Event {
 	// RequestEvent.as:8
 	public static final FAULT:String = "RequestFault";
@@ -20,17 +17,19 @@ class RequestEvent extends Event {
 
 	public function new(param1:String, param2:Dynamic = null, param3:Bool = false, param4:Bool = false) {
 		super(param1, param3, param4);
-		throw new openfl.errors.Error("not implemented");
+		_data = param2;
 	}
 
-	// RequestEvent.as:21-28（get/set data）
+	// RequestEvent.as:21-25
 	public var data(get, set):Dynamic;
 
 	private function get_data():Dynamic {
-		throw new openfl.errors.Error("not implemented");
+		return _data;
 	}
 
+	// RequestEvent.as:27-31
 	private function set_data(param1:Dynamic):Dynamic {
-		throw new openfl.errors.Error("not implemented");
+		_data = param1;
+		return param1;
 	}
 }

@@ -179,6 +179,10 @@ class Utils {
 	}
 
 	// Utils.as:209-224
+	// PORT-NOTE: AS3 parseInt(值) 先隐式 String() 再解析；Haxe Std.parseInt 只收
+	// String，JSON 数值直接传入 eval 上返回 null（js 上才隐式转串）——显式
+	// Std.string 复刻。`param1[param2] == undefined` 同时盖住 null（AS3 松散
+	// 相等），解析失败返回 NaN 也照抄。
 	public static function getIntAttribute(param1:Dynamic, param2:String):Float {
 		if (param1 == null) {
 			return 0;
@@ -186,10 +190,15 @@ class Utils {
 		if (param2 == null || param2.length == 0) {
 			return 0;
 		}
-		if (!Reflect.hasField(param1, param2)) {
+		var _loc3_:Dynamic = Reflect.field(param1, param2);
+		if (_loc3_ == null) {
 			return 0;
 		}
-		return Std.parseInt(Reflect.field(param1, param2));
+		var _loc4_:Null<Int> = Std.parseInt(Std.string(_loc3_));
+		if (_loc4_ == null) {
+			return Math.NaN;
+		}
+		return _loc4_;
 	}
 
 	// Utils.as:226-244

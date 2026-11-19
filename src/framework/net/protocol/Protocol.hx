@@ -74,10 +74,12 @@ class Protocol {
 	}
 
 	// Protocol.as:77-88。PORT-NOTE: Object.toString() → Std.string
-	//（String 入参即原串，ByteArray 分支在前面）
+	//（String 入参即原串，ByteArray 分支在前面）。
+	// PORT-NOTE: openfl 9.5.2 的 ByteArray 是 abstract（底层 ByteArrayData），
+	// `param1 is ByteArray` 的运行时判型对底层类做。
 	private function dataToString(param1:Dynamic):String {
 		var _loc2_:ByteArray = null;
-		if (Std.isOfType(param1, ByteArray)) {
+		if (Std.isOfType(param1, openfl.utils.ByteArrayData)) {
 			_loc2_ = param1;
 			_loc2_.position = 0;
 			return _loc2_.readUTFBytes(_loc2_.length);

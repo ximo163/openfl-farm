@@ -14,31 +14,31 @@ import shim.As3;
 @:final
 class FarmLand {
 	// FarmLand.as:11-55 字段（public var 原样）
-	public var _humidity:Int;
-	public var _min:Int;
+	public var _humidity:Int = 0; // AS3 int 默认值
+	public var _min:Int = 0; // AS3 int 默认值
 	public var _oldhumidity:Dynamic;
-	public var _cId:Int;
-	public var _output:Int;
-	public var _waste:Bool;
-	public var _step:Int;
+	public var _cId:Int = 0; // AS3 int 默认值
+	public var _output:Int = 0; // AS3 int 默认值
+	public var _waste:Bool = false; // AS3 Boolean 默认值
+	public var _step:Int = 0; // AS3 int 默认值
 	public var _fertilize:Bool;
-	public var _harvestTimes:Int;
-	public var _cropStatus:Int;
-	public var _weed:Int;
-	public var _bitmap:UInt;
+	public var _harvestTimes:Int = 0; // AS3 int 默认值
+	public var _cropStatus:Int = 0; // AS3 int 默认值
+	public var _weed:Int = 0; // AS3 int 默认值
+	public var _bitmap:UInt = 0; // AS3 uint 默认值
 	public var _action:Dynamic;
 	public var _thief:Dynamic;
-	public var _plantTime:Int;
+	public var _plantTime:Int = 0; // AS3 int 默认值
 	public var _oldweed:Dynamic;
-	public var _updateTime:Int;
-	public var _left:Int;
+	public var _updateTime:Int = 0; // AS3 int 默认值
+	public var _left:Int = 0; // AS3 int 默认值
 
 	// FarmLand.as:47（private var goldLand:int = 0）
 	private var goldLand:Int = 0;
 
-	public var _pId:Int;
-	public var _pest:Int;
-	public var _health:Int;
+	public var _pId:Int = 0; // AS3 int 默认值
+	public var _pest:Int = 0; // AS3 int 默认值
+	public var _health:Int = 0; // AS3 int 默认值
 	public var _oldpest:Dynamic;
 
 	// FarmLand.as:57-61
@@ -182,7 +182,10 @@ class FarmLand {
 		_oldhumidity = Reflect.field(param1, "e");
 	}
 
-	// FarmLand.as:227-246
+	// FarmLand.as:227-246。PORT-NOTE: 原版 `new Date(_loc3_[0])`（Date 单字符串
+	// 参构造，解析 "7/10/2012" 这类美式日期串）→ As3.dateOf（Haxe Date.fromString
+	// 只认 ISO，见 shim/As3.hx）；解析失败（AS3 Invalid Date，time=NaN）时
+	// NaN 比较恒 false，等价跳过窗口判断。
 	private function get__goldLand():Int {
 		var _loc3_:Array<Dynamic> = null;
 		var _loc4_:Date = null;
@@ -192,12 +195,17 @@ class FarmLand {
 		var _loc2_:String = _loc1_.getStringAttribute("jinPaiLand");
 		if (As3.truthy(_loc2_)) {
 			_loc3_ = _loc2_.split("-");
-			// AS3 new Date(年份数字) → 该年 1 月 1 日 00:00 本地时间
-			_loc4_ = new Date(As3.intOf(_loc3_[0]), 0, 1, 0, 0, 0);
-			_loc5_ = new Date(As3.intOf(_loc3_[1]), 0, 1, 0, 0, 0);
-			_loc6_ = CommonData.serverTime * 1000;
-			if (_loc6_ >= _loc4_.getTime() && _loc6_ <= _loc5_.getTime() && goldLand == 1) {
-				return 1;
+			_loc4_ = As3.dateOf(Std.string(_loc3_[0]));
+			_loc5_ = As3.dateOf(Std.string(_loc3_[1]));
+			if (_loc4_ != null && _loc5_ != null) {
+				// PORT-NOTE: *1000.0 而非 *1000——eval 解释器对 Int 表示的 Float
+				// 值乘 Int 字面量会按 Int32 回绕（同 As3.getTimer 遇到的纪元溢出，
+				// 见 shim/As3.hx），*1000.0 强制 double 乘；AS3 Number 本就是 double，
+				// 语义不变（js 目标两者一致）
+				_loc6_ = CommonData.serverTime * 1000.0;
+				if (_loc6_ >= _loc4_.getTime() && _loc6_ <= _loc5_.getTime() && goldLand == 1) {
+					return 1;
+				}
 			}
 		}
 		return 0;

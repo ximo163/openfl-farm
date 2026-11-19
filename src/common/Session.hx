@@ -1,5 +1,6 @@
 package common;
 
+import common.misc.Cookies;
 import entities.Dog;
 import entities.Player;
 import module.FarmApplication;
@@ -106,18 +107,16 @@ class Session {
 		return m_friendsKey;
 	}
 
-	// ---- 以下为 issue #7 实现阶段补的闭包成员（同样字段存取语义）----
+	// ---- 以下为 issue #7 实现阶段补的闭包成员（存取语义按原文；原版经 m_app
+	// 的派发副作用不在此列，完整翻译在后续片）----
 
-	// Session.as:94-106（get myFairy：宿主精灵道具，无则 null）
+	// Session.as:94-96（get myFairy：宿主精灵道具，无则 null；写入侧是
+	// Main/FarmApplication 的 model.setData(MY_FAIRY_OBJECT,…)）
 	public var myFairy(get, never):Dynamic;
 
 	private function get_myFairy():Dynamic {
-		return m_myFairy;
+		return this.m_app.model.getData(Consts.MY_FAIRY_OBJECT);
 	}
-
-	// Session.as:44（private var m_myFairy:Object）——module.Main.startGame
-	//（Main.as:315 一带）与 FarmLandModel.floatHandler :634 读写
-	private var m_myFairy:Dynamic;
 
 	// Session.as:60（public var isExpLocked:Boolean = false，OperationQueue 用）
 	public var isExpLocked:Bool = false;
@@ -138,14 +137,28 @@ class Session {
 	// Session.as:40（private var m_harvestAnimationPlaying:Boolean）
 	private var m_harvestAnimationPlaying:Bool = false;
 
-	// Session.as:54+171+455（expFullToday 存取）
+	// Session.as:54+171-178+455-471（expFullToday 存取：setter 值变更时写
+	// Cookies 持久化，getter 为 false 时回读 cookie）
 	public var expFullToday(get, set):Bool;
 
 	private function get_expFullToday():Bool {
+		if (m_expFullToday) {
+			return m_expFullToday;
+		}
+		var _loc1_:Dynamic = Cookies.getObject("expFullToday");
+		// PORT-NOTE: AS3 `_loc1_["full"] as Boolean == true` → isOfType 门 + 直取
+		if (_loc1_ != null && Std.isOfType(Reflect.field(_loc1_, "full"), Bool) && Reflect.field(_loc1_, "full") == true) {
+			m_expFullToday = true;
+		} else {
+			m_expFullToday = false;
+		}
 		return m_expFullToday;
 	}
 
 	private function set_expFullToday(param1:Bool):Bool {
+		if (m_expFullToday != param1) {
+			Cookies.setObject("expFullToday", {"full": param1}, 0, false);
+		}
 		m_expFullToday = param1;
 		return param1;
 	}
@@ -163,15 +176,14 @@ class Session {
 	// Session.as:50（public var m_welcomeMode:Boolean = false）
 	public var m_welcomeMode:Bool = false;
 
-	// Session.as:120-128（updateCurrentFriendsKeys：fkey 表合入 friendKeys；
-	// stub 只做字段合入，派发副作用不在本片）
+	// Session.as:120-128（updateCurrentFriendsKeys：fkey 值按当前用户 uid 存键，
+	// FarmLandModel.buildCommonPostParams :321-324 按同键取回）
 	public function updateCurrentFriendsKeys(param1:Dynamic):Void {
-		if (param1 == null) {
+		var _loc2_:Player = this.currentUser;
+		if (_loc2_ == null) {
 			return;
 		}
-		for (f in Reflect.fields(param1)) {
-			Reflect.setField(m_friendsKey, f, Reflect.field(param1, f));
-		}
+		Reflect.setField(m_friendsKey, Std.string(_loc2_._uId), param1);
 	}
 
 	// Session.as:185-（addReward(Array)：收获礼包入包；V3c 片翻译，stub 空实现）
@@ -189,7 +201,7 @@ class Session {
 
 	// ---- issue #7 启动链补的闭包成员（同样字段存取语义）----
 
-	// Session.as:36+265-268/:284-286（app：宿主应用引用，module.Main.init 注入）
+	// Session.as:48+265-268/:284-286（app：宿主应用引用，module.Main.init 注入）
 	public var app(get, set):FarmApplication;
 
 	private var m_app:FarmApplication;

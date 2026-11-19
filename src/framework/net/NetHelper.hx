@@ -72,7 +72,13 @@ class NetHelper {
 		if (param1 == null || param1.result == null) {
 			return null;
 		}
-		var _loc2_:ServiceResultVO = cast param1.result;
+		// NetHelper.as:78。PORT-NOTE: AS3 `as` 失配返回 null → Std.isOfType 门 +
+		// 直取（eval 上裸 cast 不做运行时检查，语义不等价），`result is Array`
+		// 回退分支因此保持可达
+		var _loc2_:ServiceResultVO = null;
+		if (Std.isOfType(param1.result, ServiceResultVO)) {
+			_loc2_ = param1.result;
+		}
 		if (_loc2_ == null) {
 			if (Std.isOfType(param1.result, Array)) {
 				return param1.result;

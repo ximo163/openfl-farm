@@ -233,6 +233,23 @@ class Session {
 	// VersionUtil.versionString
 	public var m_buildVersion:String;
 
+	// Session.as:24（public var healthModeValid:Boolean = false）——
+	// FarmLandController 跨用户切换时复位
+	public var healthModeValid:Bool = false;
+
+	// Session.as:52（public var currentFarmHealthModeValid:Boolean = false）
+	public var currentFarmHealthModeValid:Bool = false;
+
+	// Session.as:349-358（isMeVIP：host._yellowstatus > 0）
+	public var isMeVIP(get, never):Bool;
+
+	private function get_isMeVIP():Bool {
+		if (this.m_host != null && this.m_host._yellowstatus > 0) {
+			return true;
+		}
+		return false;
+	}
+
 	// Session.as:270-277/:346-349（sceneDecorates：场景装饰走 model 的
 	// UserDecorate 键，setter 空数据抛 ArgumentError 照抄）
 	public var sceneDecorates(get, set):Dynamic;

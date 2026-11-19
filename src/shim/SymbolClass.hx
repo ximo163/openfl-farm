@@ -23,8 +23,20 @@ import swf.exporters.animate.AnimateLibrary;
  * 所以同名 Haxe 类的构造器补一步 bind：直接 new 时按上面入口挂时间轴——符号
  * 内容直接长在实例上，显示树结构与原版一致，不引入包装层。经库实例化进来的
  * （super() 消费 Sprite.__constructor 已挂好）则跳过，不会二次绑定。
+ *
+ * 库还没装载的情况分两种：farmui 系素材库由启动链（FarmLite.startLiteUI →
+ * CmdLoadFile）先行拉起，视图构造时已在 Assets 里；作物分档 swf（Crop_*_*）
+ * 原版是 requestClass 按需网络加载后才有类定义，而移植版类编译期即注册、
+ * requestClass 的 URL 加载被 getClass 短路——这里把「库到位后符号可用」的
+ * 原版时序补回来：库不在就按需 Assets.loadLibrary（html5 的非 preload 库在
+ * libraryPaths 里，文件已随构建入库，无网络），同一个库的并发 bind 合并成
+ * 一次加载。绑上的时刻晚于构造器返回，与原版「远程加载后 new」的时序差
+ * 一个本就是异步的加载窗口。
  */
 class SymbolClass {
+	// 按需加载中的库：libraryId → 等待绑定的 (symbolName, target) 列表
+	private static var pending:Array<{libraryId:String, symbolName:String, target:MovieClip}> = [];
+
 	public static function bind(target:MovieClip, libraryId:String, symbolName:String):Void {
 #if eval
 		// eval 单测（test.hxml 无 -lib swf）：无库可查，保持空剪辑并留痕，
@@ -38,10 +50,43 @@ class SymbolClass {
 		// 本流水线的库实例都是 openfl 侧库（AnimateLibrary），收窄后走
 		// openfl AssetLibrary.bind（AnimateLibrary 覆写）
 		var library:AssetLibrary = cast Assets.getLibrary(libraryId);
-		if (library == null) {
-			// 库未加载（缺 preload）时保持空剪辑并留痕，不抛——原版纯符号
-			// 构造也不抛
-			trace("SymbolClass: 库未加载 " + libraryId + ":" + symbolName);
+		if (library != null) {
+			attach(library, libraryId, symbolName, target);
+			return;
+		}
+		var alreadyLoading:Bool = false;
+		for (entry in pending) {
+			if (entry.libraryId == libraryId) {
+				alreadyLoading = true;
+				break;
+			}
+		}
+		pending.push({libraryId: libraryId, symbolName: symbolName, target: target});
+		if (alreadyLoading) {
+			return;
+		}
+		Assets.loadLibrary(libraryId).onComplete(function(lib:AssetLibrary):Void {
+			// 该库这一批等绑的目标全部挂上；再进来的 bind 走上面的同步路径
+			var stillQueued:Array<{libraryId:String, symbolName:String, target:MovieClip}> = [];
+			for (entry in pending) {
+				if (entry.libraryId == libraryId) {
+					attach(lib, entry.libraryId, entry.symbolName, entry.target);
+				} else {
+					stillQueued.push(entry);
+				}
+			}
+			pending = stillQueued;
+		}).onError(function(err:Dynamic):Void {
+			// 库拉不起来（未声明/文件缺失）：按原版「类不存在」处理，留痕不抛
+			trace("SymbolClass: 库加载失败 " + libraryId + " (" + Std.string(err) + ")");
+			pending = [for (entry in pending) if (entry.libraryId != libraryId) entry];
+		});
+#end
+	}
+
+	private static function attach(library:AssetLibrary, libraryId:String, symbolName:String, target:MovieClip):Void {
+#if !eval
+		if (@:privateAccess target.__timeline != null) {
 			return;
 		}
 		if (!library.bind(symbolName, target)) {

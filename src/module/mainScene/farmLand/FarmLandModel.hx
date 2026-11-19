@@ -28,35 +28,36 @@ import shim.QQOutlets;
 // ExternalInterface.call → shim.QQOutlets.call（见 shim 头注释）；
 // getTimer → shim.As3.getTimer（eval 上 openfl 的纪元溢出，见 shim/As3.hx）。
 //
-// 事件名常量（AS3 internal static const :29-73 → Haxe private static final，
-// 与 CLAUDE.md「internal 写 private」一致）；构造器建 OperationQueue 监听
-// （:110-111，OperationQueue 为闭包 stub）。
+// 事件名常量（AS3 internal static const :29-73；V3a 先按「internal→private」
+// 落位，V3b 的同包 FarmLandsView/FarmLandController 原版同样引用这些常量
+// （Haxe 无包可见性），改 public——同 NPCModel.EVENT_DOG_LOADED 先例）；
+// 构造器建 OperationQueue 监听（:110-111）。
 @:access(module.mainScene.farmLand.FarmLandModel)
 class FarmLandModel extends EventDispatcher {
-	// FarmLandModel.as:29-73（EVENT_*，internal → private）
-	private static final EVENT_INITIALZED:String = "DataInitialized";
-	private static final EVENT_HARVEST_DATA:String = "HarvestData";
-	private static final EVENT_ADD_HEALTH:String = "AddHealth";
-	private static final EVENT_OPERATE_INVALID:String = "FarmLandOperateError";
-	private static final EVENT_OPERATE_FAILED:String = "FarmLandOperateFailed";
-	private static final EVENT_LAND_CHANGED:String = "FarmLandChanged";
-	private static final EVENT_CONFIRM_SCARIFY:String = "ConfirmScarify";
-	private static final EVENT_ALERT_WINDOW:String = "AlertWindow";
-	private static final EVENT_SHOW_PICK_ICON:String = "ShowPickIcon";
-	private static final EVENT_DIG_OUT_ITEMS:String = "DigItems";
-	private static final EVENT_SHOW_TIP:String = "SendDogHitTip";
-	private static final EVENT_SHOW_GIFT_WINDOW:String = "ShowBigGift";
-	private static final EVENT_REFRESH_CROP_DATA:String = "RefreshCropData";
-	private static final EVENT_REMOVE_MYBAG_ITEM:String = "UpdateMyBag";
-	private static final EVENT_RECLAIM_CONDITION:String = "ReclaimCondition";
-	private static final EVENT_RECLAIM_RESULT:String = "ReclaimResult";
-	private static final EVENT_HEALTH_MODE_PROTECTED:String = "HealthModeProtectedNow";
-	private static final EVENT_CHECK_TASK:String = "CheckTaskComplete";
-	private static final EVENT_CHECK_STATUS:String = "CheckLandsStatus";
-	private static final EVENT_FUNCTION_FORBIDDEN:String = "ScroungeForbid";
-	private static final EVENT_LEVELUP:String = "LevelUp";
-	private static final EVENT_HARVEST_OVER:String = "FinishHarvesting";
-	private static final EVENT_PLAY_PLANE:String = "PlayPlanAnimation";
+	// FarmLandModel.as:29-73（EVENT_*，internal → public：同包跨类引用）
+	public static final EVENT_INITIALZED:String = "DataInitialized";
+	public static final EVENT_HARVEST_DATA:String = "HarvestData";
+	public static final EVENT_ADD_HEALTH:String = "AddHealth";
+	public static final EVENT_OPERATE_INVALID:String = "FarmLandOperateError";
+	public static final EVENT_OPERATE_FAILED:String = "FarmLandOperateFailed";
+	public static final EVENT_LAND_CHANGED:String = "FarmLandChanged";
+	public static final EVENT_CONFIRM_SCARIFY:String = "ConfirmScarify";
+	public static final EVENT_ALERT_WINDOW:String = "AlertWindow";
+	public static final EVENT_SHOW_PICK_ICON:String = "ShowPickIcon";
+	public static final EVENT_DIG_OUT_ITEMS:String = "DigItems";
+	public static final EVENT_SHOW_TIP:String = "SendDogHitTip";
+	public static final EVENT_SHOW_GIFT_WINDOW:String = "ShowBigGift";
+	public static final EVENT_REFRESH_CROP_DATA:String = "RefreshCropData";
+	public static final EVENT_REMOVE_MYBAG_ITEM:String = "UpdateMyBag";
+	public static final EVENT_RECLAIM_CONDITION:String = "ReclaimCondition";
+	public static final EVENT_RECLAIM_RESULT:String = "ReclaimResult";
+	public static final EVENT_HEALTH_MODE_PROTECTED:String = "HealthModeProtectedNow";
+	public static final EVENT_CHECK_TASK:String = "CheckTaskComplete";
+	public static final EVENT_CHECK_STATUS:String = "CheckLandsStatus";
+	public static final EVENT_FUNCTION_FORBIDDEN:String = "ScroungeForbid";
+	public static final EVENT_LEVELUP:String = "LevelUp";
+	public static final EVENT_HARVEST_OVER:String = "FinishHarvesting";
+	public static final EVENT_PLAY_PLANE:String = "PlayPlanAnimation";
 
 	// FarmLandModel.as:75-103 字段（public/private 原样；int 字段补 AS3 默认 0）
 	public var tjShare:Array<Dynamic>;

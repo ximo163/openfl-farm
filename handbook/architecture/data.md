@@ -11,7 +11,7 @@
 - `Model` + `Consts`：全局键值仓，启动数据与跨模块状态都走这里。
 - `FarmLandModel`（`src/module/mainScene/farmLand/`，1744 行）：农田数据层
   ——地块状态、作物生长。V3a 完成数据层；渲染视图（FarmLandsView、
-  LandTile 等）是 V3b（issue #8）的活。
+  LandTile 等）V3b（#8）已完成，见 [farmscene.md](farmscene.md)。
 - 数据来源：启动时 PHP 下发（user_run / nc_main 等）。真后端载荷样例在
   `legacy/snapshot/`；`test/fixtures/uid1_user_run.json` 是抽出来的真实
   样例。

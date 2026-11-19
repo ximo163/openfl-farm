@@ -31,3 +31,18 @@ source/core/module/ui/gifts_v_11.swf
 # （:188-190 无条件 loadWildShell；FarmApplication.as:766-771 同），uid=1 的
 # user_run 无 _beast 也请求——启动窗口必发（test/StartupModuleLibrariesTest.hx）：
 source/core/module/mc/farm/wild/WildShellNc_v_5.swf
+#
+# V3b 农场场景（issue #8）：作物分档素材库（Crop.setState 经 requestClass 按需
+# 加载，SymbolClass.bind 按需拉起）。快照 uid=1 的在种作物只有 cId=1（白萝卜，
+# 1..23 号地）与 cId=6（0 号地）；生长档 0..4（5/6 档在 getCropUrl/Crop.setState
+# 里折叠到 4/3）：
+source/core/module/ui/allcrops/Crop_1_0.swf
+source/core/module/ui/allcrops/Crop_1_1.swf
+source/core/module/ui/allcrops/Crop_1_2.swf
+source/core/module/ui/allcrops/Crop_1_3.swf
+source/core/module/ui/allcrops/Crop_1_4.swf
+source/core/module/ui/allcrops/Crop_6_0.swf
+source/core/module/ui/allcrops/Crop_6_1.swf
+source/core/module/ui/allcrops/Crop_6_2.swf
+source/core/module/ui/allcrops/Crop_6_3.swf
+source/core/module/ui/allcrops/Crop_6_4.swf

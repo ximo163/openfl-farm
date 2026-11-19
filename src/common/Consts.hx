@@ -21,6 +21,9 @@ class Consts {
 	public static final SCENE_WIDTH:Int = 1024;
 	public static final SCENE_HEIGHT:Int = 800;
 	public static final SCENE_ZINDEX_MIDDLE:String = "1.MIDDLE";
+	// Consts.as:498/:502（BackgroundScreen 落 BACKGROUND 层、FarmLandsView 落 LAND 层）
+	public static final SCENE_ZINDEX_BG:String = "0.BACKGROUND";
+	public static final SCENE_ZINDEX_LAND:String = "2.LAND";
 	public static final SCENE_ZINDEX_FOREGROUND:String = "3.FOREGROUND";
 	public static final LAYER_SCENE_CONTENT:String = "Game Scene Layer";
 	public static final LAYER_TOOLS:String = "Tools UI Layer";
@@ -51,6 +54,8 @@ class Consts {
 	public static final MODULE_QUICK_SHOOT:String = "Quick Shoot Module";
 	public static final MODULE_FREE_GIFT:String = "FreeGift Module";
 	public static final PLUGIN_AMOUNT_BG:Int = 0;
+	// Consts.as:40（FarmLandController 收获倒计时秒数）
+	public static final FARM_LAND_COUNTDOWN:Int = 10;
 
 	// 消息名
 	public static final MSG_SESSION_TIMEOUT:String = "SessionTimeout";
@@ -89,14 +94,61 @@ class Consts {
 	public static final MSG_SHOW_DIY:String = "ShowDIY";
 	public static final MSG_SHOW_HEALTHMODE:String = "ShowHealthModeWindow";
 	public static final MSG_SHOW_CARDSGAMEWINDOW:String = "ShowCardsGameWindow";
+	// Consts.as:312（Player._healthMode 到期派发，HealthModeWindow 关）
+	public static final MSG_HEALTHMODE_TIMEOUT:String = "HealthModeTimeout";
+	// Consts.as:316
+	public static final MSG_CHECK_HEALTHMODE:String = "CheckHealthMode";
+	// Consts.as:318（野兽偷菜完成提示）
+	public static final MSG_WILD_BEAST_STEAL:String = "StealCrop";
+	// Consts.as:330（任务完成待检）
+	public static final MSG_CHECK_TASK:String = "CheckTaskComplete";
+	// Consts.as:334/:336（DIY 预览进出）
+	public static final MSG_ENTER_PREVIEW:String = "EnterPreview";
+	public static final MSG_EXIT_PREVIEW:String = "ExitPreview";
+	// Consts.as:338（BackgroundController 监听重铺场景）
+	public static final MSG_REFRESH_SCENE:String = "RefreshBackgroundScene";
+	// Consts.as:344（自己地块可摘提示）
+	public static final MSG_LAND_CAN_PICK:String = "CurrentUserCanPick";
+	// Consts.as:346（好友列表状态刷新）
+	public static final MSG_REFRESH_FRIEND_STATUS:String = "RefreshFriendList";
+	// Consts.as:348（从牧场回来后开仓库）
+	public static final MSG_OPEN_WAREHOUSE_AFTER_BACK:String = "OpenWarehouseAfterBack";
+	// Consts.as:360（升级）
+	public static final MSG_LEVELUP:String = "LevelUp";
+	// Consts.as:378（FarmLandsView 鼠标移入显示光标）
+	public static final MSG_SHOW_LAND_CURSOR:String = "ShowLandCursor";
+
+	// Consts.as:376（FarmLandController.showWaterCursor 探鱼竿光标占用）
+	public static final MSG_SHOW_WATER_CURSOR:String = "ShowWaterCursor";
+	// Consts.as:384（NPCView 派发呼叫飞机）
+	public static final MSG_CALL_PLANE:String = "CallPlane";
+	// Consts.as:388（FarmLandsView 监听整体重铺）
+	public static final MSG_REFRESH_LANDS_DATA:String = "RefreshAllLands";
+	// Consts.as:412（NPCView 监听安装活动 NPC）
+	public static final MSG_INSTALL_NPC:String = "InstallActivityNPC";
+	// Consts.as:414（单块地数据到位）
+	public static final MSG_GET_LAND_DATA:String = "GetLandCropData";
+	// Consts.as:590（关闭背包窗口）
+	public static final CLOSE_MY_BAG:String = "CLOSE_MY_BAG";
+	// Consts.as:592-594（金土地）
+	public static final GOLD_LAND_UPDATE_TIME:String = "GOLD_LAND_UPDATE_TIME";
+	public static final GOLD_LAND_BUY_FAIL:String = "GOLD_LAND_UPDATE_FAIL";
 
 	// 模型数据键
 	public static final USER_DECORATE_OBJECT:String = "UserDecorate";
+	// Consts.as:230-244（数据重装/变更标志）
+	public static final DATA_CROP_RELOAD_FLAG:String = "CropsReload";
+	public static final DATA_BAG_RELOAD_FLAG:String = "BagReload";
+	public static final DATA_BAG_DATA_REMOVE:String = "BagDataRemove";
+	public static final DATA_DOG_CHANGED:String = "DogDataChanged";
+	// Consts.as:268（当前用户切换）
+	public static final MSG_CURRENT_USER_CHANGED:String = "CurrentUserChanged";
 
 	// 窗口/提示/飘字/光标名（FarmStage/FarmApplication 注册用）
 	public static final WINDOW_NAME_ALERT:String = "AlertWindow";
 	public static final WINDOW_NAME_CONFIRM:String = "ConfirmWindow";
 	public static final WINDOW_NAME_GIFT:String = "GiftWindow";
+	public static final WINDOW_NAME_PREVIEWDIY:String = "PreviewDiyWindow";
 	public static final WINDOW_NAME_REGIFT:String = "PickupGiftWindow";
 	public static final WINDOW_NAME_REGIFT_CARD:String = "REGiftWindow";
 	public static final WINDOW_NAME_REQUEST_ERROR:String = "RequestErrorWindow";
@@ -146,10 +198,16 @@ class Consts {
 	public static final ITEM_TYPE_RED_UPGRADE:String = "13";
 	public static final ITEM_TYPE_BLACK_UPGRADE:String = "12";
 	public static final ITEM_TYPE_FAIRY:String = "31";
+	// Consts.as:460/:472/:474（V3b：NPCView 道具类型判断）
+	public static final ITEM_TYPE_CARD:String = "11";
+	public static final ITEM_TYPE_FISH:String = "23";
+	public static final ITEM_TYPE_FISHFEED:String = "24";
 	public static final ORGANIC_FERTILIZER_ID:Int = 30;
 	public static final FAIRY_LADY:Int = 92001;
 	public static final MY_FAIRY_OBJECT:String = "MyFairy";
 	public static final DECOR_DOG:UInt = 8;
+	// Consts.as:496（DogRender：装饰狗 id 减基值得素材序号）
+	public static final DECOR_DOG_BASE_ID:Int = 80000;
 	// Consts.as:428-438（V3b：BackgroundModel/NPCModel 的装饰类型表；
 	// 值照抄。DECOR_DOG 见上）
 	public static final DECOR_BACKGROUND:UInt = 1;

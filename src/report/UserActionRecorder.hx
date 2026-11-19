@@ -19,6 +19,10 @@ class UserActionRecorder {
 	public static final HF_TOOL_HOOK_CLICKED:String = "10";
 	public static final HF_TOOL_PESTICIDE_CLICKED:String = "11";
 	public static final HF_TOOL_WILD_CLICKED:String = "14";
+	// UserActionRecorder.as:92/:94/:96（V3b：NPCView 点牧场/看板/狗盆上报）
+	public static final HF_TO_PASTURE_CLICKED:String = "10300";
+	public static final HF_BILLBOARD_CLICKED:String = "10301";
+	public static final HF_DOGBOWL_CLICKED:String = "10302";
 
 	public function new() {}
 

@@ -1,6 +1,7 @@
 package com.qzone.qui.managers;
 
 import openfl.events.EventDispatcher;
+import openfl.utils.Dictionary;
 
 /**
  * com.qzone.qui.managers.EffectManager —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
@@ -14,6 +15,9 @@ class EffectManager extends EventDispatcher {
 	public static var comboBaseEffect:Dynamic;
 	public static var toolTipEffect:Dynamic;
 	public static var popUpEffect:Dynamic;
+	// EffectManager.as:21（弱键字典，键是动效目标 DisplayObject——Move 存取
+	// tweener、playEffect 收尾用）
+	public static var effectInstances:Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>(true);
 
 	public function new() {
 		super();

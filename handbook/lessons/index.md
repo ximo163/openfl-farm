@@ -19,3 +19,28 @@
   android（cpp）编译红——容器里编不了 android，只在 main 的 android CI 暴露
   （MD5.hx 两处，#7 合并后才发现）。防：Int 判空用下标范围；要「缺位」语义
   读经 `Dynamic` 再判 null。规则已进 CLAUDE.md 的语言差异清单。
+
+## 2026-11 · #8（V3b 农田场景）
+
+- **eval/js 的 Dynamic 反射只看见物理字段，get/set 属性一律 null**：
+  probe（`/tmp` 里 haxe --interp + openfl/lime）证实两次——自有类修法是
+  `@:isVar public var x(get, set)`（补物理字段）；**openfl 自家的**
+  `DisplayObject.name/x/y` 等是库内 get/set、无物理字段，改不了 → 测试经
+  `Dynamic` 读它们恒 null（`FarmLandsViewTest.test_createLandTiles` 15 断言，
+  期望值本身和 FarmLandsView.as:118-146 对得上，是读法机制错）。防：测试
+  断言只读自有类的物理字段；要验显示对象坐标就强类型读，别走 `Dynamic`。
+- **`arr.splice(0)`（AS3 删到尾）在 Haxe 编不过**：splice 要 len——
+  `splice(0, arr.length)`（Crop.hx:69）。防：全局搜 `splice(` 核对第二参。
+- **`Dynamic["中文字面量"]` 在 eval 报 "String should be Int"**：动态对象
+  的非标识符键下标直取走不了——`Reflect.field(o, "中文…")`（FarmLandController
+  的 Language.L 取值 ×5）。防：`obj["…"]` 一律 Reflect.field/setField。
+- **超类 static 不无限定解析**：AS3 里子类裸用父类静态，Haxe 要
+  `父类名.成员`（Move.hx 的 `TweenEffect.getSnap/duration`）。私有跨类访问
+  配 `@:allow(包.类)`。
+- **AS3 `new Date()` + `setTime(ms)` → `Date.fromTime(ms)`**：Haxe 的
+  `new Date()` 必须传全参且没有 setTime（FarmLandController.isOneClickMode）。
+- **连锁赋值在 openfl get/set 上编不过**：`scaleX = scaleY = 1.3` 拆成两行
+  （BackgroundController.switchMode）。
+- **原版 bug 照抄不修**：`askSharePlane` 拼 URL 少个 `&`、`cacheAsBitmp`
+  拼错（PopUpManager 字段名）——逐字保留，别「顺手修好」，偏差只进
+  `spec/deviations.json`。

@@ -1,7 +1,7 @@
 package common.view.window;
 
+import com.qzone.qui.containers.TitleWindow;
 import interfaces.IMsgCenter;
-import openfl.display.Sprite;
 
 /**
  * common.view.window.BaseWindow —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
@@ -11,7 +11,7 @@ import openfl.display.Sprite;
  * 标题栏/布局/关闭按钮随窗口片接入。
  */
 @:keep
-class BaseWindow extends Sprite {
+class BaseWindow extends TitleWindow {
 	// BaseWindow.as:27
 	private var _data:Dynamic;
 
@@ -21,9 +21,14 @@ class BaseWindow extends Sprite {
 	// BaseWindow.as:31
 	private var _mode:Bool = false;
 
+	// BaseWindow.as:15（protected → private：Haxe 私有对子类可见；
+	// PreviewDiyWindow.recover 经继承链用）
+	private var m_msgCenter:IMsgCenter;
+
 	// BaseWindow.as:25-40
 	public function new(param1:IMsgCenter = null) {
 		super();
+		this.m_msgCenter = param1;
 	}
 
 	// BaseWindow.as:42-58（initalize：加入舞台后的初始化，窗口片翻译）

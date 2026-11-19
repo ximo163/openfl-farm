@@ -85,8 +85,10 @@ class PlayerTest {
 	}
 
 	// clone :143-165：拷贝清单 = canbad/exp/missionTime/money/pf/uId/uinLogin/
-	// yellowlevel/yellowstatus/headPic/userName/healthMode（:157 深克隆）/
-	// userId/moralExp/me/sort/uin/pf2；清单外（_levelup/_fb/_rawData）不带走
+	// yellowlevel/yellowstatus/headPic/userName/userId/moralExp/me/sort/uin/pf2；
+	// 清单外（_levelup/_fb/_rawData）不带走。healthMode 虽在 :157 赋值，但
+	// AMF 往返退化匿名对象后 `as HealthMode` 得 null（见下）——原版 clone
+	// 实际不带走健康模式
 	public function test_clone_copies_identity_fields_only() {
 		var p = new Player(fixtureUser());
 		p.me = false;
@@ -103,7 +105,13 @@ class PlayerTest {
 		Assert.equals(1, c.uin);
 		Assert.isTrue(c.pf2);
 		Assert.equals(0, c._userId);
-		Assert.isTrue(c._healthMode != null);
+		// changed for #8: 原断言 `!= null` 推错 legacy——Player.as:157 的
+		// ObjectUtil.clone（ObjectUtil.as:13-19，ByteArray AMF3 往返）对
+		// HealthMode 深拷，但全库无 registerClassAlias（唯一别名注册是
+		// TextFormatUtil.as 的 flash.text.TextFormat），未注册类实例 AMF 往返
+		// 退化匿名 Object，`as HealthMode` 恒 null。原版 clone 后 _healthMode
+		// 即为 null，与匿名对象是否保留公开字段无关。
+		Assert.isNull(c._healthMode);
 		Assert.isNull(c._levelup); // 不在 :146-163 拷贝清单
 		Assert.equals(0, c._fb); // 同上
 		Assert.isNull(c._rawData); // 同上

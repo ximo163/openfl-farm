@@ -164,3 +164,29 @@
   新增符号 shim 后调用方若在 new 之后立即写**子件**（显隐/定位），一律走
   afterAttach；写实例自身的属性（name/cacheAsBitmap）不受窗口影响、照直
   写。
+- **状态数组字母字段的语义只能由下发它的 PHP 行定，别按位置猜**：
+  farmlandstatus 的 `{"a":2,"b":6,…}` 里 a 才是作物号、b 是 cropStatus
+  （farmlandstatus_getoutput.php:62 `"cId":' . $a` 一行定死），#8 前几轮
+  按「b 是第一个有语义差别的字段」猜成作物号，把快照读成「0 号地 cId=6、
+  1..23 号地 cId=1」，libraries.xml 照错收了 Crop_1_1..4/Crop_6_0..4 十档、
+  类头注释还把白萝卜的名字安到 cId=1 上；visit 4 attempt 1 的 CI 只报
+  一条 404（缺 Crop_2_3），反查才现形。连带发现 SceneDecorLibrariesTest
+  类头「billboard=9 不在 uid=1 数据里」也是同一类猜错（decorative 列确实
+  没有 9，但 user_run.php:206 是按 activeItem 补发槽 9 的——快照 90001，
+  看板在冒烟窗口内）——append-only 改不了，纠正落在
+  CropLifecycleLibrariesTest 类头和 farmscene.md。防：字母协议/字段语义
+  一律找到**拼 JSON 的那行 PHP**；「X 不在数据里」的断言要区分「列里
+  没有」和「另一来源补发」两回事。
+- **作物档位类名永远不出 4**：Crop.as:93-99 把 3/4/5 折叠成 _classStep=3，
+  4 档类名（`Crop_<cId>_4`）构造不出来；公共分支类名带**未折叠**档位
+  （Crop_1_6，素材却在 Crop_1_4.swf 里、URL 才折叠 6→4）。前几轮「生长档
+  0..4，5/6 档折叠 4/3」的框架两头都错。防：涉 Crop 的库/类清单先从
+  setState/onCropLoaded 的折叠行推，别从文件名枚举。
+- **同名 swf 撞库名装错图，CI 冒烟不拦**：`diy/board/1.swf` 与 `diy/1.swf`
+  文件名相同，LocalSwfLoader 按文件名映射库名都得到 "1"——看板槽组装载
+  进的是 diy/1 背景图，无 404、无报错，冒烟只能确认「没有 404」确认不了
+  「装的是对的图」（画面比对门禁在后）。修法：LocalSwfLoader 对
+  diy/board/ 特判加 `board_` 前缀消歧，libraries.xml 用同款 id
+  `board_1`，CropLifecycleLibrariesTest 钉「看板与背景映射必须不同库名」。
+  防：新入库的 module swf 文件名先查是否与既有条目撞名；撞了就目录前缀
+  消歧 + 断言，别等画面门禁。

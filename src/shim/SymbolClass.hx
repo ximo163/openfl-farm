@@ -68,8 +68,7 @@ class SymbolClass {
 				com.qzone.ui.JPLandS, com.qzone.ui.JPLandS2, com.qzone.ui.JPLandG, com.qzone.ui.JPLandG2,
 				com.qzone.ui.Wasteland,
 				CursorFishNet, CursorFishNetAll,
-				Crop_1_0, Crop_1_1, Crop_1_2, Crop_1_3, Crop_1_4,
-				Crop_6_0, Crop_6_1, Crop_6_2, Crop_6_3, Crop_6_4,
+				Crop_1_0, Crop_1_6, Crop_2_1, Crop_2_2, Crop_2_3,
 				Insect, Weed, Reclaim, CanPickIcon
 			];
 		}

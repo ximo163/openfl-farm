@@ -46,19 +46,22 @@
     <!-- V3b 农场场景（issue #8）：作物分档素材库。原版 Crop.setState 经
          requestClass 按需网络加载；移植版类编译期注册（Crop_&lt;cId&gt;_&lt;档&gt;
          同名 Haxe 类），素材库由 SymbolClass.bind 按需拉起（见该 shim 头）。
-         快照 uid=1 在种作物为 cId=1（1..23 号地）与 cId=6（0 号地），档 0..4
-         （5/6 档折叠 4/3，GetCropID.getCropUrl/Crop.setState）。与
-         assets/legacy-assets.txt 同 commit 增删 -->
+         快照 uid=1 四块在种地全是白萝卜 cId=2（initialized.sql:5718 status
+         字母 a=作物号、b=cropStatus——farmlandstatus_getoutput.php:62
+         "cId":$a 可证；前几轮把 b 误当作物号，错收过 cId=1/6 的十档）。
+         cId=2 只有 m1/m2/m3（nc_data.php:6021 → :3065-3067 Crop_2_1/2/3.swf）、
+         无 m0/m4 → specialGrow=SG_PUBLIC_SEED_PUBLIC_DEAD：档 0（种子）与
+         6（枯死）走公共素材 Crop_1_0.swf / Crop_1_4.swf（后者内导出符号名是
+         Crop_1_6，类名带未折叠档位，Crop.as:104/199），1/2/3 档用自家
+         Crop_2_*（3/4/5 折叠 3，Crop.as:93-99；4 档类名不可达）。CI 墙钟
+         （plantTime=2026-11-17 固定、时间只前进）下四块地全在 5 档，冒烟
+         窗口实际只拉 Crop_2_3（attempt 1 单条 404 即缺它）；其余声明钉住
+         白萝卜全生长档位。与 assets/legacy-assets.txt 同 commit 增删 -->
     <library path="assets/legacy/source/core/module/ui/allcrops/Crop_1_0.swf" id="Crop_1_0" />
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_1_1.swf" id="Crop_1_1" />
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_1_2.swf" id="Crop_1_2" />
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_1_3.swf" id="Crop_1_3" />
     <library path="assets/legacy/source/core/module/ui/allcrops/Crop_1_4.swf" id="Crop_1_4" />
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_6_0.swf" id="Crop_6_0" />
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_6_1.swf" id="Crop_6_1" />
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_6_2.swf" id="Crop_6_2" />
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_6_3.swf" id="Crop_6_3" />
-    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_6_4.swf" id="Crop_6_4" />
+    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_2_1.swf" id="Crop_2_1" />
+    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_2_2.swf" id="Crop_2_2" />
+    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_2_3.swf" id="Crop_2_3" />
 
     <!-- V3b 场景装饰（issue #8）：BackgroundModel.setDecors 按 user_run items
          （DB decorative 列）逐槽 idToDiyUrl2 → module/ui/farm/diy/<itemId>.swf，
@@ -70,5 +73,14 @@
     <library path="assets/legacy/source/core/module/ui/farm/diy/2.swf" id="2" />
     <library path="assets/legacy/source/core/module/ui/farm/diy/3.swf" id="3" />
     <library path="assets/legacy/source/core/module/ui/farm/diy/4.swf" id="4" />
+
+    <!-- V3b 看板（issue #8）：user_run.php:206 activeItem&gt;0 时 items 补发
+         槽 9（快照 uid=1 activeItem=90001 → boards 90001（nc_data.php:5977）
+         → asset 1719（:2260）module/ui/farm/diy/board/1.swf，
+         BackgroundModel 的 DECOR_BILLBOARD 分支走 idToBoardUrl）。
+         文件名与 diy/1.swf 相同，库名按 shim/LocalSwfLoader 的 diy/board/
+         特判取 board_1（文件名 id 撞库时以目录前缀消歧，否则看板槽装进的
+         是 diy/1 背景图）。与 assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/farm/diy/board/1.swf" id="board_1" />
 
 </project>

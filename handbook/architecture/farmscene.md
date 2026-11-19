@@ -38,9 +38,15 @@ legacy 出处：`decompiled main3 module/mainScene/farmLand/`。
   库；step 3/4/5 同用 `Crop_*_3` 单帧符号、靠 step1/2/3 子件显隐分段——
   库**首次**拉起是异步窗口，`new` 完就写子件显隐会被吞，onCropLoaded 的
   三笔显隐经 `SymbolClass.afterAttach` 登记、attach 后重放，见
-  [assets.md](assets.md) 的 SymbolClass 条目）、`Byproduct`（草/虫摆件，
-  `getInsectPosition` 决定坐标）、`LandPickIcon`（可摘手势图标）、
-  `LandTalkTip`（NPC 对话气泡）、`Wasteland`（荒地块）。
+  [assets.md](assets.md) 的 SymbolClass 条目。**farmlandstatus 字母协议：
+  a=作物号、b=cropStatus**（farmlandstatus_getoutput.php:62 `"cId":$a`
+  可证；visit 4 attempt 1 前把 b 误当作物号，库收错过 cId=1/6 十档）。
+  类名构造只出 0/1/2/3/6 档（Crop.as:93-99 把 3/4/5 折叠 3，**4 档类名
+  不可达**）；无 m0/m4 的作物（如快照的白萝卜 cId=2）0/6 档走公共分支：
+  类名 `publicCropPrefix+档` = Crop_1_0/Crop_1_6（Crop_1_6 的素材在
+  Crop_1_4.swf 里，URL 折叠 6→4、符号名带未折叠档位））、`Byproduct`
+  （草/虫摆件，`getInsectPosition` 决定坐标）、`LandPickIcon`（可摘手势
+  图标）、`LandTalkTip`（NPC 对话气泡）、`Wasteland`（荒地块）。
 
 ## background（`src/module/mainScene/background/`）
 
@@ -64,6 +70,16 @@ legacy 出处：同目录 background/。装饰槽位模型 + 场景背景屏。
   `module/ui/farm/diy/{1,2,3,4}.swf` 再组装载——四个库都要在
   libraries.xml/legacy-assets.txt 里（#8 attempt 1/2 漏了 2/3/4，CI 三条
   404）。见 [assets.md](assets.md) 的逐项入库义务。
+- **看板槽（9）不在 decorative 列里**：user_run.php:206 按 activeItem
+  （快照 90001）补发 items 槽 9 → boards 90001（nc_data.php:5977）→
+  asset 1719（:2260）`module/ui/farm/diy/board/1.swf`，BackgroundModel 的
+  DECOR_BILLBOARD 分支走 `idToBoardUrl`。board/1.swf 与 diy/1.swf 文件名
+  相同，库名消歧为 `board_1`（LocalSwfLoader 的 diy/board/ 特判——撞库
+  不 404、看板槽装错背景图，CI 冒烟不拦，由
+  test/CropLifecycleLibrariesTest 钉住）。注意 SceneDecorLibrariesTest
+  类头注释的「billboard=9 不在 uid=1 数据里」不成立：decorative 列确实
+  没有 9，但 user_run 是按 activeItem 补发槽 9 的（该测试文件
+  append-only，纠正落在 CropLifecycleLibrariesTest 类头和这里）。
 - `BackgroundController`（← BackgroundController.as 172 行）：StartupData
   装饰下发进模型；`MSG_ENTER_PREVIEW`→`changeDecor` 快照 + PreviewDiyWindow；
   `finalize` **只清 m_model 不调 super**（基类那份会连 m_view/m_module 一起

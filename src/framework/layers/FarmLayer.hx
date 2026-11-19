@@ -164,7 +164,7 @@ class FarmLayer extends BaseLayer {
 
 	// FarmLayer.as:140-147
 	private function onRollOut(param1:MouseEvent):Void {
-		var _loc2_:FarmApplication = cast super.m_msgCenter;
+		var _loc2_:FarmApplication = cast this.m_msgCenter;
 		if (_loc2_ != null) {
 			_loc2_.useSystemCursor(true);
 		}
@@ -221,7 +221,7 @@ class FarmLayer extends BaseLayer {
 
 	// FarmLayer.as:207-226
 	private function onRollOver(param1:MouseEvent):Void {
-		var _loc2_:FarmApplication = cast super.m_msgCenter;
+		var _loc2_:FarmApplication = cast this.m_msgCenter;
 		if (_loc2_ != null) {
 			_loc2_.useSystemCursor(false);
 		}

@@ -233,7 +233,6 @@ class Language {
 
 	// Language.as:41-45
 	public function new() {
-		super();
 	}
 
 	// Language.as:47-68
@@ -246,7 +245,9 @@ class Language {
 		}
 		_loc3_ = Reflect.field(Language.L, param1);
 		for (_loc4_ in Reflect.fields(param2)) {
-			_loc5_ = new EReg("\{" + _loc4_ + "\}", "g");
+			// AS3 "\{" 是「反斜杠+花括号」两字符（未知转义原样保留），Haxe 需
+			// "\\{" 才得到同样两字符——正则里才是转义的花括号
+			_loc5_ = new EReg("\\{" + _loc4_ + "\\}", "g");
 			_loc3_ = _loc5_.replace(_loc3_, Std.string(Reflect.field(param2, _loc4_)));
 			_loc3_ = StringTools.replace(StringTools.replace(StringTools.replace(StringTools.replace(_loc3_, "#1#", "1st"), "#2#", "2nd"), "#3#", "3rd"), "#4#", "4th");
 		}

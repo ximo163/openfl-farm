@@ -1,5 +1,7 @@
 package framework.api;
 
+import openfl.display.DisplayObjectContainer;
+
 /**
  * framework.api.PluginManager —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
  * 插件管理器（PluginManager.as 280 loc：解析 plugins 配置、装载插件代理）；
@@ -22,6 +24,7 @@ class PluginManager {
 	// PluginManager.as（loadPlugins：按 plugins 配置装载插件，插件片翻译）
 	public function loadPlugins(param1:Dynamic, param2:Array<Dynamic>):Void {}
 
-	// PluginManager.as（amountPlugins：向容器铺某类插件位，插件片翻译）
-	public function amountPlugins(param1:String, param2:Dynamic, param3:Dynamic = null):Void {}
+	// PluginManager.as:68（amountPlugins(param1:int, param2:DisplayObjectContainer,
+	// param3:Object)：向容器铺某类插件位，插件片翻译）
+	public function amountPlugins(param1:Int, param2:DisplayObjectContainer, param3:Dynamic = null):Void {}
 }

@@ -25,7 +25,6 @@ class GameTime {
 
 	// GameTime.as:19-26
 	public function new(param1:Bool) {
-		super();
 		this.m_bStarted = false;
 		this.m_tStart = 0;
 		this.m_LastTimeElapsed = 0;

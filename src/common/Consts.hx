@@ -82,6 +82,8 @@ class Consts {
 	public static final MSG_SHOW_SHOP:String = "ShowShop";
 	public static final MSG_SHOW_BUY_DOG_FOOD:String = "ShowBuyDogFood";
 	public static final MSG_SHOW_BUY_SEED:String = "ShowBuySeed";
+	// Consts.as:296
+	public static final MSG_SHOW_WAREHOUSE:String = "ShowWarehouse";
 	public static final MSG_SHOW_WAREHOUSE_SELL:String = "ShowWarehouseSell";
 	public static final MSG_SHOW_FREEGIFT:String = "ShowFreegift";
 	public static final MSG_SHOW_DIY:String = "ShowDIY";

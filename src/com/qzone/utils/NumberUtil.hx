@@ -18,7 +18,6 @@ class NumberUtil {
 	private static var _fABS:Float->Float = Math.abs;
 
 	public function new() {
-		super();
 	}
 
 	// NumberUtil.as:21-24

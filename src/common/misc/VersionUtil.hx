@@ -1,9 +1,8 @@
 package common.misc;
 
+import com.qzone.utils.RightMenu;
 import common.misc.VersionUtil_versionXml;
 import openfl.display.Sprite;
-import openfl.ui.ContextMenu;
-import openfl.ui.ContextMenuItem;
 import openfl.utils.ByteArray;
 import shim.As3;
 
@@ -19,9 +18,7 @@ class VersionUtil {
 	// VersionUtil.as:12（static const versionXml:Class = VersionUtil_versionXml）
 	private static final versionXml:Class<Dynamic> = VersionUtil_versionXml;
 
-	public function new() {
-		super();
-	}
+	public function new() {}
 
 	// VersionUtil.as:19-34
 	public static function setRightMenu(param1:Sprite, param2:String = "Build @build"):Void {
@@ -29,17 +26,20 @@ class VersionUtil {
 		var _loc4_:Xml = Xml.parse(_loc3_.readUTFBytes(_loc3_.length)).firstElement();
 		// `_loc4_.build.@time` → build 元素的 time 属性
 		var buildNode:Xml = findChild(_loc4_, "build");
-		var _loc5_:Array<Dynamic> = String(buildNode.get("time")).split(" ");
-		var _loc6_:String = String(_loc5_[0]).split("-").join("");
+		var _loc5_:Array<Dynamic> = Std.string(buildNode.get("time")).split(" ");
+		var _loc6_:String = Std.string(_loc5_[0]).split("-").join("");
 		var _loc7_:Float = As3.floatOf(buildNode.get("count"));
 		var _loc8_:String = toUpperBase36(Std.int(_loc7_));
+		// PORT-NOTE: AS3 String.replace(字符串) 只替换首次出现；默认参数
+		// "Build @build" 仅含一个 @build，StringTools.replace 全量替换等价。
 		param2 = StringTools.replace(param2, "@build", _loc6_ + "." + _loc8_);
 		versionString = param2;
-		if (param1.contextMenu == null) {
-			param1.contextMenu = new ContextMenu();
-		}
-		param1.contextMenu.hideBuiltInItems();
-		param1.contextMenu.customItems.push(new ContextMenuItem(param2, false, false));
+		// PORT-NOTE: openfl 没有 flash.ui.ContextMenu/ContextMenuItem，原版
+		// 「确保 contextMenu → hideBuiltInItems → push(菜单项, separatorBefore=
+		// false, enabled=false)」的等价展开走 RightMenu.addMenuItem（其内部
+		// 同序：ensure menu → param7 时 hideBuiltInItems → push）。右键菜单
+		// 载体随 qui 片接入再定（RightMenu stub，见 RightMenu.hx）。
+		RightMenu.addMenuItem(param1, param2, null, false, false, true, true);
 	}
 
 	private static function findChild(param1:Xml, param2:String):Xml {

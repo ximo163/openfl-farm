@@ -43,7 +43,6 @@ class Module implements IModule {
 
 	// Module.as:32-37
 	public function new(param1:FarmApplication) {
-		super();
 		this.m_app = param1;
 		this.m_container = null;
 		this._loaded = false;

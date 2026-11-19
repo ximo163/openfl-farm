@@ -17,7 +17,6 @@ class Controller {
 
 	// Controller.as:16-22
 	public function new(param1:IModule) {
-		super();
 		this.m_module = param1;
 		this.m_model = null;
 		this.m_view = null;

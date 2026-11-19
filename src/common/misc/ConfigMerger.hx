@@ -17,7 +17,6 @@ class ConfigMerger {
 
 	// ConfigMerger.as:15-21
 	public function new(param1:FarmApplication, param2:String) {
-		super();
 		this._app = param1;
 		this.parseXMLData(param2);
 		this._toMerge = null;

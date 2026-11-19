@@ -19,7 +19,6 @@ class ClickReportManager {
 	private static var PV_REPORTED:Bool = false;
 
 	public function new() {
-		super();
 	}
 
 	// ClickReportManager.as:26-64。`_loc4_ ||= {}`：null 时建空对象；
@@ -41,8 +40,9 @@ class ClickReportManager {
 				_loc4_ = {};
 			}
 			Reflect.setField(_loc4_, "referURL", "http://ct0.xiaoyou.qq.com");
-			// split(/[\?\#]/)——Haxe 的 String.split 接受 EReg
-			_loc5_ = String(Reflect.field(_loc4_, "referURL")).split(~/[?#]/);
+			// PORT-NOTE: AS3 String.split(/正则/)——Haxe String.split 只收字符串
+			// 分隔符，等价 EReg.split（AS3 split 对正则按每个匹配切）。
+			_loc5_ = ~/[?#]/.split(Std.string(Reflect.field(_loc4_, "referURL")));
 			_loc6_ = _loc5_[0];
 			_loc5_ = _loc6_.split("/");
 			_loc7_ = _loc5_.length >= 2 ? _loc5_[2] : "-";
@@ -55,7 +55,11 @@ class ClickReportManager {
 			}
 			_loc7_ = QzoneJSAPI.getCookie("pgv_pvid");
 			if (!As3.truthy(_loc7_)) {
-				_loc7_ = Std.string(Math.round(Math.random() * 2147483647) * new Date().getUTCMilliseconds() % 10000000000);
+				// PORT-NOTE: `new Date()`（无参=当前时间）→ Date.now()；getUTCMilliseconds
+				// Haxe Date 没有毫秒访问器，getTime()%1000 即同一毫秒分量（时区偏移为整分，
+				// UTC 与本地的毫秒内分量恒等）；AS3 Number 乘积超 Int32，
+				// 前置 1.0 保持 float64 语义（同 As3.dateOf 先例）。
+				_loc7_ = Std.string(1.0 * Math.round(Math.random() * 2147483647) * Std.int(Date.now().getTime() % 1000) % 10000000000);
 				QzoneJSAPI.setCookie("pgv_pvid", _loc7_, "qq.com", "/", 10000);
 			}
 			_loc9_ = [PV_REPORT_DOMAIN, "?cc=-&ct=-&java=1&lang=-&pf=-&scl=-&scr=-&tt=-&tz=-8&vs=3.3&", "dm=", _loc2_, "&", "url=", _loc3_, "&", "rdm=",

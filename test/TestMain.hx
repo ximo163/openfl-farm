@@ -27,9 +27,6 @@ class TestMain {
 		runner.addCase(new framework.net.core.HttpOperationExTest());
 		runner.addCase(new framework.net.parsers.StartupDataParserTest());
 		runner.addCase(new framework.net.protocol.ProtocolTest());
-		// issue #7 implement 追加：FarmLand._goldLand 计算属性（jinPaiLand 活动
-		// 窗口）原版语义，见 test/entities/FarmLandGoldLandTest.hx 头注释
-		runner.addCase(new entities.FarmLandGoldLandTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

@@ -1,6 +1,9 @@
 // web-smoke：在无头浏览器里加载构建产物，确认能渲染、无报错、冒烟标记出现。
 // 由人维护（harness/ 受保护）。用法：node smoke.mjs <index.html 路径>
 // 退出码：0 通过；1 失败（失败原因打到 stdout，截图存 harness/smoke-failure.png）。
+// 失败输出带 pageerror 的完整调用栈（html5 的 JS 不混淆，栈帧即 Haxe 类名）
+// 和 *.php 请求表——编排器把这份日志喂回给 agent，它容器里没有浏览器和
+// 后端，栈和请求表是它唯二的定位线索。
 //
 // 必须走 http 而不是 file://：swf 库把每个 <library> 编成 lib/<id>.zip，
 // 运行时 XHR 加载，file:// 下会被 CORS 拦（真实部署也是 http 提供）。
@@ -71,7 +74,16 @@ const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 860, height: 500 } });
 
 const errors = [];
-page.on("pageerror", (e) => errors.push(`pageerror: ${e}`));
+// *.php 请求记录：失败时按序打出（哪个 mod/act 的载荷参与了启动）。
+// agent 容器里没有浏览器和后端，只能靠这份日志反推数据来源。
+const traffic = [];
+page.on("pageerror", (e) => errors.push(`pageerror: ${e && e.stack ? e.stack : String(e)}`));
+page.on("response", (r) => {
+  if (r.url().includes(".php")) {
+    const u = new URL(r.url());
+    traffic.push(`${r.status()} ${r.request().method()} ${u.pathname}${u.search}`);
+  }
+});
 page.on("console", (m) => {
   if (m.type() === "error") errors.push(`console.error: ${m.text()}`);
 });
@@ -100,18 +112,29 @@ try {
   });
 
   if (!nonBlank) errors.push("canvas 看起来是空白的");
-  if (errors.length) {
-    console.log("web-smoke: FAIL");
-    for (const e of errors) console.log("  " + e);
-    process.exit(1);
+function dumpTraffic() {
+  // 栈 + 请求表：给排查的 agent（或人）直接点名是谁炸的——html5 的 JS
+  // 不混淆，栈帧里就是 Haxe 类名/方法名。
+  if (traffic.length) {
+    console.log("  后端请求（按发生顺序，最后 30 条）：");
+    for (const t of traffic.slice(-30)) console.log("    " + t);
   }
-  console.log("web-smoke: ok");
-  process.exit(0);
+}
+
+if (errors.length) {
+  console.log("web-smoke: FAIL");
+  for (const e of errors) console.log("  " + e);
+  dumpTraffic();
+  process.exit(1);
+}
+console.log("web-smoke: ok");
+process.exit(0);
 } catch (e) {
   await page.screenshot({ path: "smoke-failure.png" }).catch(() => {});
   console.log("web-smoke: FAIL");
   console.log("  " + (e && e.message ? e.message : e));
   for (const er of errors) console.log("  " + er);
+  dumpTraffic();
   process.exit(1);
 } finally {
   await browser.close();

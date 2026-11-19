@@ -61,9 +61,14 @@ class MD5 {
 
 	// MD5.as:66-78。`param1[_loc5_ / 8]`：AS3 除法得 Number 再作下标（隐式
 	// 取整），_loc5_ 步进 8 恒整除，Std.int 等价。
-	// PORT-NOTE: 稀疏数组读（AS3 undefined 进位运算按 0）→ readWord 判空回 0
+	// PORT-NOTE: 稀疏数组读（AS3 undefined 进位运算按 0）→ 越界判下标、
+	// 洞位读经 Dynamic 判 null（静态目标 Array<Int> 与 null 比较不过编译，
+	// 且其洞位本就是 0；动态目标洞位是 null），两边语义同为「缺位补 0」
 	private static function readWord(param1:Array<Int>, param2:Int):Int {
-		var _loc3_:Int = param1[param2];
+		if (param2 < 0 || param2 >= param1.length) {
+			return 0;
+		}
+		var _loc3_:Dynamic = param1[param2];
 		if (_loc3_ == null) {
 			return 0;
 		}
@@ -83,12 +88,11 @@ class MD5 {
 		_loc2_[Std.int((_loc3_ + 64 >>> 9 << 4) + 14)] = _loc3_;
 		// PORT-NOTE: 长度字与数据字之间的空洞、以及尾块第 16 个字（长度字在
 		// 第 15 下标、数组永远缺 1 个字到 16 对齐）在 AS3 里读出 undefined、轮
-		// 函数按 0 用；Haxe 越界读是 null，补 0 / 对齐补 0 等价
+		// 函数按 0 用；这里统一走 readWord 归一化（动态目标洞位是 null 补 0，
+		// 静态目标 Array<Int> 没有 null、洞位已是 0，赋 0 是空操作）
 		var _loc6_:Int = 0;
 		while (_loc6_ < _loc2_.length) {
-			if (_loc2_[_loc6_] == null) {
-				_loc2_[_loc6_] = 0;
-			}
+			_loc2_[_loc6_] = readWord(_loc2_, _loc6_);
 			_loc6_++;
 		}
 		while (_loc2_.length % 16 != 0) {

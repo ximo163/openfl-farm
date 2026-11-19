@@ -15,3 +15,7 @@
 - **web-smoke 红叉的排查顺序**：先看 pageerror 的 e.stack（html5 的 JS
   未压缩，栈帧就是 Haxe 类名），再看输出末尾的 `.php` 请求表（最后 30 条，
   404 = 库没声明），别先猜代码。
+- **静态目标上 null 不能当 Int**：`_loc3_ == null`（Int）在 eval/html5 过、
+  android（cpp）编译红——容器里编不了 android，只在 main 的 android CI 暴露
+  （MD5.hx 两处，#7 合并后才发现）。防：Int 判空用下标范围；要「缺位」语义
+  读经 `Dynamic` 再判 null。规则已进 CLAUDE.md 的语言差异清单。

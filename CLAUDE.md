@@ -112,6 +112,10 @@
   语义保持原样。
 - 默认参数、`arguments`、`...rest`：`function f(...args)` → `function f(args:Array<Dynamic>)`
   语义不同时标 `// PORT-NOTE:`。
+- **静态目标（Android/cpp）上 null 不能当 Int**：别写 `x == null`（x 是 Int）、
+  别把 null 赋给/传给 Int——eval 和 html5 容忍、android 编译直接红，而容器里
+  编不了 android，这类错只在 main 的 android CI 暴露。要「缺位」语义时判下标
+  范围，或读经 `Dynamic` 再判 null。
 - 翻不过去（行为无法等价）的地方不要硬翻：`BLOCKED: <类名.方法名，卡在什么>`。
 
 ### 资产

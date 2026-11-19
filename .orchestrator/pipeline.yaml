@@ -26,7 +26,8 @@ protected:
   - harness/           # 自动验收：agent 不能改
   - ci/
   - .github/
-  - "*.md"             # 这个仓库不写给人看的文档，计划和文档在 openfl-farm-docs
+  - "/*.md"            # 根目录不写文档（给人看的在 openfl-farm-docs）。handbook/ 是给
+                       # agent 的工作手册（2026-11-19 所有者决定），放开让它边实现边补
   - Project.xml        # OpenFL 工程配置（library 声明等）由人管
   - "*.hxml"
 
@@ -124,7 +125,7 @@ stages:
   - id: merge
     kind: merge
     method: squash
-    exclude_from_limits: ["test/**"]
+    exclude_from_limits: ["test/**", "handbook/"]
     max_changed_lines: 8000
     max_changed_files: 60
     # 同模型审核放行（用户决定 2026-11-17）：单模型 API 下 distinct reviewer 永远
@@ -136,3 +137,4 @@ stages:
       - libraries.xml
       - test/
       - tools/
+      - handbook/

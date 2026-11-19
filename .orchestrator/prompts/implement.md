@@ -1,4 +1,6 @@
-实现这个任务，让测试通过。先读 CLAUDE.md。
+实现这个任务，让测试通过。先读 CLAUDE.md，再按 `handbook/index.md` 路由表读
+这次要动的子系统页面（职责、约定、前人踩的坑都在那里，不要靠翻反编译代码猜
+系统结构）。
 
 - 已通过审核的测试不能改，只能新增测试文件。测试本身错了（和 legacy 对不上），
   最后一行输出 `NEEDS-TESTS: <哪个测试错在哪里，legacy 的出处>`。
@@ -19,5 +21,10 @@
 - 验证命令只有：`haxelib run openfl build html5`、`haxe test.hxml`。不要尝试
   `openfl build android`（容器里没有 SDK/NDK），不要安装任何大型工具。
 - 新增 haxelib 依赖一律 BLOCKED，不自己加。
+- **handbook 边实现边补**：翻译了新子系统、或本次改动让某子系统的结构/约定
+  变了，同一个改动里建好/更新 `handbook/` 对应页面和 `handbook/index.md`
+  路由表行；值得记住的坑（环境差异、工具行为、legacy 反直觉处）按
+  `handbook/lessons/index.md` 的格式追加。页面写「为什么」和「在哪」，
+  不复述代码。
 - 最后的回答里概括：翻译了哪些类（原类 → 移植类）、stub 了哪些、PORT-NOTE 了哪些、
   以及发现的 legacy 里的矛盾或疑点。

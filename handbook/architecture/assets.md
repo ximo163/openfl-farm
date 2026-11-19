@@ -1,0 +1,19 @@
+# 资产声明与本地化加载
+
+原版 swf 资产的入库与加载机制。
+
+- **同步**：`assets/legacy-assets.txt` 一行一个 `legacy/deploy/QFarmFlash/`
+  相对路径 → `scripts/sync-legacy-assets.sh` 拷到 `assets/legacy/` 下同样
+  相对路径（生成物不入库；流水线在每次 agent 运行后自动同步）。**不手拷
+  文件、不改资产内容**，只改清单。
+- **声明**：根目录 `libraries.xml` 一行一库（`<library path id/>`），id =
+  swf 文件名去 `.swf`，`Assets.getMovieClip("<id>:符号名")` 取符号。
+  **必须和 legacy-assets.txt 同 commit 改**——library 指向的文件不存在时
+  构建直接红。`Project.xml` 本体由人管，只通过 include 合并 libraries.xml。
+- **加载**：原版运行期网络加载的库**不** `preload`（只有 V1 探路样本
+  preload="true"）；代码里的 `Loader.load(远端URL)` 只在加载器类里换成
+  `src/shim/LocalSwfLoader.hx`（`libraryIdForUrl` 按 URL 尾段映射库名），
+  其余代码保持原调用形态。
+- 当前已入库的库和每个库的来源依据，看 `libraries.xml` 和
+  `assets/legacy-assets.txt` 里的分组注释（V1 样本 / V2 加载链 / V3a
+  启动链）。

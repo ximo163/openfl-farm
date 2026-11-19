@@ -1,5 +1,7 @@
 只写这个任务的测试，不做实现。先读 CLAUDE.md。
 
+- 要弄清被测逻辑在系统里的位置（归哪个子系统、谁调它、有哪些约定和坑），先看
+  `handbook/index.md` 路由表指到的页面，不要靠翻代码猜。
 - 需求来自原版：期望值从 `spec/`（模块清单在 `spec/modules/<模块>.json`）、
   `legacy/deploy/`（先看 `legacy/manifest.json` 找到 PHP 和配置在哪）、
   `legacy/decompiled/` 推出来，不要凭感觉猜。每个期望值上方用注释写明出处

@@ -3,8 +3,8 @@
 这个仓库把一个 Flash 农场游戏（phpYe.QFarm 7.0，原版只剩部署包：swf + PHP 后端，
 没有源码）的客户端**翻译**成 OpenFL（Haxe），构建 Android APK 和 html5。开发由
 编排器流水线完成，你很可能就是其中一个 agent。计划、架构和验收标准的说明在
-`ximo163/openfl-farm-docs`；这个仓库**不写任何给人看的文档**（`*.md` 是受保护
-路径，唯一例外是本文件）。
+`ximo163/openfl-farm-docs`；给 agent 的工作手册在 `handbook/`（见下）。除本文件
+和 `handbook/` 外不写 `*.md`（根目录 md 是受保护路径）。
 
 **核心方法论：翻译，不重写。** 移植的类和反编译出的 AS3 类 1:1 对应，显示树、
 协议、时间轴语义全部保留。不引入原版没有的架构（没有 Intent、没有 GameService、
@@ -25,11 +25,22 @@
 | `assets/legacy/` | 从 `legacy/deploy/QFarmFlash/` 拷贝的原 swf 资产副本（**不入库**：构建时由脚本同步，清单见 `assets/legacy-assets.txt`） | 脚本生成，不手改、不提交 |
 | `assets/legacy-assets.txt` | 资产同步清单：一行一个 `legacy/deploy/QFarmFlash/` 相对路径（如 `module/main3_v_221.swf`） | agent（按模块需要增删） |
 | `test/` | utest 单元测试（eval 目标，纯逻辑） | agent |
+| `handbook/` | 给 agent 的工作手册：子系统结构、约定、踩坑（`index.md` 是路由表） | agent（边实现边补） |
 | `tools/` | 转换与比对工具 | agent |
 | `checks/`、`scripts/`、`harness/` | 校验脚本、反编译/资产同步脚本、自动验收 | 人，只读 |
 | `libraries.xml` | 原版资产库声明（`<library>` 一行一库），被 `Project.xml` include | agent（和 legacy-assets.txt 同 commit 改） |
 | `Project.xml`、`test.hxml` | OpenFL 工程与测试编译配置 | 人，只读 |
 | `.github/workflows/` | CI：反编译、html5 构建+冒烟（`web-build`/`web-smoke`）、Android APK | 人，只读 |
+
+## 动手前先读 handbook
+
+- `handbook/index.md` 开头的路由表说明你要动的东西归哪个子系统、读哪一页。读
+  那一页（职责、关键类、legacy 出处、不能破坏的约定、踩过的坑），不要靠翻
+  反编译代码去猜系统怎么拼起来的，源码只看页面指到的文件。
+- 页面和代码不一致时以代码为准，并在同一个改动里把页面改对。
+- **边实现边补**：翻译了新子系统、或本次改动让某子系统的结构/约定变了，在
+  同一个改动里建好/更新 `handbook/` 对应页面并把路由表行加上；值得记住的坑
+  按 `handbook/lessons/index.md` 的格式追加。
 
 ## 读原版之前：先读 legacy/manifest.json
 

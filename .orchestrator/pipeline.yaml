@@ -48,8 +48,12 @@ suites:
   compile: { cmd: "haxelib run openfl build html5", timeout: 10m }
   # 单元测试：utest + eval 解释器，秒级。test.hxml 里失败时以非零退出码结束。
   test: { cmd: "haxe test.hxml", timeout: 5m }
+  # JSON 解析只许走 as3corelib 门面（宽松语义 + 串内控制字符消毒）：直连
+  # haxe.Json.parse 在真后端数据上红 CI（#7 web-smoke 两轮），自编 fixture
+  # 查不出来，这个 2 秒的 grep 在容器里就拦住。
+  json-facade: { cmd: "bash checks/json-facade-only.sh", timeout: 2m }
 
-preflight: [manifest, compile, test]   # test 无 junit，靠退出码做 expect: fail 基线
+preflight: [manifest, compile, test, json-facade]   # test 无 junit，靠退出码做 expect: fail 基线
 
 # 以后加上（工具/规格合并后再写进来）：
 #   port-coverage: bash checks/port-coverage.sh    spec/modules 的类 vs src/ 的移植类对账
@@ -67,6 +71,7 @@ stages:
     timeout: 90m
     verify:
       - compile                       # 测试和 stub 能编译
+      - json-facade                   # 测试引入的 src 改动也不许绕过 JSON 门面
       - { suite: test, expect: fail } # 新测试在实现之前失败（靠退出码判定）
     attempts: 4
     escalate: { after: 2, models: [strong2] }
@@ -95,7 +100,7 @@ stages:
     protect_since: write-tests
     append_only: ["test/**"]
     protected: ["test/fixtures/"]
-    verify: [compile, test]
+    verify: [compile, test, json-facade]
     ci: true    # 开 PR 并等 required_checks：html5 构建和冒烟在 GitHub 上
     attempts: 4
     escalate: { after: 2, models: [strong, strong2] }

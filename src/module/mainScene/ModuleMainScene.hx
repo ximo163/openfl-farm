@@ -17,8 +17,9 @@ import module.mainScene.farmLand.FarmLandModel;
 import module.mainScene.npc.NPCController;
 
 // module.mainScene.ModuleMainScene —— ModuleMainScene.as 逐句对应（主场景模块：
-// 背景/农田/NPC 三控制器 + 大小场景切换）。视图族（BackgroundController 等）
-// 是 V3b 的闭包 stub，本片保模型装载与 isAllBlack/onNetRequestStopped 链。
+// 背景/农田/NPC 三控制器 + 大小场景切换）。#7 翻译本类时视图族（BackgroundController
+// 等）还是闭包 stub；#8（V3b）已把三控制器/视图族全部翻译（结构见
+// handbook/architecture/farmscene.md），本类 load 里的 new/initialze 链原样生效。
 // PORT-NOTE: `super.container["maxWidth"]` 的动态下标写在 Haxe 里要类型化，
 // LAYER_SCENE_CONTENT 挂的本来就是 FarmLayer（FarmStage.buildLayers），
 // cast 后按属性写，语义不变。

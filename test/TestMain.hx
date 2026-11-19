@@ -27,6 +27,9 @@ class TestMain {
 		runner.addCase(new framework.net.core.HttpOperationExTest());
 		runner.addCase(new framework.net.parsers.StartupDataParserTest());
 		runner.addCase(new framework.net.protocol.ProtocolTest());
+		// issue #7（回到 write-tests）：启动窗口 module swf ↔ libraries.xml
+		// 一致性（WildShellNc_v_5 未入库 → web-smoke 404，见该测试类头注释）
+		runner.addCase(new StartupModuleLibrariesTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

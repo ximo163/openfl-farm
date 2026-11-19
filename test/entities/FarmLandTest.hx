@@ -1,5 +1,7 @@
 package entities;
 
+import common.CommonData;
+import common.Settings;
 import haxe.Json;
 import utest.Assert;
 
@@ -17,6 +19,8 @@ import utest.Assert;
  *   farmlandStatus 形态
  * - legacy/deploy/QFarmFlash/source/core/source/nc/mod/farmlandstatus_harvest.php:95 ——
  *   收获回包里 status 的全键名形态（copyFrom 的真实输入）
+ * - legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php:113
+ *   （<jinPaiLand>7/10/2012-11/12/2012 23:59:59</jinPaiLand>，活动窗口下发格式）
  */
 @:final
 class FarmLandTest {
@@ -146,5 +150,40 @@ class FarmLandTest {
 		var land = new FarmLand(landJson(0));
 		land.copyFrom({bitmap: 4});
 		Assert.equals(2, land._bitmap);
+	}
+
+	// _goldLand 是计算属性：set（:63-65）只写裸 goldLand（:47 初值 0）；get
+	//（:225-245）读 Settings 的 jinPaiLand 活动窗口（:232，下发格式见
+	// nc_addon.php:113），窗口覆盖 CommonData.serverTime*1000（:238）且
+	// goldLand==1（:239）才返回 1，否则恒 0。serverTime=0 走 get 的
+	// _serverTime==0 纯分支（不读时钟，CommonData.hx:144-148）；1960-2040 宽窗
+	// 在任何时区下都覆盖纪元 0，2040-2060 恒不覆盖。断言经类型化引用读
+	//（eval 上 Dynamic 读 (get,set) 属性不触发 getter）
+	public function test_goldLand_computed_property_is_window_gated() {
+		CommonData.serverTime = 0;
+		Settings.getInstance().loadLocalSettings({jinPaiLand: "1/1/1960-1/1/2040"});
+
+		var gold = new FarmLand({});
+		gold._goldLand = 1; // setter 只写 goldLand
+		Assert.equals(1, gold._goldLand); // :236-242 窗口内且 goldLand==1
+
+		var plain = new FarmLand({});
+		plain._goldLand = 0;
+		Assert.equals(0, plain._goldLand); // :239 goldLand==1 不成立
+
+		// importObject :207-209 `param1["goldLand"] == true`（松散真值）→ 写 1
+		Assert.equals(1, new FarmLand({goldLand: 1})._goldLand);
+		// copyFrom :181-183 hasOwnProperty → setter 原值写入
+		var copied = new FarmLand({});
+		copied.copyFrom({goldLand: 1});
+		Assert.equals(1, copied._goldLand);
+
+		// 未配置 jinPaiLand：getStringAttribute 回 ""（:232）→ :234 条件不进 → 恒 0
+		Settings.getInstance().loadLocalSettings({});
+		Assert.equals(0, gold._goldLand);
+
+		// 窗口在未来：serverTime*1000（=0）< 窗口起（:239 的 >= 不成立）→ 0
+		Settings.getInstance().loadLocalSettings({jinPaiLand: "1/1/2040-1/1/2060"});
+		Assert.equals(0, gold._goldLand);
 	}
 }

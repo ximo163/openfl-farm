@@ -1,6 +1,8 @@
 package module.mainScene.farmLand;
 
+import common.CommonData;
 import common.Session;
+import common.Settings;
 import entities.FarmLand;
 import entities.Player;
 import events.CommonEvent;
@@ -23,6 +25,11 @@ import utest.Assert;
  *   拼出的公共参数）、farmlandstatus_planting.php:6（place）
  * - legacy/decompiled/main3_v_221/scripts/common/GetCropID.as:267-277（getCropByID：
  *   theApp.model 为 null 返回 null）、:201-227（timeToMature：查无作物返回 -1）
+ * - legacy/decompiled/main3_v_221/scripts/entities/FarmLand.as:63-65（set
+ *   _goldLand 只写裸 goldLand）、:225-245（get _goldLand 是计算属性：Settings
+ *   的 jinPaiLand 活动窗口覆盖 CommonData.serverTime*1000 且 goldLand==1 才 1）
+ * - legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php:113
+ *   （<jinPaiLand>7/10/2012-11/12/2012 23:59:59</jinPaiLand>，窗口下发格式）
  * - test/fixtures/uid1_user_run.json —— CI 旧后端快照 uid=1 "admin" 的 user_run
  *   真实下发（user.uId=1/userName="admin"、serverTime=1794915896、6 块地 status）
  *
@@ -35,7 +42,18 @@ import utest.Assert;
  *   「哪些地进 _refreshLands/不进」与 0 返回值，不对 timeToMature>0 的累加值
  *   造数（那要等 GetCropID 翻译 + cropstype 配置加载）；
  * - Session 同为本片闭包 stub（src/common/Session.hx，字段存取语义），每个用例
- *   自行钉 currentUser/host/friendKeys，不依赖用例顺序。
+ *   自行钉 currentUser/host/friendKeys，不依赖用例顺序；
+ * - _goldLand 是计算属性（FarmLand.as:225-245），测试环境要走真实下发路径
+ *   Settings.loadLocalSettings（Settings.as:483-488，同 SettingsTest/
+ *   ServerServicesTest 的注入先例）配 jinPaiLand 窗口；serverTime=0 时
+ *   get_serverTime 的 _serverTime==0 分支不读时钟（CommonData.hx:144-148），
+ *   窗口取 1960-2040 宽窗确定覆盖 0（任何时区下 1960 本地 < 纪元 < 2040 本地）；
+ * - eval 上经 Dynamic（Array<Dynamic> 元素）读 (get,set) 属性不触发 getter（得
+ *   null；js 上动态读得 undefined），测试内断言 _goldLand 一律经类型化
+ *   FarmLand 引用读；原版 isAllGoldLand 的循环变量是类型化的（必调 getter），
+ *   移植侧 m_farmlandData:Array<Dynamic> 的元素若以 Dynamic 读该属性则与
+ *   原版分歧（活动窗口内恒 2），test_isAllGoldLand_states 按原版断言并在
+ *   阶段报告标注。
  */
 @:access(module.mainScene.farmLand.FarmLandModel)
 class FarmLandModelTest {
@@ -57,6 +75,15 @@ class FarmLandModelTest {
 		var s = Session.getInstance();
 		s.currentUser = me;
 		s.host = host;
+	}
+
+	// 让 _goldLand 计算属性（FarmLand.as:225-245）的金地判定确定性地生效：
+	// serverTime=0 走 get 的 _serverTime==0 纯分支（不读时钟），
+	// jinPaiLand 窗口用 nc_addon.php:113 的美式日期串格式，1960-2040 宽窗
+	// 在任何时区下都覆盖纪元 0
+	static function pinGoldWindow():Void {
+		CommonData.serverTime = 0; // setter 写 _serverTime，get 的 0 分支返回 0
+		Settings.getInstance().loadLocalSettings({jinPaiLand: "1/1/1960-1/1/2040"});
 	}
 
 	// buildCommonPostParams :300-326：uid=1 admin 自访（fixture user 块）+
@@ -163,10 +190,24 @@ class FarmLandModelTest {
 		Assert.same([], model.refreshLands); // :687 每次调用新建数组
 	}
 
-	// isAllGoldLand :1517-1532：非金地→2；全金且不足 24 块→1；全金且 ≥24→3
+	// isAllGoldLand :1517-1532：非金地→2；全金且不足 24 块→1；全金且 ≥24→3；
+	// 空数组 → for-each 零次 + truthy([])==true 且 0<24 → 1。「金地」按
+	// _goldLand 计算属性判定（FarmLand.as:225-245）：jinPaiLand 活动窗口覆盖
+	// serverTime*1000 且 setter 写过 goldLand==1（:63-65）才算 1。
+	// changed for #7: 原断言把 _goldLand 当存储属性读回写入值——legacy 里它是
+	// jinPaiLand 活动窗口计算属性，未配置窗口时恒 0；改为经真实下发路径
+	//（loadLocalSettings）配窗口后断言 1/3/2 三态，并补空数组边界与撤窗口后
+	// 恒 2 的门控断言（窗口 getter 本身是 FarmLand.as:225-245 的忠实翻译，
+	// 不属 deviations）。注意原版循环变量声明为 FarmLand（:1519-1521），
+	// `_loc1_._goldLand` 是编译期类型化访问、必调 getter；移植侧若以
+	// Array<Dynamic> 元素动态读该属性，getter 不触发（eval 读得 null、js 读得
+	// undefined，`!= 1` 恒真 → 恒 2），与原版活动窗口内的行为不一致——本用例
+	// 按原版断言，动态读形态下 1/3 两断言失败（见阶段报告）
 	public function test_isAllGoldLand_states() {
+		pinGoldWindow();
 		var one = bareLand();
-		one._goldLand = 1;
+		one._goldLand = 1; // setter（FarmLand.as:63-65）只写裸 goldLand
+		Assert.equals(1, one._goldLand); // 前置 sanity：窗口内类型化读 getter=1
 		var model = new FarmLandModel();
 		model.m_farmlandData = [one];
 		Assert.equals(1, model.isAllGoldLand); // :1527-1530 length 1 < 24
@@ -184,6 +225,27 @@ class FarmLandModelTest {
 		mixed._goldLand = 0;
 		all[23] = mixed;
 		Assert.equals(2, model.isAllGoldLand); // :1522-1525 第 24 块不是金地
+
+		// 空数组：零次迭代 + truthy([])==true（AS3 Boolean([]) 为真）且 0<24 → 1
+		model.m_farmlandData = [];
+		Assert.equals(1, model.isAllGoldLand); // :1527-1530
+
+		// 撤掉活动窗口（未配置 jinPaiLand）：getter 恒 0（FarmLand.as:234-244
+		// 条件不满足），goldLand=1 也不算金地 → 首块地即 2
+		Settings.getInstance().loadLocalSettings({});
+		Assert.equals(0, one._goldLand); // 类型化引用才触发 getter
+		model.m_farmlandData = [one];
+		Assert.equals(2, model.isAllGoldLand);
+	}
+
+	// isAllGoldLand :1517-1521：m_farmlandData 为 null 时，原版 for-each 对
+	// null 是零次迭代（AS3/AVM2 for-in 语义，不抛错）→ 落到 :1527 truthy(null)
+	// 为假 → 返回 3。移植侧若直接对 null 数组迭代会在 js/eval 上抛
+	// Null Access/TypeError——原版容忍 null，移植必须同样容忍
+	public function test_isAllGoldLand_tolerates_null_farmland_data() {
+		var model = new FarmLandModel();
+		model.m_farmlandData = null;
+		Assert.equals(3, model.isAllGoldLand); // :1527-1531
 	}
 
 	// landIsFull :1534-1545：任一地 null 或 _cId==0 → false；全有种 → true；
@@ -211,8 +273,13 @@ class FarmLandModelTest {
 
 	// updateLandData :274-298：普通分支赋 _output/_left/_min，bitmap 只在
 	// param6!=1 时写（:289-292），goldLand 只在 param6>=0 时写（:293-296），
-	// 完成后派发 EVENT_LAND_CHANGED（"FarmLandChanged"）带 index
+	// 完成后派发 EVENT_LAND_CHANGED（"FarmLandChanged"）带 index。
+	// changed for #7: _goldLand 的断言原经 Array<Dynamic> 读（eval 上不触发
+	// (get,set) 属性 getter，读得 null）且期望值按存储读回写；它实为
+	// jinPaiLand 窗口计算属性（FarmLand.as:225-245），故先配窗口（pinGoldWindow）
+	// 再经类型化 FarmLand 引用断言 getter 结果
 	public function test_updateLandData_sets_fields_and_dispatches_change_event() {
+		pinGoldWindow();
 		var model = new FarmLandModel();
 		var lands:Array<Dynamic> = [];
 		for (i in 0...3) {
@@ -232,17 +299,20 @@ class FarmLandModelTest {
 		Assert.equals(3, lands[0]._left);
 		Assert.equals(2, lands[0]._min);
 		Assert.equals(0, lands[0]._bitmap);
-		Assert.equals(0, lands[0]._goldLand);
+		var g0:FarmLand = lands[0];
+		Assert.equals(0, g0._goldLand); // 窗口内但 goldLand==0 → 0
 
 		// param6=1 → bitmap 不写（:289-292，地块初值 0 保持，尽管 param5=7）、goldLand=1
 		model.updateLandData(1, 5, 3, 2, 7, 1);
 		Assert.equals(0, lands[1]._bitmap); // param6==1：bitmap 被跳过
-		Assert.equals(1, lands[1]._goldLand);
+		var g1:FarmLand = lands[1];
+		Assert.equals(1, g1._goldLand); // 窗口内且 goldLand==1 → 1
 
 		// param6=-1 → bitmap 写、goldLand 不动
 		model.updateLandData(2, 5, 3, 2, 7, -1);
 		Assert.equals(7, lands[2]._bitmap);
-		Assert.equals(0, lands[2]._goldLand);
+		var g2:FarmLand = lands[2];
+		Assert.equals(0, g2._goldLand); // 未写过（:293-296 跳过）→ goldLand 仍 0
 
 		Assert.equals(3, changes.length);
 		Assert.equals(0, Reflect.field(changes[0].data, "index")); // :297 {"index":param1}

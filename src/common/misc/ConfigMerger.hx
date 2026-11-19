@@ -1,13 +1,14 @@
 package common.misc;
 
-import haxe.Json;
+import com.adobe.serialization.json.JSON;
 import module.FarmApplication;
 
 // common.misc.ConfigMerger —— ConfigMerger.as 逐句对应（221 loc，启动链的配置
 // 合并器：data 配置 parseXMLData、addon 配置 mergeConfig，按原样两段）。
 // PORT-NOTE: E4X child()/children()/attributes() 按等价 Xml 遍历改写
 //（FarmLite 先例）；`@id == undefined ? name() : @id` 的空属性语义 = get()
-// null 时退 nodeName。com.adobe.serialization.json.JSON.decode → haxe.Json.parse。
+// null 时退 nodeName。com.adobe.serialization.json.JSON.decode 照调（该类内部
+// 等价落到 haxe.Json.parse，含 as3corelib 宽松语义的串内控制字符预处理）。
 class ConfigMerger {
 	// ConfigMerger.as:11
 	private var _app:FarmApplication;
@@ -69,7 +70,7 @@ class ConfigMerger {
 	// ConfigMerger.as:80-88
 	private function parseJSONData(param1:Dynamic):Void {
 		var _loc3_:String = null;
-		var _loc2_:Dynamic = Json.parse(param1);
+		var _loc2_:Dynamic = JSON.decode(param1);
 		for (_loc3_ in Reflect.fields(_loc2_)) {
 			this._app.model.setData(_loc3_, Reflect.field(_loc2_, _loc3_));
 		}
@@ -144,7 +145,7 @@ class ConfigMerger {
 		var cfg:Array<Dynamic> = this.checkTargetArrayData(name);
 		var jsn:Dynamic = null;
 		try {
-			jsn = Json.parse(firstTextNode(mNode));
+			jsn = JSON.decode(firstTextNode(mNode));
 		} catch (e:Dynamic) {
 			trace("ERROR> parse json data failed.");
 			return;
@@ -198,10 +199,10 @@ class ConfigMerger {
 	// childNodes[0].nodeValue（parseXMLData，XMLDocument ignoreWhite）/ children()[0]
 	//（mergeJsonArrayNode，E4X）：元素的真实字符内容（json 载荷）。haxe Xml 保留
 	// 纯空白 PCData，真实下发（nc_data/nc_addon 的 json 节点 CDATA 前有 "\n\t\t"）
-	// 里 firstChild() 会取到空白文本 → Json.parse 空白串抛 "Unexpected end of
-	// JSON input"（CI web-smoke pageerror，parseJSONData 无 try/catch）。按
-	// ignoreWhite 语义取首个非纯空白字符子节点（同 FarmLiteModel 的
-	// firstChildIgnoreWhite 先例）。
+	// 里 firstChild() 会取到空白文本 → JSON.decode（内部 haxe.Json.parse）空白串
+	// 抛 "Unexpected end of JSON input"（CI web-smoke pageerror，parseJSONData
+	// 无 try/catch）。按 ignoreWhite 语义取首个非纯空白字符子节点（同
+	// FarmLiteModel 的 firstChildIgnoreWhite 先例）。
 	private static function firstTextNode(param1:Xml):String {
 		var child:Xml = null;
 		for (child in param1) {

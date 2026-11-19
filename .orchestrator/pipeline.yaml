@@ -48,8 +48,12 @@ suites:
   compile: { cmd: "haxelib run openfl build html5", timeout: 10m }
   # 单元测试：utest + eval 解释器，秒级。test.hxml 里失败时以非零退出码结束。
   test: { cmd: "haxe test.hxml", timeout: 5m }
+  # JSON 解析只许走 as3corelib 门面（宽松语义 + 串内控制字符消毒）：直连
+  # haxe.Json.parse 在真后端数据上红 CI（#7 web-smoke 两轮），自编 fixture
+  # 查不出来，这个 2 秒的 grep 在容器里就拦住。
+  json-facade: { cmd: "bash checks/json-facade-only.sh", timeout: 2m }
 
-preflight: [manifest, compile, test]   # test 无 junit，靠退出码做 expect: fail 基线
+preflight: [manifest, compile, test, json-facade]   # test 无 junit，靠退出码做 expect: fail 基线
 
 # 以后加上（工具/规格合并后再写进来）：
 #   port-coverage: bash checks/port-coverage.sh    spec/modules 的类 vs src/ 的移植类对账
@@ -60,10 +64,14 @@ stages:
     kind: agent
     model: strong
     prompt: prompts/write-tests.md
-    max_turns: 160
-    timeout: 60m
+    # 300 turns / 90m：issue #7 a1 实测 174 次调用（39.8m）已贴 160 上限，a3 补
+    # FarmLandModel 公式等三块测试时直接 error_max_turns 截断。测试面覆盖大模块
+    # （2071 行类）时写作量和 implement 同量级，预算对齐 implement 的思路。
+    max_turns: 300
+    timeout: 90m
     verify:
       - compile                       # 测试和 stub 能编译
+      - json-facade                   # 测试引入的 src 改动也不许绕过 JSON 门面
       - { suite: test, expect: fail } # 新测试在实现之前失败（靠退出码判定）
     attempts: 4
     escalate: { after: 2, models: [strong2] }
@@ -81,17 +89,18 @@ stages:
     kind: agent
     model: cheap
     prompt: prompts/implement.md
-    max_turns: 400
-    # 120m：当前模型单次调用 p95 ~45s、最长 5 分钟，60m 墙在 429 恢复续跑后
-    # 会把没写完的 attempt 杀掉（issue #3 attempt-1 被杀 52.8 分钟模型时间，
-    # 死后连自检都没跑）。两次 429 上限之间的实际工作窗口也就一小时多。
-    timeout: 120m
-    # 400 turns 和 120m 配套：实测每个 attempt 用 193-241 次调用收尾，200 上限
-    # 在时间放开后先成为瓶颈（4.6 次/分钟 → 120m 可容纳 ~550），撞上等同作废。
+    # 1000（2026-11-19 用户决定）：#7 implement 两轮都在 400 撞 error_max_turns
+    # （第二轮 401 turns / 1h21m / $14.15 收尾时闭包仍未写完）——成规模的模块
+    # 翻译一轮写完就是这个量级。
+    max_turns: 1000
+    # 240m 与 1000 turns 配套：实测 4.5~5 次调用/分钟，120m 只容 ~550 次，
+    # 不放时间的话轮次上限永远不会生效（issue #3 attempt-1 就是被时间墙
+    # 杀掉过没写完的会话）。
+    timeout: 240m
     protect_since: write-tests
     append_only: ["test/**"]
     protected: ["test/fixtures/"]
-    verify: [compile, test]
+    verify: [compile, test, json-facade]
     ci: true    # 开 PR 并等 required_checks：html5 构建和冒烟在 GitHub 上
     attempts: 4
     escalate: { after: 2, models: [strong, strong2] }
@@ -101,7 +110,9 @@ stages:
     kind: review
     model: judge
     prompt: prompts/review-impl.md
-    max_turns: 120
+    # 200：#3 的 review-impl 实测 105/120 调用（87% 水位）审 6.8k 行 diff，
+    # #7 起的模块 diff 更大，120 必撞 error_max_turns。
+    max_turns: 200
     on_reject: implement
     on_reject_tests: write-tests
     max_rejects: 5

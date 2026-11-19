@@ -150,6 +150,13 @@ class Consts {
 	public static final FAIRY_LADY:Int = 92001;
 	public static final MY_FAIRY_OBJECT:String = "MyFairy";
 	public static final DECOR_DOG:UInt = 8;
+	// Consts.as:428-438（V3b：BackgroundModel/NPCModel 的装饰类型表；
+	// 值照抄。DECOR_DOG 见上）
+	public static final DECOR_BACKGROUND:UInt = 1;
+	public static final DECOR_HOUSE:UInt = 2;
+	public static final DECOR_FENCE:UInt = 3;
+	public static final DECOR_DOGHOUSE:UInt = 4;
+	public static final DECOR_BILLBOARD:UInt = 9;
 	public static final GOLD_LAND_UPDATE_TIME_CHANGE:String = "GOLD_LAND_UPDATE_TIME_CHANGE";
 	public static final APP_ID:Int = 353;
 	public static final PAY_QD:Int = 1;

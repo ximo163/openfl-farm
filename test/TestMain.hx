@@ -40,10 +40,6 @@ class TestMain {
 		runner.addCase(new module.mainScene.background.BackgroundModelTest());
 		runner.addCase(new module.mainScene.npc.NPCModelTest());
 		runner.addCase(new entities.PlayerTest());
-		// issue #8（implement attempt 3）：农场场景启动窗口的装饰 swf ↔
-		// libraries.xml/assets 清单一致性（diy/2,3,4 未入库 → web-smoke 404，
-		// 见该测试类头注释）
-		runner.addCase(new SceneDecorLibrariesTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

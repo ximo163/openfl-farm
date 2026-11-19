@@ -15,10 +15,13 @@
 - **场景窗口请求的 module swf 逐项入库**：翻译把加载链接通后，凡是启动/
   场景窗口内会 `Loader.load` 的 module swf 都必须入库（uid=1 快照数据实际
   触发的集合），缺一个 = html5 运行期对未声明库 404 → CI web-smoke
-  console.error FAIL。这条有两道门：
-  `test/StartupModuleLibrariesTest.hx`（#7 启动窗口）与
-  `test/SceneDecorLibrariesTest.hx`（#8 场景装饰窗口）——新窗口接入新 URL
-  时照这两个文件的表格式样加条目，别等 CI。
+  console.error FAIL。表格式门两个（新窗口接入新 URL 时照式加条目，别等
+  CI）：`test/StartupModuleLibrariesTest.hx`（#7 启动窗口，已注册在
+  TestMain 里跑批）与 `test/SceneDecorLibrariesTest.hx`（#8 场景装饰窗口，
+  **尚未注册**——implement 阶段对 test/ 既有文件 append-only，注册行只能由
+  write-tests 阶段补 `runner.addCase(new SceneDecorLibrariesTest())`；注册前
+  这片的不变量由 CI web-smoke 的 404 计数兜底，attempt 4 已用 /tmp 侧
+  harness 对当前树跑过一遍全绿，见 lessons 的 append-only 条目）。
 - **加载**：原版运行期网络加载的库**不** `preload`（只有 V1 探路样本
   preload="true"）；代码里的 `Loader.load(远端URL)` 只在加载器类里换成
   `src/shim/LocalSwfLoader.hx`（`libraryIdForUrl` 按 URL 尾段映射库名），

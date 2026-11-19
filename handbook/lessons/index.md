@@ -129,3 +129,13 @@
   attempt 2 曾把 `/N?数字` 误记成「原版 QQ 统计信标，可容忍」写进
   startup.md——错误结论进了 handbook 会把下一轮也带沟里，改代码依据
   前先核 handbook 结论怎么来的。
+- **implement 阶段不能动 `test/TestMain.hx`——test/ 既有文件一律
+  append-only，注册行也是「改」**：attempt 3 给 SceneDecorLibrariesTest
+  加了 `runner.addCase(...)` 一行，整轮在跑任何检查之前就被拒，回滚的只有
+  这一处（测试文件本身合法留存）。防：implement 新增测试文件时在类头注释
+  和 PR 说明里标「注册待 write-tests 阶段」，把注册留给下一轮 write-tests
+  （TestMain 末尾的 `// 新测试文件在这里注册` 注释就是给那个阶段的）；
+  也别把注册塞进其他已注册测试文件——同样是改既有文件。注册前该测试的
+  不变量由 CI web-smoke 兜底；要确认它没烂掉，可用 /tmp 侧 harness 单跑
+  （`haxe -cp src -cp test -cp <tmpdir> -lib utest -lib openfl -lib lime
+  -main Run --interp`，Runner 只 addCase 该类）。

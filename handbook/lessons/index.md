@@ -139,3 +139,28 @@
   不变量由 CI web-smoke 兜底；要确认它没烂掉，可用 /tmp 侧 harness 单跑
   （`haxe -cp src -cp test -cp <tmpdir> -lib utest -lib openfl -lib lime
   -main Run --interp`，Runner 只 addCase 该类）。
+- **stub 换真身会引爆已过测试里的潜伏 null 访问**：GetCropID.idState 从
+  stub 恒 0 换成逐句翻译后，`haxe test.hxml` 一下红 10 个用例（FarmLandTest
+  7 个、FarmLandModelTest/StartupDataParserTest 3 个），全是同一条栈：
+  importObject/countNoneMatureLands → idState/timeToMature → getCropByID →
+  `theApp.model`，而测试进程不跑 Main 启动链、`GetCropID.theApp` 恒 null，
+  eval 上成员访问直接 "Null Access"。原版这个状态是 NPE、生产不可达（Main
+  启动先于任何 FarmLand 导入设置 theApp，Main.hx:246/原版 Main.as 同位置），
+  且这些已过测试的类头写的期望就是「无 app 数据 → null/0/-1」——处置：
+  getCropByID 补 `theApp == null` 判 + PORT-NOTE，deviations 候选待人登记
+  （本条不适用于启动链必然设置的其余 GetCropID 成员，那些测试都自设
+  theApp）。防：把任何 stub 换成真身前，先全局搜它在测试进程里的调用链
+  上有没有「启动才就位」的全局（theApp/Session/Settings），跑一遍已过
+  测试看潜伏依赖；新测试的时钟依赖要算清漂移方向（见
+  test/common/GetCropIDTest.hx 类头）。
+- **SymbolClass 异步窗口吞「构造器返回后」的子件写**：`Crop_*_3` 是单帧
+  符号、三个 step 子件全摆上时间轴，库**首次**拉起时 bind 只把实例入队
+  （SymbolClass.hx 的 pending），构造器返回后 onCropLoaded 立即写 step1/2/3
+  显隐——时间轴还没挂上，`getChildByName` 恒 null、写全丢；attach 后挂上
+  的是「三档全显」的原始态（原版 SymbolClass 类定义即同步绑定，写的时候
+  时间轴必然已在，没有这个窗口）。修法在 shim：`SymbolClass.afterAttach
+  (target, fn)` 把待应用的写登记进 pending 条目、attach 后按登记序重放
+  （已挂上则立即执行）；fn 捕获值在登记时定型，等价原版同步求值。防：
+  新增符号 shim 后调用方若在 new 之后立即写**子件**（显隐/定位），一律走
+  afterAttach；写实例自身的属性（name/cacheAsBitmap）不受窗口影响、照直
+  写。

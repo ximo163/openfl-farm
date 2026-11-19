@@ -10,10 +10,10 @@ import com.qzone.allianceActivity.AllianceActivityInfo;
  * IAllianceActivityContext.as 逐句对应（destory 是原版拼写，照抄）。
  */
 interface IAllianceActivityContext {
-	var startTime(never, set):Float;
+	var startTime(get, set):Float;
 	var currentTime(get, set):Float;
 	var activityId(get, set):String;
-	var expireTime(never, set):Float;
+	var expireTime(get, set):Float;
 	var appHelper(get, set):IAllianceAppHelper;
 	var appId(get, set):String;
 

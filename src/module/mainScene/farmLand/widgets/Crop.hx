@@ -11,6 +11,7 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import report.EventRecorder;
 import shim.As3;
+import shim.SymbolClass;
 
 /**
  * module.mainScene.farmLand.widgets.Crop —— V3b 翻译（issue #8）。
@@ -210,10 +211,19 @@ class Crop extends Sprite {
 			// 此处照原版的强转形态取强类型写
 			cast(this._currentCrop, MovieClip).name = "__crop__";
 			if (this._classStep == 3) {
-				// PORT-NOTE：step1/2/3 具名子实例，见 setState 处注释
-				setStepChildVisible(this._currentCrop, "step1", this._step == 3);
-				setStepChildVisible(this._currentCrop, "step2", this._step == 4);
-				setStepChildVisible(this._currentCrop, "step3", this._step != 3 && this._step != 4);
+				// PORT-NOTE：step1/2/3 具名子实例，见 setState 处注释。原版
+				// SymbolClass 同步绑定，new 完时间轴已在实例上，这三笔显隐立即
+				// 生效；移植版库首次拉起是异步窗口（shim/SymbolClass 头注释），
+				// 窗口里对子件的写会被吞——经 afterAttach 登记、attach 后重放，
+				// 显隐值在登记时定型（等价原版同步求值）
+				var _loc4_:Bool = this._step == 3;
+				var _loc5_:Bool = this._step == 4;
+				var _loc6_:Bool = this._step != 3 && this._step != 4;
+				SymbolClass.afterAttach(cast(this._currentCrop, MovieClip), function(clip:MovieClip):Void {
+					setStepChildVisible(clip, "step1", _loc4_);
+					setStepChildVisible(clip, "step2", _loc5_);
+					setStepChildVisible(clip, "step3", _loc6_);
+				});
 			}
 			// AS3 原句：MovieClip(this._currentCrop).cacheAsBitmap = true;
 			cast(this._currentCrop, MovieClip).cacheAsBitmap = true;

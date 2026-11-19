@@ -32,10 +32,17 @@ import swf.exporters.animate.AnimateLibrary;
  * libraryPaths 里，文件已随构建入库，无网络），同一个库的并发 bind 合并成
  * 一次加载。绑上的时刻晚于构造器返回，与原版「远程加载后 new」的时序差
  * 一个本就是异步的加载窗口。
+ *
+ * 这个异步窗口还吞写：原版 SymbolClass 类定义即绑定，new 完构造器返回时
+ * 时间轴必然已在实例上，紧随其后的子件显隐写立即生效；移植版首次拉库时
+ * 构造器只把实例入队，构造器返回后的写落在空剪辑上丢失（Crop 的 step1/2/3
+ * 显隐就是这么丢的）。afterAttach 把这类写登记进待绑窗口，attach 后原样
+ * 重放；时间轴已挂上（同步路径、或同库第二只起）则立即执行。
  */
 class SymbolClass {
-	// 按需加载中的库：libraryId → 等待绑定的 (symbolName, target) 列表
-	private static var pending:Array<{libraryId:String, symbolName:String, target:MovieClip}> = [];
+	// 按需加载中的库：libraryId → 等待绑定的 (symbolName, target) 列表；
+	// after 收构造器返回后、attach 前登记的待重放写（见 afterAttach）
+	private static var pending:Array<{libraryId:String, symbolName:String, target:MovieClip, after:Array<MovieClip->Void>}> = [];
 
 	// DCE 引用锚。Haxe 只编译从 main 可达（被引用/import）的类型；符号 shim
 	// 只经反射字符串取用（getMaterial/getClass → ApplicationDomain →
@@ -90,23 +97,28 @@ class SymbolClass {
 				break;
 			}
 		}
-		pending.push({libraryId: libraryId, symbolName: symbolName, target: target});
+		pending.push({libraryId: libraryId, symbolName: symbolName, target: target, after: []});
 		if (alreadyLoading) {
 			return;
 		}
 		Assets.loadLibrary(libraryId).onComplete(function(lib:AssetLibrary):Void {
 			// 该库这一批等绑的目标全部挂上；再进来的 bind 走上面的同步路径
-			var stillQueued:Array<{libraryId:String, symbolName:String, target:MovieClip}> = [];
+			var stillQueued:Array<{libraryId:String, symbolName:String, target:MovieClip, after:Array<MovieClip->Void>}> = [];
 			for (entry in pending) {
 				if (entry.libraryId == libraryId) {
 					attach(lib, entry.libraryId, entry.symbolName, entry.target);
+					// 待绑窗口里登记的写按登记序重放一次（见 afterAttach）
+					for (fn in entry.after) {
+						fn(entry.target);
+					}
 				} else {
 					stillQueued.push(entry);
 				}
 			}
 			pending = stillQueued;
 		}).onError(function(err:Dynamic):Void {
-			// 库拉不起来（未声明/文件缺失）：按原版「类不存在」处理，留痕不抛
+			// 库拉不起来（未声明/文件缺失）：按原版「类不存在」处理，留痕不抛；
+			// 空剪辑上登记的写无对象可作用，随条目一并丢弃
 			trace("SymbolClass: 库加载失败 " + libraryId + " (" + Std.string(err) + ")");
 			pending = [for (entry in pending) if (entry.libraryId != libraryId) entry];
 		});
@@ -121,6 +133,35 @@ class SymbolClass {
 		if (!library.bind(symbolName, target)) {
 			trace("SymbolClass: 符号不存在 " + libraryId + ":" + symbolName);
 		}
+#end
+	}
+
+	/**
+	 * 「构造器返回后、符号时间轴挂上前」对实例子件的写经这里登记：
+	 * 目标在待绑队列里（库首次拉起的异步窗口）→ fn 进队列，attach 后按
+	 * 登记序重放；时间轴已挂上（库已在 Assets、同库第二只起）→ 立即执行
+	 * （等价原版同步绑定的时序）。fn 捕获的值在登记时定型（原版是同步
+	 * 求值，重放不读晚些时候可能变化的现场）。
+	 */
+	public static function afterAttach(target:MovieClip, fn:MovieClip->Void):Void {
+#if eval
+		// eval 无库：时间轴永不挂上（bind 的 eval 分支同款留痕语义），空剪辑
+		// 上 fn 是无操作，立即执行保持修复前行为
+		fn(target);
+#else
+		if (@:privateAccess target.__timeline != null) {
+			fn(target);
+			return;
+		}
+		for (entry in pending) {
+			if (entry.target == target) {
+				entry.after.push(fn);
+				return;
+			}
+		}
+		// 不在待绑队列也没挂上时间轴（库加载失败/符号不存在的已留痕路径）：
+		// 立即执行，保持空剪辑上的无操作行为
+		fn(target);
 #end
 	}
 

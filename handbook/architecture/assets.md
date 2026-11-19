@@ -30,10 +30,15 @@
   swf 的 SymbolClass 把导出符号绑到同名 AS3 类，视图 `new Farmland_Lite()`
   直构带时间轴；openfl 只有 `Assets.getMovieClip` 实例化才挂时间轴。同
   名 Haxe 类（`@:keep`）构造器里补 `SymbolClass.bind(this, 库id, 符号名)`
-  挂回。**两个登记义务**：① 新符号 shim 必须同步加进
+  挂回。**三个登记义务**：① 新符号 shim 必须同步加进
   `SymbolClass.dceAnchor` 数组（仅生产目标，`#if !eval`）——零引用的
   `@:keep` 类不进 `-dce full` 产物（见 lessons）；② 符号名小写开头的
-  （如 canPickIcon）类名大写 + `@:native("原名")` 回键。
+  （如 canPickIcon）类名大写 + `@:native("原名")` 回键；③ 库**首次**拉起
+  是异步窗口，构造器返回后立即对符号**子件**的写（显隐/定位）会被吞
+  （时间轴还没挂上）——一律经 `SymbolClass.afterAttach(target, fn)`
+  登记、attach 后重放（已挂上则立即执行）；写实例自身属性（name/
+  cacheAsBitmap）不受影响。先例：Crop.onCropLoaded 的 step1/2/3 显隐
+  （#8 review round 1，见 lessons）。
 - 当前已入库的库和每个库的来源依据，看 `libraries.xml` 和
   `assets/legacy-assets.txt` 里的分组注释（V1 样本 / V2 加载链 / V3a
   启动链 / V3b 作物分档 + 场景装饰）。

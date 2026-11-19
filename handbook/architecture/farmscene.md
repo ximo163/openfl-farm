@@ -35,9 +35,12 @@ legacy 出处：`decompiled main3 module/mainScene/farmLand/`。
 - widgets/：`LandItemRender`（单地块渲染编排：setGrowStep→createCrop/
   createByproduct→updateLandStatus）、`LandTile`（地块底图，来自
   farmui_full_v_40 库）、`Crop`（作物 swf 影片，`Crop_<cId>_<step>.swf`
-  库）、`Byproduct`（草/虫摆件，`getInsectPosition` 决定坐标）、
-  `LandPickIcon`（可摘手势图标）、`LandTalkTip`（NPC 对话气泡）、
-  `Wasteland`（荒地块）。
+  库；step 3/4/5 同用 `Crop_*_3` 单帧符号、靠 step1/2/3 子件显隐分段——
+  库**首次**拉起是异步窗口，`new` 完就写子件显隐会被吞，onCropLoaded 的
+  三笔显隐经 `SymbolClass.afterAttach` 登记、attach 后重放，见
+  [assets.md](assets.md) 的 SymbolClass 条目）、`Byproduct`（草/虫摆件，
+  `getInsectPosition` 决定坐标）、`LandPickIcon`（可摘手势图标）、
+  `LandTalkTip`（NPC 对话气泡）、`Wasteland`（荒地块）。
 
 ## background（`src/module/mainScene/background/`）
 

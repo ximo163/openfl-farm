@@ -2,6 +2,7 @@ package common;
 
 import com.qzone.qfa.control.Application;
 import common.misc.Utils;
+import entities.StartupData;
 import shim.As3;
 
 /**
@@ -9,8 +10,9 @@ import shim.As3;
  * 原版 legacy/decompiled/main3_v_221/scripts/common/GetCropID.as（772 loc > 100，
  * issue 闭包规则整类不翻）；本片用到的成员按行号逐句照抄：
  * - SG_*（:12-18）、idToDiyUrl2（:81-107）、getCropUrl（:142-178）、
- *   getCropByID（:267-287）、getAssetUrl（:299-341）、getInsectPosition
- *   （:356-373）、specialGrow（:559-587）、idToBoardUrl（:739-772）。
+ *   timeToMature（:201-228）、getCropByID（:267-287）、getAssetUrl（:299-341）、
+ *   getInsectPosition（:356-373）、specialGrow（:559-587）、idState（:589-664）、
+ *   idToDogUrl（:666-701）、idToBoardUrl（:739-772）。
  * 其余成员保持 stub 返回值（见各方法头）。
  */
 class GetCropID {
@@ -85,7 +87,15 @@ class GetCropID {
 	// GetCropID.as:267-287（getCropByID：crops 配置里按字符串 id 查条目）
 	private static function getCropByID(param1:String):Dynamic {
 		var _loc3_:Dynamic = null;
-		if (theApp.model == null) {
+		// PORT-NOTE: 原版只判 `theApp.model == null`，theApp 未设置时 AS3 直接
+		// NPE（TypeError #1009）。真机不可达：Main 启动（Main.hx:246 / 原版
+		// Main.as 同位置）先于任何 FarmLand 导入设置 theApp。这里补判
+		// `theApp == null`：eval 单测进程不跑 Main 启动链，已通过的
+		// FarmLandTest/FarmLandModelTest/StartupDataParserTest 在无 app 实例下
+		// 构造 FarmLand，其类头明确的期望就是「无 app 数据 → null → idState 0 /
+		// timeToMature -1」。行为差异仅在原版会崩的缺 app 状态，生产等价；
+		// deviations 候选（待人登记，见 PR 说明）
+		if (theApp == null || theApp.model == null) {
 			return null;
 		}
 		var _loc2_:Array<Dynamic> = theApp.model.getData("crops");
@@ -238,14 +248,98 @@ class GetCropID {
 		return _loc3_;
 	}
 
-	// GetCropID.as:589-（签名照抄；stub 返回 0）
+	// GetCropID.as:589-664（idState：cropGrow 档位表按已生长秒数从高往低
+	// 首个命中档 +1；param4==2（红土地）的非红作物档位 *0.8 提速、末两档再
+	// 削去 %600 余数；param5>0（收获过）时低于 3 的显示档抬到 3）
 	public static function idState(param1:Int, param2:Float, param3:Int, param4:Int, param5:Int):Int {
+		var _loc8_:Array<Dynamic> = null;
+		var _loc15_:Int = 0;
+		var _loc16_:Int = 0;
+		if (param1 == 0) {
+			return 0;
+		}
+		if (param3 == 7) {
+			return 7;
+		}
+		var _loc6_:Dynamic = getCropByID(Std.string(param1));
+		if (_loc6_ == null) {
+			return 0;
+		}
+		var _loc7_:String = Reflect.field(_loc6_, "cropGrow");
+		if (_loc7_ == "") {
+			return 0;
+		}
+		_loc8_ = _loc7_.split(",");
+		var _loc9_:Float;
+		// AS3 `if(CommonData.serverTime)`：Number 真值判定（0 为假）。getter
+		// 恒回 0 或已设值 + 整秒漂移（无 NaN），!= 0 即同语义
+		if (CommonData.serverTime != 0) {
+			_loc9_ = CommonData.serverTime;
+		} else {
+			_loc9_ = StartupData.serverTime;
+		}
+		var _loc10_:Float = _loc9_;
+		var _loc11_:Float = _loc10_ - param2;
+		var _loc12_:Int = _loc8_.length;
+		var _loc13_:Int = 0;
+		var _loc14_:Int = _loc12_ - 1;
+		while (_loc14_ >= 0) {
+			if (param4 != 2) {
+				_loc13_ = As3.intOf(_loc8_[_loc14_]);
+			} else if (As3.eqString(Reflect.field(_loc6_, "isRed"), "2")) {
+				// AS3 `== "2"` 松等：isRed 数值/字符串双形态（nc_data.php
+				// "isRed": 2 与 "isRed": "2" 并存），As3.eqString（lessons #8）
+				_loc13_ = As3.intOf(_loc8_[_loc14_]);
+			} else if (_loc14_ < _loc12_ - 2) {
+				// AS3 `Math.floor(x * 0.8) as int`：字符串元素先经 Number 参与
+				// 乘法，As3.floatOf 显式复刻该隐式转换
+				_loc13_ = Std.int(Math.floor(As3.floatOf(_loc8_[_loc14_]) * 0.8));
+			} else {
+				_loc13_ = Std.int(Math.floor(As3.floatOf(_loc8_[_loc14_]) * 0.8));
+				_loc15_ = _loc13_ % 600;
+				if (_loc13_ > _loc15_) {
+					_loc13_ -= _loc15_;
+				}
+			}
+			if (_loc11_ >= _loc13_) {
+				_loc16_ = _loc14_ + 1;
+				if (param5 > 0) {
+					if (_loc16_ < 3) {
+						return 3;
+					}
+				}
+				return _loc16_;
+			}
+			_loc14_--;
+		}
 		return 0;
 	}
 
-	// GetCropID.as:201-（签名照抄；stub 返回 0）
+	// GetCropID.as:201-228（timeToMature：距成熟剩余秒数，成熟线取倒数第二档
+	// 位值；param4==2 的非红作物成熟线 *0.8 再减原值 %600；已熟/查无作物回 -1）
 	public static function timeToMature(param1:Float, param2:Int, param3:Float, param4:Int):Float {
-		return 0;
+		var _loc8_:Array<Dynamic> = null;
+		var _loc5_:Dynamic = getCropByID(Std.string(param2));
+		if (_loc5_ == null) {
+			return -1;
+		}
+		// AS3 `== 2` 数值松等（isRed 双形态，见上）→ As3.floatOf 数值比较
+		var _loc6_:Bool = As3.floatOf(Reflect.field(_loc5_, "isRed")) == 2 ? true : false;
+		var _loc7_:String = Reflect.field(_loc5_, "cropGrow");
+		if (_loc7_ == "") {
+			return -1;
+		}
+		_loc8_ = _loc7_.split(",");
+		var _loc9_:UInt = _loc8_.length;
+		var _loc10_:Float = As3.floatOf(_loc8_[_loc9_ - 2]);
+		if (param4 == 2 && _loc6_ == false) {
+			_loc10_ = _loc10_ * 0.8 - _loc10_ % 600;
+		}
+		var _loc11_:Float = _loc10_ - (param1 - param3);
+		if (_loc11_ < 0) {
+			return -1;
+		}
+		return _loc11_;
 	}
 
 	// GetCropID.as:725-（签名照抄；stub 返回 ""）

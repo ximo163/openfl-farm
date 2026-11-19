@@ -18,3 +18,16 @@ source/core/module/ui/main/farmui2_v_58.swf
 source/core/module/ui/water_ui_v_0.swf
 # FarmLiteView 背景（FarmLiteModel.get_background 默认值；快照 uid=1 同此）：
 source/core/module/ui/farm/diy/1.swf
+#
+# V3a 启动链（issue #7）：FarmApplication.startup 的 500/1400ms setTimeout 自动
+# 派发 MSG_LOAD_WATER/CARDSGAME/FREEGIFT/QUICKSHOOT，走 Module.onLoadModuleFile →
+# RSLManager.requestFile（nc_main moduleList 的对应 url）。原版从站点拉取成功，
+# 本地化后需入库，否则 html5 运行期对未声明库发 404 请求：
+source/core/module/ui/pool_v_13.swf
+source/core/module/ui/quickshoot_v_0.swf
+source/core/module/ui/cards_v_1.swf
+source/core/module/ui/gifts_v_11.swf
+# nc_addon.php:81 beastLoaderUrl：Main.as:354 启动数据到位即 loadAsyncWildModule
+# （:188-190 无条件 loadWildShell；FarmApplication.as:766-771 同），uid=1 的
+# user_run 无 _beast 也请求——启动窗口必发（test/StartupModuleLibrariesTest.hx）：
+source/core/module/mc/farm/wild/WildShellNc_v_5.swf

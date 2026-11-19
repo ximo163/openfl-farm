@@ -15,6 +15,21 @@ class TestMain {
 		runner.addCase(new com.qzone.qfa.data.ResourceTypeTest());
 		runner.addCase(new FarmLiteTest());
 		runner.addCase(new com.qzone.qfa.managers.LoadManagerTest());
+		// issue #7：V3a 启动与数据层（FarmLand/Seed 实体映射、ServerServices
+		// cmdMap/decodeResult；write-tests 阶段对 stub 失败）
+		runner.addCase(new entities.FarmLandTest());
+		runner.addCase(new entities.SeedTest());
+		runner.addCase(new framework.net.ServerServicesTest());
+		// issue #7 补齐（round 2）：FarmLandModel 数值/状态公式、qfa HttpOperation
+		// 状态机、StartupDataParser 对 uid=1 真实下发的解析、Protocol 请求侧拼装
+		runner.addCase(new module.mainScene.farmLand.FarmLandModelTest());
+		runner.addCase(new com.qzone.qfa.managers.operation.HttpOperationTest());
+		runner.addCase(new framework.net.core.HttpOperationExTest());
+		runner.addCase(new framework.net.parsers.StartupDataParserTest());
+		runner.addCase(new framework.net.protocol.ProtocolTest());
+		// issue #7（回到 write-tests）：启动窗口 module swf ↔ libraries.xml
+		// 一致性（WildShellNc_v_5 未入库 → web-smoke 404，见该测试类头注释）
+		runner.addCase(new StartupModuleLibrariesTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

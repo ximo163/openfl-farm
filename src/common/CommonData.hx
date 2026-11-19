@@ -4,7 +4,7 @@ import com.qzone.corelib.net.RSLLoader;
 import com.qzone.corelib.net.RSLManager;
 import common.misc.Cookies;
 import openfl.system.ApplicationDomain;
-import openfl.Lib.getTimer;
+import shim.As3.getTimer; // PORT-NOTE: openfl 的 getTimer 在 eval 上纪元溢出为负，见 shim/As3.hx
 
 // CommonData.as 逐句对应。
 class CommonData {

@@ -1,0 +1,233 @@
+package common.misc;
+
+import com.adobe.serialization.json.JSON;
+import module.FarmApplication;
+
+// common.misc.ConfigMerger —— ConfigMerger.as 逐句对应（221 loc，启动链的配置
+// 合并器：data 配置 parseXMLData、addon 配置 mergeConfig，按原样两段）。
+// PORT-NOTE: E4X child()/children()/attributes() 按等价 Xml 遍历改写
+//（FarmLite 先例）；`@id == undefined ? name() : @id` 的空属性语义 = get()
+// null 时退 nodeName。com.adobe.serialization.json.JSON.decode 照调（该类内部
+// 等价落到 haxe.Json.parse，含 as3corelib 宽松语义的串内控制字符预处理）。
+class ConfigMerger {
+	// ConfigMerger.as:11
+	private var _app:FarmApplication;
+
+	// ConfigMerger.as:13
+	private var _toMerge:Xml;
+
+	// ConfigMerger.as:15-21
+	public function new(param1:FarmApplication, param2:String) {
+		this._app = param1;
+		this.parseXMLData(param2);
+		this._toMerge = null;
+	}
+
+	// ConfigMerger.as:23-32
+	private function checkTargetData(param1:String):Dynamic {
+		var _loc2_:Dynamic = this._app.model.getData(param1);
+		if (_loc2_ == null) {
+			_loc2_ = {};
+			this._app.model.setData(param1, _loc2_);
+		}
+		return _loc2_;
+	}
+
+	// ConfigMerger.as:34-67。`_loc7_.attributes() != undefined` 在 E4X 里恒真
+	//（XMLList 永非 undefined），attributes 分支必走、text() 分支死代码——结构照抄。
+	private function mergeCommonNode(param1:String):Void {
+		var _loc7_:Xml = null;
+		var _loc8_:String = null;
+		var _loc2_:Xml = firstChildElement(this._toMerge, param1);
+		if (_loc2_ == null) {
+			return;
+		}
+		var _loc3_:Dynamic = this.checkTargetData(param1);
+		var _loc4_:Dynamic = null;
+		var _loc5_:String = "";
+		for (_loc7_ in _loc2_.elements()) {
+			_loc4_ = {};
+			_loc5_ = _loc7_.get("id") == null ? _loc7_.nodeName : _loc7_.get("id");
+			for (_loc8_ in _loc7_.attributes()) {
+				if (_loc8_ != "id") {
+					Reflect.setField(_loc4_, _loc8_, _loc7_.get(_loc8_));
+				}
+			}
+			Reflect.setField(_loc3_, _loc5_, _loc4_);
+		}
+	}
+
+	// ConfigMerger.as:69-78
+	private function checkTargetArrayData(param1:String):Array<Dynamic> {
+		var _loc2_:Array<Dynamic> = this._app.model.getData(param1);
+		if (_loc2_ == null) {
+			_loc2_ = [];
+			this._app.model.setData(param1, _loc2_);
+		}
+		return _loc2_;
+	}
+
+	// ConfigMerger.as:80-88
+	private function parseJSONData(param1:Dynamic):Void {
+		var _loc3_:String = null;
+		var _loc2_:Dynamic = JSON.decode(param1);
+		for (_loc3_ in Reflect.fields(_loc2_)) {
+			this._app.model.setData(_loc3_, Reflect.field(_loc2_, _loc3_));
+		}
+	}
+
+	// ConfigMerger.as:90-129。XMLDocument(ignoreWhite) 的 firstChild.childNodes
+	// → Xml.parse 的文档元素遍历：elements() 只出元素子节点，与 ignoreWhite 后
+	// 的 childNodes 逐元素用法等价；json 载荷的空白处理在 firstTextNode
+	private function parseXMLData(param1:String):Void {
+		var _loc2_:Xml = null;
+		var _loc3_:Dynamic = null;
+		var _loc4_:String = null;
+		var _loc5_:Dynamic = null;
+		var _loc6_:String = null;
+		var _loc7_:Xml = null;
+		var _loc8_:String = null;
+		var _loc9_:Xml = Xml.parse(param1).firstElement();
+		for (_loc7_ in _loc9_.elements()) {
+			_loc4_ = _loc7_.nodeName;
+			_loc3_ = {};
+			if (_loc7_.get("type") == "json") {
+				this.parseJSONData(firstTextNode(_loc7_));
+			} else if (_loc7_.get("type") == "xml") {
+				this._app.model.setData(_loc4_, _loc7_);
+			} else {
+				for (_loc2_ in _loc7_.elements()) {
+					_loc5_ = {};
+					_loc6_ = _loc2_.get("id") == null ? _loc2_.nodeName : _loc2_.get("id");
+					for (_loc8_ in _loc2_.attributes()) {
+						Reflect.setField(_loc5_, _loc8_, _loc2_.get(_loc8_));
+					}
+					Reflect.setField(_loc3_, _loc6_, _loc5_);
+				}
+				this._app.model.setData(_loc4_, _loc3_);
+			}
+		}
+	}
+
+	// ConfigMerger.as:131-156
+	public function mergeConfig(param1:Xml):Void {
+		if (param1 == null || this._app.model == null) {
+			return;
+		}
+		this._toMerge = param1;
+		this.mergeCommonNode("environment");
+		this.mergeCommonNode("assets");
+		this.mergeJsonArrayNode("secondList");
+		this.mergeJsonArrayNode("plugins");
+		this.mergeJsonArrayNode("boards");
+		this.mergeJsonArrayNode("crops");
+		this.mergeJsonArrayNode("item_info");
+		this.mergeJsonArrayNode("fish_info");
+		this.mergeJsonArrayNode("advertisement");
+		this.mergeCommonNode("cardsGameRewards");
+		this.mergeCommonNode("freegifts");
+		this.mergeCommonNode("dynamicTips");
+		this.mergeCommonNode("monthEnds");
+		this.mergeCommonNode("magiccards");
+		this.mergeCommonNode("qdseeds");
+		this.mergeCommonNode("bigworlds");
+		this.mergeCommonNode("luoyangs");
+		this.mergeXml("wild");
+	}
+
+	// ConfigMerger.as:158-207
+	private function mergeJsonArrayNode(param1:String):Void {
+		var name:String = param1;
+		var mNode:Xml = firstChildElement(this._toMerge, name);
+		if (mNode == null || mNode.get("type") != "json") {
+			return;
+		}
+		var cfg:Array<Dynamic> = this.checkTargetArrayData(name);
+		var jsn:Dynamic = null;
+		try {
+			jsn = JSON.decode(firstTextNode(mNode));
+		} catch (e:Dynamic) {
+			trace("ERROR> parse json data failed.");
+			return;
+		}
+		var exist:Bool = false;
+		var toAdd:Array<Dynamic> = [];
+		var a:Dynamic = null;
+		var t:Dynamic = null;
+		var att:String = null;
+		for (a in (Reflect.field(jsn, name):Array<Dynamic>)) {
+			exist = false;
+			for (t in (cfg:Array<Dynamic>)) {
+				if (Reflect.field(a, "id") == Reflect.field(t, "id")) {
+					for (att in Reflect.fields(a)) {
+						Reflect.setField(t, att, Reflect.field(a, att));
+					}
+					exist = true;
+					break;
+				}
+			}
+			if (exist == false) {
+				toAdd.push(a);
+			}
+		}
+		cfg = cfg.concat(toAdd);
+		this._app.model.setData(name, cfg);
+	}
+
+	// ConfigMerger.as:209-218
+	private function mergeXml(param1:String):Void {
+		var _loc2_:Xml = firstChildElement(this._toMerge, param1);
+		if (_loc2_ == null) {
+			return;
+		}
+		this._app.model.setData(param1, _loc2_);
+	}
+
+	// E4X child(name) 的等价：第一个同名子元素（E4X 返回列表，取布尔/首元素语义）
+	private static function firstChildElement(param1:Xml, param2:String):Xml {
+		if (param1 == null) {
+			return null;
+		}
+		for (child in param1.elements()) {
+			if (child.nodeName == param2) {
+				return child;
+			}
+		}
+		return null;
+	}
+
+	// childNodes[0].nodeValue（parseXMLData，XMLDocument ignoreWhite）/ children()[0]
+	//（mergeJsonArrayNode，E4X）：元素的真实字符内容（json 载荷）。haxe Xml 保留
+	// 纯空白 PCData，真实下发（nc_data/nc_addon 的 json 节点 CDATA 前有 "\n\t\t"）
+	// 里 firstChild() 会取到空白文本 → JSON.decode（内部 haxe.Json.parse）空白串
+	// 抛 "Unexpected end of JSON input"（CI web-smoke pageerror，parseJSONData
+	// 无 try/catch）。按 ignoreWhite 语义取首个非纯空白字符子节点（同
+	// FarmLiteModel 的 firstChildIgnoreWhite 先例）。
+	private static function firstTextNode(param1:Xml):String {
+		var child:Xml = null;
+		for (child in param1) {
+			if (child.nodeType == Xml.PCData && isWhiteSpace(child.nodeValue)) {
+				continue;
+			}
+			if (child.nodeType == Xml.PCData || child.nodeType == Xml.CData) {
+				return child.nodeValue;
+			}
+			break;
+		}
+		return null;
+	}
+
+	// XMLDocument.ignoreWhite 的空白判定（space/tab/CR/LF）
+	private static function isWhiteSpace(param1:String):Bool {
+		var _loc1_:Int = 0;
+		var _loc2_:String = null;
+		while (_loc1_ < param1.length) {
+			_loc2_ = param1.charAt(_loc1_);
+			if (_loc2_ != " " && _loc2_ != "\t" && _loc2_ != "\n" && _loc2_ != "\r") {
+				return false;
+			}
+			_loc1_++;
+		}
+		return true;
+	}
+}

@@ -10,7 +10,7 @@ import utest.Assert;
  *   （构造默认值 :64-82、importObject :84-145、importFromCache :147-174）
  * - legacy/deploy/QFarmFlash/source/core/config/nc/cropstype.php:4（id1 草莓）、
  *   :177（id180 战地之星，带 high_sale:0）
- * - usertool_getseedinfo.php:21 —— 商店回包就是 cropstype 行数组
+ * - usertool_getseedinfo.php:29 —— 商店回包就是 cropstype 行数组
  *   （array_values($cropstype)），键名与 cropstype 一致
  */
 @:final

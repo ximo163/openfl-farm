@@ -54,9 +54,11 @@ import utest.Assert;
  *   （FarmLandModel.as:1519-1521，`_loc1_._goldLand` 必调 getter）；当前移植
  *   get_isAllGoldLand（FarmLandModel.hx:1278-1289）把 Array<Dynamic> 元素当
  *   Dynamic 读该属性，getter 不触发（活动窗口内恒 2；null 数组直接迭代抛
- *   Null Access），与原版不一致且 spec/deviations.json 无对应条目——活动窗口
- *   内的 1/3 两态与 null 容忍暂无法按原版断言，未覆盖清单及补回条件见
- *   test_isAllGoldLand_states 上方注释。
+ *   Null Access），与原版不一致且 spec/deviations.json 无对应条目。
+ *   test_isAllGoldLand_states 仍按原版断言全金三态与 null 容忍（断言 ①②③）：
+ *   测试是验收标准，不替未登记的偏差放行——这三条在移植修正（循环元素绑回
+ *   FarmLand 类型化访问 + 容忍 null 数组，AS3 for-each 对 null 零次迭代）前
+ *   保持红。
  */
 @:access(module.mainScene.farmLand.FarmLandModel)
 class FarmLandModelTest {
@@ -193,23 +195,19 @@ class FarmLandModelTest {
 		Assert.same([], model.refreshLands); // :687 每次调用新建数组
 	}
 
-	// isAllGoldLand :1517-1532：任一块非金地→2（:1522-1525）；空数组→1
-	//（for-each 零次迭代 + Boolean([]) 为真且 0<24，:1527-1530）；未配置
-	// jinPaiLand 窗口→getter 恒 0（FarmLand.as:234-244）→恒 2。「金地」按
-	// _goldLand 计算属性判定（FarmLand.as:225-245）：窗口覆盖 serverTime*1000 且
-	// setter 写过 goldLand==1（:63-65）才算 1。
-	// 未覆盖的原版三态（按原版断言会在当前移植上失败，见类头说明）：
-	// ① 全金且 <24 块→1（:1527-1530）② 全金且 ≥24 块→3（:1531）
-	// ③ m_farmlandData==null→3（:1517-1521 for-each 对 null 零次迭代 +
-	// :1527 Boolean(null) 为假）。原版循环变量声明为 FarmLand（:1519-1521），
-	// `_loc1_._goldLand` 是编译期类型化访问、必调 getter；当前移植
-	// get_isAllGoldLand（FarmLandModel.hx:1278-1289）以 Array<Dynamic> 元素
-	// 动态读该属性，getter 不触发（eval 读得 null、js 读得 undefined，
-	// `!= 1` 恒真→窗口内也恒 2），null 数组更会迭代抛 Null Access——与原版
-	// 不一致且 spec/deviations.json 无对应条目，待 implement 阶段把循环元素绑回
-	// FarmLand 类型并容忍 null 数组后，应把 ①②③ 三个断言补回本用例
-	//（①② 的 getter 语义本身已由 entities.FarmLandTest.
-	// test_goldLand_computed_property_is_window_gated 覆盖）。
+	// isAllGoldLand :1517-1532：「金地」按 _goldLand 计算属性判定
+	// （FarmLand.as:225-245：窗口覆盖 serverTime*1000 且 setter 写过 goldLand==1
+	// （:63-65）才 1）。任一块非金地→2（:1522-1525）；空数组→1（for-each 零次
+	// 迭代 + Boolean([]) 为真且 0<24，:1527-1530）；未配置 jinPaiLand 窗口→
+	// getter 恒 0（FarmLand.as:234-244）→恒 2。
+	// changed for #7（review-tests 驳回后补回）：① 全金且 <24 块→1（:1527-1530）
+	// ② 全金且 ≥24 块→3（:1527 的 length<24 不成立→:1531）③ m_farmlandData
+	// ==null→3（:1517-1521 for-each 对 null 零次迭代 + :1527 Boolean(null)
+	// 为假）——原版循环变量声明为 FarmLand（:1519-1521），`_loc1_._goldLand`
+	// 是编译期类型化访问、必调 getter；当前移植 get_isAllGoldLand
+	// （FarmLandModel.hx:1278-1289）以 Array<Dynamic> 元素动态读（getter 不
+	// 触发→窗口内恒 2）、null 数组迭代抛 Null Access，spec/deviations.json 无
+	// 此偏差——断言按原版下，移植修正前为红（见类头说明）
 	public function test_isAllGoldLand_states() {
 		pinGoldWindow();
 		var one = bareLand();
@@ -240,6 +238,34 @@ class FarmLandModelTest {
 		Assert.equals(0, one._goldLand); // 类型化引用才触发 getter
 		model.m_farmlandData = [one];
 		Assert.equals(2, model.isAllGoldLand);
+
+		// ①②③：按原版断言（当前移植上失败，出处行号见上注释）
+		pinGoldWindow(); // ①② 的金地判定需窗口生效（③ null 零次迭代与窗口无关）
+
+		// ① 全金且 23 块（<24）→ 1：循环零命中，:1527-1530 命中
+		var gold23:Array<Dynamic> = [];
+		for (i in 0...23) {
+			var g = bareLand();
+			g._goldLand = 1;
+			gold23.push(g);
+		}
+		model.m_farmlandData = gold23;
+		Assert.equals(1, model.isAllGoldLand); // :1527-1530
+
+		// ② 全金且 24 块（>=24）→ 3：:1527 的 length<24 不成立 → :1531
+		var gold24:Array<Dynamic> = [];
+		for (i in 0...24) {
+			var g2 = bareLand();
+			g2._goldLand = 1;
+			gold24.push(g2);
+		}
+		model.m_farmlandData = gold24;
+		Assert.equals(3, model.isAllGoldLand); // :1531
+
+		// ③ m_farmlandData==null → 3：for-each 对 null 零次迭代 +
+		// Boolean(null) 为假（AS3 语义），落到 :1531
+		model.m_farmlandData = null;
+		Assert.equals(3, model.isAllGoldLand); // :1517-1521 + :1527 + :1531
 	}
 
 	// landIsFull :1534-1545：任一地 null 或 _cId==0 → false；全有种 → true；

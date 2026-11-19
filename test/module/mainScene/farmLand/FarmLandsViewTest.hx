@@ -39,7 +39,10 @@ class FarmLandsViewTest {
 	// 46+3*ITEM_WIDTH/2=275.5、320-ITEM_HEIGHT/2=281.75），名
 	// "__FarmlandItem__"+r+"."+c；随后 6 块副行（:138-139 的 _loc3_=46、
 	// _loc4_=320+ITEM_HEIGHT=396.5；:144 复用内层循环尾的 _loc6_==3 → 名
-	// "<r>.3"），x=46+r*76.5、y=396.5+r*38.25
+	// "<r>.3"），x=46+r*76.5、y=396.5+r*38.25。
+	// 断言必须强类型读：m_items 存 LandItemRender（:132/:148），而 openfl 自家
+	// 的 name/x/y 是库内 get/set 属性（DisplayObject.hx:603/948/962，无物理
+	// 字段），经 Dynamic 反射在 eval/js 上恒 null——见 handbook/lessons #8
 	public function test_createLandTiles_layout_grid_positions_and_names() {
 		var view = new FarmLandsView(new FarmLandController(null));
 		view.createLandTiles(6, 3);
@@ -47,23 +50,23 @@ class FarmLandsViewTest {
 		Assert.equals(24, view.landNum);
 		Assert.isTrue(view.checkCropLoaded()); // :600-608 全部无作物实例 → true
 
-		var r0c0:Dynamic = view.m_items[0];
+		var r0c0:LandItemRender = view.m_items[0];
 		Assert.equals("__FarmlandItem__0.0", r0c0.name);
 		Assert.equals(275.5, r0c0.x);
 		Assert.equals(281.75, r0c0.y);
-		var r1c2:Dynamic = view.m_items[5];
+		var r1c2:LandItemRender = view.m_items[5];
 		Assert.equals("__FarmlandItem__1.2", r1c2.name);
 		Assert.equals(199.0, r1c2.x); // 275.5+76.5-153
 		Assert.equals(396.5, r1c2.y); // 281.75+38.25+76.5
-		var r5c2:Dynamic = view.m_items[17];
+		var r5c2:LandItemRender = view.m_items[17];
 		Assert.equals("__FarmlandItem__5.2", r5c2.name);
 		Assert.equals(505.0, r5c2.x); // 275.5+5*76.5-2*76.5
 		Assert.equals(549.5, r5c2.y); // 281.75+5*38.25+2*38.25
-		var extra0:Dynamic = view.m_items[18];
+		var extra0:LandItemRender = view.m_items[18];
 		Assert.equals("__FarmlandItem__0.3", extra0.name);
 		Assert.equals(46.0, extra0.x);
 		Assert.equals(396.5, extra0.y);
-		var extra5:Dynamic = view.m_items[23];
+		var extra5:LandItemRender = view.m_items[23];
 		Assert.equals("__FarmlandItem__5.3", extra5.name);
 		Assert.equals(428.5, extra5.x); // 46+5*76.5
 		Assert.equals(587.75, extra5.y); // 396.5+5*38.25

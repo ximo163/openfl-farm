@@ -70,6 +70,7 @@ addButton` 是 no-op。做窗口片（V3c）时把它们替换成真翻译，stu
 
 `test/module/mainScene/`：只测纯逻辑（OperationQueue 合批/合并、
 BackgroundModel 槽位、FarmLandsView 的 m_items 排布计数、LandItemRender
-字段态）。`FarmLandsViewTest.test_createLandTiles` 读 openfl 自家
-`name/x/y`（get/set 无物理字段）经 Dynamic 得 null——机制问题不是值错，
+字段态）。`FarmLandsViewTest.test_createLandTiles` 的 name/x/y 断言
+**强类型读**（`var item:LandItemRender = view.m_items[0]`）：openfl 自家
+的 get/set 属性无物理字段，经 `Dynamic` 反射在 eval/js 恒 null——机制坑
 见 [lessons/index.md](../lessons/index.md) 对应条目。

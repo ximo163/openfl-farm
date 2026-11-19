@@ -24,8 +24,10 @@ legacy 出处：`decompiled main3 module/mainScene/farmLand/`。
   （`ADD_WEED 0 / CLEAR_WEED 1 / ADD_BUG 2 / CLEAR_BUG 3`）。请求侧 place
   串接（`"1,2,5"`），回包按 `cmdID` 分槽、按 `farmlandIndex`+方向合并
   （ADD 类取大、CLEAR 类取小，money/exp 累加、levelUp 只升不降），
-  展示侧 400ms Timer 逐条派发 `EVENT_OPERATE_SUCCES`。常量原版是
-  `internal`，Haxe 转成 public（同包 FarmLandModel 也要用）。
+  展示侧 400ms Timer 逐条派发 `EVENT_OPERATE_SUCCES`。槽常量与
+  `EVENT_OPERATE_SUCCES` 原版 `internal`、同包 FarmLandModel 引用 → Haxe
+  public；`EVENT_OPERATE_ERROR`/`QUEUE_LEN` 原版 internal 且全库无外部引用
+  → private。
 - widgets/：`LandItemRender`（单地块渲染编排：setGrowStep→createCrop/
   createByproduct→updateLandStatus）、`LandTile`（地块底图，来自
   farmui_full_v_40 库）、`Crop`（作物 swf 影片，`Crop_<cId>_<step>.swf`
@@ -47,7 +49,8 @@ legacy 出处：同目录 background/。装饰槽位模型 + 场景背景屏。
   逐字：fence 380/186、dogHouse 464/231、house 571/242、ad 48/240，BG 全屏
   + 1024×810 遮罩 16711680）+ `RSLLoader` 组装载（`completeFn=onLoaded` 按
   `LoaderInfo.url` 对槽）+ 牧场导航 `Navigate`（60/480）。原版
-  `loader.unloadAndStop` 的 `hasOwnProperty` 鸭子判在 openfl 上恒 false——
+  `loader.unloadAndStop` 的 `hasOwnProperty` 鸭子判在 openfl 上恒 false
+  （`Reflect.hasField` 只见物理字段不见方法，openfl Loader 其实有该方法）——
   远程 swf 已本地化，该释放路径不可达，PORT-NOTE 在位。
 - `BackgroundController`（← BackgroundController.as 172 行）：StartupData
   装饰下发进模型；`MSG_ENTER_PREVIEW`→`changeDecor` 快照 + PreviewDiyWindow；

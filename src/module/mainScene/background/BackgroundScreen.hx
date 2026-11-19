@@ -28,7 +28,8 @@ import shim.As3;
  * PORT-NOTE(动态取键)：`_diyUrl[i]["url"]` 读写 → Reflect.setField/field；
  * `as int` → As3.intOf；`Boolean(int)` / `int == false` → As3.truthy；
  * `unloadAndStop` 的 hasOwnProperty 鸭子判走 Reflect + Dynamic 调用
- * （openfl Loader 无该成员，本地化资产后该分支不可达）。
+ * （Reflect.hasField 只见物理字段不见方法，openfl Loader 虽有该方法但探不到，
+ * 分支不可达；原版释放远程 swf 的语义已由本地化资产承担）。
  * legacy/decompiled/main3_v_221/scripts/module/mainScene/background/BackgroundScreen.as
  */
 class BackgroundScreen extends Sprite {
@@ -411,8 +412,10 @@ class BackgroundScreen extends Sprite {
 			while (_loc2_.numChildren > 0) {
 				_loc3_ = _loc2_.removeChildAt(0);
 				if (_loc3_ != null && _loc3_.loaderInfo != null && _loc3_.loaderInfo.loader != null) {
-					// AS3 hasOwnProperty("unloadAndStop")：openfl Loader 无该成员 →
-					// 恒 false 不触发；原版释放远程 swf 的语义已由本地化资产机制承担
+					// AS3 hasOwnProperty("unloadAndStop") 在原型链上见方法、恒真；
+					// Reflect.hasField 只见物理字段不见方法（openfl Loader 其实
+					// 有该方法但探不到）→ 恒 false 不触发，原版释放远程 swf 的语义
+					// 已由本地化资产机制承担
 					var _loc5_:Dynamic = _loc3_.loaderInfo.loader;
 					if (Reflect.hasField(_loc5_, "unloadAndStop") == true) {
 						_loc5_.unloadAndStop(true);

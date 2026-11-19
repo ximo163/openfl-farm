@@ -23,16 +23,17 @@ import shim.As3;
  * 读-改-写复刻；`as int` → As3.intOf。
  */
 class OperationQueue extends EventDispatcher {
-	// OperationQueue.as:17-27（internal static const → public static final：
-	// AS3 internal 是包内可见，Haxe 没有包可见性，FarmLandModel（同包、原版同样
-	// 引用这些常量）需要 public 才能访问）
+	// OperationQueue.as:17-27。EVENT_OPERATE_SUCCES 与四槽常量原版 internal、
+	// 同包 FarmLandModel（.as:111 等）原版就引用 → public；EVENT_OPERATE_ERROR
+	// /QUEUE_LEN 原版 internal 且全库无外部引用（ERROR 甚至本类内也不派发），
+	// 按 internal → private 映射收窄
 	public static final EVENT_OPERATE_SUCCES:String = "OperateSuccess";
-	public static final EVENT_OPERATE_ERROR:String = "OperateError";
+	private static final EVENT_OPERATE_ERROR:String = "OperateError";
 	public static final ADD_WEED:Int = 0;
 	public static final CLEAR_WEED:Int = 1;
 	public static final ADD_BUG:Int = 2;
 	public static final CLEAR_BUG:Int = 3;
-	public static final QUEUE_LEN:Int = 4;
+	private static final QUEUE_LEN:Int = 4;
 
 	// OperationQueue.as:32-38
 	private var m_delayRequestTimer:Timer;

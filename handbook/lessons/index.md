@@ -44,3 +44,27 @@
 - **原版 bug 照抄不修**：`askSharePlane` 拼 URL 少个 `&`、`cacheAsBitmp`
   拼错（PopUpManager 字段名）——逐字保留，别「顺手修好」，偏差只进
   `spec/deviations.json`。
+- **AS3 `x == "字面量"`（x 为 Dynamic）是松等，同字段有数值/字符串双形态**：
+  nc_data.php 的 isRed/isAnimation 一部分作物是 `"isRed": 1`（裸数值）、另一
+  部分是 `"isRed": "1"`（字符串），_vip.php 的 eType/eNum 也是数值——AS3
+  `1 == "1"` 为真，Haxe 严格 == 在 eval/cpp 上失配（js 目标偶然因 JS 松等
+  而同，#8 实现复审才现形：isAnimation/isRed/eType/eNum 五处）。防：Dynamic
+  与字符串字面量的比较一律 `As3.eqString`（shim 既有）。
+- **AMF 往返对未注册类别名的实例退化成匿名对象**：全库只给 TextFormat 注册
+  过 registerClassAlias（TextFormatUtil.as:17），所以 `ObjectUtil.clone(...) as
+  HealthMode` 恒 null——原版 Player.clone() 的 _healthMode 从来就是 null，
+  「看起来在深拷」是错觉。防：ByteArray.writeObject/readObject 的语义按 AMF3
+  规则推，别按读代码的直觉。
+- **`As3.dateOf` 解析失败回 null，调用点必须先判 null**：原版 Invalid Date
+  的等价是「NaN 比较恒 false ⇒ 跳过」，裸读 `null.getTime()` 直接抛
+  （NPCView 构造器漏判）。防：dateOf 调用点照 FarmLand.get__goldLand 的
+  null 守卫式写。
+- **`obj["k"] != undefined` 的完整映射是 `hasField && field != null`**：
+  AS3 里 null == undefined 为真，漏 `!= null` 半守卫会放行 null 值
+  （NPCView bubble、FarmLandsView healthMode/gold、FarmLandController
+  direction/error/place）。防：全局搜单独出现的 `Reflect.hasField(` 核对
+  有没有漏半守卫。
+- **swf 帧脚本在本地化库处理时被丢弃（scriptSource 导出为空串）**：
+  MaoPaoFlag 的 frame1 `infoTxt.text = talkInfo` 不再执行——气泡文本缺失是
+  既知视觉偏差（deviations 候选）。防：涉及符号内嵌脚本的显示行为，先看
+  `haxelib run swf` 处理产物的 scriptSource 是否为空再下结论。

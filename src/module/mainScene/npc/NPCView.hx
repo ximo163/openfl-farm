@@ -72,11 +72,15 @@ class NPCView extends Sprite {
 			}
 			_loc4_ = _loc3_.split("-");
 			// PORT-NOTE: AS3 的 new Date(字符串) 任意格式解析 → As3.dateOf
-			//（仅复刻 m/d/Y[ H:M[:S]] 形态，a361 配置即此形态）
+			//（仅复刻 m/d/Y[ H:M[:S]] 形态，a361 配置即此形态）。解析失败原版得
+			// Invalid Date（time=NaN，比较恒 false 不加载），dateOf 得 null——判
+			// null 跳过比较即等价（FarmLand.get__goldLand 同式）
 			_loc5_ = As3.dateOf(_loc4_[0]);
 			_loc6_ = As3.dateOf(_loc4_[1]);
-			_loc7_ = CommonData.serverTime * 1000;
-			if (_loc7_ >= _loc5_.getTime() && _loc7_ <= _loc6_.getTime()) {
+			// *1000.0：eval 上 Int 表示的 Float 乘 Int 字面量按 Int32 回绕
+			//（纪元秒×1000 必爆），js 两者一致（同 FarmLand.get__goldLand）
+			_loc7_ = CommonData.serverTime * 1000.0;
+			if (_loc5_ != null && _loc6_ != null && _loc7_ >= _loc5_.getTime() && _loc7_ <= _loc6_.getTime()) {
 				this.loadAdvertiseIcon("module/ui/361.swf");
 			}
 		}
@@ -135,16 +139,18 @@ class NPCView extends Sprite {
 		container.y = As3.intOf(Reflect.field(data, "y"));
 		container.addChild(role);
 		this._activityNPCData = data;
-		if (Reflect.hasField(data, "bubble") && Reflect.field(data, "bubble") != "") {
+		// AS3 `!= undefined` 一并排除 null（null == undefined 为真）
+		if (Reflect.hasField(data, "bubble") && Reflect.field(data, "bubble") != null && Reflect.field(data, "bubble") != "") {
 			mcTalk = new MaoPaoFlag();
 			mcTalk.x = 0;
 			mcTalk.y = -100;
 			mcTalk.mouseChildren = false;
 			mcTalk.mouseEnabled = false;
 			mcTalk.gotoAndPlay(1);
-			// PORT-NOTE: 原版给 MaoPaoFlag 动态属性 talkInfo 赋值（符号帧脚本
-			// 读它填气泡文本；swf 脚本不在 openfl animate 运行时里执行，赋值
-			// 照抄保留，见 shim.SymbolClass 头注）
+			// PORT-NOTE: 原版给 MaoPaoFlag 动态属性 talkInfo 赋值，帧脚本 frame1
+			// 读它填气泡文本（infoTxt.text = talkInfo）。本地化 swf 库处理把帧脚本
+			// 丢弃（scriptSource 导出为空串，openfl 运行时无从执行）——气泡文本
+			// 缺失是既知视觉偏差（deviations 候选），赋值照抄保留
 			Reflect.setField(mcTalk, "talkInfo", Reflect.field(data, "bubble"));
 			p = container.localToGlobal(new Point(role.x, role.y));
 			lyr = this.controller.module.app.farmView.getLayerByName(Consts.LAYER_TOOLS);

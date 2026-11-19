@@ -175,8 +175,9 @@ class FarmLandController extends Controller {
 
 	// FarmLandController.as:186-205
 	private function onGoldLandUpdateFail(param1:CommonEvent):Void {
-		if (param1.data != null) {
-			if (Reflect.hasField(param1.data, "direction")) {
+		if (As3.truthy(param1.data)) {
+			// AS3 `!= undefined` 一并排除 null（null == undefined 为真）
+			if (Reflect.hasField(param1.data, "direction") && Reflect.field(param1.data, "direction") != null) {
 				openWindow(Consts.WINDOW_NAME_ALERT, {
 					"icon": Consts.ALERT_TYPE_ERROR,
 					"text": Reflect.field(param1.data, "direction")
@@ -518,8 +519,9 @@ class FarmLandController extends Controller {
 			return;
 		}
 		data = e.data;
-		if (Reflect.field(data, "black") == true && Reflect.hasField(data, "error")) {
-			if (Reflect.field(data, "error") != "" && Reflect.hasField(data, "place")) {
+		// AS3 `!= undefined`（error/place）：一并排除 null
+		if (Reflect.field(data, "black") == true && Reflect.hasField(data, "error") && Reflect.field(data, "error") != null) {
+			if (Reflect.field(data, "error") != "" && Reflect.hasField(data, "place") && Reflect.field(data, "place") != null) {
 				this.view.openLandFloatTip(Reflect.field(data, "error"), As3.intOf(Reflect.field(data, "place")));
 			}
 			return;
@@ -913,7 +915,9 @@ class FarmLandController extends Controller {
 			return;
 		}
 		Reflect.setField(param1.data, "big", true);
-		if (Std.isOfType(param1.data, Array) && param1.data.length == 1 && Reflect.field(param1.data[0], "eType") == Consts.ITEM_TYPE_CARD) {
+		// AS3 `== Consts.ITEM_TYPE_CARD` 松等：_vip.php 的 eType 是 JSON 数值
+		//（"eNum" => 50 / "eType" => 4 形态）→ As3.eqString
+		if (Std.isOfType(param1.data, Array) && param1.data.length == 1 && As3.eqString(Reflect.field(param1.data[0], "eType"), Consts.ITEM_TYPE_CARD)) {
 			m_module.app.openWindowByName(Consts.WINDOW_NAME_REGIFT_CARD, param1.data);
 		} else {
 			var _loc2d:Dynamic = Reflect.field(param1.data, "item");
@@ -921,7 +925,8 @@ class FarmLandController extends Controller {
 			if (_loc2_ == null) {
 				return;
 			}
-			if (Reflect.field(_loc2_[0], "eType") == "6" && (Reflect.field(_loc2_[0], "eNum") == "66" || Reflect.field(_loc2_[0], "eNum") == "666")) {
+			// AS3 `== "6"/"66"/"666"` 松等（数值载荷，_vip.php 同上）→ eqString
+			if (As3.eqString(Reflect.field(_loc2_[0], "eType"), "6") && (As3.eqString(Reflect.field(_loc2_[0], "eNum"), "66") || As3.eqString(Reflect.field(_loc2_[0], "eNum"), "666"))) {
 				Reflect.setField(param1.data, "title", "温馨提示");
 				_loc3_ = Reflect.field(_loc2_[0], "eNum") + "金币";
 				Reflect.setField(param1.data, "direction", "\n哇！幸运哦！！\n<font color=\"#FF0000\">获得奖励：</font ><font color=\"#FF0000\">" + _loc3_ + "</font>");

@@ -500,7 +500,9 @@ class FarmLandsView extends Sprite {
 		var _loc6_:Bool = _loc4_._bitmap > 0 ? true : false;
 		var _loc7_:String = "";
 		var _loc8_:Dynamic = Settings.getInstance().getCropByID(Std.string(_loc5_));
-		if (_loc8_ != null && Reflect.field(_loc8_, "isAnimation") == "1") {
+		// AS3 `== "1"` 松等：nc_data.php 里 isAnimation 有数值形态
+		//（id 28/158/168/334 的 "isAnimation": 1）→ As3.eqString
+		if (_loc8_ != null && As3.eqString(Reflect.field(_loc8_, "isAnimation"), "1")) {
 			_loc7_ = Consts.FLOAT_TYPE_HAC;
 		} else if (Reflect.hasField(_loc2_, "plus") && Reflect.field(_loc2_, "plus") != null && _loc5_ > 0 && _loc6_ == true) {
 			_loc7_ = Consts.FLOAT_TYPE_HAP;
@@ -573,7 +575,7 @@ class FarmLandsView extends Sprite {
 	// FarmLandsView.as:641-649
 	private function onShowPickIcon(param1:CommonEvent):Void {
 		var _loc2_:Bool = true;
-		if (param1 != null && param1.data != null && Reflect.hasField(param1.data, "healthMode")) {
+		if (param1 != null && param1.data != null && Reflect.hasField(param1.data, "healthMode") && Reflect.field(param1.data, "healthMode") != null) {
 			// AS3 `as Boolean`：值非 Boolean 得 null → Boolean 变量 false
 			var _loc2d:Dynamic = Reflect.field(param1.data, "healthMode");
 			_loc2_ = Std.isOfType(_loc2d, Bool) ? _loc2d : false;
@@ -630,15 +632,18 @@ class FarmLandsView extends Sprite {
 					_loc6_ = _loc5_._cId;
 					_loc7_ = Settings.getInstance().getCropByID(Std.string(_loc6_));
 					if (_loc7_ != null) {
-						if (Reflect.field(_loc7_, "isRed") == "1") {
+						// AS3 `== "1"/"2"` 松等：isRed 有数值形态（nc_data.php
+						// id 116/242/243/244/246 的 "isRed": 1）→ As3.eqString
+						if (As3.eqString(Reflect.field(_loc7_, "isRed"), "1")) {
 							openLandFloatTip("红土地,普通作物将增产10%!", index);
-						} else if (Reflect.field(_loc7_, "isRed") == "2") {
+						} else if (As3.eqString(Reflect.field(_loc7_, "isRed"), "2")) {
 							openLandFloatTip("黑土地,普通和高级作物将提速20%!", index);
 						}
 					}
 				}
 			}
-			if (Reflect.hasField(data, "gold") == false) {
+			// AS3 `gold == undefined`：缺键或 null（null == undefined）都走这支
+			if (Reflect.hasField(data, "gold") == false || Reflect.field(data, "gold") == null) {
 				m_controller.model.updateLandData(As3.intOf(Reflect.field(data, "place")), As3.intOf(Reflect.field(data, "output")), As3.intOf(Reflect.field(data, "leavings")), As3.intOf(Reflect.field(data, "min")), _loc3_, -1);
 			} else {
 				m_controller.model.updateLandData(As3.intOf(Reflect.field(data, "place")), As3.intOf(Reflect.field(data, "output")), As3.intOf(Reflect.field(data, "leavings")), As3.intOf(Reflect.field(data, "min")), _loc3_, Reflect.field(data, "gold") == true ? 1 : 0);

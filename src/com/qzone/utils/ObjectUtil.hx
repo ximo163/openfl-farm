@@ -11,10 +11,12 @@ class ObjectUtil {
 
 	// ObjectUtil.as:13-19
 	// PORT-NOTE(clone)：原版走 ByteArray.writeObject/readObject 的 AMF 往返深
-	// 拷贝，openfl 的 ByteArray 无 AMF 实现，改反射递归复制。两个克隆场景只碰
-	// 匿名结构（背景装饰槽 {id,type,url}）、数组和实体实例（HealthMode——字段
-	// 全是基元），语义等价；AMF 对未注册类别名的实例本就退化为匿名结构，这里
-	// 保留类名重建，比原版更保真。显示对象（AMF 里本就抛错）不在克隆面内。
+	// 拷贝，openfl 的 ByteArray 无 AMF 实现，改反射递归复制。AMF3 对未注册
+	// registerClassAlias 的类实例往返后退化成匿名对象——全库只给 TextFormat
+	// 注册过别名（TextFormatUtil.as:17），HealthMode 没有——所以类型化实例也
+	// 克隆成匿名结构，两侧 `as HealthMode` 同样得 null（Player.clone 依赖这
+	// 一点，Player.as:157）。装饰槽匿名结构、数组、Date（AMF 有专门类型）原
+	// 样深拷。显示对象（AMF 里本就抛错）不在克隆面内。
 	public static function clone(param1:Dynamic):Dynamic {
 		return cloneValue(param1);
 	}
@@ -38,16 +40,8 @@ class ObjectUtil {
 			return Date.fromTime(v.getTime());
 		}
 		if (Reflect.isObject(v)) {
-			var cls = Type.getClass(v);
-			if (cls != null) {
-				// 类型化实例：空构造实例 + 字段逐一深拷（HealthMode 形态）
-				var inst = Type.createEmptyInstance(cls);
-				for (f in Reflect.fields(v)) {
-					Reflect.setField(inst, f, cloneValue(Reflect.field(v, f)));
-				}
-				return inst;
-			}
-			// 匿名结构（装饰槽 {id,type,url} 形态）
+			// 类实例与匿名结构同途：AMF 对未注册别名的实例一律退化成匿名
+			// 对象（见上 PORT-NOTE），不做类型重建
 			var o:Dynamic = {};
 			for (f in Reflect.fields(v)) {
 				Reflect.setField(o, f, cloneValue(Reflect.field(v, f)));

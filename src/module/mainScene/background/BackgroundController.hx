@@ -130,7 +130,8 @@ class BackgroundController extends Controller {
 		}
 		this.m_oldDecorItem = this.model.changeDecor(_loc2_._id, _loc2_._type);
 		if (this.m_previewWindow == null) {
-			this.m_previewWindow = new PreviewDiyWindow(cast(module.app, IMsgCenter));
+			// 原版 `module.app as IMsgCenter`：类型不符得 null（本文件其余 as 同式）
+			this.m_previewWindow = new PreviewDiyWindow(Std.isOfType(module.app, IMsgCenter) ? cast(module.app, IMsgCenter) : null);
 		}
 		module.app.farmView.winCtrl.open(this.m_previewWindow);
 	}

@@ -27,3 +27,7 @@ source/core/module/ui/pool_v_13.swf
 source/core/module/ui/quickshoot_v_0.swf
 source/core/module/ui/cards_v_1.swf
 source/core/module/ui/gifts_v_11.swf
+# nc_addon.php:81 beastLoaderUrl：Main.as:354 启动数据到位即 loadAsyncWildModule
+# （:188-190 无条件 loadWildShell；FarmApplication.as:766-771 同），uid=1 的
+# user_run 无 _beast 也请求——启动窗口必发（test/StartupModuleLibrariesTest.hx）：
+source/core/module/mc/farm/wild/WildShellNc_v_5.swf

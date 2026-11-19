@@ -38,5 +38,9 @@
     <library path="assets/legacy/source/core/module/ui/quickshoot_v_0.swf" id="quickshoot_v_0" />
     <library path="assets/legacy/source/core/module/ui/cards_v_1.swf" id="cards_v_1" />
     <library path="assets/legacy/source/core/module/ui/gifts_v_11.swf" id="gifts_v_11" />
+    <!-- nc_addon.php:81 beastLoaderUrl：Main.loadWildShell（:188-190 无条件，
+         不受 _beast 门控）与 FarmApplication.loadWildShell（:766-771）都会在
+         启动窗口请求。与 assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/mc/farm/wild/WildShellNc_v_5.swf" id="WildShellNc_v_5" />
 
 </project>

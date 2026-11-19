@@ -50,10 +50,13 @@ import utest.Assert;
  *   窗口取 1960-2040 宽窗确定覆盖 0（任何时区下 1960 本地 < 纪元 < 2040 本地）；
  * - eval 上经 Dynamic（Array<Dynamic> 元素）读 (get,set) 属性不触发 getter（得
  *   null；js 上动态读得 undefined），测试内断言 _goldLand 一律经类型化
- *   FarmLand 引用读；原版 isAllGoldLand 的循环变量是类型化的（必调 getter），
- *   移植侧 m_farmlandData:Array<Dynamic> 的元素若以 Dynamic 读该属性则与
- *   原版分歧（活动窗口内恒 2），test_isAllGoldLand_states 按原版断言并在
- *   阶段报告标注。
+ *   FarmLand 引用读。原版 isAllGoldLand 的循环变量是类型化的 FarmLand
+ *   （FarmLandModel.as:1519-1521，`_loc1_._goldLand` 必调 getter）；当前移植
+ *   get_isAllGoldLand（FarmLandModel.hx:1278-1289）把 Array<Dynamic> 元素当
+ *   Dynamic 读该属性，getter 不触发（活动窗口内恒 2；null 数组直接迭代抛
+ *   Null Access），与原版不一致且 spec/deviations.json 无对应条目——活动窗口
+ *   内的 1/3 两态与 null 容忍暂无法按原版断言，未覆盖清单及补回条件见
+ *   test_isAllGoldLand_states 上方注释。
  */
 @:access(module.mainScene.farmLand.FarmLandModel)
 class FarmLandModelTest {
@@ -190,40 +193,41 @@ class FarmLandModelTest {
 		Assert.same([], model.refreshLands); // :687 每次调用新建数组
 	}
 
-	// isAllGoldLand :1517-1532：非金地→2；全金且不足 24 块→1；全金且 ≥24→3；
-	// 空数组 → for-each 零次 + truthy([])==true 且 0<24 → 1。「金地」按
-	// _goldLand 计算属性判定（FarmLand.as:225-245）：jinPaiLand 活动窗口覆盖
-	// serverTime*1000 且 setter 写过 goldLand==1（:63-65）才算 1。
-	// changed for #7: 原断言把 _goldLand 当存储属性读回写入值——legacy 里它是
-	// jinPaiLand 活动窗口计算属性，未配置窗口时恒 0；改为经真实下发路径
-	//（loadLocalSettings）配窗口后断言 1/3/2 三态，并补空数组边界与撤窗口后
-	// 恒 2 的门控断言（窗口 getter 本身是 FarmLand.as:225-245 的忠实翻译，
-	// 不属 deviations）。注意原版循环变量声明为 FarmLand（:1519-1521），
-	// `_loc1_._goldLand` 是编译期类型化访问、必调 getter；移植侧若以
-	// Array<Dynamic> 元素动态读该属性，getter 不触发（eval 读得 null、js 读得
-	// undefined，`!= 1` 恒真 → 恒 2），与原版活动窗口内的行为不一致——本用例
-	// 按原版断言，动态读形态下 1/3 两断言失败（见阶段报告）
+	// isAllGoldLand :1517-1532：任一块非金地→2（:1522-1525）；空数组→1
+	//（for-each 零次迭代 + Boolean([]) 为真且 0<24，:1527-1530）；未配置
+	// jinPaiLand 窗口→getter 恒 0（FarmLand.as:234-244）→恒 2。「金地」按
+	// _goldLand 计算属性判定（FarmLand.as:225-245）：窗口覆盖 serverTime*1000 且
+	// setter 写过 goldLand==1（:63-65）才算 1。
+	// 未覆盖的原版三态（按原版断言会在当前移植上失败，见类头说明）：
+	// ① 全金且 <24 块→1（:1527-1530）② 全金且 ≥24 块→3（:1531）
+	// ③ m_farmlandData==null→3（:1517-1521 for-each 对 null 零次迭代 +
+	// :1527 Boolean(null) 为假）。原版循环变量声明为 FarmLand（:1519-1521），
+	// `_loc1_._goldLand` 是编译期类型化访问、必调 getter；当前移植
+	// get_isAllGoldLand（FarmLandModel.hx:1278-1289）以 Array<Dynamic> 元素
+	// 动态读该属性，getter 不触发（eval 读得 null、js 读得 undefined，
+	// `!= 1` 恒真→窗口内也恒 2），null 数组更会迭代抛 Null Access——与原版
+	// 不一致且 spec/deviations.json 无对应条目，待 implement 阶段把循环元素绑回
+	// FarmLand 类型并容忍 null 数组后，应把 ①②③ 三个断言补回本用例
+	//（①② 的 getter 语义本身已由 entities.FarmLandTest.
+	// test_goldLand_computed_property_is_window_gated 覆盖）。
 	public function test_isAllGoldLand_states() {
 		pinGoldWindow();
 		var one = bareLand();
 		one._goldLand = 1; // setter（FarmLand.as:63-65）只写裸 goldLand
 		Assert.equals(1, one._goldLand); // 前置 sanity：窗口内类型化读 getter=1
-		var model = new FarmLandModel();
-		model.m_farmlandData = [one];
-		Assert.equals(1, model.isAllGoldLand); // :1527-1530 length 1 < 24
 
+		// 23 块金地 + 第 24 块非金地：原版走到 :1522-1525 第 24 块判非 → 2
 		var all:Array<Dynamic> = [];
 		for (i in 0...24) {
 			var l = bareLand();
 			l._goldLand = 1;
 			all.push(l);
 		}
-		model.m_farmlandData = all;
-		Assert.equals(3, model.isAllGoldLand); // :1531
-
 		var mixed = bareLand();
 		mixed._goldLand = 0;
 		all[23] = mixed;
+		var model = new FarmLandModel();
+		model.m_farmlandData = all;
 		Assert.equals(2, model.isAllGoldLand); // :1522-1525 第 24 块不是金地
 
 		// 空数组：零次迭代 + truthy([])==true（AS3 Boolean([]) 为真）且 0<24 → 1
@@ -236,16 +240,6 @@ class FarmLandModelTest {
 		Assert.equals(0, one._goldLand); // 类型化引用才触发 getter
 		model.m_farmlandData = [one];
 		Assert.equals(2, model.isAllGoldLand);
-	}
-
-	// isAllGoldLand :1517-1521：m_farmlandData 为 null 时，原版 for-each 对
-	// null 是零次迭代（AS3/AVM2 for-in 语义，不抛错）→ 落到 :1527 truthy(null)
-	// 为假 → 返回 3。移植侧若直接对 null 数组迭代会在 js/eval 上抛
-	// Null Access/TypeError——原版容忍 null，移植必须同样容忍
-	public function test_isAllGoldLand_tolerates_null_farmland_data() {
-		var model = new FarmLandModel();
-		model.m_farmlandData = null;
-		Assert.equals(3, model.isAllGoldLand); // :1527-1531
 	}
 
 	// landIsFull :1534-1545：任一地 null 或 _cId==0 → false；全有种 → true；

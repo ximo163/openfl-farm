@@ -528,9 +528,11 @@ class FarmApplication extends Application implements IMsgCenter {
 		}));
 	}
 
-	// FarmApplication.as:586-594
+	// FarmApplication.as:586-594。`new Loader()` → LocalSwfLoader（同
+	// module.Main.loadWildShell：beastLoaderUrl 绝对 URL，html5 下须走资产库，
+	// 否则 web-smoke 404）
 	private function loadWildShell():Void {
-		var _loc1_:Loader = new Loader();
+		var _loc1_:Loader = new shim.LocalSwfLoader();
 		var _loc2_:LoaderContext = new LoaderContext();
 		_loc2_.applicationDomain = CommonData.applicationDomain;
 		_loc1_.contentLoaderInfo.addEventListener(Event.COMPLETE, this.onWildComplete);

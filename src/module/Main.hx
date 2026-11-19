@@ -107,9 +107,12 @@ class Main extends MovieClip {
 		addEventListener(Event.ADDED_TO_STAGE, this.onAddedToStage, false, 0, true);
 	}
 
-	// Main.as:76-84
+	// Main.as:76-84。`new Loader()` → LocalSwfLoader（CLAUDE.md 加载映射：
+	// 资产已本地化，remote swf 走 Assets 库；调用形态保持 loader.load(req, ctx)
+	// 原样）。beastLoaderUrl 是绝对 URL，裸 Loader 在 html5 下发真实请求 →
+	// web-smoke 404（WildShellNc_v_5 已入库，走 libraryIdForUrl 映射取库）
 	private function loadWildShell():Void {
-		var _loc1_:Loader = new Loader();
+		var _loc1_:Loader = new shim.LocalSwfLoader();
 		var _loc2_:LoaderContext = new LoaderContext();
 		_loc2_.applicationDomain = CommonData.applicationDomain;
 		_loc1_.contentLoaderInfo.addEventListener(Event.COMPLETE, this.onWildComplete);

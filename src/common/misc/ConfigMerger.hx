@@ -76,7 +76,8 @@ class ConfigMerger {
 	}
 
 	// ConfigMerger.as:90-129。XMLDocument(ignoreWhite) 的 firstChild.childNodes
-	// → Xml.parse 的文档元素遍历（忽略空白节点是 Xml.parse 的默认行为）
+	// → Xml.parse 的文档元素遍历：elements() 只出元素子节点，与 ignoreWhite 后
+	// 的 childNodes 逐元素用法等价；json 载荷的空白处理在 firstTextNode
 	private function parseXMLData(param1:String):Void {
 		var _loc2_:Xml = null;
 		var _loc3_:Dynamic = null;
@@ -194,8 +195,38 @@ class ConfigMerger {
 		return null;
 	}
 
-	// childNodes[0].nodeValue / children()[0]：元素文本内容（json 载荷）
+	// childNodes[0].nodeValue（parseXMLData，XMLDocument ignoreWhite）/ children()[0]
+	//（mergeJsonArrayNode，E4X）：元素的真实字符内容（json 载荷）。haxe Xml 保留
+	// 纯空白 PCData，真实下发（nc_data/nc_addon 的 json 节点 CDATA 前有 "\n\t\t"）
+	// 里 firstChild() 会取到空白文本 → Json.parse 空白串抛 "Unexpected end of
+	// JSON input"（CI web-smoke pageerror，parseJSONData 无 try/catch）。按
+	// ignoreWhite 语义取首个非纯空白字符子节点（同 FarmLiteModel 的
+	// firstChildIgnoreWhite 先例）。
 	private static function firstTextNode(param1:Xml):String {
-		return param1.firstChild().nodeValue;
+		var child:Xml = null;
+		for (child in param1) {
+			if (child.nodeType == Xml.PCData && isWhiteSpace(child.nodeValue)) {
+				continue;
+			}
+			if (child.nodeType == Xml.PCData || child.nodeType == Xml.CData) {
+				return child.nodeValue;
+			}
+			break;
+		}
+		return null;
+	}
+
+	// XMLDocument.ignoreWhite 的空白判定（space/tab/CR/LF）
+	private static function isWhiteSpace(param1:String):Bool {
+		var _loc1_:Int = 0;
+		var _loc2_:String = null;
+		while (_loc1_ < param1.length) {
+			_loc2_ = param1.charAt(_loc1_);
+			if (_loc2_ != " " && _loc2_ != "\t" && _loc2_ != "\n" && _loc2_ != "\r") {
+				return false;
+			}
+			_loc1_++;
+		}
+		return true;
 	}
 }

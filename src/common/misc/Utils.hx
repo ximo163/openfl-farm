@@ -132,7 +132,13 @@ class Utils {
 	}
 
 	// Utils.as:147-171。try/catch/finally 的 finally 里两个 return 等价于直接
-	// return xml（Haxe 无 finally）
+	// return xml（Haxe 无 finally）。
+	// PORT-NOTE: `new XML(str)` 是 E4X 根元素对象（child()/后代访问都在元素上），
+	// haxe 等价是 Xml.parse(str).firstElement()——只 Xml.parse 会得到 Document
+	// 节点，而调用方（ConfigMerger.mergeConfig、Module.onLoadModuleFile 的
+	// moduleList 扫描、FarmApplication.startup 的 activity_list 扫描）都按元素
+	// 语义遍历直接子节点，喂 Document 会全部静默落空（V2 的 FarmLite 自己补了
+	// firstElement，当时没暴露差异）。
 	public static function loadXMLData(param1:Dynamic):Xml {
 		var xml:Xml = null;
 		var e_target_data:Dynamic = param1;
@@ -140,7 +146,7 @@ class Utils {
 			return null;
 		}
 		try {
-			xml = Xml.parse(e_target_data);
+			xml = Xml.parse(e_target_data).firstElement();
 		} catch (e:Dynamic) {
 			trace("ERROR: invalid XML file:" + e.message);
 		}

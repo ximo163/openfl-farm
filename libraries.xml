@@ -29,4 +29,14 @@
          也是 1，user_run.php 输出同一 URL） -->
     <library path="assets/legacy/source/core/module/ui/farm/diy/1.swf" id="1" />
 
+    <!-- V3a 启动链（issue #7）：FarmApplication.startup 的 500/1400ms setTimeout
+         自动派发 MSG_LOAD_WATER/CARDSGAME/FREEGIFT/QUICKSHOOT →
+         Module.onLoadModuleFile → RSLManager.requestFile（nc_main moduleList 的
+         url）。不 preload：原版为运行期网络加载，与 assets/legacy-assets.txt
+         同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/pool_v_13.swf" id="pool_v_13" />
+    <library path="assets/legacy/source/core/module/ui/quickshoot_v_0.swf" id="quickshoot_v_0" />
+    <library path="assets/legacy/source/core/module/ui/cards_v_1.swf" id="cards_v_1" />
+    <library path="assets/legacy/source/core/module/ui/gifts_v_11.swf" id="gifts_v_11" />
+
 </project>

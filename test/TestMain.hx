@@ -27,6 +27,9 @@ class TestMain {
 		runner.addCase(new framework.net.core.HttpOperationExTest());
 		runner.addCase(new framework.net.parsers.StartupDataParserTest());
 		runner.addCase(new framework.net.protocol.ProtocolTest());
+		// issue #7 attempt 2：ConfigMerger 对真实 nc_data/nc_addon XML 载荷形状
+		// （CDATA 前空白、JSON 顶层键落库、addon 数组原地更新+追加）
+		runner.addCase(new common.misc.ConfigMergerTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

@@ -8,8 +8,17 @@
   文件、不改资产内容**，只改清单。
 - **声明**：根目录 `libraries.xml` 一行一库（`<library path id/>`），id =
   swf 文件名去 `.swf`，`Assets.getMovieClip("<id>:符号名")` 取符号。
-  **必须和 legacy-assets.txt 同 commit 改**——library 指向的文件不存在时
-  构建直接红。`Project.xml` 本体由人管，只通过 include 合并 libraries.xml。
+  **必须和 legacy-assets.txt 同 commit 改**——只改 libraries.xml 不同步
+  清单时构建打 Warning「Could not find library file」继续出产物（#8 实测，
+  并非 CLAUDE.md 说的直接红），运行期库为空。`Project.xml` 本体由人管，
+  只通过 include 合并 libraries.xml。
+- **场景窗口请求的 module swf 逐项入库**：翻译把加载链接通后，凡是启动/
+  场景窗口内会 `Loader.load` 的 module swf 都必须入库（uid=1 快照数据实际
+  触发的集合），缺一个 = html5 运行期对未声明库 404 → CI web-smoke
+  console.error FAIL。这条有两道门：
+  `test/StartupModuleLibrariesTest.hx`（#7 启动窗口）与
+  `test/SceneDecorLibrariesTest.hx`（#8 场景装饰窗口）——新窗口接入新 URL
+  时照这两个文件的表格式样加条目，别等 CI。
 - **加载**：原版运行期网络加载的库**不** `preload`（只有 V1 探路样本
   preload="true"）；代码里的 `Loader.load(远端URL)` 只在加载器类里换成
   `src/shim/LocalSwfLoader.hx`（`libraryIdForUrl` 按 URL 尾段映射库名），
@@ -24,4 +33,4 @@
   （如 canPickIcon）类名大写 + `@:native("原名")` 回键。
 - 当前已入库的库和每个库的来源依据，看 `libraries.xml` 和
   `assets/legacy-assets.txt` 里的分组注释（V1 样本 / V2 加载链 / V3a
-  启动链）。
+  启动链 / V3b 作物分档 + 场景装饰）。

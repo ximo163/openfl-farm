@@ -56,6 +56,11 @@ legacy 出处：同目录 background/。装饰槽位模型 + 场景背景屏。
   `loader.unloadAndStop` 的 `hasOwnProperty` 鸭子判在 openfl 上恒 false
   （`Reflect.hasField` 只见物理字段不见方法，openfl Loader 其实有该方法）——
   远程 swf 已本地化，该释放路径不可达，PORT-NOTE 在位。
+- **装饰 swf 是数据驱动入库项**：uid=1 的 decorative（快照
+  initialized.sql:5718）逐槽 `idToDiyUrl2(itemId)` 成
+  `module/ui/farm/diy/{1,2,3,4}.swf` 再组装载——四个库都要在
+  libraries.xml/legacy-assets.txt 里（#8 attempt 1/2 漏了 2/3/4，CI 三条
+  404）。见 [assets.md](assets.md) 的逐项入库义务。
 - `BackgroundController`（← BackgroundController.as 172 行）：StartupData
   装饰下发进模型；`MSG_ENTER_PREVIEW`→`changeDecor` 快照 + PreviewDiyWindow；
   `finalize` **只清 m_model 不调 super**（基类那份会连 m_view/m_module 一起

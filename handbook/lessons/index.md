@@ -115,3 +115,17 @@
   nodeboot 照样就绪（启动不查这两层），差一点带着显示结构回归收工。
   防：动过「先加后删」代码的文件，收工前 `git diff HEAD` 逐 hunk 问一遍
   「这个改动对应 legacy 哪一行」，对不上的还原。
+- **就绪标记绿 ≠ 启动窗口干净，404 不炸 JS**：库加载 404 只走
+  `onError` 分支，`__openflFarmReady` 照样置位——attempt 1/2 的 node 冒烟
+  报「无 TypeError」收工，CI web-smoke 却连挂两轮（三条
+  `console.error: Failed to load resource: 404`）。漏检的另一半是
+  nodeboot 的 Image shim 对任意 src 发 load、不核文件存在。防：
+  nodeboot 现在把服务器 404 与 Image src 缺失都计数、就绪后再跑 settle
+  窗口、缺失即退 1（与 CI 的 console.error 判据对齐）；库里加载链改动
+  后看的就是它，不是「有无报错」。排查 `/N?数字` 404 的正路：XHR 打栈
+  （nodeboot 里包一层 `new Error().stack`）→ 帧指到
+  `AssetManifest.loadFromFile` = 未声明库，库名即 URL 尾段，按数据链
+  （decorative→item_info→assets→diy/N.swf）找回出处入库。
+  attempt 2 曾把 `/N?数字` 误记成「原版 QQ 统计信标，可容忍」写进
+  startup.md——错误结论进了 handbook 会把下一轮也带沟里，改代码依据
+  前先核 handbook 结论怎么来的。

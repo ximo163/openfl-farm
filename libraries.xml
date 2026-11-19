@@ -60,4 +60,15 @@
     <library path="assets/legacy/source/core/module/ui/allcrops/Crop_6_3.swf" id="Crop_6_3" />
     <library path="assets/legacy/source/core/module/ui/allcrops/Crop_6_4.swf" id="Crop_6_4" />
 
+    <!-- V3b 场景装饰（issue #8）：BackgroundModel.setDecors 按 user_run items
+         （DB decorative 列）逐槽 idToDiyUrl2 → module/ui/farm/diy/<itemId>.swf，
+         BackgroundScreen.setDIYUrl 经 RSLLoader 组加载（LocalSwfLoader 按文件名
+         映射库名，id 即数字文件名）。快照 uid=1 的 decorative（initialized.sql:5718
+         uchome_qqfarm_nc）为 1..4 各取自身：房子=2、栅栏=3、狗屋=4（背景=1 已在
+         上 V2 注册）。不 preload：原版为运行期网络加载。与
+         assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/farm/diy/2.swf" id="2" />
+    <library path="assets/legacy/source/core/module/ui/farm/diy/3.swf" id="3" />
+    <library path="assets/legacy/source/core/module/ui/farm/diy/4.swf" id="4" />
+
 </project>

@@ -46,3 +46,12 @@ source/core/module/ui/allcrops/Crop_6_1.swf
 source/core/module/ui/allcrops/Crop_6_2.swf
 source/core/module/ui/allcrops/Crop_6_3.swf
 source/core/module/ui/allcrops/Crop_6_4.swf
+# V3b 场景装饰（issue #8）：BackgroundModel.setDecors 按 user_run 的 items
+# （DB decorative 列）逐槽 idToDiyUrl2 → module/ui/farm/diy/<itemId>.swf，
+# BackgroundScreen.setDIYUrl 组加载。快照 uid=1 的 decorative 为
+# {"1":{"itemId":1},...,"4":{"itemId":4}}（initialized.sql:5718
+# uchome_qqfarm_nc 行）：背景=1（V2 已入库）、房子=2、栅栏=3、狗屋=4——
+# 缺库时 html5 运行期对未声明库 404（CI web-smoke 三条 console.error 的来源）：
+source/core/module/ui/farm/diy/2.swf
+source/core/module/ui/farm/diy/3.swf
+source/core/module/ui/farm/diy/4.swf

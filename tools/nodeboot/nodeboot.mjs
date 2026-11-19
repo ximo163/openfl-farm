@@ -12,7 +12,10 @@
 //
 // 用法：node tools/nodeboot/nodeboot.mjs
 // 选项：--timeout <秒>（默认 30，到点仍未 __openflFarmReady 就把已收的
-//  console.error/未捕获异常打出来退 1）；--keep 退出前不关 8123 端口。
+//  console.error/未捕获异常打出来退 1）；--settle <秒>（默认 3，就绪后继续
+//  跑的窗口，模拟 CI web-smoke 的 500ms 渲染等待 + 尾部异步回调）；
+//  --keep 退出前不关 8123 端口。退出码 1 的三种来源：就绪超时、未捕获异常、
+//  缺失资源（服务器 404 / Image src 文件不存在——CI 里对应 console.error）。
 // 排障时可临时在 src/ 加 trace()（html5 的 trace 进 console.log，本工具透传），
 // 看完即撤。
 
@@ -70,6 +73,10 @@ const myncBody = await readFile(join(HERE, "fixtures/mync-user-run.json"), "utf8
 const xmlBodies = await renderXmls();
 
 // ---------------------------------------------------------------- 静态+php 服务
+// missing：本进程发现的所有缺失资源（服务器 404 + Image src 不存在）。
+// 与 CI web-smoke 的失败条件对齐（console.error 任一条即 FAIL），就绪后
+// settle 窗口内新增的也计入，非零退出。
+const missing = [];
 const server = createServer(async (req, res) => {
   const u = new URL(req.url, `http://127.0.0.1:${PORT}`);
   const path = decodeURIComponent(u.pathname);
@@ -94,6 +101,7 @@ const server = createServer(async (req, res) => {
     const file = join(BIN, path.replace(/^([\\/])+/, ""));
     if (!file.startsWith(BIN) || !existsSync(file) || statSync(file).isDirectory()) {
       console.log(`[nodeboot] 404：${req.url}`);
+      missing.push(`404 ${req.url}`);
       res.writeHead(404); res.end(); return;
     }
     const ext = file.slice(file.lastIndexOf(".")).toLowerCase();
@@ -276,8 +284,10 @@ watchdog.unref?.();
 globalThis.HTMLCanvasElement = CanvasElement;
 globalThis.HTMLDivElement = Element;
 globalThis.HTMLElement = Element;
-// Image：lime 的位图加载用 addEventListener("load"/"error") + 属性直读，
-// 任意 src 异步触发 load（nodeboot 不解码真像素）
+// Image：lime 的位图加载用 addEventListener("load"/"error") + 属性直读。
+// nodeboot 不解码真像素，但必须核 src 对应文件在 export/html5/bin 里真实存在
+// 再发 load——否则缺图在本地永远静默（浏览器里是 console.error 404，
+// CI web-smoke 挂在这上面两轮而 nodeboot 一直绿，2026-11-19 issue #8 教训）。
 class ImageShim {
   constructor() {
     this.width = 0; this.height = 0;
@@ -286,7 +296,23 @@ class ImageShim {
   addEventListener(t, f) { (this._listeners[t] ||= []).push(f); }
   removeEventListener(t, f) { const l = this._listeners[t] || []; const i = l.indexOf(f); if (i >= 0) l.splice(i, 1); }
   _fire(t) { const ev = { type: t, target: this }; const h = this["on" + t]; if (h) h(ev); for (const f of this._listeners[t] || []) f(ev); }
-  set src(v) { setTimeout(() => this._fire("load"), 1); }
+  set src(v) {
+    this._src = v;
+    let bad = false;
+    try {
+      const u = new URL(v, globalThis.location.href);
+      if (u.protocol === "http:" || u.protocol === "https:") {
+        const p = decodeURIComponent(u.pathname).replace(/^([\\/])+/, "");
+        if (!existsSync(join(BIN, p))) bad = true;
+      }
+    } catch { /* blob:/data: 等非文件 src 不核 */ }
+    if (bad) {
+      console.log(`[nodeboot] image 404：${v}`);
+      missing.push(`image 404 ${v}`);
+    }
+    // 照旧发 load（nodeboot 不模拟加载失败的错误路径，只负责让缺失可见）
+    setTimeout(() => this._fire("load"), 1);
+  }
   get src() { return this._src || ""; }
 }
 globalThis.Image = ImageShim;
@@ -340,11 +366,26 @@ if (!lime || !lime.embed) {
 }
 lime.embed("OpenflFarm", "openfl-content", 860, 500, { parameters: {} });
 
-// 就绪轮询：Main.hx 首帧设 __openflFarmReady（与 harness/smoke.mjs 同一标记）
+// 就绪轮询：Main.hx 首帧设 __openflFarmReady（与 harness/smoke.mjs 同一标记）。
+// 就绪后不立即退：CI web-smoke 会再等 500ms 让画面渲染，启动尾部的异步加载
+// （装饰库 COMPLETE 回调、位图 decode）都发生在就绪标记之后——本工具同样
+// 留一个 settle 窗口再收尾，窗口内冒出的缺失资源/异常计入退出码。
+const settleMs = (Number(args[args.indexOf("--settle") + 1]) || 3) * 1000;
+let readyAt = 0;
 const poll = setInterval(() => {
-  if (globalThis.__openflFarmReady) {
-    console.log("[nodeboot] 就绪：__openflFarmReady 已置位");
+  if (!globalThis.__openflFarmReady) return;
+  if (!readyAt) {
+    readyAt = Date.now();
+    clearTimeout(watchdog);
+    console.log(`[nodeboot] 就绪：__openflFarmReady 已置位（settle ${settleMs / 1000}s）`);
+  }
+  if (Date.now() - readyAt >= settleMs) {
     clearInterval(poll);
+    if (missing.length) {
+      for (const m of missing) console.log(`[nodeboot] 缺失资源 ${m}`);
+      console.log(`[nodeboot] FAIL：${missing.length} 个缺失资源`);
+      finish(1);
+    }
     finish(0);
   }
 }, 250);

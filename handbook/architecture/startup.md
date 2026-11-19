@@ -37,11 +37,21 @@
 
 ## 本地无浏览器验证启动链（nodeboot）
 
-`node tools/nodeboot/nodeboot.mjs [--timeout 45]`：node 里垫 DOM/Canvas/XHR
-拉起 `export/html5/bin`，`render_xml.php` 仿 xml.php、
+`node tools/nodeboot/nodeboot.mjs [--timeout 45] [--settle 3]`：node 里垫
+DOM/Canvas/XHR 拉起 `export/html5/bin`，`render_xml.php` 仿 xml.php、
 `fixtures/mync-user-run.json` 仿 mync 用户数据，等 `__openflFarmReady`
-（**与 CI `harness/smoke.mjs` 同一就绪标记**）后退出 0。CI web-smoke 红了
-先在本地跑它看完整 trace，别盲猜。干净基线：8 次 `[CmdLoadFile]`、无
-`SymbolClass:` 留痕、无报错；`/N?数字` 的 404 是原版 QQ 统计信标（游戏自己
-容忍），字体 WARNING（Arial/微软雅黑）是 openfl 嵌字缺失、只影响动态文本
-度量，就绪标记不受影响。
+（**与 CI `harness/smoke.mjs` 同一就绪标记**）。就绪后**不立即退**，再跑
+`--settle` 秒（模拟 CI 的 500ms 渲染等待 + 尾部异步回调）才收尾。退出码 1
+的三种来源：就绪超时、未捕获异常、**缺失资源**——服务器 404 与 Image src
+文件不存在都计数（CI web-smoke 挂在 console.error，本地与之对齐；就绪
+前 404 走的是库加载 onError 分支，就绪标记照样置位，不看缺失资源就会
+漏报，#8 两轮 CI 即如此）。CI web-smoke 红了先在本地跑它看完整 trace，
+别盲猜。干净基线：8 次 `[CmdLoadFile]`、无 `SymbolClass:` 留痕、无报错、
+零 `[nodeboot] 404/image 404`；字体 WARNING（Arial/微软雅黑）是 openfl
+嵌字缺失、只影响动态文本度量，就绪标记不受影响。
+`/N?数字` 形态的 404 **是未声明库**：`Assets.loadLibrary("<id>")` 对不在
+libraries.xml 里的 id 落到 AssetManifest 兜底加载 `/<id>?<random>`（id 即
+LocalSwfLoader 按 URL 尾段映射出的库名）——见到它先按 #8 的数据链
+（decorative → idToDiyUrl2 → module/ui/farm/diy/N.swf）找出该 id 的 URL
+和出处，入库修掉，不是可以忽略的统计信标（attempt 2 曾误判为 QQ 统计
+信标而漏掉，attempt 3 用 XHR 栈实锤是 AssetManifest.loadFromFile）。

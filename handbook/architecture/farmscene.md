@@ -143,6 +143,14 @@ addButton` 是 no-op。做窗口片（V3c）时把它们替换成真翻译，stu
 101-121）。`BaseWindow.m_msgCenter` 是原版真成员（BaseWindow.as:15），
 不要当 stub 产物删掉。
 
+**stub 的类形态也要逐字保真**（#8 implement 驳回轮的教训）：构造器签名、
+默认参数值、成对出现的成员都要照原文——即使本片没有任何调用方也不省：
+Panel 构造器默认值是 `"Panel"` 不是 `"Window"`（后者是 TitleWindow 的）、
+Button 构造器带 `(String="Button", Function=null)`。一句话半的成员直接
+真实现并保持成对对称：AllianceActivityManager 的 register/retriveAppHelper
+都真走 `_appHelpersMap`（register 写表、retrive 恒 null 的半真半 stub
+写出「注册了却取不回」）。
+
 ## 测试口径
 
 `test/module/mainScene/`：只测纯逻辑（OperationQueue 合批/合并、

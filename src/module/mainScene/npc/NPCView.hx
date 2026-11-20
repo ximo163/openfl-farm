@@ -307,7 +307,10 @@ class NPCView extends Sprite {
 	// NPCView.as:308-315（onNPCOver）
 	private function onNPCOver(param1:MouseEvent):Void {
 		this.controller.useSystemCursor(true);
-		if (this._activityNPCData != null && Reflect.hasField(this._activityNPCData, "tip")) {
+		// NPCView.as:311（`["tip"] != undefined` → hasField + field != null 双查，
+		// 同文件 :143 bubble 同款；AS3 null == undefined，值 null 也不显示）
+		if (this._activityNPCData != null && Reflect.hasField(this._activityNPCData, "tip")
+			&& Reflect.field(this._activityNPCData, "tip") != null) {
 			this.controller.showTip(Consts.TIP_NAME_MOUSE, Reflect.field(this._activityNPCData, "tip"));
 		}
 	}

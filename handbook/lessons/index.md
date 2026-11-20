@@ -64,6 +64,11 @@
   （NPCView bubble、FarmLandsView healthMode/gold、FarmLandController
   direction/error/place）。防：全局搜单独出现的 `Reflect.hasField(` 核对
   有没有漏半守卫。
+  **这条防法上轮没搜干净**：implement 驳回轮又补了三处同型——NPCView tip
+  （:311）、NPCModel hours（:46）、FarmLandController dogTip 的 tipText/txt
+  （:726/:730，值 null 时不止行为差、直接 NPE）。核对时 `hasOwnProperty`
+  和 `!= undefined` 要分开：前者单 hasField 就是完整等价（FarmLandModel
+  pest/weed/exp 等多处），别一刀切全配对。
 - **swf 帧脚本在本地化库处理时被丢弃（scriptSource 导出为空串）**：
   MaoPaoFlag 的 frame1 `infoTxt.text = talkInfo` 不再执行——气泡文本缺失是
   既知视觉偏差（deviations 候选）。防：涉及符号内嵌脚本的显示行为，先看
@@ -190,3 +195,11 @@
   `board_1`，CropLifecycleLibrariesTest 钉「看板与背景映射必须不同库名」。
   防：新入库的 module swf 文件名先查是否与既有条目撞名；撞了就目录前缀
   消歧 + 断言，别等画面门禁。
+- **stub 的类形态保真是审查条款，不是「没人调用就能省」**（implement
+  驳回轮 4 点里的 3 点）：Panel 构造器默认值写成 `"Window"`（原文
+  `"Panel"`，TitleWindow 的才是 `"Window"`）、Button 构造器整个签名没写
+  （原文 `(String="Button", Function=null)`）、AllianceActivityManager
+  register 真写表而 retrive 恒 null（半真半 stub 不对称，写出「注册了
+  却取不回」）——当时都以「本片无调用方/无行为影响」为由省掉，全被驳。
+  防：stub 只免**方法体**，构造器签名/默认值/字段表/成对成员照原文抄；
+  一两行的成员直接真实现，别留半截。

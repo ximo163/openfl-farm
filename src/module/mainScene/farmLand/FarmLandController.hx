@@ -641,9 +641,11 @@ class FarmLandController extends Controller {
 			dogTip.mouseChildren = false;
 			dogTip.mouseEnabled = false;
 			dogTip.cacheAsBitmp = true;
-			if (Reflect.hasField(dogTip, "tipText")) {
+			// `["tipText"] != undefined` → hasField + field != null 双查
+			// （AS3 null == undefined；值 null 时原文跳过，不配会 NPE）
+			if (Reflect.hasField(dogTip, "tipText") && Reflect.field(dogTip, "tipText") != null) {
 				Reflect.field(dogTip, "tipText").htmlText = text;
-			} else if (Reflect.hasField(dogTip, "txt")) {
+			} else if (Reflect.hasField(dogTip, "txt") && Reflect.field(dogTip, "txt") != null) {
 				Reflect.field(dogTip, "txt").htmlText = text;
 			}
 			PopUpManager.addPopUp(dogTip);

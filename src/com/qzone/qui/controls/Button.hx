@@ -12,7 +12,9 @@ import openfl.display.Sprite;
  */
 @:keep
 class Button extends Sprite {
-	public function new() {
+	// Button.as:33（ctor 签名；super(param1,param2) 的 Label 链随 qui 片，
+	// 皮肤/格式装配同理。Function → Dynamic）
+	public function new(param1:String = "Button", param2:Dynamic = null) {
 		super();
 	}
 }

@@ -16,7 +16,7 @@ class Panel extends Sprite {
 	private var _title:String;
 
 	// Panel.as:46-53（ctor 形态；panelTitle 皮肤装配随 qui 片）
-	public function new(param1:String = "Window", param2:Int = 300, param3:Int = 200) {
+	public function new(param1:String = "Panel", param2:Int = 300, param3:Int = 200) {
 		super();
 		this._title = param1;
 	}

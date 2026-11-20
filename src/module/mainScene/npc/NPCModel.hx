@@ -47,7 +47,10 @@ class NPCModel extends EventDispatcher {
 		if (_loc2_ != null) {
 			// parseInt(hours) <= 0：As3.parseInt 复刻前缀整数段截断（"0.5"→0，
 			// floatOf 会得 0.5），无数字 NaN、NaN 比较为假
-			if (Reflect.hasField(_loc2_, "hours") && As3.parseInt(Reflect.field(_loc2_, "hours")) <= 0) {
+			// `["hours"] != undefined` → hasField + field != null 双查（AS3
+			// null == undefined，值 null 也不进）
+			if (Reflect.hasField(_loc2_, "hours") && Reflect.field(_loc2_, "hours") != null
+				&& As3.parseInt(Reflect.field(_loc2_, "hours")) <= 0) {
 				if (this.m_dog != null) {
 					this.m_dog._isHungry = 1;
 					// 原版这里有一行孤立表达式 Session.getInstance().m_isDogHungry;

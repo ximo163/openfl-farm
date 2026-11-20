@@ -69,7 +69,10 @@ class SymbolClass {
 				com.qzone.ui.Wasteland,
 				CursorFishNet, CursorFishNetAll,
 				Crop_1_0, Crop_1_6, Crop_2_1, Crop_2_2, Crop_2_3,
-				Insect, Weed, Reclaim, CanPickIcon
+				Insect, Weed, Reclaim, CanPickIcon,
+				ItemLoading,
+				PackBarBg,
+				ToolBarBg
 			];
 		}
 #end

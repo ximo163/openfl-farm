@@ -21,9 +21,12 @@ import utest.Assert;
  *
  * 链路组装按 :179-181：controller.module.app.farmView.cursorCtrl——FarmStage
  * 建层光标注册走真资源，这里手动注入 CursorControl（ctor 只建空注册表）。
- * eval 无资源，addTools 的取素材恒 null，只断言状态机本身。FarmApplication
- * 空构造安全（#8 GetCropID.theApp 先例）。Session 全局单例，用例自行钉
- * m_lockFishMouse 初值。
+ * 整类翻译后 ctor 建全工具 UI：eval 无素材，initRedUpBtn（ToolBar.as:219）
+ * 对 null 素材不加守卫、addChild(null) 与原版缺素材同抛 #2007——状态机用例
+ * 改按 FarmLiteTest/ConfigMergerTest 先例用 Type.createEmptyInstance 绕过
+ * ctor、注入 setCursor/onKeyUp 读到的唯一字段 _controller（:179）。
+ * FarmApplication 空构造安全（#8 GetCropID.theApp 先例）。Session 全局
+ * 单例，用例自行钉 m_lockFishMouse 初值。
  */
 @:access(module.uitools.widgets.ToolBar)
 @:access(module.FarmStage)
@@ -37,7 +40,10 @@ class ToolBarTest {
 		var ctrl = new CursorControl(new FakeMsgCenter());
 		stage.m_cursorCtrl = ctrl;
 		var controller = new UIController(new ModuleUITools(app));
-		return {tb: new ToolBar(controller), ctrl: ctrl};
+		// ctor 缺素材抛 #2007（见上），空实例只驱动状态机
+		var tb = Type.createEmptyInstance(ToolBar);
+		tb._controller = controller;
+		return {tb: tb, ctrl: ctrl};
 	}
 
 	function keyUp(keyCode:Int):KeyboardEvent {

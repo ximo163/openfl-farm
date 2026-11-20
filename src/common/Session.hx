@@ -3,8 +3,10 @@ package common;
 import common.misc.Cookies;
 import entities.Dog;
 import entities.Player;
+import events.CommonEvent;
 import module.FarmApplication;
 import openfl.errors.ArgumentError;
+import shim.As3;
 
 /**
  * common.Session —— 闭包 stub（issue #7，后续模块翻译，stub 同 module/Main 先例）。
@@ -173,6 +175,17 @@ class Session {
 	// Session.as:46（public var m_isDogHungry:Boolean = false）
 	public var m_isDogHungry:Bool = false;
 
+	// Session.as:30（issue #9：UIToolsModel.onEverydayGiftAccepted 读写）
+	public var isVipReturn:Bool = false;
+
+	// Session.as:18（issue #9：NavigationBar.onAddedToStage 置位——非 QPLUS/WB
+	// 宿主下餐厅/加工坊按钮开放；ctor :75 初始化 false）
+	public var m_millOpen:Bool = false;
+
+	// Session.as:56（issue #9：ToolBar.refresh 读水池开放态决定渔网工具入列；
+	// ctor :76 初始化 false）
+	public var m_waterPoolOpen:Bool = false;
+
 	// Session.as:50（public var m_welcomeMode:Boolean = false）
 	public var m_welcomeMode:Bool = false;
 
@@ -186,8 +199,73 @@ class Session {
 		Reflect.setField(m_friendsKey, Std.string(_loc2_._uId), param1);
 	}
 
-	// Session.as:185-（addReward(Array)：收获礼包入包；V3c 片翻译，stub 空实现）
-	public function addReward(param1:Array<Dynamic>):Void {}
+	// Session.as:185-263（issue #9 全量翻译：addReward(Array)：收获礼包按
+	// eType/type 分类派发——exp/money 直改宿主账户，dog/dogfood 触发用户
+	// 切换+装饰重装（dogfood 另发 DATA_DOG_CHANGED 假狗），工具/鱼食/鱼/武器
+	// → 背包重装，装饰 → 装饰重装，种子/卡 → 背包+作物重装）
+	public function addReward(param1:Array<Dynamic>):Void {
+		var _loc9_:Dog = null;
+		if (param1 == null || param1.length == 0) {
+			return;
+		}
+		var _loc2_:Bool = false;
+		var _loc3_:Bool = false;
+		var _loc4_:Bool = false;
+		var _loc5_:Bool = false;
+		var _loc6_:String = null;
+		var _loc7_:Int = 0;
+		var _loc8_:Int = 0;
+		while (_loc8_ < param1.length) {
+			var item:Dynamic = param1[_loc8_];
+			// AS3 `== undefined`：键缺位或值为 null 都算无
+			if (Reflect.field(item, "eType") == null && Reflect.field(item, "type") == null) {
+				continue;
+			}
+			// AS3 `||` 的字符串真值（""/null 让位后者）
+			_loc6_ = As3.or(Reflect.field(item, "eType"), Reflect.field(item, "type"));
+			if (Reflect.field(item, "eNum") != null) {
+				_loc7_ = As3.intOf(Reflect.field(item, "eNum"));
+			} else if (Reflect.field(item, "num") != null) {
+				_loc7_ = As3.intOf(Reflect.field(item, "num"));
+			}
+			switch (_loc6_) {
+				case Consts.ITEM_TYPE_EXP:
+					this.updateHostAccount(0, _loc7_, 0);
+				case Consts.ITEM_TYPE_MONEY:
+					this.updateHostAccount(_loc7_, 0, 0);
+				case Consts.ITEM_TYPE_DOG:
+					this.app.dispatchEvent(new CommonEvent(Consts.MSG_SWITCH_USER, null));
+					this.app.dispatchEvent(new CommonEvent(Consts.DATA_DECORATE_RELOAD_FLAG, null));
+				case Consts.ITEM_TYPE_DOGFOOD:
+					_loc9_ = new Dog(null);
+					_loc9_._dogId = -1;
+					_loc9_._isHungry = 0;
+					this.m_isDogHungry = false;
+					this.m_app.dispatchEvent(new CommonEvent(Consts.DATA_DOG_CHANGED, _loc9_));
+					this.app.dispatchEvent(new CommonEvent(Consts.MSG_SWITCH_USER, null));
+					this.app.dispatchEvent(new CommonEvent(Consts.DATA_DECORATE_RELOAD_FLAG, null));
+				case Consts.ITEM_TYPE_TOOL, Consts.ITEM_TYPE_FISHFEED, Consts.ITEM_TYPE_FISH, Consts.ITEM_TYPE_WEAPON:
+					_loc2_ = true;
+				case Consts.ITEM_TYPE_DECORATE:
+					_loc3_ = true;
+				case Consts.ITEM_TYPE_SEED:
+					_loc4_ = true;
+				case Consts.ITEM_TYPE_CARD:
+					_loc5_ = true;
+				default:
+			}
+			_loc8_++;
+		}
+		if (_loc2_ == true || _loc4_ == true || _loc5_ == true) {
+			this.m_app.dispatchEvent(new CommonEvent(Consts.DATA_BAG_RELOAD_FLAG, null));
+		}
+		if (_loc3_ == true) {
+			this.m_app.dispatchEvent(new CommonEvent(Consts.DATA_DECORATE_RELOAD_FLAG, null));
+		}
+		if (_loc4_ == true || _loc5_ == true) {
+			this.m_app.dispatchEvent(new CommonEvent(Consts.DATA_CROP_RELOAD_FLAG, null));
+		}
+	}
 
 	// Session.as:360-（updateHostAccount(money,exp,...)：宿主账户数值同步；
 	// V3b 片翻译，stub 空实现——单测里钱/经验断言不经过它）

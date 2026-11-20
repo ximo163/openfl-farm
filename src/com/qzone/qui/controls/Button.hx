@@ -1,20 +1,22 @@
 package com.qzone.qui.controls;
 
-import openfl.display.Sprite;
-
 /**
- * com.qzone.qui.controls.Button —— V3b 闭包 stub（issue #8）。qui 按钮
- * （Button.as 202 loc > 100，闭包规则走 stub，qui 组件片翻译）。原版继承
- * Label（Label.as 179 loc 同走 stub 链，随 qui 片接入）；stub 以 Sprite 垫底。
- * 本片只有 AddButtonWindow.addButton 的返回类型引用（PreviewDiyWindow 不用
- * 返回值）；皮肤/文本/点按态随 qui 片接入。
+ * com.qzone.qui.controls.Button —— 签名 stub（issue #9 qui 子集片重定基：
+ * 原版 extends Label，Label 本片已全量翻译，stub 从 Sprite 垫底改为继承
+ * 真基类）。Button.as 202 loc > 100 且不在本片清单，点按/换肤状态机随后续
+ * 模块翻译；本片 LevelAndExperience 只触碰 ctor + defaultSkin/text/
+ * width/height/x/y，defaultSkin 字段照原版声明保留（ctor 里的
+ * ButtonDefaultSkin 装配随皮肤片接入）。
  * legacy/decompiled/main3_v_221/scripts/com/qzone/qui/controls/Button.as
  */
 @:keep
-class Button extends Sprite {
-	// Button.as:33（ctor 签名；super(param1,param2) 的 Label 链随 qui 片，
-	// 皮肤/格式装配同理。Function → Dynamic）
+class Button extends Label {
+	// Button.as:27（LevelAndExperience 置换 ButtonOrange 用）
+	public var defaultSkin:Class<Dynamic>;
+
+	// Button.as:33-46（ctor 签名；super(param1,param2) 链照原版，
+	// Function → Dynamic；皮肤/格式装配随 qui 组件片）
 	public function new(param1:String = "Button", param2:Dynamic = null) {
-		super();
+		super(param1, param2);
 	}
 }

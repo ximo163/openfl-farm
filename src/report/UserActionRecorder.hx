@@ -19,10 +19,28 @@ class UserActionRecorder {
 	public static final HF_TOOL_HOOK_CLICKED:String = "10";
 	public static final HF_TOOL_PESTICIDE_CLICKED:String = "11";
 	public static final HF_TOOL_WILD_CLICKED:String = "14";
+	// UserActionRecorder.as:40/:42（issue #9：收获手/一键摘取上报）
+	public static final HF_TOOL_HAND_CLICKED:String = "18";
+	public static final HF_TOOL_ONECLICK_CLICKED:String = "19";
 	// UserActionRecorder.as:92/:94/:96（V3b：NPCView 点牧场/看板/狗盆上报）
 	public static final HF_TO_PASTURE_CLICKED:String = "10300";
 	public static final HF_BILLBOARD_CLICKED:String = "10301";
 	public static final HF_DOGBOWL_CLICKED:String = "10302";
+	// UserActionRecorder.as:64/:72/:74/:76（issue #9：导航条按钮上报）
+	public static final HF_MYFARM_CLICKED:String = "42";
+	public static final HF_WAREHOUSE_CLICKED:String = "46";
+	public static final HF_SHOP_CLICKED:String = "47";
+	public static final HF_DECORATE_CLICKED:String = "48";
+	// UserActionRecorder.as:66/:68/:70（issue #9：牧场/餐厅/加工坊跳转上报）
+	public static final HF_MYPASTURE_CLICKED:String = "43";
+	public static final HF_MYRESTAURANT_CLICKED:String = "44";
+	public static final HF_MYMILL_CLICKED:String = "45";
+	// UserActionRecorder.as:78/:82/:84（issue #9：左侧工具条消息/公告/签到上报）
+	public static final HF_SHORTCUTBAR_INFO_CLICKED:String = "50";
+	public static final HF_SHORTCUTBAR_POST_CLICKED:String = "54";
+	public static final HF_SHORTCUTBAR_CARDS_CLICKED:String = "55";
+	// UserActionRecorder.as:60（issue #9：个人信息区头像点击上报）
+	public static final HF_PERSONINFO_OPEN:String = "30";
 
 	public function new() {}
 

@@ -105,6 +105,31 @@ class BeastAPI extends EventDispatcher {
 		return param1;
 	}
 
+	// BeastAPI.as:61（issue #9：UIController 挂工具条为野兽背包容器）
+	private var _beastPackContainer:DisplayObjectContainer;
+
+	// BeastAPI.as:296-298/:386-388
+	public var beastPackContainer(get, set):DisplayObjectContainer;
+
+	private function get_beastPackContainer():DisplayObjectContainer {
+		return this._beastPackContainer;
+	}
+
+	private function set_beastPackContainer(param1:DisplayObjectContainer):DisplayObjectContainer {
+		this._beastPackContainer = param1;
+		return param1;
+	}
+
+	// BeastAPI.as:137（hideBeastPack：收起野兽背包 UI，牧场片接入时翻译）
+	public function hideBeastPack():Void {}
+
+	// BeastAPI.as（showBeastPack：展开野兽背包 UI，ToolBar 工具箱/野兽按钮
+	// 调用，牧场片接入时翻译）
+	public function showBeastPack():Void {}
+
+	// BeastAPI.as:561（showFarmStage：从牧场切回农场场景，牧场片接入时翻译）
+	public function showFarmStage():Void {}
+
 	// BeastAPI.as（registerEventListeners：挂牧场相关全局监听，牧场片翻译）
 	public function registerEventListeners():Void {}
 }

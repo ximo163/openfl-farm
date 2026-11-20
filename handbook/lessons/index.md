@@ -203,3 +203,45 @@
   却取不回」）——当时都以「本片无调用方/无行为影响」为由省掉，全被驳。
   防：stub 只免**方法体**，构造器签名/默认值/字段表/成对成员照原文抄；
   一两行的成员直接真实现，别留半截。
+
+## 2026-11 · #9（工具区 uitools）
+
+- **大写开头的包段在 Haxe 里 import 不到**：`module.mainScene.npc.
+  MonthEnd`（MonthEndWin 的包）任一引用形态全编译红——Haxe 把大写开头
+  的 dot-path 段解析成**模块名**而非包段（`.*` 通配同样失败）。备选
+  「MonthEnd.hx 模块文件装类」能编但腐蚀规范类型名（掉包段）。修法：
+  目录改小写 `monthend`，类名/文件名不动（ShortcutBar 案例）。
+  防：AS3→Haxe 建包先查有没有大写开头段，有就整段小写并在类头标
+  PORT-NOTE。
+- **Haxe 属性覆写只能覆 accessor，不能扩 accessor 也不能重声明**：
+  基类 `(get,never)` 想在子类变 `(get,set)`——编译红「Invalid
+  accessor」；子类 `override public var x(get,set)` 重声明——同样红。
+  正确形态：属性声明**只在基类一次**、accessor kind 按子类需要取宽
+  （基类挂 no-op set 垫底 + PORT-NOTE），子类只 `override` get_/set_
+  函数，虚派发接管（ScrollBase.content → Container 案例，probe 验证）。
+- **Haxe private 子类可见，原版「子类直写父类私有字段」照抄**：
+  ShortcutBar 写 `direction = Direction.HORIZONTAL`（Box 私有）、
+  `_vScrollPolicy = ScrollPolicy.OFF`（ScrollBase 私有）——别顺手补
+  public，改可见性才是偏差。
+- **AS3 `x != obj["k"]` 的 diff 比较侧不能先收敛**：updateOfflineStatus
+  原文比较侧是裸 `param1["b"]`（int vs undefined：0 != undefined 成立，
+  **缺键算变化**）、赋值侧才 `as int`。先 `As3.intOf` 再比会把缺键
+  折成 0 != 0、吞掉整次派发（write-tests 的用例逮住：expected 1 实得
+  0）。防：全局搜 `intOf(Reflect.field` 核对它只出现在赋值侧；
+  FarmLandModel.hx:1172 的裸比形态是标准写法。
+- **`Math.NaN` 不是合法默认参**：Haxe 默认参要字面量常量。NaN 语义写
+  `Null<Float> = null` + ctor 里 `== null ? Math.NaN : x` 归一
+  （ScrollEvent ctor，原文 `Number = NaN`）。
+- **openfl 与 flash 的 API 有缺位/挪位**：`IOErrorEvent.NETWORK_ERROR`
+  在 openfl 被注释（AIR-only）——按 AS3 常量值字面量 `"networkError"`
+  注册；`BitmapFilter` 在 `openfl.filters` 不在 display（UIController
+  import 修正）。防：flash.* → openfl.* 不是纯前缀替换，编译红先查
+  openfl 源（`/usr/local/lib/haxelib/openfl/9,5,2`）。
+- **根目录符号 shim 要显式 `import shim.SymbolClass`**：根包类（ToolBarBg/
+  PackBarBg）不像 `package xxx` 类那样能裸解析 shim 包——首编报
+  Unknown identifier。ItemLoading/ToolBarBg/PackBarBg 三件同模式。
+- **忠实 ctor 在 eval 会因素材抛 #2007，纯状态机测试走
+  `Type.createEmptyInstance`**：ToolBar 的 ctor new 素材会 addChild
+  null（eval 立抛），但 setCursor/onKeyUp 是纯逻辑——空实例 + 手工钉
+  字段驱动（ToolBarTest 先例）。别为测试改 ctor。
+

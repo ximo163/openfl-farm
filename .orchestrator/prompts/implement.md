@@ -20,6 +20,11 @@
 - 只读需要的部分：先 `rg -n` 找名字，再读附近的行。
 - 验证命令只有：`haxelib run openfl build html5`、`haxe test.hxml`。不要尝试
   `openfl build android`（容器里没有 SDK/NDK），不要安装任何大型工具。
+- CI（GitHub 的 web-build/web-smoke）反馈是**基建类失败**时——apt/包下载
+  超时、HTTP 429、connection timed out/refused 这类网络错误，且失败步骤与
+  源码无关（装 haxe、装浏览器、依赖解析之类）——不要改代码硬修：说明
+  「CI 基建抖动，代码未动」结束本轮，重试会重跑 CI。只有失败指向编译错误、
+  测试断言、页面异常时才改代码。
 - 新增 haxelib 依赖一律 BLOCKED，不自己加。
 - **handbook 边实现边补**：翻译了新子系统、或本次改动让某子系统的结构/约定
   变了，同一个改动里建好/更新 `handbook/` 对应页面和 `handbook/index.md`

@@ -40,7 +40,10 @@ generated:
 
 budget:
   max_runs: 30
-  max_time: 8h
+  # 12h（2026-11-20 从 8h 调）：#8（V3b 视图层片）8h3m 撞墙，停在 review
+  # round 3 驳回后的收敛尾巴上——剩余工作是补 handbook 节这个量级。视图层
+  # 片（web-smoke 崩溃排查 + 测试往返）一轮就是这个量级，#9/#10 同类。
+  max_time: 12h
 max_jumps: 3
 
 suites:
@@ -111,6 +114,12 @@ stages:
     kind: review
     model: judge
     prompt: prompts/review-impl.md
+    # 和 implement 的 verify + CI 等待并行（#224）：implement 一 push 审核就
+    # 开跑，省掉 CI 等 6-7 分钟的串行干等（#7 终轮实测 CI 6m41s + 审核 3m13s
+    # 纯串行）。代价：CI 红时这轮审核作废（token 照花、不算驳回）——json 控
+    # 制字符/库漏报这两类高频 CI 红已有 json-facade 和启动库门禁拦在容器里，
+    # 剩余风险主要是 web-smoke 的渲染问题，绿面大。
+    during_verify: true
     # 200：#3 的 review-impl 实测 105/120 调用（87% 水位）审 6.8k 行 diff，
     # #7 起的模块 diff 更大，120 必撞 error_max_turns。
     max_turns: 200

@@ -6,6 +6,15 @@ name: android
 on:
   push:
     branches: [main]
+    # 纯配置/文档推送不跑 15-25 分钟的 NDK 构建（2026-11-19：yaml-only 提交
+    # 也在全量跑，白烧一遍还撞基建抖动）。混入代码改动的推送不受影响。
+    # 注意只在这里加：web.yml 挡着流水线的 required_checks，加了 ignore 后
+    # 「sync 合并只带来 handbook/.orchestrator」这类推送会触发 NoCIStarted
+    # 停人工（编排器 #199）。
+    paths-ignore:
+      - ".orchestrator/**"
+      - "handbook/**"
+      - "**.md"
   workflow_dispatch:
 
 permissions:
@@ -31,6 +40,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # GitHub runner 到 Ubuntu 镜像（azure.archive/security.ubuntu.com）有
+      # 瞬时抖动：connection timed out / select(11)（2026-11-19 实测红过两轮
+      # workflow）。apt 全局重试，覆盖本文件和子进程（playwright 等）的 apt。
+      - name: apt 重试配置
+        run: echo 'Acquire::Retries "5";' | sudo tee /etc/apt/apt.conf.d/80-retries
+
       - name: 安装 haxe
         run: |
           sudo apt-get update
@@ -40,6 +55,15 @@ jobs:
         with:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
+
+      # Gradle 依赖缓存：Maven Central 对 CI 突发流量会 429（2026-11-19 实测
+      # error_prone_annotations 拉不下来）。依赖组稳定，固定 key 永久复用；
+      # 换 gradle 插件版本时 bump key。
+      - name: 缓存 Gradle 依赖
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle
+          key: gradle-${{ runner.os }}-v1
 
       - name: 安装 Android SDK/NDK
         run: |

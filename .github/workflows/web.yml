@@ -27,6 +27,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # GitHub runner 到 Ubuntu 镜像的瞬时抖动（connection timed out / select(11)，
+      # 2026-11-19 实测红过）。apt 全局重试，覆盖子进程的 apt 调用。
+      - name: apt 重试配置
+        run: echo 'Acquire::Retries "5";' | sudo tee /etc/apt/apt.conf.d/80-retries
+
       - name: 安装 haxe
         run: |
           sudo apt-get update
@@ -79,6 +84,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      # 同 web-build：playwright --with-deps 内部的 apt 也要吃到重试配置。
+      - name: apt 重试配置
+        run: echo 'Acquire::Retries "5";' | sudo tee /etc/apt/apt.conf.d/80-retries
+
+      # Chromium 每次现拉 ~170MB（CDN 也抖）：按 playwright 版本缓存浏览器，
+      # 命中后 install 只补缺失件。package.json 换版本自动换 key。
+      - name: 缓存 Playwright 浏览器
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-chromium-${{ hashFiles('harness/package.json') }}
 
       - name: 安装无头浏览器
         working-directory: harness

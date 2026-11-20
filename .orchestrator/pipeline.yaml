@@ -135,8 +135,12 @@ stages:
     kind: merge
     method: squash
     exclude_from_limits: ["test/**", "handbook/"]
-    max_changed_lines: 8000
-    max_changed_files: 60
+    # 2026-11-20 从 8000/60 放宽到 20000/250（用户决定，为了无人值守连夜跑）：
+    # 模块切片 PR 实测 5-14k 计数行 / 89-181 计数文件（#7 12005/181、#8 89
+    # 文件），旧上限每片都停人工合并、夜里卡死。新值给 #9（qui 子集 + 飘字/
+    # 光标）留足余量，仍是失控保险丝——正常切片的三倍才会停下等人工。
+    max_changed_lines: 20000
+    max_changed_files: 250
     # 同模型审核放行（用户决定 2026-11-17）：单模型 API 下 distinct reviewer 永远
     # 过不了。审查仍是独立会话 + 独立 judge 提示词，靠「实现/审查不同提示词」防放水。
     require_distinct_reviewer: false

@@ -21,11 +21,23 @@
   **getCropByID 有 `theApp == null` 补判**（原版该状态 NPE、生产不可达——
   Main 启动先设置 theApp；单测进程不跑 Main，已过测试的期望就是「无 app
   数据 → null/-1」），属 deviations 候选，见 lessons #8 对应条目。纯逻辑
-  表驱动测试 `test/common/GetCropIDTest.hx`（**尚未注册**，同
-  SceneDecorLibrariesTest 的 append-only 情形，注册行留给 write-tests）。
+  表驱动测试 `test/common/GetCropIDTest.hx`（注册行已由 write-tests 阶段落进 TestMain.hx；implement 阶段不能动
+  TestMain，见 lessons 对应条目）。
 - `FarmLandModel`（`src/module/mainScene/farmLand/`，1744 行）：农田数据层
   ——地块状态、作物生长。V3a 完成数据层；渲染视图（FarmLandsView、
   LandTile 等）V3b（#8）已完成，见 [farmscene.md](farmscene.md)。
+- `Player`（`src/entities/Player.hx` ← `entities/Player.as` 169 行）：用户
+  实体。V3a 落字段与 fid/exportObject，V3b（#8）补齐
+  ctor/importObject/level/clone。`importObject` 逐键映射 user 下发块
+  （数值走 `Utils.getIntAttribute`、money 原版裸 parseFloat → `As3.floatOf`；
+  `!= undefined` 一律 `hasField`+非 null 双守卫）；`level =
+  expToGrade(exp)`（`sqrt((exp+25)/100)-0.5`，返回处隐式 Number→int
+  截断用 `Std.int` 复刻）；`fid` 按宿主 `Settings.mode`（qzone/qplus 取
+  uin，否则 _uId）——animalAttack/checkWildDataStatus 跨牧场用；`clone`
+  不带 _levelup/_fb/_rawData，_healthMode 经 ObjectUtil.clone 的 AMF 往返
+  恒 null（原版行为如此，lessons 有条目，照抄别修）。类头逐字段显式落
+  AS3 默认值是 eval/js 未赋值基元为 null 的补偿，别「顺手删」。
+  测试 `test/entities/PlayerTest.hx`。
 - 数据来源：启动时 PHP 下发（user_run / nc_main 等）。真后端载荷样例在
   `legacy/snapshot/`；`test/fixtures/uid1_user_run.json` 是抽出来的真实
   样例。

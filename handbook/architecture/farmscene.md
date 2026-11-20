@@ -13,6 +13,10 @@ legacy 出处：`decompiled main3 module/mainScene/farmLand/`。
   （`LocalSwfLoader` 拉红土地 swf，`onPlayUpgradeRedLandAnimatin`）、
   飞机送信（PlaneWindow）、一键偷菜时间窗（`isOneClickMode`，
   `batchStealHour` 的 from/to 是**字符串**，经 `As3.floatOf` 数值比较）。
+  10s 农田刷新节拍 `m_updateFreq`（`common.misc.time.CountDown`，顺手翻
+  39 行）：`onGameLoop` 每帧问 `isReady()`——**调用即自减**，归零侧才回
+  true，命中才跑 `model.growLoop()` 并 `reset(Consts.FARM_LAND_COUNTDOWN=10)`；
+  `reset(0)` 抛 ArgumentError（0 是非法节拍，别拿它当「禁用节拍」用）。
 - `FarmLandsView`（← FarmLandsView.as 960 行）：24 格地块排布与状态渲染。
   **地块实例名是交互路由键**：`__FarmlandItem__<行>.<列>`（额外第 4 行是
   `.3` 后缀）、荒地 `__reclaim__`、飞机 `__plane__`、遮罩 `__mask__`——
@@ -87,6 +91,48 @@ legacy 出处：同目录 background/。装饰槽位模型 + 场景背景屏。
 - `PreviewDiyWindow`（← PreviewDiyWindow.as 42 行，闭包顺手翻）：取消预览
   窗。super 链的标题栏/关闭行为落在 qui 窗口片 stub 上（见下）。
 
+## npc（`src/module/mainScene/npc/`）
+
+legacy 出处：同目录 npc/。看门狗（数据 + 渲染 + 狗粮盆）、活动 NPC、
+361 广告位。狗走 `DECOR_DOG` 消息键，但数据在 NPCModel、不在
+BackgroundModel 的五槽里（与 background 节的「DECOR_DOG 不是槽」互指）。
+
+- `NPCController`（← NPCController.as 133 行）：经 IMsgCenter 订阅五消息——
+  `MSG_STARTUP_DATA`/`MSG_RELOAD_GAME_RESULT`（StartupData._dog 进模型，
+  后者再多一步 `switchNPC`）、`DATA_DOG_CHANGED`（Dog 实体进模型）、
+  `MSG_REFRESH_SCENE`（**只认 `type == DECOR_DOG`**，其余装饰刷新与 NPC
+  无关，不匹配直接 return）、`MSG_INSTALL_NPC`（数据直通 view.installNPC）。
+  finalize 只置空 m_model（与 BackgroundController 同口径）。
+- `NPCModel`（← NPCModel.as 140 行）：狗状态。两事件
+  `EVENT_DOG_LOADED`/`EVENT_DOG_FOOD_LOADED`；`setDogData` 首只存引用、
+  后续在**存量对象**上合并（_dogId ≠ -1 才写、_isHungry 每次覆盖）；无狗
+  `dogID` 回 -1；`changeDog` 回写 `Session.sceneDecorates` 的 DECOR_DOG 键。
+  狗粮回包 `hours <= 0` 把存量狗标饿：必须 `As3.parseInt`（前缀整数段
+  截断，"0.5"→0；`floatOf` 会得 0.5，比较就翻车）。
+- `NPCView`（← NPCView.as 341 行）：NPC 层视图。自身实例名 =
+  `Consts.SCENE_ZINDEX_FOREGROUND` 挂模块容器；狗件挂
+  `SCENE_ZINDEX_MIDDLE` 层——`onDogInitialized` 把 DogRender 插在 dogBowl
+  **上一层**（getChildIndex(dogBowl)+1，所以 dogBowl 必须先于狗存在）、
+  `updateFood` 按 dogID/dogHungry 摆/收盆。a361 广告时段窗：两界日期经
+  `As3.dateOf` **先判 null 再比较**（解析失败原版是 Invalid Date、NaN 比较
+  恒 false 不加载，裸读 null.getTime() 直接抛——lessons 有条目），
+  `serverTime*1000.0` 的 Int 回绕见类内 PORT-NOTE。361 点击走
+  `QQOutlets.call`（no-qq-telemetry deviation）。installNPC 的气泡
+  MaoPaoFlag 帧脚本在本地化库处理时被丢弃——气泡文本缺失是既知视觉偏差
+  （deviations 候选，动态赋值 talkInfo 照抄保留）。
+- `DogRender`（← DogRender.as 90 行，顺手翻 ≤100）：狗矢量件。
+  `CommonData.rslManager.requestClass("FDog<id>")` 拉素材、到位换
+  `RSLManager.getMaterial` 构造的 MovieClip（x=251、y=200）；300ms 未到位
+  先摆 FarmLoading（x=260、y=240）。dogID > `DECOR_DOG_BASE_ID` 先减基址；
+  换狗 = 移除旧件整件重 new（view 按 `id` 字符串不等判）。
+- **stub 边界（狗狗交互片 agent 注意）**：`DogBowl`（108 行）与
+  `DogFoodWindow`（149 行）是 >100 行闭包 stub，只保类形态让
+  NPCView 的调用链编译。用户可见后果：**狗粮盆无画面**（updateFood 正常
+  创建/挂层/收件，但 set food 空实现，DogFood/DogFoodNull 符号不摆）；
+  主人侧狗粮状态回包（onFoodLoaded，仅 `Session.me`）经 `winCtrl.open`
+  打开的是**空窗口**（无标题 chrome、无 m_leftime 剩余时间）。替换时整类
+  翻译（DogBowl.as 的 food setter 在 57-103 行），别在 stub 上只补符号。
+
 ## qui 窗口 stub 链（窗口片 agent 注意）
 
 `BaseWindow`→`TitleWindow`（stub）→`Panel`（stub）→`Sprite`，
@@ -100,8 +146,9 @@ addButton` 是 no-op。做窗口片（V3c）时把它们替换成真翻译，stu
 ## 测试口径
 
 `test/module/mainScene/`：只测纯逻辑（OperationQueue 合批/合并、
-BackgroundModel 槽位、FarmLandsView 的 m_items 排布计数、LandItemRender
-字段态）。`FarmLandsViewTest.test_createLandTiles` 的 name/x/y 断言
+BackgroundModel 槽位、NPCModel 狗数据、FarmLandsView 的 m_items 排布计数、
+LandItemRender 字段态）；实体侧 `test/entities/PlayerTest.hx`（user 下发
+解析/level/clone）与 `test/common/GetCropIDTest.hx`（生长档推导）同口径。`FarmLandsViewTest.test_createLandTiles` 的 name/x/y 断言
 **强类型读**（`var item:LandItemRender = view.m_items[0]`）：openfl 自家
 的 get/set 属性无物理字段，经 `Dynamic` 反射在 eval/js 恒 null——机制坑
 见 [lessons/index.md](../lessons/index.md) 对应条目。

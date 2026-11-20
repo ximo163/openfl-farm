@@ -40,7 +40,10 @@ generated:
 
 budget:
   max_runs: 30
-  max_time: 8h
+  # 12h（2026-11-20 从 8h 调）：#8（V3b 视图层片）8h3m 撞墙，停在 review
+  # round 3 驳回后的收敛尾巴上——剩余工作是补 handbook 节这个量级。视图层
+  # 片（web-smoke 崩溃排查 + 测试往返）一轮就是这个量级，#9/#10 同类。
+  max_time: 12h
 max_jumps: 3
 
 suites:

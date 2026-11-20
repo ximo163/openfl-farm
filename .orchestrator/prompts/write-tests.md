@@ -12,6 +12,9 @@
 - 只读需要的部分：先 `rg -n` 找名字，再读前后几十行。`legacy/decompiled/` 和
   `legacy/deploy/` 很大，整个文件读进来会很快耗光轮数。
 - 测试放在 `test/`，包路径对应 `src/` 下的被测类。表驱动，测试名说明行为。
+- **新测试文件必须同一个 commit 注册进 `test/TestMain.hx`** 的 Runner
+  （`runner.addCase(...)`）——implement 阶段 `append_only` 挡着它补这个，
+  漏了只能整轮回退重写（#8 踩过，review-impl round 2 驳回点）。
 - 被测代码还不存在时，加最小的能编译的 stub：签名正确，函数体
   `throw new Error("not implemented")`。不要做任何实现。
 - 新测试必须在实现之前失败；已有的测试必须照样通过。

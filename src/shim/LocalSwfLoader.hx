@@ -27,7 +27,10 @@ class LocalSwfLoader extends Loader {
 
 	// URL → 资产库 id：取 "module/" 之后的尾段，再取最后一个 "/" 后的文件名，
 	// 去掉 .swf 后缀（module/main3_v_221.swf → main3_v_221）。不是 .swf 或不
-	// 含 module/ 的返回 null
+	// 含 module/ 的返回 null。例外：diy/board/ 下的看板素材与 diy/ 的装饰素材
+	// 文件名同为纯数字（nc_data.php:2260 board/1.swf vs :51 diy/1.swf），文件名
+	// id 会撞库——原版按整条 URL 网络加载没有这个问题，本地化后看板加 board_
+	// 前缀消歧（libraries.xml 的 id="board_1" 同款）
 	private static function libraryIdForUrl(url:String):String {
 		if (url == null) {
 			return null;
@@ -42,7 +45,11 @@ class LocalSwfLoader extends Loader {
 		if (!new EReg("\\.swf$", "i").match(filename)) {
 			return null;
 		}
-		return filename.substr(0, filename.length - 4);
+		var id:String = filename.substr(0, filename.length - 4);
+		if (tail.indexOf("diy/board/") != -1) {
+			id = "board_" + id;
+		}
+		return id;
 	}
 
 	override public function load(request:URLRequest, context:LoaderContext = null):Void {

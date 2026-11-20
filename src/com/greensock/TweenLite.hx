@@ -1,5 +1,7 @@
 package com.greensock;
 
+import shim.As3;
+
 /**
  * com.greensock.TweenLite —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
  * TweenLite 补间库（TweenLite.as 506 loc + core 三类）在 spec/
@@ -40,5 +42,17 @@ class TweenLite {
 	// TweenLite.from 的 stub：同 to（补间库片翻译）
 	public static function from(param1:Dynamic, param2:Float, param3:Dynamic):TweenLite {
 		return to(param1, param2, param3);
+	}
+
+	// TweenLite.as:188-（delayedCall(delay, onComplete, params, useFrames)：
+	// 原版经 delay 秒后调 onComplete(params)。stub 用真延迟（As3.setTimeout
+	// 走 openfl Timer，Event.ENTER_FRAME 路径对齐原版帧驱动语义）；补间库片
+	// 整体翻译时替换成引擎自己的调度。返回值原版是 TweenLite 实例，stub 的
+	// 调用方（LandPickIcon/NPCView 的 0.25-3s 浮层收尾）都不接返回值）
+	public static function delayedCall(param1:Float, param2:Dynamic, param3:Array<Dynamic> = null, param4:Bool = false):TweenLite {
+		As3.setTimeout(function():Void {
+			Reflect.callMethod(null, param2, param3 != null ? param3 : []);
+		}, Std.int(param1 * 1000));
+		return null;
 	}
 }

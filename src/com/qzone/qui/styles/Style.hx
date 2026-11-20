@@ -1,5 +1,7 @@
 package com.qzone.qui.styles;
 
+import openfl.filters.ColorMatrixFilter;
+import openfl.filters.DropShadowFilter;
 import openfl.text.TextFormat;
 
 /**
@@ -50,5 +52,34 @@ class Style {
 			_labelFormat = new TextFormat();
 		}
 		return _labelFormat;
+	}
+
+	// Style.as:24
+	private static var disableFilter:Array<Dynamic>;
+
+	// Style.as:104/:106（弹层遮罩色/透明度：GraphicsUtil.draw 遮罩参数）
+	public static var popUpModalColor:UInt = 16777215;
+	public static var popUpModalAlpha:Float = 0.15;
+
+	// Style.as:158 附近（shadowFilter 懒建存储）
+	private static var shadowFilter:Array<Dynamic>;
+
+	// Style.as:160-167（getShadowFilter：弹层投影滤镜懒建单例——PlaneWindow
+	// 挂 stage 时压投影，参数逐字照抄）
+	public static function getShadowFilter():Array<Dynamic> {
+		if (shadowFilter == null) {
+			shadowFilter = [new DropShadowFilter(5, 45, 0, 0.6, 5, 5)];
+		}
+		return shadowFilter;
+	}
+
+	// Style.as:305-312（getDisableFilter：置灰滤镜懒建单例——BackgroundScreen
+	// 无牧场权限时给转场按钮压灰；V3b 补齐引用成员，数值逐字照抄）
+	public static function getDisableFilter():Array<Dynamic> {
+		if (disableFilter == null) {
+			disableFilter = [new ColorMatrixFilter([0.3, 0.6, 0.082, 0, 0, 0.3, 0.6, 0.082, 0, 0, 0.3, 0.6, 0.082, 0,
+				0, 0, 0, 0, 1, 0])];
+		}
+		return disableFilter;
 	}
 }

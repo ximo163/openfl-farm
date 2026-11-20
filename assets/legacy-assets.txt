@@ -31,3 +31,29 @@ source/core/module/ui/gifts_v_11.swf
 # （:188-190 无条件 loadWildShell；FarmApplication.as:766-771 同），uid=1 的
 # user_run 无 _beast 也请求——启动窗口必发（test/StartupModuleLibrariesTest.hx）：
 source/core/module/mc/farm/wild/WildShellNc_v_5.swf
+#
+# V3b 农场场景（issue #8）：作物分档素材库（Crop.setState 经 requestClass 按需
+# 加载，SymbolClass.bind 按需拉起）。快照 uid=1 四块在种地全是白萝卜 cId=2
+# （initialized.sql:5718 status 字母 a=作物号、b=cropStatus——
+# farmlandstatus_getoutput.php:62 "cId":$a 可证；前几轮把 b 误当作物号）。
+# nc_data.php:6021 cId=2 只有 m1/m2/m3（:3065-3067 Crop_2_1/2/3.swf），无
+# m0/m4 → 档 0（种子）/6（枯死）走公共素材 Crop_1_0/Crop_1_4（3/4/5 折叠 3）：
+source/core/module/ui/allcrops/Crop_1_0.swf
+source/core/module/ui/allcrops/Crop_1_4.swf
+source/core/module/ui/allcrops/Crop_2_1.swf
+source/core/module/ui/allcrops/Crop_2_2.swf
+source/core/module/ui/allcrops/Crop_2_3.swf
+# V3b 场景装饰（issue #8）：BackgroundModel.setDecors 按 user_run 的 items
+# （DB decorative 列）逐槽 idToDiyUrl2 → module/ui/farm/diy/<itemId>.swf，
+# BackgroundScreen.setDIYUrl 组加载。快照 uid=1 的 decorative 为
+# {"1":{"itemId":1},...,"4":{"itemId":4}}（initialized.sql:5718
+# uchome_qqfarm_nc 行）：背景=1（V2 已入库）、房子=2、栅栏=3、狗屋=4——
+# 缺库时 html5 运行期对未声明库 404（CI web-smoke 三条 console.error 的来源）：
+source/core/module/ui/farm/diy/2.swf
+source/core/module/ui/farm/diy/3.swf
+source/core/module/ui/farm/diy/4.swf
+# 看板槽 9 不在 decorative 列——user_run.php:206 由 activeItem（快照
+# 90001）补发 → boards 90001（nc_data.php:5977）→ asset 1719（:2260）
+# module/ui/farm/diy/board/1.swf；文件名与 diy/1.swf 相同，库名消歧为
+# board_1（libraries.xml 同款 id，映射见 shim/LocalSwfLoader 特判）：
+source/core/module/ui/farm/diy/board/1.swf

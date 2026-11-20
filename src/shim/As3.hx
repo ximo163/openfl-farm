@@ -94,6 +94,65 @@ class As3 {
 	}
 
 	/**
+	 * AS3 的 parseInt(x)（参数先隐式转 String 再解析前缀整数段，无数字得
+	 * NaN，"0x" 前缀按 16 进制）。与 floatOf 的差别在截断：parseFloat("0.5")
+	 * =0.5、parseInt("0.5")=0（NPCModel.as:46 的 hours 判饿靠它）。
+	 */
+	public static function parseInt(v:Dynamic):Float {
+		var s:String = Std.string(v);
+		var i:Int = 0;
+		while (i < s.length) {
+			var c:Int = StringTools.fastCodeAt(s, i);
+			if (c == " ".code || c == "\t".code || c == "\n".code || c == "\r".code || c == "\x0C".code) {
+				i++;
+			} else {
+				break;
+			}
+		}
+		var sign:Float = 1;
+		if (i < s.length && (StringTools.fastCodeAt(s, i) == "+".code || StringTools.fastCodeAt(s, i) == "-".code)) {
+			if (StringTools.fastCodeAt(s, i) == "-".code) {
+				sign = -1;
+			}
+			i++;
+		}
+		var radix:Int = 10;
+		if (i + 1 < s.length && StringTools.fastCodeAt(s, i) == "0".code
+			&& (StringTools.fastCodeAt(s, i + 1) == "x".code || StringTools.fastCodeAt(s, i + 1) == "X".code)) {
+			radix = 16;
+			i += 2;
+		}
+		var value:Float = 0;
+		var digits:Int = 0;
+		while (i < s.length) {
+			var d:Int = digitValue(StringTools.fastCodeAt(s, i), radix);
+			if (d < 0) {
+				break;
+			}
+			value = value * radix + d;
+			digits++;
+			i++;
+		}
+		if (digits == 0) {
+			return Math.NaN;
+		}
+		return sign * value;
+	}
+
+	// parseInt 的单数位（10/16 进制共用；非数位或 ≥radix 得 -1）
+	private static function digitValue(c:Int, radix:Int):Int {
+		var d:Int = -1;
+		if (c >= "0".code && c <= "9".code) {
+			d = c - "0".code;
+		} else if (c >= "a".code && c <= "f".code) {
+			d = c - "a".code + 10;
+		} else if (c >= "A".code && c <= "F".code) {
+			d = c - "A".code + 10;
+		}
+		return d < radix ? d : -1;
+	}
+
+	/**
 	 * flash.utils.setTimeout/clearTimeout（Haxe 没有返回可清除句柄的内建物，
 	 * 用 Map<UInt, Timer> 复刻 uint 句柄语义）。
 	 */
@@ -142,8 +201,9 @@ class As3 {
 	 * "Y-M-D H:M:S"，而原版配置里走这一支的是美式串（xml/mod/nc_addon.php:113
 	 * `<jinPaiLand>7/10/2012-11/12/2012 23:59:59</jinPaiLand>`，FarmLand.as:233
 	 * `new Date(_loc3_[0])`），只复刻配置用到的 m/d/Y[ H:M[:S]] 形态。解析失败
-	 * 返回 null：AS3 里是 time=NaN 的 Invalid Date，调用点只做 getTime 比较，
-	 * NaN 比较恒 false，null＋调用方跳过等价。
+	 * 返回 null：原版是 time=NaN 的 Invalid Date，getTime 比较恒 false，等价于
+	 * 跳过窗口判断——但调用点必须先判 null 再比较（FarmLand.get__goldLand、
+	 * NPCView 构造器两处都是如此），裸读 null.getTime() 会抛。
 	 */
 	public static function dateOf(s:String):Date {
 		if (s == null) {

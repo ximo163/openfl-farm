@@ -1,0 +1,40 @@
+{
+  "a": 0,
+  "b": 1,
+  "c": 0,
+  "d": 0,
+  "dog": {"dogId": 0, "isHungry": 0},
+  "e": 1,
+  "exp": 0,
+  "farmlandStatus": [
+    {"a":2,"b":6,"c":0,"d":0,"e":1,"f":0,"g":0,"h":1,"i":100,"j":0,"k":16,"l":9,"m":16,"n":[],"o":0,"p":[],"q":1794879866,"r":1251351720,"bitma":0,"pId":0,"bitmap":0,"goldLand":0},
+    {"a":2,"b":1,"c":0,"d":0,"e":1,"f":1,"g":0,"h":1,"i":100,"j":0,"k":0,"l":0,"m":0,"n":[],"o":0,"p":[],"q":1794901496,"r":1251351725,"bitma":0,"pId":0,"bitmap":0,"goldLand":0},
+    {"a":2,"b":1,"c":0,"d":0,"e":1,"f":0,"g":0,"h":0,"i":100,"j":0,"k":0,"l":0,"m":0,"n":[],"o":0,"p":[],"q":1794901496,"r":1251351725,"bitma":0,"pId":0,"bitmap":0,"goldLand":0},
+    {"a":2,"b":1,"c":0,"d":0,"e":1,"f":0,"g":2,"h":1,"i":100,"j":0,"k":0,"l":0,"m":0,"n":[],"o":0,"p":[],"q":1794890696,"r":1251351725,"bitma":0,"pId":0,"bitmap":0,"goldLand":0},
+    {"a":0,"b":0,"c":0,"d":0,"e":1,"f":0,"g":0,"h":1,"i":100,"j":0,"k":0,"l":0,"m":0,"n":[],"o":0,"p":[],"q":0,"r":1251351725,"bitma":0,"pId":0,"bitmap":0,"goldLand":0},
+    {"a":0,"b":0,"c":0,"d":0,"e":1,"f":0,"g":0,"h":1,"i":100,"j":0,"k":0,"l":0,"m":0,"n":[],"o":0,"p":[],"q":0,"r":1251351725,"bitma":0,"pId":0,"bitmap":0,"goldLand":0}
+  ],
+  "items": {"1":{"itemId":1},"2":{"itemId":2},"3":{"itemId":3},"4":{"itemId":4}},
+  "serverTime": {"time": 1794915896},
+  "task": {"taskId": 1, "taskFlag": 1},
+  "welcome": 1,
+  "user": {
+    "canbad": 50,
+    "exp": 0,
+    "headPic": "",
+    "healthMode": {"beginTime":0,"canClose":1,"date":"1970-01-01|1970-01-07","endTime":0,"serverTime":1794915896,"set":0,"time":"08|00","valid":0},
+    "missionTime": 1794915896,
+    "money": 0,
+    "FB": 0,
+    "moralexp": 0,
+    "pf": 1,
+    "uId": 1,
+    "uinLogin": 1,
+    "userName": "admin",
+    "yellowlevel": 0,
+    "yellowstatus": 0
+  },
+  "weather": {"weatherDesc": "晴天", "weatherId": 1},
+  "beast": {"drop": [], "info": [], "return": []},
+  "actInfo": {"goldLandCard": 0}
+}

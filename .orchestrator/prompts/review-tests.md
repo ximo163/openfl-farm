@@ -12,5 +12,10 @@
 - 改了已有测试但不是 issue 要求的，或没有写 `// changed for #<issue>` 注释。
 - stub 里出现了实际实现。
 - 测试数据用了看起来真实的账号信息。
+- **测试写法踩了 `handbook/lessons/index.md` 已登记的机制坑**：动态读 openfl
+  的 get/set 属性（Dynamic 反射只看见物理字段，恒 null）、AMF 往返当深拷贝、
+  Dynamic 与字符串字面量的松等、经 `Dynamic["中文"]` 取键，以及**新测试文件
+  没注册进 `test/TestMain.hx`**（#8 三次退回全是这类写法问题，实现阶段才发现）。
+  lessons 里已写防法的，照条目核。
 
 不要因为风格偏好驳回。

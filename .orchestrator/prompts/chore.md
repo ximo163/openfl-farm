@@ -1,5 +1,7 @@
 做这个脚手架、配置或探路类的改动。先读 CLAUDE.md。
 
+- 涉及资产、构建或启动链的杂务先看 `handbook/` 对应页面
+  （`index.md` 路由表指路——assets.md 有清单同步/库声明的机制和门禁测试）。
 - 只做 issue 要求的事；不翻译游戏逻辑，那属于默认流水线（先写测试）。
 - 不改 legacy/、spec/、checks/、scripts/、harness/、Project.xml、*.hxml，不写给人
   看的文档。

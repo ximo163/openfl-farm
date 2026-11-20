@@ -8,7 +8,9 @@
 - 标签：从 legacy 提取规格的用 `pipeline:spec`；脚手架、依赖、探路的用
   `pipeline:chore`；能先写失败测试的翻译不打 pipeline 标签（走默认流水线）。
 - 按游戏系统拆（加载链路、农场基础、背包、商店、牧场、好友、狗、活动……），
-  不要按文件个数机械拆。一个子 issue 的翻译量控制在几十个类以内。
+  不要按文件个数机械拆。一个子 issue 的翻译量控制在几十个类以内。已翻译的
+  子系统边界先看 `handbook/index.md` 路由表（哪个子系统有什么、什么还没翻），
+  别把已翻的和没翻的拆混。
 - 整个项目无人值守，不要安排需要人动手的步骤。重操作（反编译、旧后端、浏览器、
   APK）都在 GitHub CI 上，不进子 issue。
 - 需要改 `harness/`、`.github/`、`scripts/`、`checks/`、`Project.xml`、`.orchestrator/`

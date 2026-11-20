@@ -47,6 +47,19 @@ class TestMain {
 		runner.addCase(new common.GetCropIDTest());
 		runner.addCase(new CropLifecycleLibrariesTest());
 		runner.addCase(new SceneDecorLibrariesTest());
+		// issue #9：V3c 种收交互（write-tests 阶段，对 stub 失败）——
+		// UIToolsModel 账户/离线/升级礼物 diff 派发、ToolBar 工具选择开关
+		// 与快捷键映射、飘字段基类/收获飘字数值文本/数值滚动补间、
+		// FloatControl/CursorControl 派发、MaterialProxy 尺寸档与 loaded 语义
+		runner.addCase(new module.uitools.UIToolsModelTest());
+		runner.addCase(new module.uitools.widgets.ToolBarTest());
+		runner.addCase(new common.view.floating.FloatingBaseTest());
+		runner.addCase(new common.view.floating.NumAnimationTest());
+		runner.addCase(new common.view.floating.HarvestAnimationTest());
+		runner.addCase(new common.view.floating.HarvestAnimationPlusTest());
+		runner.addCase(new common.view.floating.FloatControlTest());
+		runner.addCase(new common.view.cursor.CursorControlTest());
+		runner.addCase(new common.view.MaterialProxyTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

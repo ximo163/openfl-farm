@@ -190,6 +190,8 @@ class Consts {
 	public static final CURSOR_WILD_HAND:String = "Wild_Cursor";
 	public static final CURSOR_WILD_TOOL:String = "Cursor_Wild_Tool";
 	public static final CURSOR_SYSTEM:String = "system";
+	// Consts.as:114（CursorControl.useSystem(false) 下发；issue #9 光标片）
+	public static final CURSOR_CUSTOMIZE:String = "customize";
 
 	// 道具/功能开关
 	public static final ITEM_TYPE_SEED:String = "1";

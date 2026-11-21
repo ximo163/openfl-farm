@@ -159,6 +159,53 @@ class As3 {
 	}
 
 	/**
+	 * AS3 把 Number 赋进 int 变量的 ToInt32 强制（ECMA-262：先截断取整、
+	 * 再按 2^32 回绕到带符号区间）。Haxe 的 Int 在 js/eval 上是双精度数
+	 * **不回绕**（cpp 才隐式截断），裸 `Std.int` 会让两族 compareDate 把
+	 * 2^31ms（≈24.9 天）以上的 |Δms| 当正数——原版是回绕后再除，约
+	 * 49.7-52.6 天的流水回绕成 0/1/2 天、被错标成今天/昨天/前天（24.9-49.7
+	 * 天回绕成负数、仍走真实日期支）。原版 bug，照抄（ProfileLog/
+	 * ProfileCost/ProfileSystemMsg 两族共六处 int 形）。
+	 */
+	public static function int32(v:Float):Int {
+		if (Math.isNaN(v) || Math.isFinite(v) == false) {
+			return 0;
+		}
+		// 向零截断（ToInt32 第一步）。不用 Math.floor/ceil：eval 目标的
+		// floor/ceil 内部走 Int32 换算，≥2^31 的输入先坏（js/cpp 的 floor
+		// 无此问题，但 % 在所有目标都是 fmod 语义）
+		var t:Float = v - v % 1.0;
+		var m:Float = t % 4294967296.0;
+		if (m >= 2147483648.0) {
+			m -= 4294967296.0;
+		} else if (m < -2147483648.0) {
+			m += 4294967296.0;
+		}
+		return Std.int(m);
+	}
+
+	/**
+	 * AS3 `obj["k"]` 的取值落进 String 属性（TextField.text 等）时的强制：
+	 * 键缺位是 undefined → "undefined"、显式 null → "null"、其余 String(v)。
+	 * Haxe 里缺位和 null 都落 null，用 hasField 区分。原始值（""/数字/
+	 * 布尔）的包装类上没有自定义键、一律 undefined（AS3 同——HistoryTip.as
+	 * :77-83 的 null 数据路径把 "undefined" 印进 TextField 而不是抛错）。
+	 */
+	public static function stringField(o:Dynamic, name:String):String {
+		if (o == null) {
+			return "undefined";
+		}
+		if (Std.isOfType(o, String) || Std.isOfType(o, Int) || Std.isOfType(o, Float) || Std.isOfType(o, Bool)) {
+			return "undefined";
+		}
+		if (Reflect.hasField(o, name)) {
+			var v:Dynamic = Reflect.field(o, name);
+			return v == null ? "null" : Std.string(v);
+		}
+		return "undefined";
+	}
+
+	/**
 	 * AS3 的 parseFloat(x)（参数先隐式转 String 再解析前缀）。
 	 */
 	public static function floatOf(v:Dynamic):Float {
@@ -222,6 +269,96 @@ class As3 {
 			d = c - "A".code + 10;
 		}
 		return d < radix ? d : -1;
+	}
+
+	/**
+	 * AS3 的 Array.sortOn(字段, Array.DESCENDING)（MessageModel.as:123、
+	 * mc ProfileCost.as:188）。AVM2 不带 Array.NUMERIC 选项时按字段值的
+	 * **字符串序**比较，DESCENDING 反转比较器；原地排序。真实数据源的 time
+	 * 是等宽 10 位时间戳（cgi_farm_exchange.php:26,28），字符串序与数值序一致。
+	 */
+	public static function sortOnDesc(arr:Array<Dynamic>, field:String):Void {
+		arr.sort(function(a:Dynamic, b:Dynamic):Int {
+			var va:String = Std.string(Reflect.field(a, field));
+			var vb:String = Std.string(Reflect.field(b, field));
+			if (va < vb) {
+				return 1;
+			}
+			if (va > vb) {
+				return -1;
+			}
+			return 0;
+		});
+	}
+
+	/**
+	 * AS3 全局 unescape（ProfileMsg.as genMsg 的留言正文解转义）：逐个解
+	 * %XX 与 %uXXXX，非法/截断的 % 序列原样保留。与 Haxe
+	 * StringTools.urlDecode 的差别在后者把 "+" 换成空格（AS3 不换，
+	 * `urlDecode("a+b")=="a b"` 而 `unescape("a+b")=="a+b"`，已 eval 实测）。
+	 */
+	public static function unescape(s:String):String {
+		if (s == null) {
+			return "null";
+		}
+		var buf:StringBuf = new StringBuf();
+		var i:Int = 0;
+		var len:Int = s.length;
+		while (i < len) {
+			var c:Int = StringTools.fastCodeAt(s, i);
+			if (c != "%".code) {
+				buf.addChar(c);
+				i++;
+				continue;
+			}
+			// %uXXXX
+			if (i + 6 <= len && StringTools.fastCodeAt(s, i + 1) == "u".code) {
+				var u:Int = hex4(s, i + 2);
+				if (u >= 0) {
+					buf.addChar(u);
+					i += 6;
+					continue;
+				}
+			}
+			// %XX
+			if (i + 3 <= len) {
+				var h:Int = hexVal(StringTools.fastCodeAt(s, i + 1));
+				var l:Int = hexVal(StringTools.fastCodeAt(s, i + 2));
+				if (h >= 0 && l >= 0) {
+					buf.addChar(h * 16 + l);
+					i += 3;
+					continue;
+				}
+			}
+			buf.addChar(c);
+			i++;
+		}
+		return buf.toString();
+	}
+
+	private static function hexVal(c:Int):Int {
+		if (c >= "0".code && c <= "9".code) {
+			return c - "0".code;
+		}
+		if (c >= "a".code && c <= "f".code) {
+			return c - "a".code + 10;
+		}
+		if (c >= "A".code && c <= "F".code) {
+			return c - "A".code + 10;
+		}
+		return -1;
+	}
+
+	private static function hex4(s:String, at:Int):Int {
+		var v:Int = 0;
+		for (j in 0...4) {
+			var d:Int = hexVal(StringTools.fastCodeAt(s, at + j));
+			if (d < 0) {
+				return -1;
+			}
+			v = v * 16 + d;
+		}
+		return v;
 	}
 
 	/**

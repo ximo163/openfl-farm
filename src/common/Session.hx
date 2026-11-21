@@ -26,10 +26,11 @@ class Session {
 	// Session.as:78-87
 	private static var _instance:Session;
 
-	// Session.as:14（m_currentUser）/ :42（m_host）/ :36（m_friendsKey）
+	// Session.as:14（m_currentUser）/ :42（m_host）/ :36（m_friendsKey）/ :20（m_friendsMap）
 	private var m_currentUser:Player;
 	private var m_host:Player;
 	private var m_friendsKey:Dynamic;
+	private var m_friendsMap:Dynamic;
 
 	public function new() {
 		m_friendsKey = {};
@@ -42,6 +43,14 @@ class Session {
 		}
 		_instance = new Session();
 		return _instance;
+	}
+
+	// Session.as:89-91（好友索引表，initFriendMap 从 Cookies 建；issue #19
+	// ProfileLog 的「不让他摘」链接用）
+	public var friendsMap(get, never):Dynamic;
+
+	private function get_friendsMap():Dynamic {
+		return m_friendsMap;
 	}
 
 	// Session.as:108-118（currentUser._uId == host._uId 即到访自己农场）
@@ -64,6 +73,36 @@ class Session {
 			return Std.string(m_host._uinLogin);
 		}
 		return "";
+	}
+
+	// Session.as:144-167（好友 uId→条目 索引，Cookies 里没有就保持 null；
+	// ProfileLog 每条消息调一次，建过即早退）
+	public function initFriendMap():Void {
+		var _loc2_:Int = 0;
+		var _loc3_:Bool = false;
+		var _loc4_:Dynamic = null;
+		if (m_friendsMap != null) {
+			return;
+		}
+		// PORT-NOTE: `Cookies.getObject(...) as Array` → Std.isOfType 门 + 直取
+		var _loc1_:Array<Dynamic> = null;
+		var _cookiesVal:Dynamic = common.misc.Cookies.getObject(Settings.getInstance().mode + this.hostId, 1);
+		if (Std.isOfType(_cookiesVal, Array)) {
+			_loc1_ = _cookiesVal;
+		}
+		if (_loc1_ != null && _loc1_.length > 0) {
+			m_friendsMap = {};
+			_loc2_ = 0;
+			_loc3_ = Settings.isQZoneUinMode;
+			for (_loc4_ in (_loc1_:Array<Dynamic>)) {
+				_loc2_ = As3.intOf(As3.or(As3.intOf(Reflect.field(_loc4_, "_uId")), As3.intOf(Reflect.field(_loc4_, "_userId"))));
+				if (_loc3_ == true) {
+					_loc2_ = As3.intOf(Reflect.field(_loc4_, "_uin"));
+				}
+				// PORT-NOTE: AS3 对象的数字下标键经 toString 落字符串键
+				Reflect.setField(m_friendsMap, Std.string(_loc2_), _loc4_);
+			}
+		}
 	}
 
 	// Session.as:441-448

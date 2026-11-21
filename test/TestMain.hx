@@ -87,6 +87,12 @@ class TestMain {
 		// 字符串键取 AS3 Array 语义：TileList 拼接键绑定、正则下标边界表、
 		// ViewStack Dictionary 混键种死门
 		runner.addCase(new shim.As3ArrayIndexTest());
+		// issue #19：messages 模块（write-tests 阶段，对 stub 失败）——
+		// MessageModel 纯逻辑：getAllInfo 旗标表与已读门（loadData 各页签
+		// 缓存早退/双源位复位）、应答解析分派（user/chat/log/repertory/
+		// cost 双源合并降序/systemMsg ret 门/fish 映射）、留言列表收发
+		// 清空、feeds ecode 门、网络失败文案、reset 重开已读门
+		runner.addCase(new module.messages.MessageModelTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

@@ -26,9 +26,10 @@ class ResizeEvent extends Event {
 		super(param1, param4, param5);
 	}
 
-	// :20-24
+	// :20-24（AS3 的 super.type 等继承 getter 在 Haxe 走 this 即同一实现，
+	// Haxe 不允许对普通属性用 super 限定）
 	override public function toString():String {
-		return "[ResizeEvent type=\"" + super.type + "\" oldWidth=" + this.oldWidth + " oldHeight=" + this.oldHeight
-			+ " bubbles=" + super.bubbles + " cancelable=" + super.cancelable + " eventPhase=" + super.eventPhase + "]";
+		return "[ResizeEvent type=\"" + this.type + "\" oldWidth=" + this.oldWidth + " oldHeight=" + this.oldHeight
+			+ " bubbles=" + this.bubbles + " cancelable=" + this.cancelable + " eventPhase=" + this.eventPhase + "]";
 	}
 }

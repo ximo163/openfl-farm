@@ -133,23 +133,32 @@ BackgroundModel 的五槽里（与 background 节的「DECOR_DOG 不是槽」互
   打开的是**空窗口**（无标题 chrome、无 m_leftime 剩余时间）。替换时整类
   翻译（DogBowl.as 的 food setter 在 57-103 行），别在 stub 上只补符号。
 
-## qui 窗口 stub 链（窗口片 agent 注意）
+## qui 窗口链（#18 已全真，窗口片 agent 续接时读这节）
 
-`BaseWindow`→`TitleWindow`（stub）→`Panel`（stub）→`Sprite`，
-`com.qzone.qui.controls.Button`（stub，原版继承 Label）。这些是 >100 行的
-闭包 stub：**只保类形态让链编译**，`title` 只存值不渲染、`close/onClose/
-addButton` 是 no-op。做窗口片（V3c）时把它们替换成真翻译，stub 头注释写明
-了原版行为（TitleWindow.as 89-102 / AddButtonWindow.as 56-62 / Panel.as
-101-121）。`BaseWindow.m_msgCenter` 是原版真成员（BaseWindow.as:15），
-不要当 stub 产物删掉。
+`BaseWindow`→`TitleWindow`→`Panel`→`UIComponent`（#18 起全部真翻译，
+旧 #8/#9 的闭包 stub 已退役）：`Panel` 底板皮肤 + marginT 头部 + 标题
+Label + 可选 ControlBar；`TitleWindow` 加 22px 头部热区与右上关闭钮
+（close() 派发 Event.CLOSE + closeFn 短路调）；`BaseWindow` 换
+WindowBg/CloseButton 符号皮肤、ADDED_TO_STAGE→initalize→addedToLayer
+生命周期、data 带 width/height 置 _recenter 等 onEffectEnd 居中。
+`AddButtonWindow`/`AlertWindow` 等仍是 #7/#8 的形态 stub（不在 farm-basic
+spec 清单里，做窗口片时按其头注接真）。`Button` 也是真身（Button.as 逐句，
+`selected/toggle` 是 get/set 属性，跨类互斥走 Reflect.setProperty，
+见 uitools.md 约定）。`BaseWindow.m_msgCenter` 是原版真成员
+（BaseWindow.as:15），不要当 stub 产物删掉。
 
-**stub 的类形态也要逐字保真**（#8 implement 驳回轮的教训）：构造器签名、
-默认参数值、成对出现的成员都要照原文——即使本片没有任何调用方也不省：
-Panel 构造器默认值是 `"Panel"` 不是 `"Window"`（后者是 TitleWindow 的）、
-Button 构造器带 `(String="Button", Function=null)`。一句话半的成员直接
-真实现并保持成对对称：AllianceActivityManager 的 register/retriveAppHelper
-都真走 `_appHelpersMap`（register 写表、retrive 恒 null 的半真半 stub
-写出「注册了却取不回」）。
+PopUpManager/PopUpLayer（弹窗宿主层、模态遮罩、Enter 派发 keyEnter）与
+ToolTipManager/ToolTipLayer（stage MOUSE_OVER 捕获 + flowMouse/钳位）#18
+已全真；EffectManager/DragManager 仍是签名 stub，进出场动画/拖拽随后续
+模块接（PopUpLayer 头注的 [param] 数组形态就是它们的 rest 参数约定）。
+
+**spec 外的形态 stub 也要逐字保真**（#8 implement 驳回轮的教训）：构造器
+签名、默认参数值、成对出现的成员都要照原文——即使本片没有任何调用方也不
+省：Panel 构造器默认值是 `"Panel"` 不是 `"Window"`（后者是 TitleWindow
+的）、Button 构造器带 `(String="Button", Function=null)`。一句话半的成员
+直接真实现并保持成对对称：AllianceActivityManager 的 register/
+retriveAppHelper 都真走 `_appHelpersMap`（register 写表、retrive 恒 null
+的半真半 stub 写出「注册了却取不回」）。
 
 ## 测试口径
 

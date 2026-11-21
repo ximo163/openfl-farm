@@ -119,8 +119,11 @@ class ExtLoader extends Sprite {
 	// :105-115（原版 Function 形参 → Dynamic；泛型签名靠 Dynamic 统一）
 	override public function addEventListener(param1:String, param2:Dynamic, param3:Bool = false, param4:Int = 0,
 			param5:Bool = false):Void {
-		if (param1 == Event.COMPLETE || param1 == ProgressEvent.PROGRESS || param1 == IOErrorEvent.DISK_ERROR
-			|| param1 == IOErrorEvent.NETWORK_ERROR || param1 == IOErrorEvent.VERIFY_ERROR) {
+		// PORT-NOTE: IOErrorEvent.DISK_ERROR/NETWORK_ERROR/VERIFY_ERROR 在
+		// openfl 里被注释掉不可引用（openfl/events/IOErrorEvent.hx:20,76,77），
+		// 用 Flash Player 原值字面量（"diskError"/"networkError"/"verifyError"）。
+		if (param1 == Event.COMPLETE || param1 == ProgressEvent.PROGRESS || param1 == "diskError"
+			|| param1 == "networkError" || param1 == "verifyError") {
 			this._loader.contentLoaderInfo.addEventListener(param1, param2, param3, param4, param5);
 		} else {
 			super.addEventListener(param1, param2, param3, param4, param5);

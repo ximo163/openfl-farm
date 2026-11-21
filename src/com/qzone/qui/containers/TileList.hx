@@ -29,11 +29,13 @@ class TileList extends TileBase {
 	// TileList.as:13-18
 	private var maxGrop:Int;
 
-	protected var groupChild:Array<Dynamic> = [];
+	// 原版 protected（TileList.as:14）→ Haxe private（子类可见同 AS3）。
+	private var groupChild:Array<Dynamic> = [];
 
 	private var scrolled:Bool;
 
-	protected var groupInfo:Array<Dynamic> = [];
+	// 原版 protected（:17）→ private。
+	private var groupInfo:Array<Dynamic> = [];
 
 	// :20-27
 	public function new() {

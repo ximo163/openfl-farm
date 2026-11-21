@@ -22,7 +22,8 @@ class TileBase extends Canvas {
 
 	private var _childrenWidth:Int;
 
-	protected var _data:Array<Dynamic>;
+	// 原版 protected（TileBase.as:19/31）→ Haxe private（子类可见同 AS3）。
+	private var _data:Array<Dynamic>;
 
 	public var itemRollOverFn:Dynamic;
 
@@ -34,7 +35,7 @@ class TileBase extends Canvas {
 
 	public var tileWidth:Float;
 
-	protected var _childArray:Array<Dynamic> = [];
+	private var _childArray:Array<Dynamic> = [];
 
 	public var gapV:Int = 10;
 
@@ -165,7 +166,8 @@ class TileBase extends Canvas {
 	// :143-149
 	public function addElementAt(param1:DisplayObject, param2:Int):Void {
 		if (param2 <= this._childArray.length && param2 > -1) {
-			this._childArray.splice(param2, 0, param1);
+			// AS3 splice(pos, 0, item) 的「零删插入」= Haxe Array.insert。
+			this._childArray.insert(param2, param1);
 			this.eventHandle(param1);
 			this.delayCall(this.layout);
 		}
@@ -235,10 +237,10 @@ class TileBase extends Canvas {
 		return param1;
 	}
 
-	// :220-224
+	// :220-224（int ← Math.max 的 Number 截断）
 	private override function updateBackGround():Void {
-		var _loc1_:Int = Math.max(this._childrenWidth + this.paddingH, this._width - this._scrollW);
-		var _loc2_:Int = Math.max(this._childrenHeight + this.paddingV, this._height - this._scrollH);
+		var _loc1_:Int = Std.int(Math.max(this._childrenWidth + this.paddingH, this._width - this._scrollW));
+		var _loc2_:Int = Std.int(Math.max(this._childrenHeight + this.paddingV, this._height - this._scrollH));
 		this.drawBackGround(_loc1_, _loc2_);
 	}
 }

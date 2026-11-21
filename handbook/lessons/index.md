@@ -397,3 +397,65 @@
   只见 `/lite_ui_v_0?数字` 一条 404。防：跑 nodeboot/scenario 前确认
   assets/legacy/ 已同步（本地跑一遍 sync 脚本即可，不违规）。
 
+
+## 2026-11 · #18（farm-basic 收尾：qui 全量 + 管理器 + levelup + greensock core）
+
+- **AS3 密封类 hasOwnProperty ≠ Reflect.hasField**：js/eval 的 hasField 只
+  看实例物理字段，原型方法（TitleWindow.keyEnter，PopUpLayer.stageKeyUp
+  按名调它）和 get/set 存取器属性（UIComponent.toolTip，ToolTipLayer 靠它
+  显提示）都查不到——照字面译 hasField 会把这两条行为链静默断掉（编译绿、
+  门禁也未必立刻红）。防：`x.hasOwnProperty("名")` 译成 `As3.hasProp`
+  （hasField || field != null，走原型链与属性 getter），见 shim/As3.hx 头注。
+- **swf 符号「大写包段.小写类段」的注册键要 @:native**：`Update.bigPanel`
+  这类符号名不能照原路径声明——Haxe 点路径把大写开头段解析为模块名
+  （monthend-package-lowercase deviations 同因，import 直接 Type not
+  found）。修法：root 包建大写类 + `@:native("Update.bigPanel")` 改运行时
+  注册键，`Utils.getMaterial` 反射字符串一字不动（UpdateBigPanel.hx 等 7 枚）。
+- **EffectManager 的 In/Out 第 4 参是 `...rest` 不是单参**：ToolTipLayer
+  `EffectManager.In(this,tip,cb,this._toolTip)` 是「回调参数表」——stub 侧
+  收成 `[this._toolTip]`，PopUpLayer 同（`[param1]`）；真身翻译时 rest →
+  `args:Array<Dynamic>` 按 CLAUDE.md ...rest 规则。
+- **openfl 泛型 addEventListener 可以用 Dynamic 覆写**：ExtLoader 转发
+  COMPLETE/PROGRESS 到 contentLoaderInfo 的 `override public function
+  addEventListener(param1:String, param2:Dynamic, ...)` —— openfl 的
+  `<T>(EventType<T>, T->Void)` 与 Dynamic 双向统一，直接编过；别为覆写
+  改调用方类型。
+- **swf 符号具名子件的写路径 = As3.childOf + Reflect.setProperty**：
+  `panelUI["levelTxt"].htmlText = ...` 在 openfl 动画运行时里子件不是实例
+  字段（#8 Crop step1 先例），childOf（字段→getChildByName）取；写必须走
+  setProperty，js 裸 Dynamic 写只落影子字段。`.y +=` 这类读写混合按
+  getProperty + setProperty 两步拆（LevelUpWindow.createPanel 全套）。
+- **include 全量 cpp typer 扫描是唯一真实编译检查，html5 绿不算数**：
+  本轮新译的窗口链/levelup 类全都 dce 不可达（ApplicationMain 起没有任何
+  引用链），`openfl build html5` 根本不解析这些文件——8 处硬错（protected
+  关键字、无父类 super()、Float→Int、extends abstract、cast 带参、
+  openfl 缺常量）在 html5 全绿的情况下躺着过了全部门禁，靠 #15 的
+  `--macro include("", true, [...], ["src"])` + `-cpp` 扫描才暴露。
+  新译代码即使全部门禁绿也要跑一遍扫描；只到 `Library hxcpp is not
+  installed` 即算通过。两个配置坑：小写模块名（mx_internal.hx，对应关系
+  钉死文件名）解析器拒载，必须进 include 的 exclude 表；include 的
+  classPaths 参数必须限 `["src"]`，否则 swf 库 classpath 根下的
+  SWFTimelineContainer 等也进扫描报无关错。
+- **unsafe cast 的目标类型参数必须是 Dynamic**：`cast(x, Array<Seed>)`
+  恒红（源是 Dynamic 也救不了），只有 `Array<Dynamic>` 合法。带类型的
+  AS3 for-each 照 `for (_loc3_:Seed in cast(x, Array<Dynamic>))` 译——
+  预声明的循环变量保 Seed，Dynamic 迭代元素隐式统一（Player.hx:123 起
+  全仓 cast 到 Array<Dynamic> 是唯一合法形态）。
+- **openfl 的 ByteArray 是 abstract，不能 extends**：openfl 9 起
+  `abstract ByteArray(ByteArrayData)`，AS3 的 `extends ByteArray` 直接
+  "Should extend by using a class"。改继承底层运行时类 ByteArrayData
+  （模块子类型，全限定 `openfl.utils.ByteArray.ByteArrayData`，裸
+  `openfl.utils.ByteArrayData` Type not found）——abstract 对 ByteArrayData
+  双向隐式转换，IS-A 语义不破（mx/core/ByteArrayAsset.hx PORT-NOTE）。
+- **FFDec 在无父类构造器里也照印 super()，Haxe 无父类不可调**：
+  WindowLabelMaker/WindowTabBarMaker（以及 PluginProxy）原样照抄的
+  `super();` 编译红——AS3 一切类默认继承 Object 所以反编译里句句有；Haxe
+  无 extends 的类直接删掉这行，其余构造体照抄。
+- **openfl/events/IOErrorEvent 缺 DISK/NETWORK/VERIFY_ERROR 常量**：
+  openfl 源码里这三行被注释掉（IOErrorEvent.hx:20,76,77）不可引用；
+  Flash Player 原值是普通字符串（"diskError"/"networkError"/"verifyError"），
+  照值内联 + 注明出处（ExtLoader.addEventListener PORT-NOTE）。
+- **AS3 splice(pos, 0, item) 的零删插入 = Haxe Array.insert**：
+  Haxe 的 splice(pos, len) 没有 ...values 插入参，照抄 arity 直接
+  "Too many arguments"；删除用途照抄可用（全仓 7 处先例），插入用途换
+  insert（TileBase.addElementAt）。

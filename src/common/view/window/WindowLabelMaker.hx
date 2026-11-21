@@ -17,10 +17,8 @@ class WindowLabelMaker {
 	// WindowLabelMaker.as:13（首用前为 null：addTarget 里懒建）
 	public static var labelFormat:TextFormat;
 
-	// :15-18
-	public function new() {
-		super();
-	}
+	// :15-18（FFDec 在无父类构造器里也照印 super()，Haxe 无父类不可调，省）
+	public function new() {}
 
 	// :20-35
 	public static function addTarget(param1:Label):Void {

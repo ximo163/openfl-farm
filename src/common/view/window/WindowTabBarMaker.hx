@@ -22,10 +22,8 @@ class WindowTabBarMaker {
 
 	public static var tabSelectedFormat:TextFormat;
 
-	// :18-21
-	public function new() {
-		super();
-	}
+	// :18-21（FFDec 在无父类构造器里也照印 super()，Haxe 无父类不可调，省）
+	public function new() {}
 
 	// :23-48
 	public static function addTarget(param1:TabBar):Void {

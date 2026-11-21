@@ -111,7 +111,11 @@ class LevelUpModel extends EventDispatcher {
 			// :102（AS3 Int.toString() → Std.string，#8 BackgroundModel 同款约定）
 			_loc3_ = Settings.getInstance().getCropByID(Std.string(_loc4_._id));
 			if (_loc3_ != null) {
-				if (!(Reflect.hasField(_loc3_, "id") && this.isNotShow(Reflect.field(_loc3_, "id")))) {
+				// PORT-NOTE: 原版 :105 给 String 形参传的是配置里的数字 id
+				// （nc_data.php:6257 `"id": 256`），AS3 隐式强转成 "256" 才命中
+				// exclude_seeds；Haxe 裸传数字时 indexOf 严格等值恒 miss，
+				// 显式 Std.string 复刻强转。
+				if (!(Reflect.hasField(_loc3_, "id") && this.isNotShow(Std.string(Reflect.field(_loc3_, "id"))))) {
 					if (!(Reflect.hasField(_loc3_, "isVIP") && As3.eqString(Reflect.field(_loc3_, "isVIP"), "1")
 						|| Reflect.hasField(_loc3_, "isMill") && As3.eqString(Reflect.field(_loc3_, "isMill"), "1"))) {
 						this.m_seeds.push(_loc4_);

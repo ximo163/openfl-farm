@@ -246,7 +246,7 @@ class FriendsModelTest {
 		Assert.isTrue(fMe.status == null); // :955 状态表无我 → null
 		Assert.isTrue(f1.status == null);
 		Assert.equals(1, countType(log, FriendsModel.EVENT_DATA_LOADING)); // :917
-		Assert.isFalse(firstData(log, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 		var page = firstData(log, FriendsModel.EVENT_REFRESH_PAGE);
 		Assert.equals(1, Reflect.field(page, "index"));
 		Assert.equals(1, Reflect.field(page, "total"));
@@ -760,7 +760,7 @@ class FriendsModelTest {
 		Assert.isTrue(fA.status == Reflect.field(st, "101")); // 挂同一对象
 		// :330 + processFriendList :917 两处 DataLoading(false)
 		Assert.equals(2, countType(log, FriendsModel.EVENT_DATA_LOADING));
-		Assert.isFalse(firstData(log, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 		Assert.equals(1, countType(log, FriendsModel.EVENT_REFRESH_PAGE));
 
 		// 载荷带 filter 键（非本部署形态，钉读取路径 + 保留极性的后果）：
@@ -805,7 +805,7 @@ class FriendsModelTest {
 		Assert.isTrue(Reflect.field(Reflect.field(model.m_friendStatus, "501"), "6") == true);
 		Assert.isTrue(fA.status == Reflect.field(model.m_friendStatus, "501")); // :641 copyStatus
 		Assert.equals(1, countType(log, FriendsModel.EVENT_DATA_LOADING)); // :642
-		Assert.isFalse(firstData(log, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 		Assert.equals(1, countType(log, FriendsModel.EVENT_REFRESH_PAGE)); // :644
 	}
 
@@ -831,8 +831,8 @@ class FriendsModelTest {
 		Assert.isTrue(model.friendListLocal == model.m_friendListNet); // :599-601
 		var loading = allData(log, FriendsModel.EVENT_DATA_LOADING);
 		Assert.equals(2, loading.length); // :509 false → :621 true
-		Assert.isFalse(loading[0] == true);
-		Assert.isTrue(loading[1] == true);
+		Assert.isTrue(Reflect.field(loading[0], "show") == false);
+		Assert.isTrue(Reflect.field(loading[1], "show") == true);
 
 		// 有自己：不补行，_uId 对上的行同步 exp/money（:522-537）
 		var again = freshModel();
@@ -864,7 +864,7 @@ class FriendsModelTest {
 		Assert.equals(1, countType(log3, FriendsModel.EVENT_DATA_LOAD_FAILED)); // :566
 		Assert.equals("停机维护中", Reflect.field(firstData(log3, FriendsModel.EVENT_DATA_LOAD_FAILED), "error"));
 		Assert.equals(1, countType(log3, FriendsModel.EVENT_DATA_LOADING)); // :509
-		Assert.isFalse(firstData(log3, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log3, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 	}
 
 	// :1031-1059 onFriendsDataFailed：四类错误 → DataFailed 带重试链接文案
@@ -886,7 +886,7 @@ class FriendsModelTest {
 		}
 		Assert.equals(4, countType(log, FriendsModel.EVENT_DATA_LOAD_FAILED));
 		Assert.equals(4, countType(log, FriendsModel.EVENT_DATA_LOADING)); // :1041 每次先 false
-		Assert.isFalse(firstData(log, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 
 		model.onFriendsDataFailed(voEvent(CommandDefs.CMD_GET_FRIENDLIST, {}, {errorType: "securityError"}));
 		Assert.equals(4, countType(log, FriendsModel.EVENT_DATA_LOAD_FAILED));
@@ -1049,7 +1049,7 @@ class FriendsModelTest {
 		Settings.getInstance().loadLocalSettings({useflag: "10"});
 		model.loadFriendsData();
 		Assert.equals(1, countType(log, FriendsModel.EVENT_DATA_LOADING)); // :284
-		Assert.isTrue(firstData(log, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log, FriendsModel.EVENT_DATA_LOADING), "show") == true);
 		Assert.isTrue(model.m_updateFriendCache == true); // :317 缓存不可用分支
 
 		// qzone 模式取个位："10" 个位 0 → 关
@@ -1078,7 +1078,7 @@ class FriendsModelTest {
 		Assert.isTrue(model.m_gotFriendStatus == true);
 		// :330 + processFriendList :917 两处 DataLoading(false) + RefreshPage
 		Assert.equals(2, countType(log, FriendsModel.EVENT_DATA_LOADING));
-		Assert.isFalse(firstData(log, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 		Assert.equals(1, countType(log, FriendsModel.EVENT_REFRESH_PAGE));
 		Session.getInstance().healthModeValid = false;
 
@@ -1092,13 +1092,13 @@ class FriendsModelTest {
 		Assert.isTrue(model.m_friendStatus == stRef); // 不重读不重排键
 		Assert.isTrue(model.m_gotFriendStatus == true);
 		Assert.equals(before + 3, log.length); // :330 + :917 + RefreshPage
-		Assert.isFalse(lastData(log, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(lastData(log, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 
 		// param=true → 跳过复用走请求（theApp null no-op），多 DataLoading(true)
 		var before2 = log.length;
 		model.refreshFriendStatus(true); // :475-490
 		Assert.equals(before2 + 1, log.length);
-		Assert.isTrue(lastData(log, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(lastData(log, FriendsModel.EVENT_DATA_LOADING), "show") == true);
 	}
 
 	// :586-627 loadFriendStatus：健康模式早退不落 m_friendListLocal，但早退
@@ -1121,7 +1121,7 @@ class FriendsModelTest {
 		// DataLoading{show:false}；此时三处列表引用均 null → 不进
 		// processFriendList，无 RefreshPage
 		Assert.equals(1, countType(logH, FriendsModel.EVENT_DATA_LOADING));
-		Assert.isFalse(firstData(logH, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(logH, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 
 		var log:Array<Dynamic> = [];
 		listen(log);
@@ -1129,7 +1129,7 @@ class FriendsModelTest {
 		Assert.equals(2, model.friendListLocal.length); // :599-601
 		Assert.equals(fA, model.friendListLocal[0]);
 		Assert.equals(1, countType(log, FriendsModel.EVENT_DATA_LOADING));
-		Assert.isTrue(firstData(log, FriendsModel.EVENT_DATA_LOADING) == true); // :621
+		Assert.isTrue(Reflect.field(firstData(log, FriendsModel.EVENT_DATA_LOADING), "show") == true); // :621
 
 		var log2:Array<Dynamic> = [];
 		listen(log2);
@@ -1138,7 +1138,7 @@ class FriendsModelTest {
 		model.loadFriendStatus([fA], false); // :603-608 复用 → onFriendStatusLoaded
 		// :330 + processFriendList :917 两处 DataLoading(false) + RefreshPage
 		Assert.equals(2, countType(log2, FriendsModel.EVENT_DATA_LOADING));
-		Assert.isFalse(firstData(log2, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log2, FriendsModel.EVENT_DATA_LOADING), "show") == false);
 		Assert.equals(1, countType(log2, FriendsModel.EVENT_REFRESH_PAGE));
 		Assert.isTrue(model.m_gotFriendStatus == true);
 
@@ -1152,7 +1152,7 @@ class FriendsModelTest {
 		var log3:Array<Dynamic> = [];
 		listen(log3);
 		model.loadFriendStatus([fA], true);
-		Assert.isTrue(firstData(log3, FriendsModel.EVENT_DATA_LOADING) == true);
+		Assert.isTrue(Reflect.field(firstData(log3, FriendsModel.EVENT_DATA_LOADING), "show") == true);
 	}
 
 	// :1234-1245 getFriendByID：按 _uin 查列表；查无/null 列表返回 null

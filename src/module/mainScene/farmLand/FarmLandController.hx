@@ -643,8 +643,10 @@ class FarmLandController extends Controller {
 			// 实证），走 ClipProps 侧表；mouseChildren/mouseEnabled 是真属性，
 			// 强类型化走 setter（#8 同款修法）
 			ClipProps.set(dogTip, "effect", Move);
+			// mouseEnabled 在 InteractiveObject 上（DisplayObject 基类没有），
+			// DisplayObjectContainer 继承了它——两个真属性共用一个 cast
 			(dogTip : DisplayObjectContainer).mouseChildren = false;
-			(dogTip : DisplayObject).mouseEnabled = false;
+			(dogTip : DisplayObjectContainer).mouseEnabled = false;
 			ClipProps.set(dogTip, "cacheAsBitmp", true);
 			// tipText/txt 是素材里具名子实例（TextField，AS3 剪辑点取按子名
 			// 解析）——hasField 在所有目标都只见物理字段（html5 也恒跳过），

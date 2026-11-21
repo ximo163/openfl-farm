@@ -112,7 +112,9 @@ class TaskOverWindow extends ConfirmWindow {
 	}
 
 	// TaskOverWindow.as:113-177。`super.data[...] != undefined` → Reflect
-	// 判空；eNum 直接进 htmlText（AS3 隐式 String()，Dynamic 赋值同语义）
+	// 判空；eNum 是 JSON 数字（haxe.Json.parse 后为 Int），AS3 在 htmlText
+	// setter 边界隐式 String()，Haxe 的 Dynamic→String 赋值不做转换，裸 Int
+	// 进 openfl HTMLParser 会抛异常，须显式 Std.string（同 ProfileHead.hx:253）
 	private override function setData():Void {
 		var _loc1_:Array<Dynamic> = null;
 		var _loc2_:Int = 0;
@@ -152,7 +154,7 @@ class TaskOverWindow extends ConfirmWindow {
 				_loc8_ = new TextField();
 				_loc8_.height = 40;
 				_loc8_.wordWrap = true;
-				_loc8_.htmlText = Reflect.field(_loc1_[_loc5_], "eNum");
+				_loc8_.htmlText = Std.string(Reflect.field(_loc1_[_loc5_], "eNum"));
 				_loc8_.setTextFormat(new TextFormat("embedFontA", 20, 16737792, false, null, null, null, null, TextFormatAlign.CENTER));
 				_loc8_.embedFonts = true;
 				this._giftContent.addChild(_loc8_);

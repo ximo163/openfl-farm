@@ -1,7 +1,9 @@
 package;
 
 import openfl.Lib;
+import shim.DeviceFonts;
 import shim.FlashVars;
+import shim.PlayerBox;
 import shim.SwfUrlBase;
 
 /**
@@ -22,11 +24,20 @@ import shim.SwfUrlBase;
  *
  * 探针页接口 __openflFarmAdvance/__openflFarmState 随探针页退役（issue #3）；
  * __openflFarmReady 移到主程序第一帧置位（shim.Harness）。
+ *
+ * 播放器还有第三件事：把盒子钉死、向 OS 要设备字体。FarmLite.as:406 的
+ * NO_SCALE 只在固定盒子里是 no-op，Android 全屏 surface 上会拆掉盒子
+ * （舞台读数变全屏、UI 散架，#10 真机实证）——super() 之后
+ * shim.PlayerBox 重映射视口（铺满全屏，见该文件头）；设备字体由
+ * shim.DeviceFonts 以系统 CJK 字体补齐（Android 上 openfl 无逐字形回退，
+ * 汉字全空，见该文件头）。
  */
 class Main extends FarmLite {
 	public function new() {
 		SwfUrlBase.install();
+		DeviceFonts.install();
 		FlashVars.inject(@:privateAccess Lib.current.__loaderInfo);
 		super();
+		PlayerBox.install();
 	}
 }

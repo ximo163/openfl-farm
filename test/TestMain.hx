@@ -71,6 +71,22 @@ class TestMain {
 		runner.addCase(new ScenarioRunnerContractTest());
 		// issue #10：素材剪辑动态属性侧表（cpp 上裸写抛 Invalid field，真机闪退修复）
 		runner.addCase(new shim.ClipPropsTest());
+		// issue #18：farm-basic 收尾（write-tests 阶段，对 stub 失败）——
+		// DateTimeUtils 时间格式化/同日/闰年、HtmlUtil 转义与双字节长度、
+		// ImageSizeUtil 适配矩形数学（含 param4→height 原版笔误）、Payment
+		// 序号/对账参数/回调、PropTween 链表节点、LevelUpModel 土地档位表
+		// 与种子过滤/加载门位/URL 拼装
+		runner.addCase(new com.qzone.utils.DateTimeUtilsTest());
+		runner.addCase(new com.qzone.utils.HtmlUtilTest());
+		runner.addCase(new com.qzone.utils.ImageSizeUtilTest());
+		runner.addCase(new com.qzone.sns.entities.PaymentTest());
+		runner.addCase(new com.greensock.core.PropTweenTest());
+		runner.addCase(new module.levelup.LevelUpModelTest());
+		// issue #18（review-impl 要求补的注册行，lessons 条目同 #8 先例：
+		// implement 阶段新增测试文件只能由本阶段注册）——As3.arrayIndex
+		// 字符串键取 AS3 Array 语义：TileList 拼接键绑定、正则下标边界表、
+		// ViewStack Dictionary 混键种死门
+		runner.addCase(new shim.As3ArrayIndexTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

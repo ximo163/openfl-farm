@@ -34,6 +34,24 @@ class As3 {
 	}
 
 	/**
+	 * AS3 密封类实例的 hasOwnProperty（含 trait：方法与 get/set 属性）。
+	 * Haxe 的 Reflect.hasField 只看实例自有字段，原型上的方法
+	 * （TitleWindow.keyEnter）和存取器属性（UIComponent.toolTip）都查不到，
+	 * js/eval 上会漏——Reflect.field 沿原型链且走属性 getter，兜底补全。
+	 * 值为 null 的真字段两侧都判真（AS3 hasOwnProperty 不看值）。
+	 */
+	public static function hasProp(o:Dynamic, name:String):Bool {
+		if (o == null) {
+			return false;
+		}
+		if (Reflect.hasField(o, name)) {
+			return true;
+		}
+		return Reflect.field(o, name) != null;
+	}
+
+
+	/**
 	 * AS3 的 `x == "字面量"`（String 常量一侧）：另一侧是 Number 时按
 	 * Number(字符串) 比较（"1"==1 为真），是 String 时直比。
 	 * Haxe 对 Dynamic == String 走严格比较，1 == "1" 为假，不等价。
@@ -74,6 +92,41 @@ class As3 {
 			return cast(target, openfl.display.DisplayObjectContainer).getChildByName(name);
 		}
 		return null;
+	}
+
+	/**
+	 * AS3 数组按字符串键取值 `arr[key]`：键是正则无符号整数字串（无前导
+	 * 零、≤ 2^32-2）就按下标访问（越界 undefined→null）；其余字串走动态
+	 * 属性——数组上没人挂过这类属性，等价 undefined→null。TileList.as:124
+	 * 的 `_data[_loc2_ + _loc3_ * maxGrop]` 依赖此语义：for-in 键是 String，
+	 * String + Number 在 AS3 是拼接（"1"+12→"112"），"00"/"012" 这类非正则
+	 * 串落 undefined、"112" 这类正则串落（多半错位的）元素。
+	 */
+	public static function arrayIndex(arr:Array<Dynamic>, key:String):Dynamic {
+		if (arr == null) {
+			return null;
+		}
+		var len:Int = key.length;
+		if (len == 0 || len > 10) {
+			return null;
+		}
+		for (i in 0...len) {
+			var c:Int = StringTools.fastCodeAt(key, i);
+			if (c < "0".code || c > "9".code) {
+				return null;
+			}
+		}
+		if (len > 1 && StringTools.fastCodeAt(key, 0) == "0".code) {
+			return null;
+		}
+		var value:Float = Std.parseFloat(key);
+		if (value > 4294967294.0) {
+			return null;
+		}
+		if (value >= arr.length) {
+			return null;
+		}
+		return arr[Std.int(value)];
 	}
 
 	/**

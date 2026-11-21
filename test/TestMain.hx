@@ -69,6 +69,17 @@ class TestMain {
 		// 请求序列/全绿判定/检查点状态）。执行器与 diff 算法演示按 issue
 		// 走 PR 说明 + CI 人工配套，utest 只钉纯数据契约（见测试类头）
 		runner.addCase(new ScenarioRunnerContractTest());
+		// issue #18：farm-basic 收尾（write-tests 阶段，对 stub 失败）——
+		// DateTimeUtils 时间格式化/同日/闰年、HtmlUtil 转义与双字节长度、
+		// ImageSizeUtil 适配矩形数学（含 param4→height 原版笔误）、Payment
+		// 序号/对账参数/回调、PropTween 链表节点、LevelUpModel 土地档位表
+		// 与种子过滤/加载门位/URL 拼装
+		runner.addCase(new com.qzone.utils.DateTimeUtilsTest());
+		runner.addCase(new com.qzone.utils.HtmlUtilTest());
+		runner.addCase(new com.qzone.utils.ImageSizeUtilTest());
+		runner.addCase(new com.qzone.sns.entities.PaymentTest());
+		runner.addCase(new com.greensock.core.PropTweenTest());
+		runner.addCase(new module.levelup.LevelUpModelTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

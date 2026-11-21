@@ -23,16 +23,23 @@ suites:
   manifest: { cmd: "bash checks/manifest-valid.sh", timeout: 2m }
   compile: { cmd: "haxelib run openfl build html5", timeout: 10m }
   test: { cmd: "haxe test.hxml", timeout: 5m }
-preflight: [manifest, compile, test]
-budget: { max_runs: 15, max_time: 4h }
+  # JSON 解析只许走门面（对齐默认流水线，2026-11-21）：#10 这类 chore 要碰
+  # FlashVars/config 解析，#7 裸控制字符红两轮 CI 的坑对 chore 同样存在。
+  json-facade: { cmd: "bash checks/json-facade-only.sh", timeout: 2m }
+preflight: [manifest, compile, test, json-facade]
+budget: { max_runs: 15, max_time: 6h }   # ≥ 4 attempts × 120m 的最坏情况（2026-11-21 与 turn 上限配套调）
 stages:
   - id: implement
     kind: agent
     model: strong
     prompt: prompts/chore.md
-    max_turns: 160
-    timeout: 60m
-    verify: [compile, test]
+    # 300/120m（2026-11-21）：V1 在旧值 160/60m 内过，但上限只在撞到时才有
+    # 意义——#10（android config 接线）起无人值守连跑，等撞 error_max_turns
+    # 再调就白烧一轮（#7 教训）。chore 本分内还是小任务，300 不是放任失控
+    # （远低于默认流水线 implement 的 1000，那个是 cheap 模型整模块翻译）。
+    max_turns: 300
+    timeout: 120m
+    verify: [compile, test, json-facade]
     ci: true
     attempts: 4
     escalate: { after: 2, models: [strong2] }
@@ -40,6 +47,11 @@ stages:
     kind: review
     model: judge
     prompt: prompts/review-chore.md
+    # 和 implement 的 CI 等待并行（对齐 #224，默认流水线 review-impl 的做法）：
+    # chore 的 implement 也开 PR 等 web-build/web-smoke，review 干等同样的
+    # 6-7 分钟纯串行浪费。CI 红时这轮审核作废（不算驳回），chore 的 CI 面
+    # 小（src/+资产清单），绿面大。
+    during_verify: true
     max_turns: 100
     on_reject: implement
     max_rejects: 4

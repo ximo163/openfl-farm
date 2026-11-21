@@ -20,8 +20,9 @@ import utest.Assert;
  *   isNotShow :51-67、getLevelUpPicURL :69-71、loadSeedsInfo :74-82、
  *   onGetSeedsInfo :89-116、isYellow :118-120）
  * - 配置：legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_data.php
- *   <crops>（:6020 id 1 草莓——无 isVIP/isMill；:6119 id 101 薰衣草 isMill
- *   "0"；id 169 红色景观树 isVIP 为数字 1；:6257 id 256 石竹花——无
+ *   <crops>——作物 id 全部是 JSON **数字**（:6020 `"id": 1` 草莓——无
+ *   isVIP/isMill；:6119 `"id": 101` 薰衣草 isMill 字符串 "0"；:6182
+ *   `"id": 169` 红色景观树 isVIP 数字 1；:6257 `"id": 256` 石竹花——无
  *   isVIP/isMill）＋ nc_addon.php:106 exclude_seeds（256 在列）、:58
  *   vipSeedLink、:267 secondList 的 levelUpUI。红土地起点 28（spec/
  *   levels.json upgrade.php:4 首行 level 28）与黑土地起点 40（upblack.php:4
@@ -32,6 +33,16 @@ import utest.Assert;
  * 的 CommandEvent（result 为 Array，走 NetHelper.getVOData 的 Array 直返
  * 分支）。Settings 是全局单例：setup/teardown 钉入/复位 m_params 与
  * m_configDataModel（FakeConfigModel 只实现 getData）。
+ *
+ * 数字 id 形状是承重的（#18 review-tests 驳回返工：原 round 把 fixture
+ * 的 id 钉成字符串，恰好绕开 AS3 两处数字↔字符串隐式转换，exclude_seeds
+ * 过滤静默失效也测不出来——#7「fixture 改内容不可」的复刻）：
+ * - Settings.as:390 `_loc3_["id"] == param1` 是 AS3 松等（数字 1 == "1"
+ *   命中）；Haxe 严格 == 在 eval 上数字对字符串恒失配（#8 坑），译文需
+ *   As3.eqString（GetCropID.hx:212 先例，SettingsTest 有直测钉子）。
+ * - LevelUpModel.as:105 isNotShow 的 String 形参收数字实参时 AS3 隐式
+ *   强转成 "256" 命中；html5 的 indexOf 严格等值，译文裸传数字恒 miss，
+ *   需显式 Std.string + // PORT-NOTE:。
  */
 @:access(common.Settings)
 @:access(module.levelup.LevelUpModel)
@@ -90,18 +101,27 @@ class LevelUpModelTest {
 	}
 
 	// :89-116 过滤链（顺序逐层）：
-	//   1. getCropByID 命中配置才继续（:102-103，配置缺失整个丢弃）
-	//   2. crop 有 id 且 ∈ exclude_seeds → 丢弃（:105，isNotShow :51-67）
-	//   3. isVIP/isMill 为 "1" → 丢弃（:107。AS3 宽松等值：nc_data.php 里
+	//   1. getCropByID 命中配置才继续（:102-103，配置缺失整个丢弃）。配置
+	//      里 id 是 JSON 数字，Settings.as:390 的 `_loc3_["id"] == param1`
+	//      是 AS3 松等——Haxe 严格 == 在 eval 上数字对字符串恒失配，
+	//      译文需 As3.eqString（#8 坑，GetCropID.hx:212 先例）
+	//   2. crop 有 id 且 ∈ exclude_seeds → 丢弃（:105，isNotShow :51-67）。
+	//      实参是配置里的数字 id，AS3 String 形参隐式强转成 "256" 命中；
+	//      html5 的 indexOf 严格等值，译文裸传数字恒 miss——需显式
+	//      Std.string + // PORT-NOTE:，否则过滤在 CI 门禁目标上静默失效
+	//   3. isVIP/isMill 为 "1" → 丢弃（:107。AS3 宽松等值：nc_data.php:6182
 	//      isVIP 是 JSON 数字 1，1 == "1" 为 true，照抄）
 	//   4. 其余按应答顺序推入 VO 实体本身（:109）
 	public function test_onGetSeedsInfo_filters_and_dispatches() {
+		// id 钉 JSON 数字（nc_data.php 原形状，裁剪掉非过滤用字段）——
+		// 字符串 id 会绕开 :105 的 String 形参隐式强转和 Settings.as:390
+		// 的松等（见类头「数字 id 形状是承重的」）
 		pinCrops([
-			{"id": "1"}, // 草莓（nc_data.php:6020）：无 isVIP/isMill
-			{"id": "101", "isMill": "0"}, // 薰衣草（:6119）isMill "0" → 不排除
-			{"id": "169", "isVIP": 1}, // 红色景观树：isVIP 数字 1 → 排除
-			{"id": "256"}, // 石竹花（:6257）：无 VIP/Mill，但 256 ∈ exclude_seeds
-			{"id": "30001", "isMill": "1"} // isMill "1" → 排除（真实配置无此档，钉 :107 分支）
+			{"id": 1}, // 草莓（nc_data.php:6020）：无 isVIP/isMill
+			{"id": 101, "isMill": "0"}, // 薰衣草（:6119）isMill "0" → 不排除
+			{"id": 169, "isVIP": 1}, // 红色景观树（:6182）：isVIP 数字 1 → 松等 "1" 排除
+			{"id": 256}, // 石竹花（:6257）：无 VIP/Mill，数字 id 强转 "256" ∈ exclude_seeds → 排除
+			{"id": 30001, "isMill": "1"} // isMill "1" → 排除（真实配置无此档，钉 :107 分支）
 		]);
 		pinParams({"exclude_seeds": "256,261,395"}); // nc_addon.php:106 前 3 项
 

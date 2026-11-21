@@ -97,7 +97,7 @@ class As3 {
 	/**
 	 * AS3 数组按字符串键取值 `arr[key]`：键是正则无符号整数字串（无前导
 	 * 零、≤ 2^32-2）就按下标访问（越界 undefined→null）；其余字串走动态
-	 * 属性——数组上没人挂过这类属性，等价 undefined→null。TileList.as:124
+	 * 属性——数组上没人挂过这类属性，等价 undefined→null。TileList.as:134
 	 * 的 `_data[_loc2_ + _loc3_ * maxGrop]` 依赖此语义：for-in 键是 String，
 	 * String + Number 在 AS3 是拼接（"1"+12→"112"），"00"/"012" 这类非正则
 	 * 串落 undefined、"112" 这类正则串落（多半错位的）元素。

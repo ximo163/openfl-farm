@@ -7,7 +7,7 @@ import utest.Assert;
  * As3.arrayIndex：AS3 数组按字符串键取值（issue #18 实现复审驳回返工）。
  *
  * 出处：
- * - legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/TileList.as:124
+ * - legacy/decompiled/main3_v_221/scripts/com/qzone/qui/containers/TileList.as:134
  *   `_loc1_[dataField] = _data[_loc2_ + _loc3_ * this.maxGrop];`——_loc2_ 是
  *   for-in 的 String 键（"0","1",…），AS3 的 String + Number 是**拼接**：
  *   行 0（_loc3_=0，maxGrop=12）得键 "00","10","20"…；行 1 得 "012","112"…
@@ -24,7 +24,7 @@ import utest.Assert;
 class As3ArrayIndexTest {
 	public function new() {}
 
-	// TileList.as:124 的完整取值链：拼接键 + 字符串键取数组。
+	// TileList.as:134 的完整取值链：拼接键 + 字符串键取数组。
 	// 24 元素数据（2 行 × maxGrop=12）下：行 0 首列 "00" 非正则 → undefined；
 	// 行 0 其余列 "10","20" 落错位元素（data[10]、data[20]）；行 1 全列
 	// "012"…"912" 非正则或越界 → undefined

@@ -1,9 +1,11 @@
 package common;
 
+import com.qzone.qfa.interfaces.IModel;
 import utest.Assert;
 
 /**
- * 预加载器的 flashvar 解析与 config URL 纯逻辑。
+ * 预加载器的 flashvar 解析与 config URL 纯逻辑；#18 驳回返工追加
+ * getCropByID 配置表查找（数字 id 的 AS3 松等钉子，出处见该用例注释）。
  *
  * 出处：
  * - legacy/deploy/QFarmFlash/source/core/view/qf_default/nc.htm:18-91 —— FLASH_VARS 的键与值
@@ -186,4 +188,55 @@ class SettingsTest {
 		Assert.equals("", settings.appImgPrefix);
 		Assert.equals("", settings.resolveUrl);
 	}
+
+	// Settings.as:376-396 getCropByID：真实配置 crops 的 id 是 JSON 数字
+	// （nc_data.php:6020 `"id": 1` 草莓、:6257 `"id": 256` 石竹花），原版
+	// `_loc3_["id"] == param1`（:390）是 AS3 松等——数字 256 == "256" 命中。
+	// Haxe 对 Dynamic == String 走严格比较（eval/cpp 失配，js 偶然松等同，
+	// lessons #8），译文需同款 As3.eqString（GetCropID.hx:212 先例）。
+	// #18 review-tests 驳回返工的测试侧钉子：数字形状下 eqString 落地前
+	// getCropByID 恒返回 null（LevelUpModel 过滤链 :102 第一步就全灭）；
+	// 字符串 id 的直比分支等值不变（回归钉）。
+	public function test_getCropByID_matches_numeric_config_id() {
+		var settings = Settings.getInstance();
+		var savedModel = settings.m_configDataModel;
+		var crop1 = {"id": 1, "name": "草莓"}; // nc_data.php:6020 形状（裁剪）
+		var crop256 = {"id": 256, "name": "石竹花"}; // nc_data.php:6257 形状（裁剪）
+		var cropStr = {"id": "7"}; // 字符串 id：钉 eqString 的 String 直比分支
+		var crops:Array<Dynamic> = [crop1, crop256, cropStr]; // id 键种混装，显式 Dynamic
+		settings.m_configDataModel = new FakeConfigModel({"crops": crops});
+		Assert.equals(crop1, settings.getCropByID("1"), "数字 id 1 松等命中（Settings.as:390）");
+		Assert.equals(crop256, settings.getCropByID("256"), "数字 id 256 松等命中（exclude_seeds 同源 id）");
+		Assert.equals(cropStr, settings.getCropByID("7"), "字符串 id 直比命中（等值不变）");
+		Assert.isNull(settings.getCropByID("999"), "无匹配走空循环返回 null（Settings.as:395）");
+		settings.m_configDataModel = savedModel; // Settings 全局单例，复位
+	}
+}
+
+/**
+ * 测试用 IModel：getData 按表名取 Reflect 字段，其余 no-op（同
+ * LevelUpModelTest 的口径；Settings 只经 getData 读配置表）。
+ */
+private class FakeConfigModel implements IModel {
+	var tables:Dynamic;
+
+	public function new(tables:Dynamic) {
+		this.tables = tables;
+	}
+
+	public function getData(param1:String):Dynamic {
+		return Reflect.field(this.tables, param1);
+	}
+
+	public function flush():Void {}
+
+	public function setData(param1:String, param2:Dynamic):Bool {
+		return true;
+	}
+
+	public function notify(param1:String):Void {}
+
+	public function removeNotifier(param1:String, param2:Dynamic):Void {}
+
+	public function addNotifier(param1:String, param2:Dynamic):Void {}
 }

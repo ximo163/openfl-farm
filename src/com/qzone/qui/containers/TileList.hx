@@ -138,7 +138,7 @@ class TileList extends TileBase {
 						}
 					}
 					if (_loc1_.parent == null) {
-						// TileList.as:124 `_data[_loc2_ + _loc3_ * this.maxGrop]`：
+						// TileList.as:134 `_data[_loc2_ + _loc3_ * this.maxGrop]`：
 						// String 键 + Number 是 AS3 拼接，字符串键按
 						// As3.arrayIndex 取（PORT-NOTE 见类头）——照译不修
 						Reflect.setProperty(_loc1_, this.dataField,

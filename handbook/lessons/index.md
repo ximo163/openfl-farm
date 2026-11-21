@@ -515,7 +515,7 @@
   （LevelAndExperience.init 不调 super），基类初始化整段静默丢失。防：
   AS3 源里的 `super.方法()` 一律照抄成 `super.方法()`，别顺手改
   this.；Haxe 的 private 对子类可见、super 可调，编得过。
-- **AS3 String + Number 是拼接不是加**：TileList.as:124
+- **AS3 String + Number 是拼接不是加**：TileList.as:134
   `_data[_loc2_ + _loc3_ * maxGrop]`，for-in 键是 String，"1"+12 得
   "112"——字符串键取 AS3 Array：正则数字串（无前导零、≤2^32-2）按下标
   （多数错位）、"00"/"012" 这类非正则串得 undefined，原版绑定本来就是

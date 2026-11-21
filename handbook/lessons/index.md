@@ -687,3 +687,30 @@
   （"#1010" 本就在串里，errorID 无消费方）。防：`new openfl.errors.*` 前先
   看本机 `openfl/<版本>/src/openfl/errors/` 的构造器签名，别按 flash
   文档默写。
+
+## 2026-11 · #20（friends 模块）
+
+- **CWS swf 的二进制 grep 查不到符号，符号清单只认 dump_swf.php**：部署包
+  swf 全是 zlib 压缩的 CWS——`grep -a 符号名 *.swf` 连导出类名的**已存在**
+  符号都打不中（本仓 farmui 全库实测，Sort0 这种确定存在的也 miss）。#20
+  前段曾据「二进制搜不到」误判 Sort1/2/3 不在部署包、险些漏掉三枚等级底图
+  垫片；`php tools/dump_swf.php`（先解压再吐 SymbolClass/tag 表）重核才
+  纠正。防：涉「某符号在不在 swf 里」一律走 dump_swf.php，二进制 grep 的
+  结果只能当「没找到」，不能当「不存在」。
+- **SymbolClass 绑 BitmapData 的链接位图有既定垫片形态**：AS3 对链接位图
+  `new Sort0(24,24)` 的宽高参数被 Flash 无视、实例即图像自身像素——Haxe 侧
+  垫片 `extends BitmapData` + `super(w,h,true,0)`（底必须 0 全透明，落
+  AS3 BitmapData 默认 0xFFFFFFFF 白就是视觉差）+ `SymbolClass.bindBitmap`
+  从 `Assets.getBitmapData("库:名")` copyPixels；解析链（openfl
+  Assets.getBitmapData → AnimateLibrary bitmapClassNames，导出器对
+  DefineBits 类符号记 data2.className）在 SymbolClass.hx bindBitmap 头注
+  里钉死。preload 库（farmui_full_v_40）构造即得像素；非 preload 库走
+  bind 的按需 loadLibrary 窗口，与 MovieClip 垫片同源。防：再译「反射 new
+  位图类」先照此形态，别在调用方改尺寸/改白底。
+- **Haxe 的期望类型会压进三元表达式，`Int > (c ? 0 : floatOf())` 把两支
+  都逼成 Int**：比较左是 Int 时右操作数按 Int 期望传播——三元里 `0` 过了、
+  floatOf 支直接红「Float should be Int」（FriendItemRender:338，写成
+  `0.0` 也救不了：两支一起被压）。修法：三元先落进显式 `Float` 局部再比
+  （`var f:Float = c ? 0 : As3.floatOf(x); if (i > f)`）。防：`Int/Float 与
+  「条件给值」直接比`的写法一律先落局部；编译红指进三元时先想期望类型
+  传播，不是类型真错。

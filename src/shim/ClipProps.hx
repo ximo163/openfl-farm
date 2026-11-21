@@ -39,4 +39,13 @@ class ClipProps {
 		var fields:Map<String, Dynamic> = table.get(clip);
 		return fields != null && fields.exists(name);
 	}
+
+	/** 删键（等价 AS3 的 `delete clip["name"]`；没挂过也是无操作）。
+	 *  issue #20 FriendItemRender.updateStatusFlag 起手删 status_mc["s_name"]。 */
+	public static function remove(clip:Dynamic, name:String):Void {
+		var fields:Map<String, Dynamic> = table.get(clip);
+		if (fields != null) {
+			fields.remove(name);
+		}
+	}
 }

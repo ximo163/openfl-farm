@@ -1,8 +1,10 @@
 package shim;
 
+import openfl.display.BitmapData;
 import openfl.display.DisplayObject;
 import openfl.display.MovieClip;
 import openfl.display.SimpleButton;
+import openfl.geom.Point;
 import openfl.utils.AssetLibrary;
 import openfl.utils.Assets;
 #if !eval
@@ -128,7 +130,16 @@ class SymbolClass {
 				// nextLandPanel/landRender 部署包缺符号，空壳仍锚——
 				// Type.resolveClass 可得）
 				UpdateBigPanel, UpdateSeedsPanel, UpdateEmptyPanel, UpdateSeedsRender,
-				UpdateLandPanel, UpdateNextLandPanel, UpdateLandRender
+				UpdateLandPanel, UpdateNextLandPanel, UpdateLandRender,
+				// #20 friends 片：好友列表面板/行、状态角标、微博开合皮肤、
+				// 等级底图与黄钻徽标（getMaterial/getClass/getCachedBitmapData
+				// 全反射构造，编译期零引用；Status_7 由精灵插件运行期供类，
+				// 部署包无符号、无 shim——getClass null 即原版无插件行为）
+				List_Item, List_UI,
+				Status_1, Status_2, Status_3, Status_pre, Status_u, Status_z,
+				List_Close_WB, List_Open_WB, Status_6,
+				Sort0, Sort1, Sort2, Sort3, SortMe,
+				VipL1, VipL2, VipL3, VipL4, VipL5, VipL6, VipL7
 			];
 		}
 #end
@@ -229,6 +240,37 @@ class SymbolClass {
 		// 不在待绑队列也没挂上时间轴（库加载失败/符号不存在的已留痕路径）：
 		// 立即执行，保持空剪辑上的无操作行为
 		fn(target);
+#end
+	}
+
+	/**
+	 * SymbolClass 把类名绑到**位图**（DefineBits/JPEG/Lossless，flash.display.
+	 * BitmapData 子类）时的对应绑定：Animate 导出器把这类符号记成
+	 * AnimateBitmapSymbol（data2.className = 符号名，AnimateLibraryExporter
+	 * processSymbol；AnimateLibrary 装载时 bitmapClassNames[className]=path），
+	 * `Assets.getBitmapData("<库>:<名>")` 即可取到图像。同款直 new 语义的
+	 * BitmapData shim 构造器里调这里，把图像像素拷到实例上。
+	 *
+	 * Flash 对链接位图的 new 无视传入宽高、以图像天然像素为准（0,0 惯用法）；
+	 * copyPixels 直拷含 alpha 通道，构造时底也不落 AS3 BitmapData 默认的
+	 * 0xFFFFFFFF 白（shim 侧 super 传 0 全透明）。本仓库调用点 (16,13)/(24,24)
+	 * 恰为天然尺寸，直拷即逐像素一致。
+	 */
+	public static function bindBitmap(target:BitmapData, libraryId:String, symbolName:String):Void {
+#if eval
+		// eval 单测（bind 同款留痕）：无库可查，保持全透明空位图，不抛
+		trace("SymbolClass: eval 目标无库 " + libraryId + ":" + symbolName);
+#else
+		if (Assets.getLibrary(libraryId) == null) {
+			trace("SymbolClass: 库未加载 " + libraryId);
+			return;
+		}
+		var src:BitmapData = Assets.getBitmapData(libraryId + ":" + symbolName);
+		if (src == null) {
+			trace("SymbolClass: 位图符号不存在 " + libraryId + ":" + symbolName);
+			return;
+		}
+		target.copyPixels(src, src.rect, new Point(0, 0));
 #end
 	}
 

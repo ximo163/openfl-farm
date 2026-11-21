@@ -130,6 +130,10 @@ class BeastAPI extends EventDispatcher {
 	// BeastAPI.as:561（showFarmStage：从牧场切回农场场景，牧场片接入时翻译）
 	public function showFarmStage():Void {}
 
+	// BeastAPI.as:522（showWildStage：进野兽/野生动物场景，好友列表
+	// FriendItemRender.onItemClicked 的 Status_u 分支调用，牧场片接入时翻译）
+	public function showWildStage():Void {}
+
 	// BeastAPI.as（registerEventListeners：挂牧场相关全局监听，牧场片翻译）
 	public function registerEventListeners():Void {}
 }

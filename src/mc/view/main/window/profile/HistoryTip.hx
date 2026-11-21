@@ -77,14 +77,15 @@ class HistoryTip extends Tip {
 		addChild(this.text2);
 	}
 
-	// HistoryTip.as:75-95（param1==null 时改投 ""，后续下标取值同得 null）
+	// HistoryTip.as:75-95（param1==null 时改投 ""：AS3 的 `""["cName"]` 得
+	// undefined、TextField 印 "undefined"——stringField 复刻该强制，不抛）
 	override public function set_data(param1:Dynamic):Dynamic {
 		if (param1 == null) {
 			param1 = "";
 		}
-		this.cName.text = Reflect.field(param1, "cName");
-		this.text1.text = Reflect.field(param1, "harvest");
-		this.text2.text = Reflect.field(param1, "scrounge");
+		this.cName.text = As3.stringField(param1, "cName");
+		this.text1.text = As3.stringField(param1, "harvest");
+		this.text2.text = As3.stringField(param1, "scrounge");
 		if (As3.floatOf(Reflect.field(param1, "cId")) == 1506) {
 			this.label1.text = "便便数量:";
 			this.label2.text = "";

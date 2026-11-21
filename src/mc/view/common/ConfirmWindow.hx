@@ -7,7 +7,8 @@ import common.MaterialLib;
  * 211 loc，牧场片真身待译——#pasture；issue #19 只保 profile 窗族「清空
  * 记录」确认用到的 ctor/data/confirmFn/cancelFn 通道）。成员清单见
  * legacy/decompiled/Master2_v_142/scripts/mc/view/common/ConfirmWindow.as:16
- * （ctor `ConfirmWindow(param1:Number = 360)`）。
+ * （ctor `ConfirmWindow(param1:Number = 360)`）；ctor 常量按原文 :26-31
+ * 逐字镜像（height=320、AlertWindowTitle、"ConfirmWindow"——不发明）。
  */
 @:keep
 class ConfirmWindow extends BaseWindow {
@@ -18,8 +19,9 @@ class ConfirmWindow extends BaseWindow {
 	public function new(param1:Float = 360) {
 		super();
 		width = param1;
-		titleIMG = MaterialLib.getInstance().getClass("ConfirmWindowTitle");
-		windowName = "confirm";
+		height = 320;
+		titleIMG = MaterialLib.getInstance().getClass("AlertWindowTitle");
+		windowName = "ConfirmWindow";
 		mode = true;
 	}
 

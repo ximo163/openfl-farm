@@ -115,7 +115,9 @@ class ProfileCost extends Sprite {
 	private function compareDate(param1:Date, param2:Date):Int {
 		param1 = new Date(param1.getFullYear(), param1.getMonth(), param1.getDate(), 0, 0, 0);
 		param2 = new Date(param2.getFullYear(), param2.getMonth(), param2.getDate(), 0, 0, 0);
-		var _loc3_:Int = Std.int(Math.abs(param2.getTime() - param1.getTime()));
+		// 原文 `var _loc3_:int = Math.abs(...)`：|Δms| 过 2^31 按 int32 回绕
+		//（老流水被错标今天/昨天/前天的原版 bug，照抄；见 As3.int32 注）
+		var _loc3_:Int = As3.int32(Math.abs(param2.getTime() - param1.getTime()));
 		return Std.int(_loc3_ / 86400000);
 	}
 

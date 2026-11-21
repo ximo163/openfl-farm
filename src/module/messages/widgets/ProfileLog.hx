@@ -9,6 +9,7 @@ import common.Settings;
 import module.messages.MessageView;
 import openfl.display.Shape;
 import openfl.display.Sprite;
+import openfl.errors.TypeError;
 import openfl.events.TextEvent;
 import openfl.text.TextField;
 import openfl.text.TextFieldAutoSize;
@@ -22,10 +23,12 @@ import shim.QQOutlets;
  * 「不让他摘」链接），「清空消息记录」链接开确认窗；单条链接（非好友提示）
  * 开 ALERT_TYPE_TEXT 警告窗。
  *
- * PORT-NOTE: `new Date(秒*1000)` → Date.fromTime；RegExp("<b>(.*)</b>").exec
- * [1] → EReg.match + matched(1)；ExternalInterface.call → QQOutlets.call
- * （qq-outlet 出口）；for-each over null Array（dataList 置 null 清页）在
- * Haxe 会炸，按 AS3 的零迭代语义判 null 跳过。
+ * PORT-NOTE: `new Date(秒*1000)` → Date.fromTime；RegExp("<b>(.*)</b>")
+ * .exec[1] → EReg.match + matched(1)（无匹配时原文 exec 得 null、null[1]
+ * 抛 TypeError #1010 中断整页渲染——照译崩溃语义，不加静默守卫）；
+ * ExternalInterface.call → QQOutlets.call（qq-outlet 出口）；for-each
+ * over null Array（dataList 置 null 清页）在 Haxe 会炸，按 AS3 的零迭代
+ * 语义判 null 跳过。
  */
 class ProfileLog extends Sprite {
 	// ProfileLog.as:16
@@ -72,7 +75,10 @@ class ProfileLog extends Sprite {
 	private function compareDate(param1:Date, param2:Date):Int {
 		param1 = new Date(param1.getFullYear(), param1.getMonth(), param1.getDate(), 0, 0, 0);
 		param2 = new Date(param2.getFullYear(), param2.getMonth(), param2.getDate(), 0, 0, 0);
-		var _loc3_:Int = Std.int(Math.abs(param2.getTime() - param1.getTime()));
+		// 原文 `var _loc3_:int = Math.abs(...)`：|Δms| 过 2^31（≈24.9 天）
+		// 按 int32 回绕——约 49.7-74.6 天的流水回绕成 0/1/2、被错标成
+		// 今天/昨天/前天，原版 bug 照抄（js/eval 的 Int 不回绕，走 As3.int32）
+		var _loc3_:Int = As3.int32(Math.abs(param2.getTime() - param1.getTime()));
 		return Std.int(_loc3_ / 86400000);
 	}
 
@@ -84,14 +90,16 @@ class ProfileLog extends Sprite {
 	// ProfileLog.as:83-146
 	private function genMsgNewFeed(param1:Dynamic):String {
 		var _loc6_:String = "";
-		var _loc2_:String = "";
-		// `param1["cn"] as String`
+		var _loc2_:String = ""; // 原文 :76 声明后未用（死局部，照留）
+		// 原文 :77 `_loc3_ = param1["cn"] as String`：非 String 得 null
+		//（后文 :102 拼串按 "null"、:106/.indexOf 与 :112 exec 在 null 上
+		// 抛——照译，不垫 ""）
+		var _loc3_:String = null;
 		if (Std.isOfType(Reflect.field(param1, "cn"), String)) {
-			_loc2_ = Reflect.field(param1, "cn");
+			_loc3_ = Reflect.field(param1, "cn");
 		}
-		var _loc3_:String = Reflect.field(param1, "opuin");
 		var _loc4_:String = Reflect.field(param1, "opuin");
-		var _loc5_:String = "";
+		var _loc5_:String = Reflect.field(param1, "opuin");
 		var _loc7_:String = "";
 		var _loc8_:String = "";
 		var _loc9_:Array<Dynamic> = ["", "空间", "校友", "微博"];
@@ -109,15 +117,21 @@ class ProfileLog extends Sprite {
 			}
 			_loc8_ = _loc9_[As3.intOf(Reflect.field(param1, "domain"))];
 		}
-		_loc7_ = _loc8_ + _loc2_;
+		_loc7_ = _loc8_ + _loc3_;
 		var _loc12_:Bool = this._parent.controller.model.me;
 		if (_loc10_.mode == "qzone" && _loc12_ == true) {
 			if (As3.floatOf(Reflect.field(param1, "domain")) == 1 && As3.truthy(_loc4_)
-				&& _loc2_.indexOf("来农场摘取，摘走") > 0) {
+				&& _loc3_.indexOf("来农场摘取，摘走") > 0) {
 				_loc11_.initFriendMap();
 				if (_loc11_.friendsMap != null && !As3.truthy(Reflect.field(_loc11_.friendsMap, _loc4_))) {
 					var _loc17_:EReg = new EReg("<b>(.*)</b>", "");
-					_loc6_ = _loc17_.match(_loc2_) ? _loc17_.matched(1) : null;
+					// 原文 :112 `_loc6_ = _loc17_.exec(_loc3_)[1]`：exec 无匹配
+					// 得 null、null[1] 抛 TypeError #1010，从 genMsgNewFeed 一路
+					// 中断整页 dataList 渲染——照译崩溃语义，不加静默守卫
+					if (!_loc17_.match(_loc3_)) {
+						throw new TypeError("Error #1010: A term is undefined and has no properties.", 1010);
+					}
+					_loc6_ = _loc17_.matched(1);
 					_loc7_ += "\t<a href=\'event:" + _loc5_ + "," + _loc6_ + "\'><font color=\'#0099FF\'>不让他摘</font></a>";
 				}
 			}
@@ -151,7 +165,10 @@ class ProfileLog extends Sprite {
 			return;
 		}
 		var _loc2_:Array<Dynamic> = param1.text.split(",");
-		var _loc3_:UInt = Std.int(As3.parseInt(_loc2_[0]));
+		// 原文 `var _loc3_:uint = parseInt(...)`：uint 是 ToUint32，QQ 号可越
+		// 2^31（cpp 的 Int 会回绕成负）；按 Number 持有，`> 0` 判与字符串
+		// 拼接同 uint 语义（parseInt 失败 NaN > 0 恒假，同 uint(NaN)=0）
+		var _loc3_:Float = As3.parseInt(_loc2_[0]);
 		var _loc4_:String = Std.string(_loc2_[1]);
 		var _loc5_:String = "<p align=\'left\'><font color=\'#009900\'><b>";
 		if (_loc4_ != null && _loc4_.length > 0) {

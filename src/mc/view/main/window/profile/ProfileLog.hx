@@ -4,6 +4,7 @@ import com.minutes.ui.control.LipiTextArea;
 import common.INI;
 import common.LocalData;
 import openfl.display.Sprite;
+import openfl.errors.TypeError;
 import openfl.events.TextEvent;
 import openfl.text.TextField;
 import openfl.text.TextFieldAutoSize;
@@ -20,6 +21,10 @@ import shim.As3;
  * （issue #19）。牧场个人信息窗「消息」页：动态流 + 清空 + 单向好友提示。
  * 原文件
  * legacy/decompiled/Master2_v_142/scripts/mc/view/main/window/profile/ProfileLog.as。
+ *
+ * PORT-NOTE: genMsg 的 `RegExp("<b>(.*)</b>").exec[1]` 无匹配时原文抛
+ * TypeError #1010 中断整页渲染——照译崩溃语义（openfl.errors.TypeError），
+ * 不加静默守卫。
  */
 @:keep
 class ProfileLog extends Sprite {
@@ -172,9 +177,13 @@ class ProfileLog extends Sprite {
 				if (_loc5_ != null && !this.getFriendFlag(_loc5_, Std.string(Reflect.field(param1, "qq")))) {
 					var _loc15_:EReg = new EReg("<b>(.*)</b>", "");
 					var _loc16_:String = null;
-					if (_loc15_.match(_loc3_)) {
-						_loc16_ = _loc15_.matched(1);
+					// 原文 :189 `_loc16_ = _loc15_.exec(_loc3_)[1]`：exec
+					// 无匹配得 null、null[1] 抛 TypeError #1010，从 genMsg 一路
+					// 中断整页 dataList 渲染——照译崩溃语义，不加静默守卫
+					if (!_loc15_.match(_loc3_)) {
+						throw new TypeError("Error #1010: A term is undefined and has no properties.", 1010);
 					}
+					_loc16_ = _loc15_.matched(1);
 					_loc7_ += "\t<a href='event:" + Reflect.field(param1, "qq") + "," + _loc16_
 						+ "'><font color='#FF6600'><b><u>不让他收</u></b></font></a>";
 				}
@@ -187,7 +196,10 @@ class ProfileLog extends Sprite {
 	private function compareDate(param1:Date, param2:Date):Int {
 		param1 = new Date(param1.getFullYear(), param1.getMonth(), param1.getDate(), 0, 0, 0);
 		param2 = new Date(param2.getFullYear(), param2.getMonth(), param2.getDate(), 0, 0, 0);
-		var _loc3_:Float = Math.abs(param2.getTime() - param1.getTime());
+		// 原文 `var _loc3_:int = Math.abs(...)`：|Δms| 过 2^31（≈24.9 天）
+		// 按 int32 回绕——约 49.7-74.6 天的流水回绕成 0/1/2、被错标成
+		// 今天/昨天/前天，原版 bug 照抄（js/eval 的 Int 不回绕，走 As3.int32）
+		var _loc3_:Int = As3.int32(Math.abs(param2.getTime() - param1.getTime()));
 		return Std.int(_loc3_ / 3600 / 24 / 1000);
 	}
 

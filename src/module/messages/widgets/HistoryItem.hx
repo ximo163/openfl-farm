@@ -90,15 +90,16 @@ class HistoryItem extends BaseTileItem {
 		}
 		FrameTimer.clearTimeout(this._setCropInter);
 		this._setCropInter = FrameTimer.setTimeout(this.onDelayShowPic, this._setIconDelay);
-		var _loc2_:Float = 0;
+		var _loc2_:Int = 0;
 		if (!(As3.hasProp(super.data, "harvestNumber")
 			&& Reflect.field(super.data, "harvestNumber") != null)) {
-			_loc2_ = As3.parseInt(Reflect.field(param1, "hn")) + As3.parseInt(Reflect.field(param1, "sn"));
+			// 原文 :87 `var _loc2_:int`：parseInt 缺位得 NaN、赋回 int 走
+			// ToInt32（NaN→0），角标印 "0" 不印 "NaN"
+			_loc2_ = As3.intOf(As3.parseInt(Reflect.field(param1, "hn")) + As3.parseInt(Reflect.field(param1, "sn")));
 		} else {
-			_loc2_ = As3.parseInt(Reflect.field(param1, "harvestNumber"))
-				+ As3.parseInt(Reflect.field(param1, "scroungeNumber"));
+			_loc2_ = As3.intOf(As3.parseInt(Reflect.field(param1, "harvestNumber"))
+				+ As3.parseInt(Reflect.field(param1, "scroungeNumber")));
 		}
-		// AS3 Number.toString()：NaN 印 "NaN"、整值不带小数点，Haxe Std.string 同形
 		this._text.text = Std.string(_loc2_);
 		return param1;
 	}

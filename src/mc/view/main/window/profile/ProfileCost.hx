@@ -90,7 +90,10 @@ class ProfileCost extends Sprite {
 	private function compareDate(param1:Date, param2:Date):Int {
 		param1 = new Date(param1.getFullYear(), param1.getMonth(), param1.getDate(), 0, 0, 0);
 		param2 = new Date(param2.getFullYear(), param2.getMonth(), param2.getDate(), 0, 0, 0);
-		var _loc3_:Float = Math.abs(param2.getTime() - param1.getTime());
+		// 原文 `var _loc3_:int = Math.abs(...)`：|Δms| 过 2^31（≈24.9 天）
+		// 按 int32 回绕——约 49.7-74.6 天的流水回绕成 0/1/2、被错标成
+		// 今天/昨天/前天，原版 bug 照抄（js/eval 的 Int 不回绕，走 As3.int32）
+		var _loc3_:Int = As3.int32(Math.abs(param2.getTime() - param1.getTime()));
 		return Std.int(_loc3_ / 3600 / 24 / 1000);
 	}
 

@@ -159,6 +159,49 @@ class As3 {
 	}
 
 	/**
+	 * AS3 把 Number 赋进 int 变量的 ToInt32 强制（ECMA-262：先截断取整、
+	 * 再按 2^32 回绕到带符号区间）。Haxe 的 Int 在 js/eval 上是双精度数
+	 * **不回绕**（cpp 才隐式截断），裸 `Std.int` 会让两族 compareDate 把
+	 * 2^31ms（≈24.9 天）以上的 |Δms| 当正数——原版是回绕后再除，约
+	 * 49.7-74.6 天的流水回绕成 0/1/2 天、被错标成今天/昨天/前天。原版 bug，
+	 * 照抄（ProfileLog/ProfileCost/ProfileSystemMsg 两族共六处 int 形）。
+	 */
+	public static function int32(v:Float):Int {
+		if (Math.isNaN(v) || Math.isFinite(v) == false) {
+			return 0;
+		}
+		var t:Float = v >= 0 ? Math.floor(v) : Math.ceil(v);
+		var m:Float = t % 4294967296.0;
+		if (m >= 2147483648.0) {
+			m -= 4294967296.0;
+		} else if (m < -2147483648.0) {
+			m += 4294967296.0;
+		}
+		return Std.int(m);
+	}
+
+	/**
+	 * AS3 `obj["k"]` 的取值落进 String 属性（TextField.text 等）时的强制：
+	 * 键缺位是 undefined → "undefined"、显式 null → "null"、其余 String(v)。
+	 * Haxe 里缺位和 null 都落 null，用 hasField 区分。原始值（""/数字/
+	 * 布尔）的包装类上没有自定义键、一律 undefined（AS3 同——HistoryTip.as
+	 * :77-83 的 null 数据路径把 "undefined" 印进 TextField 而不是抛错）。
+	 */
+	public static function stringField(o:Dynamic, name:String):String {
+		if (o == null) {
+			return "undefined";
+		}
+		if (Std.isOfType(o, String) || Std.isOfType(o, Int) || Std.isOfType(o, Float) || Std.isOfType(o, Bool)) {
+			return "undefined";
+		}
+		if (Reflect.hasField(o, name)) {
+			var v:Dynamic = Reflect.field(o, name);
+			return v == null ? "null" : Std.string(v);
+		}
+		return "undefined";
+	}
+
+	/**
 	 * AS3 的 parseFloat(x)（参数先隐式转 String 再解析前缀）。
 	 */
 	public static function floatOf(v:Dynamic):Float {

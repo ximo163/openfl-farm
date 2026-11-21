@@ -99,7 +99,9 @@ class StringUtil {
 			// Std.string(Array) 出 "[5]"，永远查不中数字表
 			var key:String = (_loc4_ : Array<Dynamic>).join(",");
 			var v:Dynamic = null;
-			var idx:Int = Std.parseInt(key);
+			// Null<Int>：Std.parseInt 无效输入回 null，CLAUDE.md 禁止在静态
+			// 目标上对 Int 判 null（cpp typer 直接红）
+			var idx:Null<Int> = Std.parseInt(key);
 			if (idx != null && Std.string(idx) == key && idx >= 0 && idx < _loc3_.length) {
 				v = _loc3_[idx];
 			}

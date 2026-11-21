@@ -345,4 +345,21 @@
   修法按 AS3 语义 `_loc4_.join(",")`。教训的教训：该函数 PORT-NOTE 原本就
   写着「Array→String "5" 或 "2,3"」，实现却走了 Std.string——PORT-NOTE 与
   实现对不上时以原文推演为准，别照抄既有实现。
+- **静态目标的 null-vs-Int 容器内就能提前抓——cpp typer 不需要 hxcpp**：
+  同一处修法自己又踩了 CLAUDE.md 静态目标规则（`var idx:Int =
+  Std.parseInt(key)` + `idx != null`），eval/html5/单测全绿，驳回方用 cpp
+  typer 一行逮住。CLAUDE.md「容器编不了 android」≠「查不了」：typer 错误
+  在 hxcpp 后端生成**之前**全量出，日志末尾只剩 `Error: Library hxcpp is
+  not installed`（Build failed）恰是「typer 已过」的标志。做法：复用
+  `export/html5/haxe/debug.hxml` 的 classpath 与前三个 `--macro`
+  （ExtraParams/DefineMacro/AssetsMacro），去掉 html5 专属 `-D`
+  （lime-webgl/lime-dom/howlerjs/lime-html5 等）与 `-main ApplicationMain`，
+  换 `-cpp /tmp/out` + 每包一条 `--macro include('包名', true)` 强制全量
+  类型化（不依赖测试可达性）；src 根级散类用 `--macro include('', true,
+  null, ['src'])`（4.3.6 实际签名 `include(pack, rec, ignore, classPaths,
+  strict)`，classPaths 必须限定 `['src']`——不限会把 swf 库 classpath 根的
+  SWFTimelineContainer 一起扫进来，它 import format 只供 tools 用，属扫描
+  假信号）。防：改动凡涉 null/NaN/Int 判空，收工前跑这两条扫描（临时探针
+  类实测植入错误能被抓到），别留给 android CI 才现形；修 bug 引入的**新**
+  代码同样过一遍 CLAUDE.md 的静态目标清单。
 

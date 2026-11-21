@@ -781,10 +781,23 @@
   这类极性翻转的用例，逐轮心算一遍 Session 状态再定期望值。
 - **LocalSwfLoader 补了显示挂载（content 进显示列表）**：原版 Flash 的
   `loader.content` 恒为 loader 的唯一子件、Loader 本身被 addChild 时引导
-  内容跟着可见；shim 早期只直设 `content` 字段（RSLManager 等只读字段的
+  内容跟着可见；shim 早期只直设 `content` 字段（RSMManager 等只读字段的
   调用方够用），#21 的 help.swf 是首个把 **loader 本身挂进显示列表**的
   调用方，不 attach 内容就整屏空白。修法：onComplete 里
   `super.addChildAt(content, 0)`（super 不能进闭包，抽成员方法），与
   openfl 原生 Loader 的内部行为一致。防：新的「可见 Loader」调用方（引
   导/全屏装饰类）直接用 LocalSwfLoader 即可；再改这个 shim 时记得显示
   挂载是承重行为（assets.md 已补注）。
+- **eval 的 `openfl.Lib.getTimer()` 是「纪元毫秒 Int32 回绕值」，随墙钟
+  漂移变号——跨时钟播种的测试是 49.7 天定时炸弹**：lime 在 eval/sys 上
+  是 `Std.int(Sys.time()*1000)`（Sys.time=纪元秒，探针实测），回绕值在
+  2026-11-21 ~21:25 UTC 越过 2^32 边界由负转正（As3.hx PORT-NOTE 记的
+  「为负」就是负半周）。`HttpOperationExTest` 用它播种 `m_timerValue`、
+  实现读 `shim.As3.getTimer()`（毫秒自首调，恒小正值），两钟零点无关：
+  负半周播种恒满足超时比较（#7 批准时全绿），正半周恒不满足（#21 收工
+  时同树连红，前后两轮绿的分界恰是越界时刻）。同钟播种的 probe 证明
+  实现照发超时 FAULT——移植无错，测试混了两个钟域，和 legacy
+  （HttpOperationEx.as:71/:108 单一 flash.utils.getTimer 种读同钟）对
+  不上。防：eval 测试里一切时间戳只用 `shim.As3.getTimer` 一个域种/读；
+  `haxe test.hxml` 无预兆由绿转红且只红计时类用例时，先探针两钟值再查
+  代码（修法在测试 import 行，write-tests 阶段的事）。

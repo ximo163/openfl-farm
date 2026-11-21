@@ -428,11 +428,19 @@
   的「窗口变了不重缩放」从不发生、舞台读数恒 860×500；openfl 上 FarmLite
   构造器把 NO_SCALE 照译上去后，Android 全屏 surface（2340×1080）成为
   舞台尺寸——内容原尺寸锚左上，ToolBar/NavigationBar/FarmStage 等一切
-  按 stageWidth/stageHeight 定位的 UI 全散（真机第三轮实证）。openfl 对
-  resizable=false 窗口本来就给 SHOW_ALL+逻辑尺寸（9.5.2 Window 构造器
-  `__setLogicalSize` + scaleMode=SHOW_ALL），被 FarmLite 构造器覆盖。
-  修法在宿主：`shim.PlayerBox.install()` 于 super() 后装回盒子（等比
-  缩放+信箱，decisions.md 允许的唯一适配形态），读舞台尺寸的翻译代码
-  零改动、html5 缩放恒 1 行为不变。防：原版依赖播放器环境兜住的行为
-  （盒子尺寸/对齐/缩放），先想它在 openfl 各目标的等价物，缺的归
-  Main.hx 宿主或 src/shim/ 补，别让照译代码背锅。
+  按 stageWidth/stageHeight 定位的 UI 全散（真机第三轮实证）。修法在宿主：
+  `shim.PlayerBox.install()` 于 super() 后重映射视口（终态＝铺满全屏
+  1024×自适应高，所有者 2026-11-21 拍板，deviations.json
+  android-fullbleed-viewport），读舞台尺寸的翻译代码零改动。防：原版依赖
+  播放器环境兜住的行为（盒子尺寸/对齐/缩放），先想它在 openfl 各目标
+  的等价物，缺的归 Main.hx 宿主或 src/shim/ 补，别让照译代码背锅。
+- **Android 上 openfl 文本是单字体整段渲染、无逐字形回退，设备字体请求
+  全部落空**：原版动态文本用设备字体（Verdana/SimSun/微软雅黑），浏览器
+  逐字形回退到系统 CJK 字体所以有汉字；openfl native 的
+  TextEngine.getFontInstance 找不到名字就落 Android _serif 默认
+  （DroidSerif，无 CJK）→ 汉字全部空白（#10 真机第四轮实证）。修法
+  `shim.DeviceFonts`：一个真系统 CJK 字体（lime native 每实例 memcpy
+  一份字体字节，**多实例＝多份 5-20MB**，必须共享 src face）+ 别名挂
+  请求名与 getDefaultFont 的路径串（findFont 两类匹配都覆盖）。防：
+  凡「html5 绿、真机汉字空」类文字问题先查 TextEngine 字体解析链，别猜
+  翻译缺漏；加字体别名先看 lime Font.cpp 的拷贝行为再定实例数。

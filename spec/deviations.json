@@ -65,6 +65,22 @@
       "ported": "openfl MovieClip 无 enabled 属性；值经 ClipProps 侧表保留（读写同通道），代码内无读取方，鼠标禁用效果未实现",
       "why": "cpp 上 Dynamic 裸写不存在的字段抛 Invalid field:enabled（#10 真机第二处闪退实证）；该值只写不读，行为面仅剩鼠标禁用一处差异",
       "date": "2026-11-21"
+    },
+    {
+      "id": "android-fullbleed-viewport",
+      "module": "宿主 Main / shim.PlayerBox（Android，#10 V4 真机）",
+      "original": "Flash 播放器盒子钉死 860×500（nc.htm swfobject 嵌入尺寸），舞台读数恒 860×500，FarmLayer 视口在 1024×800 场景内容里拖动（横向余量 164）",
+      "ported": "Android 上宿主把逻辑视口重映射为宽 1024（Consts.SCENE_WIDTH，场景内容真实宽度）×自适应高（windowH/windowW×1024，上限 SCENE_HEIGHT 800），等比缩放铺满全屏、零信箱；UI 锚点随 stageWidth/stageHeight 自适应（原代码即如此写）。代价：横向场景拖动余量归零（视口=内容宽，FarmLayer 钳制永假），纵向余量保留",
+      "why": "19.5:9 真机按 860×500 信箱白边占 21%；所有者 2026-11-21 拍板「铺满全屏」（备选 1024×500 信箱留 5.5% / 维持 860×500 均被否）",
+      "date": "2026-11-21"
+    },
+    {
+      "id": "android-device-cjk-fonts",
+      "module": "宿主 Main / shim.DeviceFonts（Android，#10 V4 真机）",
+      "original": "动态文本用设备字体（qui Style.fontFace=Verdana、飘字/窗口 Verdana、RedUpWindow SimSun、嵌入字体 embedFontA、swf 文本符号各自族名），Windows Flash 向 OS 解析、浏览器逐字形回退系统 CJK 字体",
+      "ported": "把系统 CJK 字体（NotoSansSC/DroidSansFallback 优先，NotoSansCJK ttc 兜底）以共享 face 别名注册进 openfl 字体表：请求名（Verdana/Times New Roman/Arial/SimSun/宋体/微软雅黑/Microsoft YaHei/Lucida Sans Unicode/embedFontA）直接命中；_sans/_serif/_typewriter 与未列名/null 字体经 getDefaultFont 兜底命中（__fontPath 挂 DroidSans/DroidSerif/DroidSansMono 路径串）。英文字形来自 CJK 字体 Latin 区（与 Verdana 有差），粗体落 regular face",
+      "why": "openfl native 单字体整段渲染无逐字形回退（TextEngine getFontInstance 落 Android _serif=DroidSerif 无 CJK），真机汉字全空白（#10 真机第四轮实证）；html5 走浏览器字体栈不受影响",
+      "date": "2026-11-21"
     }
   ]
 }

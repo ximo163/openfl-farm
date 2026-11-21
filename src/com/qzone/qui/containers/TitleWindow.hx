@@ -13,6 +13,10 @@ import openfl.events.Event;
  */
 @:keep
 class TitleWindow extends Panel {
+	// TitleWindow.as:16（public var closeFn:Function——关闭回调；Function →
+	// Dynamic。issue #9：LeftSideToolBar 把公告窗关闭时的光标复位挂这里）
+	public var closeFn:Dynamic;
+
 	// TitleWindow.as:29-35（ctor 形态；皮肤/关闭按钮装配随 qui 片）
 	public function new(param1:String = "Window", param2:Int = 300, param3:Int = 200, param4:Dynamic = null) {
 		super(param1, param2, param3);

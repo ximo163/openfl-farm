@@ -83,4 +83,11 @@
          是 diy/1 背景图）。与 assets/legacy-assets.txt 同 commit 增删 -->
     <library path="assets/legacy/source/core/module/ui/farm/diy/board/1.swf" id="board_1" />
 
+    <!-- V3c 种收交互（issue #9）：收获飘字苗图库。HarvestAnimation →
+         MaterialProxy getSeedName → GetCropID.getSeedUrl（nc_data.php:6021
+         asset_id.s=2255 → :3068 module/ui/allcrops/Crop_2_Seed.swf），收一次
+         白萝卜时按需拉起（LocalSwfLoader 按 URL 尾段映射库名）。与
+         assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/allcrops/Crop_2_Seed.swf" id="Crop_2_Seed" />
+
 </project>

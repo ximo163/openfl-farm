@@ -9,10 +9,13 @@ import shim.As3;
  * common.GetCropID —— 闭包成员补齐（issue #8，V3b 场景渲染片）。
  * 原版 legacy/decompiled/main3_v_221/scripts/common/GetCropID.as（772 loc > 100，
  * issue 闭包规则整类不翻）；本片用到的成员按行号逐句照抄：
- * - SG_*（:12-18）、idToDiyUrl2（:81-107）、getCropUrl（:142-178）、
- *   timeToMature（:201-228）、getCropByID（:267-287）、getAssetUrl（:299-341）、
- *   getInsectPosition（:356-373）、specialGrow（:559-587）、idState（:589-664）、
- *   idToDogUrl（:666-701）、idToBoardUrl（:739-772）。
+ * - SG_*（:12-18）、_toolList（:20-43）、idToDiyUrl2（:81-107）、
+ *   getSeedUrl（:109-140）、getCropUrl（:142-178）、getHarvrstUrl（:180-199）、
+ *   timeToMature（:201-228）、idToDiyUrl（:230-265）、getCropByID（:267-287）、
+ *   idToToolName（:289-297）、getAssetUrl（:299-341）、getInsectPosition
+ *   （:356-373）、getFishByID（:537-557）、specialGrow（:559-587）、idState
+ *   （:589-664）、idToDogUrl（:666-701）、getFishUrl（:703-723）、
+ *   idToBoardUrl（:739-772）。
  * 其余成员保持 stub 返回值（见各方法头）。
  */
 class GetCropID {
@@ -24,6 +27,31 @@ class GetCropID {
 	public static final SG_SPECIAL_SEED:Int = 1;
 	public static final SG_SPECIAL_DEAD:Int = 2;
 	public static final SG_SPECIAL_SEED_SPECIAL_DEAD:Int = 3;
+
+	// GetCropID.as:20-43（issue #9：idToToolName 的道具 id → 素材名表）
+	private static final _toolList:Dynamic = {
+		"1": "Fertilizer",
+		"2": "FertilizerFast",
+		"3": "FertilizerVeryFast",
+		"4": "FriendManure",
+		"5": "HitDogStick",
+		"6": "BetterSpraying",
+		"7": "FertilizerVeryVeryFast",
+		"8": "FertilizerMagic",
+		"30": "OrganicFertilizer1",
+		"31": "OrganicFertilizer2",
+		"32": "OrganicFertilizer3",
+		"33": "OrganicFertilizer4",
+		"34": "DoubleCardItem",
+		"9001": "ShopDogFood",
+		"9002": "ShopDogFood7Days",
+		"9101": "FertilizerFastP",
+		"9102": "FertilizerVeryFastP",
+		"9103": "FertilizerVeryVeryFastP",
+		"9104": "OrganicFertilizer2Ex",
+		"9105": "OrganicFertilizer3Ex",
+		"9106": "OrganicFertilizer4Ex"
+	};
 
 	public function new() {}
 
@@ -50,6 +78,33 @@ class GetCropID {
 			}
 		}
 		return _loc2_;
+	}
+
+	// GetCropID.as:109-140（issue #9：种子/卡/水晶的小图 URL；card/crystal 走
+	// m 档，其余 s 档；有 appImgPrefix 时缀 ?domain=<前缀>.appimg）
+	public static function getSeedUrl(param1:Int, param2:String = null):String {
+		var _loc3_:String = "";
+		if (theApp.model == null || param1 <= 0) {
+			return _loc3_;
+		}
+		var _loc4_:Dynamic = getCropByID(Std.string(param1));
+		if (param2 == Consts.ITEM_TYPE_CARD || param2 == Consts.ITEM_TYPE_CRYSTAL) {
+			if (_loc4_ == null || !Reflect.hasField(_loc4_, "asset_id") || !Reflect.hasField(Reflect.field(_loc4_, "asset_id"), "m")) {
+				return _loc3_;
+			}
+			_loc3_ = getAssetUrl(Reflect.field(Reflect.field(_loc4_, "asset_id"), "m"));
+		} else {
+			if (_loc4_ == null || !Reflect.hasField(_loc4_, "asset_id") || !Reflect.hasField(Reflect.field(_loc4_, "asset_id"), "s")) {
+				return _loc3_;
+			}
+			_loc3_ = getAssetUrl(Reflect.field(Reflect.field(_loc4_, "asset_id"), "s"));
+		}
+		var _loc5_:String = Settings.getInstance().appImgPrefix;
+		if (_loc3_ != "" && _loc5_ != "") {
+			_loc3_ = Utils.addPrefix(_loc3_);
+			_loc3_ += "?domain=" + _loc5_ + ".appimg";
+		}
+		return _loc3_;
 	}
 
 	// GetCropID.as:142-178（getCropUrl：作物 id+生长档 → Crop_<id>_<n> 的 URL；
@@ -84,6 +139,57 @@ class GetCropID {
 		return _loc3_;
 	}
 
+	// GetCropID.as:180-199（issue #9：收获动效素材 URL（asset_id.h 档），带
+	// domain 后缀的返回形态与 getCropUrl 略异（原文如此））
+	public static function getHarvrstUrl(param1:Int):String {
+		var _loc2_:String = "";
+		if (theApp.model == null || param1 <= 0) {
+			return _loc2_;
+		}
+		var _loc3_:Dynamic = getCropByID(Std.string(param1));
+		if (_loc3_ == null || !Reflect.hasField(_loc3_, "asset_id") || !Reflect.hasField(Reflect.field(_loc3_, "asset_id"), "h")) {
+			return _loc2_;
+		}
+		_loc2_ = getAssetUrl(Reflect.field(Reflect.field(_loc3_, "asset_id"), "h"));
+		var _loc4_:String = Settings.getInstance().appImgPrefix;
+		if (_loc2_ != "" && _loc4_ != "") {
+			return _loc2_ + ("?domain=" + _loc4_ + ".appimg");
+		}
+		return _loc2_;
+	}
+
+	// GetCropID.as:230-265（issue #9：idToDiyUrl：item_info 按 id 查装饰素材，
+	// param2 选 s（小图）/b（大图）档；asset_id 缺失即 break）
+	public static function idToDiyUrl(param1:String, param2:Bool):String {
+		var _loc5_:Dynamic = null;
+		var _loc3_:String = "";
+		if (theApp.model == null || param1 == "" || param1 == null) {
+			return _loc3_;
+		}
+		var _loc4_:Array<Dynamic> = theApp.model.getData("item_info");
+		if (_loc4_ == null) {
+			return _loc3_;
+		}
+		for (_loc5_ in (_loc4_ : Array<Dynamic>)) {
+			if (As3.eqString(Reflect.field(_loc5_, "id"), param1)) {
+				var asset:Dynamic = Reflect.field(_loc5_, "asset_id");
+				if (asset == null) {
+					break;
+				}
+				if (param2 == true && Reflect.hasField(asset, "s")) {
+					_loc3_ = getAssetUrl(Reflect.field(asset, "s"));
+					return Utils.addPrefix(_loc3_);
+				}
+				if (param2 == false && Reflect.hasField(asset, "b")) {
+					_loc3_ = getAssetUrl(Reflect.field(asset, "b"));
+					return Utils.addPrefix(_loc3_);
+				}
+				break;
+			}
+		}
+		return _loc3_;
+	}
+
 	// GetCropID.as:267-287（getCropByID：crops 配置里按字符串 id 查条目）
 	private static function getCropByID(param1:String):Dynamic {
 		var _loc3_:Dynamic = null;
@@ -108,6 +214,15 @@ class GetCropID {
 			}
 		}
 		return null;
+	}
+
+	// GetCropID.as:289-297（issue #9：idToToolName：道具 id → _toolList 素材名）
+	public static function idToToolName(param1:String):String {
+		var _loc2_:String = "";
+		if (Reflect.hasField(_toolList, param1)) {
+			_loc2_ = Reflect.field(_toolList, param1);
+		}
+		return _loc2_;
 	}
 
 	// GetCropID.as:299-341（getAssetUrl：assets 配置的 src → 部署相对路径）
@@ -218,6 +333,45 @@ class GetCropID {
 				}
 				break;
 			}
+		}
+		return _loc3_;
+	}
+
+	// GetCropID.as:537-557（issue #9：getFishByID：fish_info 里按字符串 id 查
+	// 条目）
+	private static function getFishByID(param1:String):Dynamic {
+		var _loc3_:Dynamic = null;
+		if (theApp.model == null) {
+			return null;
+		}
+		var _loc2_:Array<Dynamic> = theApp.model.getData("fish_info");
+		if (_loc2_ == null) {
+			return null;
+		}
+		for (_loc3_ in (_loc2_ : Array<Dynamic>)) {
+			if (As3.eqString(Reflect.field(_loc3_, "id"), param1)) {
+				return _loc3_;
+			}
+		}
+		return null;
+	}
+
+	// GetCropID.as:703-723（issue #9：getFishUrl：鱼素材 URL，param2 选 s（小
+	// 图）/m（大图）档）
+	public static function getFishUrl(param1:Int, param2:Bool = true):String {
+		var _loc3_:String = "";
+		if (theApp.model == null || param1 <= 0) {
+			return _loc3_;
+		}
+		var _loc4_:Dynamic = getFishByID(Std.string(param1));
+		if (_loc4_ == null || !Reflect.hasField(_loc4_, "asset_id")) {
+			return _loc3_;
+		}
+		_loc3_ = getAssetUrl(param2 ? Reflect.field(Reflect.field(_loc4_, "asset_id"), "s") : Reflect.field(Reflect.field(_loc4_, "asset_id"), "m"));
+		var _loc5_:String = Settings.getInstance().appImgPrefix;
+		if (_loc3_ != "" && _loc5_ != "") {
+			_loc3_ = Utils.addPrefix(_loc3_);
+			_loc3_ += "?domain=" + _loc5_ + ".appimg";
 		}
 		return _loc3_;
 	}

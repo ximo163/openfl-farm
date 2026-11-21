@@ -13,6 +13,8 @@ class Consts {
 	public static final NET_HTTP_METHOD_GET:String = URLRequestMethod.GET;
 	public static final NET_HTTP_METHOD_POST:String = URLRequestMethod.POST;
 	public static final ALERT_TYPE_ERROR:String = "error";
+	// Consts.as:224（issue #9：NavigationBar 超市未点亮提示窗类型）
+	public static final ALERT_TYPE_TEXT:String = "text";
 	public static final MSG_REQUEST_NET_CLIENT_ERROR:String = "RequestNetError";
 	public static final MSG_REQUEST_CHECK_ERROR:String = "RequestCheckError";
 	public static final CMD_NAME_REQUESTSERVICE:String = "CmdServiceRequest";
@@ -54,6 +56,8 @@ class Consts {
 	public static final MODULE_QUICK_SHOOT:String = "Quick Shoot Module";
 	public static final MODULE_FREE_GIFT:String = "FreeGift Module";
 	public static final PLUGIN_AMOUNT_BG:Int = 0;
+	// Consts.as:516（issue #9：ShortcutBar 插件位数量）
+	public static final PLUGIN_AMOUNT_SHORTCUT:Int = 5;
 	// Consts.as:40（FarmLandController 收获倒计时秒数）
 	public static final FARM_LAND_COUNTDOWN:Int = 10;
 
@@ -96,12 +100,16 @@ class Consts {
 	public static final MSG_SHOW_CARDSGAMEWINDOW:String = "ShowCardsGameWindow";
 	// Consts.as:312（Player._healthMode 到期派发，HealthModeWindow 关）
 	public static final MSG_HEALTHMODE_TIMEOUT:String = "HealthModeTimeout";
+	// Consts.as:314（issue #9：健康模式开关窗派发，UIController 监听）
+	public static final MSG_HEALTH_MODE_OPEN_CHANGED:String = "HealthModeOpenChanged";
 	// Consts.as:316
 	public static final MSG_CHECK_HEALTHMODE:String = "CheckHealthMode";
 	// Consts.as:318（野兽偷菜完成提示）
 	public static final MSG_WILD_BEAST_STEAL:String = "StealCrop";
 	// Consts.as:330（任务完成待检）
 	public static final MSG_CHECK_TASK:String = "CheckTaskComplete";
+	// Consts.as:340（issue #9：每日礼包领取触发，UIController 监听）
+	public static final MSG_ACCEPT_NEW_GIFT:String = "AcceptNewGift";
 	// Consts.as:334/:336（DIY 预览进出）
 	public static final MSG_ENTER_PREVIEW:String = "EnterPreview";
 	public static final MSG_EXIT_PREVIEW:String = "ExitPreview";
@@ -115,6 +123,8 @@ class Consts {
 	public static final MSG_OPEN_WAREHOUSE_AFTER_BACK:String = "OpenWarehouseAfterBack";
 	// Consts.as:360（升级）
 	public static final MSG_LEVELUP:String = "LevelUp";
+	// Consts.as:362（issue #9：UIController 监听升级检查）
+	public static final MSG_CHECK_LEVELUP:String = "CheckLevelup";
 	// Consts.as:378（FarmLandsView 鼠标移入显示光标）
 	public static final MSG_SHOW_LAND_CURSOR:String = "ShowLandCursor";
 
@@ -122,12 +132,30 @@ class Consts {
 	public static final MSG_SHOW_WATER_CURSOR:String = "ShowWaterCursor";
 	// Consts.as:384（NPCView 派发呼叫飞机）
 	public static final MSG_CALL_PLANE:String = "CallPlane";
+	// Consts.as:366（issue #9：水池模块打开，UIController 监听刷工具条）
+	public static final MSG_POOL_OPEN:String = "WaterPoolOpened";
+	// Consts.as:380（issue #9：水池容量刷新，UIController 画 PoolInfo 角标）
+	public static final MSG_REFRESH_POOLINFO:String = "RefreshPoolInfo";
+	// Consts.as:382（issue #9：PoolInfo 角标点击开窗）
+	public static final MSG_SHOW_POOLINFO:String = "ShowPoolInfoWindow";
 	// Consts.as:388（FarmLandsView 监听整体重铺）
 	public static final MSG_REFRESH_LANDS_DATA:String = "RefreshAllLands";
 	// Consts.as:412（NPCView 监听安装活动 NPC）
 	public static final MSG_INSTALL_NPC:String = "InstallActivityNPC";
 	// Consts.as:414（单块地数据到位）
 	public static final MSG_GET_LAND_DATA:String = "GetLandCropData";
+	// Consts.as:390（issue #9：移除活动收集图标提示）
+	public static final DELEVE_NEW_ICON:String = "DELEVE_NEW_ICON";
+	// Consts.as:416（issue #9：安装收集活动图标）
+	public static final MSG_ADD_COLLECTING_ICON:String = "AddCollectingIcon";
+	// Consts.as:356（issue #9：LeftSideToolBar 监听移除活动图标）
+	public static final MSG_REMOVE_SHORTCUT_ICON:String = "RemoveShortcutBarIcon";
+	// Consts.as:396（issue #9：免费礼物数清零）
+	public static final MSG_FREEGIFT_COUNT_OUT:String = "freegiftcountout";
+	// Consts.as:402（issue #9：签到活动图标增删）
+	public static final MSG_REFRESH_CARDSGAME:String = "CardsGameUpdated";
+	// Consts.as:600（issue #9：ShortcutBar 监听安装入口图标）
+	public static final ADD_ENTRANCE_ICON:String = "ADD_ENTRANCE_ICON";
 	// Consts.as:590（关闭背包窗口）
 	public static final CLOSE_MY_BAG:String = "CLOSE_MY_BAG";
 	// Consts.as:592-594（金土地）
@@ -141,11 +169,19 @@ class Consts {
 	public static final DATA_BAG_RELOAD_FLAG:String = "BagReload";
 	public static final DATA_BAG_DATA_REMOVE:String = "BagDataRemove";
 	public static final DATA_DOG_CHANGED:String = "DogDataChanged";
+	// Consts.as:245（issue #9：ShortcutBar 监听我的鲜花装载）
+	public static final MY_FLOWER_LOADED:String = "MyFlowerLoaded";
+	// Consts.as:232（issue #9：Session.addReward 的装饰重装派发）
+	public static final DATA_DECORATE_RELOAD_FLAG:String = "DecorateReload";
+	// Consts.as:386（issue #9：UIToolsModel.onPostMsgLoaded 的新feeds派发）
+	public static final MSG_FEEDS_NPC_NEW_FEEDS_FLAG:String = "feedsNPCNewFeedsFlag";
 	// Consts.as:268（当前用户切换）
 	public static final MSG_CURRENT_USER_CHANGED:String = "CurrentUserChanged";
 
 	// 窗口/提示/飘字/光标名（FarmStage/FarmApplication 注册用）
 	public static final WINDOW_NAME_ALERT:String = "AlertWindow";
+	// Consts.as:182（issue #9：LevelAndExperience 窗口名）
+	public static final WINDOW_NAME_LEVEL_EXP:String = "LevelAndExp";
 	public static final WINDOW_NAME_CONFIRM:String = "ConfirmWindow";
 	public static final WINDOW_NAME_GIFT:String = "GiftWindow";
 	public static final WINDOW_NAME_PREVIEWDIY:String = "PreviewDiyWindow";
@@ -190,6 +226,8 @@ class Consts {
 	public static final CURSOR_WILD_HAND:String = "Wild_Cursor";
 	public static final CURSOR_WILD_TOOL:String = "Cursor_Wild_Tool";
 	public static final CURSOR_SYSTEM:String = "system";
+	// Consts.as:114（CursorControl.useSystem(false) 下发；issue #9 光标片）
+	public static final CURSOR_CUSTOMIZE:String = "customize";
 
 	// 道具/功能开关
 	public static final ITEM_TYPE_SEED:String = "1";
@@ -202,8 +240,25 @@ class Consts {
 	public static final ITEM_TYPE_CARD:String = "11";
 	public static final ITEM_TYPE_FISH:String = "23";
 	public static final ITEM_TYPE_FISHFEED:String = "24";
+	// Consts.as:444-478（issue #9：MaterialProxy.setContent 路由 /
+	// Session.addReward 分类派发用的其余类型串）
+	public static final ITEM_TYPE_DECORATE:String = "2";
+	public static final ITEM_TYPE_DOG:String = "4";
+	public static final ITEM_TYPE_MONEY:String = "6";
+	public static final ITEM_TYPE_EXP:String = "7";
+	public static final ITEM_TYPE_CRYSTAL:String = "9";
+	public static final ITEM_TYPE_WEAPON:String = "10";
+	public static final ITEM_TYPE_STICK:String = "21";
+	public static final ITEM_TYPE_PESTICIDE:String = "22";
+	public static final ITEM_TYPE_DOGFOOD:String = "909090";
 	public static final ORGANIC_FERTILIZER_ID:Int = 30;
 	public static final FAIRY_LADY:Int = 92001;
+	// Consts.as:588（issue #9：AddExpFloating 的花神加成判定）
+	public static final FAIRY_GOD:Int = 92004;
+	// Consts.as:566（issue #9：水池容量角标分母）
+	public static final FISH_MAX_SIZE:UInt = 6;
+	// Consts.as:580（issue #9：藏獒 id，启动链狗到期提示）
+	public static final DOG_TIBETAN_MASTIFF_ID:Int = 10;
 	public static final MY_FAIRY_OBJECT:String = "MyFairy";
 	public static final DECOR_DOG:UInt = 8;
 	// Consts.as:496（DogRender：装饰狗 id 减基值得素材序号）
@@ -217,6 +272,8 @@ class Consts {
 	public static final DECOR_BILLBOARD:UInt = 9;
 	public static final GOLD_LAND_UPDATE_TIME_CHANGE:String = "GOLD_LAND_UPDATE_TIME_CHANGE";
 	public static final APP_ID:Int = 353;
+	// Consts.as:546（issue #9：餐厅跳转 appid）
+	public static final RESTAURANT_APPID:Int = 372;
 	public static final PAY_QD:Int = 1;
 	public static final QQBROWSER_VER1:Int = 6;
 	public static final QQBROWSER_VER2:Int = 6;

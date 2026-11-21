@@ -1,6 +1,8 @@
 package shim;
 
+import openfl.display.Loader;
 import openfl.net.URLRequest;
+import openfl.system.LoaderContext;
 
 /**
  * QQ 相关出口的统一 no-op（spec/deviations.json：no-qzone-jsapi + no-qq-telemetry，
@@ -34,4 +36,18 @@ class QQOutlets {
 
 	/** flash.net.sendToURL 的同名出口（openfl 没有这个顶层函数）：不发送。 */
 	public static function sendToURL(request:URLRequest):Void {}
+
+	/** 头像/宿主图片加载出口（PersonInfo 的 headPic 一族）：不发送。
+	 *
+	 * 原版 `Loader.load(url, new LoaderContext(true))` 直连宿主 ucenter 头像
+	 * 服务——URL 是宿主环境数据（mync user_run 的 headPic 字段，PHP 侧由
+	 * UC_API 前缀拼出）：正式 QZone 部署指向宿主站、同站可达。独立部署的快照
+	 * 配置 UC_API 是参考部署的局域网地址（legacy/snapshot/home-config.php:45
+	 * `192.168.218.129`），照发在任何部署外环境都挂死并记一条资源错（#9 两轮
+	 * CI web-smoke 同点红的根因）。视觉语义不变：原版跑本部署包同样取不到
+	 * 头像（IOErrorEvent 被 onPhotoLoadError 吞掉、留空头像框）。与
+	 * QzoneJSAPI.getHead 在 available=false 回空串同一决策族；deviations 候选
+	 * 待人登记。
+	 */
+	public static function loadImage(loader:Loader, request:URLRequest, context:LoaderContext = null):Void {}
 }

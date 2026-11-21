@@ -57,3 +57,8 @@ source/core/module/ui/farm/diy/4.swf
 # module/ui/farm/diy/board/1.swf；文件名与 diy/1.swf 相同，库名消歧为
 # board_1（libraries.xml 同款 id，映射见 shim/LocalSwfLoader 特判）：
 source/core/module/ui/farm/diy/board/1.swf
+#
+# V3c 种收交互（issue #9）：收获飘字苗图（HarvestAnimation → MaterialProxy
+# getSeedName → GetCropID.getSeedUrl 按 nc_data.php:6021 asset_id.s=2255 →
+# asset 表 Crop_2_Seed.swf；收一次白萝卜时拉起，缺库 404）：
+source/core/module/ui/allcrops/Crop_2_Seed.swf

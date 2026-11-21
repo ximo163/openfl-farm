@@ -13,6 +13,7 @@
 | 网络请求与返回解析 | [architecture/net.md](architecture/net.md) | `decompiled main3 framework/net/`、`legacy/deploy` 的 PHP |
 | 会话与全局数据（Session、Model、FarmLandModel、实体 Player） | [architecture/data.md](architecture/data.md) | `decompiled main3 common/Session.as`、`module/mainScene/farmLand/`、`entities/Player.as` |
 | 农田场景渲染（farmLand 视图/控件、背景装饰槽、NPC、qui 窗口 stub 链） | [architecture/farmscene.md](architecture/farmscene.md) | `decompiled main3 module/mainScene/` |
+| 工具区与通用视图（uitools 模块、qui 控件子集、飘字/光标） | [architecture/uitools.md](architecture/uitools.md) | `decompiled main3 module/uitools/`、`com/qzone/qui/`、`common/view/` |
 | 资产声明与本地化加载 | [architecture/assets.md](architecture/assets.md) | `assets/legacy-assets.txt`、根目录 `libraries.xml`、`src/shim/LocalSwfLoader.hx` |
 | 环境、工具、反直觉的坑 | [lessons/index.md](lessons/index.md) | — |
 

@@ -58,6 +58,25 @@ class As3 {
 	}
 
 	/**
+	 * AS3 的 `mc["子件名"]`：swf 符号类是 dynamic class，属性访问先查真实
+	 * 字段/先前动态写入，查不到再落到**时间轴具名子实例**（hasOwnProperty
+	 * ("step1") 为真的那种，MovieClip 的显示列表查找）。openfl 动画运行时
+	 * 里子实例不是实例字段——Reflect.field 恒 null（#8 Crop 的 step1 先例），
+	 * 这里先 Reflect.field 再 DisplayObjectContainer.getChildByName 补全同源
+	 * 语义。返回 Dynamic：具名子件多数再被当 MovieClip/TextField 用。
+	 */
+	public static function childOf(target:Dynamic, name:String):Dynamic {
+		var v:Dynamic = Reflect.field(target, name);
+		if (v != null) {
+			return v;
+		}
+		if (Std.isOfType(target, openfl.display.DisplayObjectContainer)) {
+			return cast(target, openfl.display.DisplayObjectContainer).getChildByName(name);
+		}
+		return null;
+	}
+
+	/**
 	 * AS3 的 int 减法 `a - b`（a/b 为 int 形参或属性时）：操作数按 Number 参与
 	 * 运算——未设值的字段是 undefined，Number 减法得 NaN，赋回 int 得 0。
 	 * Haxe 在 eval 目标上对 null 操作数直接抛 "Invalid operation"，js 又把

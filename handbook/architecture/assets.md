@@ -45,7 +45,22 @@
   （时间轴还没挂上）——一律经 `SymbolClass.afterAttach(target, fn)`
   登记、attach 后重放（已挂上则立即执行）；写实例自身属性（name/
   cacheAsBitmap）不受影响。先例：Crop.onCropLoaded 的 step1/2/3 显隐
-  （#8 review round 1，见 lessons）。
+  （#8 review round 1，见 lessons）。④ **DefineButton2 符号的 shim 基类是
+  SimpleButton**（#9）：tag 是 DefineButton2（按钮符号——
+  AnimateButtonSymbol.__constructor 往实例写 downState/hitTestState/
+  overState/upState 四态）的导出符号，同名 Haxe 类必须 `extends
+  SimpleButton` + `SymbolClass.bindButton(this, 库id, 符号名)`；MovieClip
+  基类在 js 上炸 `set_downState is not a function`（#9 工具条 11 枚素材全
+  如此：ToolHand/ToolHoe/… 及 ToolBoxBar/UIController 的角标按钮）。判法：
+  新增符号 shim 前先用 /tmp 侧 probe 看 swf 的 DefineButton/DefineButton2
+  char id 与 SymbolClass 对应关系（CWS 解压 + fps/frameCount 跳过即可），
+  别按 MovieClip 惯例写完再撞运行期。bind/bindButton 共用 pending 队列
+  （target 放宽到 DisplayObject；afterAttach 登记只有 MovieClip 路径会走，
+  SimpleButton 恒空数组）。**部署包缺符号的**（#9：ButtonMaker 表引用的
+  ButtonSuperMarket/ButtonMill1/NavigationLeftArrow/NavigationRightArrow
+  全部署 swf 都不导出——main3 代码比部署包的 farmui_full 新一个版本位）：
+  保空 MovieClip 垫片让 getMaterial 反射可构造、启动不炸（原版跑这份
+  部署包同样 null 后 NPE），不渲染是 deviations 候选。
 - 当前已入库的库和每个库的来源依据，看 `libraries.xml` 和
   `assets/legacy-assets.txt` 里的分组注释（V1 样本 / V2 加载链 / V3a
-  启动链 / V3b 作物分档 + 场景装饰）。
+  启动链 / V3b 作物分档 + 场景装饰 / V3c 收获飘字苗图）。

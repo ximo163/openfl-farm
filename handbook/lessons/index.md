@@ -203,3 +203,163 @@
   却取不回」）——当时都以「本片无调用方/无行为影响」为由省掉，全被驳。
   防：stub 只免**方法体**，构造器签名/默认值/字段表/成对成员照原文抄；
   一两行的成员直接真实现，别留半截。
+
+## 2026-11 · #9（工具区 uitools）
+
+- **大写开头的包段在 Haxe 里 import 不到**：`module.mainScene.npc.
+  MonthEnd`（MonthEndWin 的包）任一引用形态全编译红——Haxe 把大写开头
+  的 dot-path 段解析成**模块名**而非包段（`.*` 通配同样失败）。备选
+  「MonthEnd.hx 模块文件装类」能编但腐蚀规范类型名（掉包段）。修法：
+  目录改小写 `monthend`，类名/文件名不动（ShortcutBar 案例）。
+  防：AS3→Haxe 建包先查有没有大写开头段，有就整段小写并在类头标
+  PORT-NOTE。
+- **Haxe 属性覆写只能覆 accessor，不能扩 accessor 也不能重声明**：
+  基类 `(get,never)` 想在子类变 `(get,set)`——编译红「Invalid
+  accessor」；子类 `override public var x(get,set)` 重声明——同样红。
+  正确形态：属性声明**只在基类一次**、accessor kind 按子类需要取宽
+  （基类挂 no-op set 垫底 + PORT-NOTE），子类只 `override` get_/set_
+  函数，虚派发接管（ScrollBase.content → Container 案例，probe 验证）。
+- **Haxe private 子类可见，原版「子类直写父类私有字段」照抄**：
+  ShortcutBar 写 `direction = Direction.HORIZONTAL`（Box 私有）、
+  `_vScrollPolicy = ScrollPolicy.OFF`（ScrollBase 私有）——别顺手补
+  public，改可见性才是偏差。
+- **AS3 `x != obj["k"]` 的 diff 比较侧不能先收敛**：updateOfflineStatus
+  原文比较侧是裸 `param1["b"]`（int vs undefined：0 != undefined 成立，
+  **缺键算变化**）、赋值侧才 `as int`。先 `As3.intOf` 再比会把缺键
+  折成 0 != 0、吞掉整次派发（write-tests 的用例逮住：expected 1 实得
+  0）。防：全局搜 `intOf(Reflect.field` 核对它只出现在赋值侧；
+  FarmLandModel.hx:1172 的裸比形态是标准写法。
+- **`Math.NaN` 不是合法默认参**：Haxe 默认参要字面量常量。NaN 语义写
+  `Null<Float> = null` + ctor 里 `== null ? Math.NaN : x` 归一
+  （ScrollEvent ctor，原文 `Number = NaN`）。
+- **openfl 与 flash 的 API 有缺位/挪位**：`IOErrorEvent.NETWORK_ERROR`
+  在 openfl 被注释（AIR-only）——按 AS3 常量值字面量 `"networkError"`
+  注册；`BitmapFilter` 在 `openfl.filters` 不在 display（UIController
+  import 修正）。防：flash.* → openfl.* 不是纯前缀替换，编译红先查
+  openfl 源（`/usr/local/lib/haxelib/openfl/9,5,2`）。
+- **根目录符号 shim 要显式 `import shim.SymbolClass`**：根包类（ToolBarBg/
+  PackBarBg）不像 `package xxx` 类那样能裸解析 shim 包——首编报
+  Unknown identifier。ItemLoading/ToolBarBg/PackBarBg 三件同模式。
+- **忠实 ctor 在 eval 会因素材抛 #2007，纯状态机测试走
+  `Type.createEmptyInstance`**：ToolBar 的 ctor new 素材会 addChild
+  null（eval 立抛），但 setCursor/onKeyUp 是纯逻辑——空实例 + 手工钉
+  字段驱动（ToolBarTest 先例）。别为测试改 ctor。
+- **DefineButton2 按钮符号的垫片基类是 SimpleButton，不是 MovieClip**
+  ：#9 工具条素材（ToolHand/ToolHoe 等全部）在 swf 里是 DefineButton2
+  tag——AnimateButtonSymbol.__constructor 往实例写 downState/四态，js
+  上 MovieClip 基类直接炸 `set_downState is not a function`（nodeboot
+  点「收获」按钮即崩才发现）。修法：`extends SimpleButton` +
+  `SymbolClass.bindButton`（bind/bindButton 共用 pending，target 放宽
+  DisplayObject）。防：新增符号 shim 前先 probe swf 的 tag 类型
+  （DefineButton/DefineButton2 char id × SymbolClass 对应），规则已进
+  assets.md 符号 shim 节。
+- **`Dictionary<Dynamic, Dynamic>` 落 StringMap，函数/对象键被 JS 对象
+  键强转成字符串**：openfl Dictionary 是 `@:multiType`，K=Dynamic 时
+  按 @:to 列表**第一个**（toStringMap）统一——UIComponent.renderCalls
+  的键是方法闭包，RENDER 帧重放时字符串键 `apply` 直接 TypeError；
+  EffectManager.effectInstances 键是 DisplayObject 同坑。修法：K 写成
+  具体类型（`Dictionary<Dynamic->Void, …>`/`Dictionary<DisplayObject,
+  …>`）落 ObjectMap，语义同 AS3 Dictionary 对象键。防：见到
+  `new Dictionary<Dynamic,` 全局搜掉，键永远写实际类型。
+- **AS3 `new Date("7/20/2012 00:00:00")` 解析不了得 NaN、不抛；Haxe
+  `Date.fromString` 对美式串直接抛**：Settings.isGiftTime 的
+  monthEnds 配置串就是美式 m/d/Y（xml.php 真实载荷），启动链
+  setConfigDataModel 必经——原以为该分支不可达，Main.hx:253 打脸。
+  修法：`As3.dateOf`（失败回 null）+ null 时按 NaN 语义代入（比较恒
+  false）。防：原版 `new Date(单字符串参)` 一律 dateOf + null 守卫，
+  别信「这个串解析不了、分支死代码」——原版解析不了**不等于分支不走**。
+- **注册 Font 名字传 null 炸 AnimateDynamicTextSymbol 的兜底字体匹配**
+  ：swf 文本符号实例化时若字体未嵌，兜底逻辑 `Font.enumerateFonts()` 循
+  环里 `font.name.replace`——我们 `Main_EMBED_FONT_A` 桩 Font 以
+  `new Font()`（name=null）注册，#9 绑 ToolUpgradeNew 时栈就断在
+  replace。修法：`super("embedFontA")` 传原 fontName。防：桩类基类
+  ctor 的可选参别省——先查消费方拿它做什么再定默认值。
+- **openfl 的 at-target 阶段不放捕获监听；模拟点击必须点显示对象的
+  子节点**：FarmLandsView 把 CLICK 监听 `useCapture=true` 注册在
+  LandItemRender **本体**（FarmLandsView.hx:143），openfl 的
+  `EventDispatcher.__dispatchEvent` 按
+  `listener.useCapture == (phase == CAPTURING)` 过滤——直点本体
+  （`land.dispatchEvent(click)`）一枪不发（drive9 全部
+  act=harvest/scarify/planting/water 断言连红、又全被「树里本来就
+  有」的弱断言掩护成假绿的来源）。真实鼠标命中的是 LandTile 挂进地块
+  项的**底图子节点**，监听在捕获阶段触发、currentTarget==地块项
+  （onMouseEvent 的 CLICK 分支正按 currentTarget 判
+  `__FarmlandItem__`）。防：驱动器/本地对拍模拟点击，先看监听注册的
+  useCapture 与挂载层级——捕获监听派发 target 必须是它的后代。
+- **构建产物把 Haxe 类全关进 lime 的 IIFE，node 侧够不到类与
+  MouseEvent 构造器；驱动句柄从 shim.Harness 出**：nodeboot --drive
+  的驱动器拿不到 `openfl_Lib`/`$hxClasses`（只有 `globalThis.lime`
+  被导出）。修法：`shim/Harness.hx` 在既有 `__openflFarmReady`
+  注入点同时挂 `window.__openflFarmDrive = {stage, MouseEvent,
+  KeyboardEvent}`（CI/浏览器侧无人读，纯本地证据链胶水）。配套：
+  nodeboot 的 mync 服务器按 mod/act 换 fixture（`mync-<mod>-<act>.
+  json`，按 legacy PHP echo 模板造）+ myncLog 抓 POST body；Haxe 属性
+  在 js 产物上是 get_x()/set_x()、类匹配走 `o.__class__.__name__`。
+  防：断言「显示树里出现了 X」必须拿**对起点的增量**（快照前后计数），
+  别拿静态存在当证据——boot 树里本来就飘着别的 Floating/Crop。
+- **`ERR_NETWORK_CHANGED` 先找是谁的请求在挂死，别先declare基建抖动**：
+  #9 attempt 2 曾把它归类「runner 宿主网络事件、没有代码修法」而原样重跑——
+  attempt 3 推翻：**传输层错照样有代码侧根因**。完整机制：CI 用真实快照后端，
+  `user_run` 下发 `headPic`（user_run.php:276）＝快照配置的
+  `UC_API=http://192.168.218.129/ucenter`（legacy/snapshot/home-config.php:45，
+  参考部署的**局域网地址**）拼 `/avatar.php`；#9 新翻的 PersonInfo 在启动链必发
+  这个头像请求（updateHostInfo → set_url → Loader.load）——runner 上该地址
+  不可路由，SYN 被丢、请求挂死，恰好被 runner 网络事件杀掉 → 唯一一条
+  `console.error: net::ERR_NETWORK_CHANGED` → web-smoke 红。每次 CI 同样发、
+  同样挂死、同样被杀——两轮同点红不是抖动，是**注定失败的启动期请求**。
+  nodeboot 一直绿的原因是双重的：fixture 里 headPic 是空串（守卫跳过加载，
+  请求根本不发）＋XHR shim 对出网请求无计数（发出去也看不见）。修法：
+  头像出口并入 `shim/QQOutlets.loadImage`（no-qzone-jsapi 决策族，deviations
+  候选待人登记；原版跑本部署包同样取不到头像 → 空头像框，视觉不变）；
+  nodeboot 的 XHR shim 补「出网请求＝必死资源错」tripwire（计数 + 打栈 +
+  不真发，避免随环境漂移），fixture headPic 换成真实下发值，先本地复现
+  （红）再验修复（绿）。防：smoke 资源错先分两类没错，但分类前必须先
+  **定位到具体请求**——浏览器日志不给 URL，交叉证据只有 nodeboot：把 fixture
+  值换成 legacy/snapshot 真实载荷再看出网栈；`ERR_NETWORK_CHANGED` 本身
+  只说明「请求挂死时被网络事件杀」，挂死的请求是谁才是要查的。
+- **AS3 C 风格 for 的 continue 仍走尾自增，直译 while 必须照抄自增**：
+  Session.addReward（Session.as:199）原文 `for(; _loc8_<len; _loc8_++)`，
+  体内 `continue` 照常推进；直译成 while + 尾部自增后，continue 跳过自增 →
+  任一元素缺 eType/type 键就**死循环**（ShortcutBar.onLevelUpGift/
+  setGiftData/onClicked、UIController.onLevelUpGiftAccepted 四条入口可达，
+  implement 驳回轮逮住）。NavigationBar ctor :97 同坑早有先例注释，Session
+  这处漏了。防：译 C 风格 for 要么写 `for (_loc8_ in 0...len)`，要么 continue
+  前补 `_loc8_++`；全局搜 `continue` 核对所在循环的自增形态。
+- **openfl get/set 属性的裸写和裸读一样落空**：ToolBoxBar.addToolBtn 的
+  `_loc3_.name = param1`（_loc3_ 为 Dynamic）在 js 上落不到 set_name、只挂
+  影子普通字段——onToolClick 的强类型读恒 ""，工具箱按钮全灭。修法
+  `(_loc3_ : DisplayObject).name = param1`（NavigationBar ctor 按钮具名
+  同款）。防：#8 的裸读条目只防了读侧；Dynamic 上的 openfl 属性**赋值**要
+  另全局搜一遍核对。
+- **e.target/currentTarget 的 `.name` 路由读是系统性雷区，别一处一处等
+  CI**：openfl Event 的 target/currentTarget 静态是 Object（=Dynamic），鼠标
+  处理器里 `param1.target.name` 裸读在 js 恒 undefined——#9 驳回轮 6 类十
+  余处一次现形（ShortcutBar/LeftSideToolBar/PersonInfo/NavigationBar 的点击/
+  悬停分发全灭；web-smoke 的驱动只点工具条与地块，这些 widget 点不到，所以
+  不红）。防：新译事件处理器凡按 target 名分发，一律
+  `(param1.target : DisplayObject).name` 起手（FarmLandsView 先例）；同因的
+  `supermarketMove` 裸读 `_loc3_.x/.y` 会 NaN 漂移，坐标读同规则。
+- **AS3 下标键的隐式数组强转走 toString()=join(",")**：
+  StringUtil.getChineseNum 的 `_loc3_[_loc4_]`（_loc4_ 是 Array）——AS3 键
+  强转成 "5"/"2,3"，Haxe `Std.string(Array)` 出 "[5]" 永远查不中数字表。
+  修法按 AS3 语义 `_loc4_.join(",")`。教训的教训：该函数 PORT-NOTE 原本就
+  写着「Array→String "5" 或 "2,3"」，实现却走了 Std.string——PORT-NOTE 与
+  实现对不上时以原文推演为准，别照抄既有实现。
+- **静态目标的 null-vs-Int 容器内就能提前抓——cpp typer 不需要 hxcpp**：
+  同一处修法自己又踩了 CLAUDE.md 静态目标规则（`var idx:Int =
+  Std.parseInt(key)` + `idx != null`），eval/html5/单测全绿，驳回方用 cpp
+  typer 一行逮住。CLAUDE.md「容器编不了 android」≠「查不了」：typer 错误
+  在 hxcpp 后端生成**之前**全量出，日志末尾只剩 `Error: Library hxcpp is
+  not installed`（Build failed）恰是「typer 已过」的标志。做法：复用
+  `export/html5/haxe/debug.hxml` 的 classpath 与前三个 `--macro`
+  （ExtraParams/DefineMacro/AssetsMacro），去掉 html5 专属 `-D`
+  （lime-webgl/lime-dom/howlerjs/lime-html5 等）与 `-main ApplicationMain`，
+  换 `-cpp /tmp/out` + 每包一条 `--macro include('包名', true)` 强制全量
+  类型化（不依赖测试可达性）；src 根级散类用 `--macro include('', true,
+  null, ['src'])`（4.3.6 实际签名 `include(pack, rec, ignore, classPaths,
+  strict)`，classPaths 必须限定 `['src']`——不限会把 swf 库 classpath 根的
+  SWFTimelineContainer 一起扫进来，它 import format 只供 tools 用，属扫描
+  假信号）。防：改动凡涉 null/NaN/Int 判空，收工前跑这两条扫描（临时探针
+  类实测植入错误能被抓到），别留给 android CI 才现形；修 bug 引入的**新**
+  代码同样过一遍 CLAUDE.md 的静态目标清单。
+

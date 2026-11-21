@@ -12,11 +12,14 @@ class QzoneJSAPI {
 	// QzoneJSAPI.as:10
 	public static var DEFAULT_DEBUG_QQ:Float;
 
-	// QzoneJSAPI.as:12。Settings.loadFromFlashVars:520-521 写
-	public static var WB:Bool;
+	// QzoneJSAPI.as:12。Settings.loadFromFlashVars:520-521 写。
+	// PORT-NOTE: AS3 Boolean 静态默认 false（NavigationBar/ToolBoxBar 的
+	// `QPLUS == false && WB == false` 分支依赖该默认值），Haxe 无初值是 null、
+	// `null == false` 为 false 会翻掉默认宿主分支，显式补 false
+	public static var WB:Bool = false;
 
-	// QzoneJSAPI.as:14
-	public static var QPLUS:Bool;
+	// QzoneJSAPI.as:14（同上，AS3 Boolean 默认 false）
+	public static var QPLUS:Bool = false;
 
 	// QzoneJSAPI.as:16
 	public static final APP_ID:Int = 372;

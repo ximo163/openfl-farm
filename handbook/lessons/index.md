@@ -783,11 +783,42 @@
   `loader.content` 恒为 loader 的唯一子件、Loader 本身被 addChild 时引导
   内容跟着可见；shim 早期只直设 `content` 字段（RSMManager 等只读字段的
   调用方够用），#21 的 help.swf 是首个把 **loader 本身挂进显示列表**的
-  调用方，不 attach 内容就整屏空白。修法：onComplete 里
-  `super.addChildAt(content, 0)`（super 不能进闭包，抽成员方法），与
-  openfl 原生 Loader 的内部行为一致。防：新的「可见 Loader」调用方（引
-  导/全屏装饰类）直接用 LocalSwfLoader 即可；再改这个 shim 时记得显示
-  挂载是承重行为（assets.md 已补注）。
+  调用方，不 attach 内容就整屏空白。修法：onComplete 里把挂载+字段补齐
+  +COMPLETE 派发整体交给 openfl 原生完成路径 `Loader_onComplete`
+  （经 `@:access` 调私有成员，见下条）；直接照抄原生路径的
+  `super.addChildAt(content, 0)` 是**错的**——super 只上溯一层。
+  防：新的「可见 Loader」调用方（引导/全屏装饰类）直接用 LocalSwfLoader
+  即可；再改这个 shim 时记得显示挂载是承重行为（assets.md 已补注）。
+- **super 只上溯一层，Loader 子类照抄原生路径的 super 调用会命中
+  父类自己的覆写**：openfl 原生 `Loader_onComplete`（Loader.hx content
+  装载段）内部 `super.addChildAt(content, 0)` 之所以合法，是它从 **Loader
+  自己**出发、super 落到 DisplayObjectContainer；从子类 LocalSwfLoader
+  调 `super.addChildAt` 落到的是 **Loader 自己的 #2069 覆写**（Flash
+  同款禁令：Loader 不许 addChild）——#21 attempt 1 就这么写的，本地
+  html5 全量编译绿、单测绿（不跑显示链），CI web-smoke 的
+  `pageerror: openfl_errors_Error` 一条红：启动链第一个走 LocalSwfLoader
+  的库装载就把 ready 标记卡死。Haxe 没有 super.super，也没有任何公开口
+  绕过覆写；等价口是 `@:access(openfl.display.Loader)` 调私有
+  `Loader_onComplete`——它的字段补齐（content/contentLoaderInfo.content/
+  宽高）/挂载/COMPLETE 派发顺序即原生语义，各目标通用（Loader.content 等
+  都是 `(default, null)` 物理字段，Reflect 直写本来也通，但原生路径连
+  手补的顺序风险一并免了）。
+  版本耦合：Loader_onComplete 是 openfl 9.5.2 的私有函数名，升版改名会
+  编译红在 LocalSwfLoader.hx（shim 定位就是版本胶水）。
+  防：**给 openfl 类写子类时想复用其内部行为，先看该行为的方法体在哪个
+  类层**——覆写墙（Stage 的 IllegalOperationError、Loader 的 #2069 这类
+  Flash 语义禁令）只拦子类入口，openfl 自己的内部调用不受拦；子类复用
+  走 @:access 进私有函数，别照抄 super 形态。
+- **CI pageerror 对 Haxe 抛出的 openfl Error 只剩类名，消息和栈都不可见
+  ——先 nodeboot 复现拿全栈**：`openfl.errors.Error extends
+  haxe.Exception`，浏览器里不是原生 JS Error——smoke.mjs 的
+  `e.stack ? e.stack : String(e)` 落到 String(e) 只打出
+  `openfl_errors_Error`（没消息、没栈、没帧）；同一错误在 nodeboot 的
+  uncaughtException 里 `e.stack` 是真的，打出 `Error #2069: …` + 全帧。
+  #21 attempt 2 的 CI 日志就只有一行类名，凭它只能知道「openfl Error 族」，
+  定位靠 nodeboot 同路径复现（30 秒内拿到消息+帧）。防：CI 红在
+  `pageerror: openfl_errors_XXX` 时按类名圈范围（rg openfl 源+src/ 的
+  `new XXX`），然后 nodeboot 跑启动链看完整栈，别按类名盲猜改代码。
 - **eval 的 `openfl.Lib.getTimer()` 是「纪元毫秒 Int32 回绕值」，随墙钟
   漂移变号——跨时钟播种的测试是 49.7 天定时炸弹**：lime 在 eval/sys 上
   是 `Std.int(Sys.time()*1000)`（Sys.time=纪元秒，探针实测），回绕值在

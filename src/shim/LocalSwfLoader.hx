@@ -3,7 +3,6 @@ package shim;
 import openfl.Assets;
 import openfl.display.DisplayObject;
 import openfl.display.Loader;
-import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.URLRequest;
 import openfl.system.ApplicationDomain;
@@ -16,10 +15,11 @@ import openfl.system.LoaderContext;
  * 原版 `new Loader().load(new URLRequest(url))` 跨网络拉 module/*.swf；本部署
  * 里这些 swf 是构建期入库的资产库。这里以 Loader 子类包住同名 load()：URL 能对
  * 上 module 库（形如 .../module/<路径>/<名>.swf）的，改由 Assets.loadLibrary
- * 取库、getMovieClip("") 取根时间轴，再在 contentLoaderInfo 上补齐原版字段并派
- * 发 COMPLETE——LoadManager/RSLLoader 等调用方的代码保持 `loader.load(req,
- * context)` 原形态，只把 `new Loader()` 换成本类。对不上的 URL 仍走父类原始
- * 网络路径。
+ * 取库、getMovieClip("") 取根时间轴，contentLoaderInfo 上补齐 LoadManager 读取
+ * 的字段，其余（content 字段、显示树挂载、COMPLETE 派发）交给 openfl 原生完成
+ * 路径 Loader_onComplete——LoadManager/RSLLoader 等调用方的代码保持
+ * `loader.load(req, context)` 原形态，只把 `new Loader()` 换成本类。对不上的
+ * URL 仍走父类原始网络路径。
  */
 class LocalSwfLoader extends Loader {
 	public function new() {
@@ -62,31 +62,32 @@ class LocalSwfLoader extends Loader {
 		}
 		Assets.loadLibrary(libraryId).onComplete(function(lib) {
 			var content = lib.getMovieClip("");
-			// Flash 里 content 由播放器挂进 Loader（loader.content / contentLoaderInfo.content
-			// 可读，content 的 parent 是 loader）；openfl 的 Loader 按原版语义把
-			// addChild 覆写为抛 #2069，所以走字段直设而不是 addChild
-			Reflect.setField(this, "content", content);
 			// contentLoaderInfo 上补齐 LoadManager.processFile 读取的字段
-			//（(default,null) 在 JS 里是普通实例字段，Reflect 可写）
+			//（这些是 (default,null) 物理字段，各目标 Reflect 可写）
 			Reflect.setField(this.contentLoaderInfo, "url", request.url);
-			Reflect.setField(this.contentLoaderInfo, "content", content);
 			Reflect.setField(this.contentLoaderInfo, "applicationDomain", ApplicationDomain.currentDomain);
 			Reflect.setField(this.contentLoaderInfo, "bytesLoaded", 1);
 			Reflect.setField(this.contentLoaderInfo, "bytesTotal", 1);
-			// 显示树同样挂上（#21：WelcomeView 把 loader 本身 addChild 进
-			// 显示列表、引导内容要可见——Flash 的 content 恒为 loader 的唯一
-			// 子件；openfl 原生加载路径内部就是 super.addChildAt(content, 0)
-			//（Loader.hx 的 content 装载段），RSLManager 等只读字段的调用方
-			// 不受影响）。super 调用不能落在闭包里（Haxe 限制），抽成员方法
+			// content 字段、显示树挂载、COMPLETE 派发全走 openfl 原生完成路径
+			//（Loader_onComplete：Loader.hx 的 content 装载段，内部 super.addChildAt
+			// (content, 0) 从 Loader 自己出发、上溯到 DisplayObjectContainer）。
+			// 不能在本子类里照抄 super.addChildAt：super 只上溯一层，这里命中的是
+			// Loader 自己的 #2069 覆写（Flash 同款禁令：Loader 不许 addChild），
+			// #21 attempt 2 的 CI web-smoke 就红在这（attachContent 抛
+			// openfl.errors.Error #2069 → __openflFarmReady 永不置位）。Haxe 没有
+			// super.super，经 @:access 调 openfl 的私有完成函数是唯一等价口。
+			// super 调用/私有访问不能落在闭包里（Haxe 限制），抽成员方法。
+			// openfl 版本耦合：Loader_onComplete 是 9.5.2 的私有函数名，升版若
+			// 改名会编译红在这里（shim 定位就是这类版本胶水）。
 			attachContent(content);
-			this.contentLoaderInfo.dispatchEvent(new Event(Event.COMPLETE));
 		}).onError(function(e) {
 			this.contentLoaderInfo.dispatchEvent(new IOErrorEvent(IOErrorEvent.IO_ERROR, false, false, Std.string(e)));
 		});
 	}
 
-	// super.addChildAt 的落点（super 不能出现在本地函数内）
+	// openfl 原生完成路径的落点（见上：super./@:access 不能出现在本地函数内）
+	@:access(openfl.display.Loader)
 	private function attachContent(content:DisplayObject):Void {
-		super.addChildAt(content, 0);
+		Loader_onComplete(content);
 	}
 }

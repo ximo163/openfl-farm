@@ -295,7 +295,7 @@ class PoolFishTest {
 		Assert.equals(-36000, fish._plantTime);
 		Assert.equals(5, fish._id); // 不动
 		Assert.equals(2, fish._type); // 不动
-		Assert.equals(3, fish._thief.length); // 不动
+		Assert.equals(2, fish._thief.length); // 不动
 		s.push(700);
 		Assert.equals(3, fish._thief.length); // 仍是原数组引用（未被重建/拷贝）
 		Assert.isTrue(fish._fertilize);

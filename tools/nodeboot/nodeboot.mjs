@@ -45,7 +45,10 @@ const PORT = 8123;
 const args = process.argv.slice(2);
 const keep = args.includes("--keep");
 const timeoutSec = Number(args[args.indexOf("--timeout") + 1]) || 30;
-const drivePath = args[args.indexOf("--drive") + 1];
+// indexOf 未命中得 -1，+1 后取到 args[0]：无 --drive 但带任何 flag 的纯启动
+// （如 --timeout 45）会把首参当模块路径 import 而炸——必须先判命中。
+const driveIdx = args.indexOf("--drive");
+const drivePath = driveIdx >= 0 ? args[driveIdx + 1] : undefined;
 const driveTimeoutSec = Number(args[args.indexOf("--drive-timeout") + 1]) || 60;
 // mync 请求流水（--drive 断言用）：URL + POST body
 const myncLog = [];
@@ -248,6 +251,21 @@ class XMLHttpRequest {
   _fire(t, ev) { ev = ev || {}; ev.type = t; ev.target = this; const h = this["on" + t]; if (h) h(ev); for (const f of this._listeners[t] || []) f(ev); }
   send(body) {
     const u = new URL(this._url);
+    // 出网请求（http/https 且主机非本进程）：资产已全部本地化，离开本进程的
+    // 请求在任何部署外环境都注定失败——CI web-smoke 记一条 console.error 的
+    // 资源错。不真发：外网地址在本机可能连上（挂死不结算）也可能拒（看环境），
+    // 结果随环境漂移；统一计缺失 + 走 error 事件，与浏览器侧「请求失败」对齐。
+    // 检测盲区实锤：#9 头像（headPic=快照 UC_API 的局域网地址）两轮 CI 同点
+    // 红，nodeboot 却一直绿——XHR 出网无计数，本条补齐。
+    if ((u.protocol === "http:" || u.protocol === "https:") && u.hostname !== "127.0.0.1") {
+      console.log(`[nodeboot] 出网请求：${this._method || "GET"} ${this._url}`);
+      // 打栈到游戏侧调用方（约 8 帧 openfl/lime 内部之后）：排查正路同 /N?数字
+      // 404 的教训（lessons #8 条目）——别猜是谁发的，看帧。
+      console.log((new Error("出网请求来源")).stack.split("\n").slice(2, 14).join("\n"));
+      missing.push(`off-origin ${this._url}`);
+      setTimeout(() => this._fire("error", { message: "off-origin request" }), 1);
+      return;
+    }
     const req = http.request({ hostname: u.hostname, port: u.port || PORT, path: u.pathname + u.search, method: this._method || "GET", headers: { "Content-Type": "application/x-www-form-urlencoded" } }, (up) => {
       const chunks = [];
       up.on("data", (c) => chunks.push(c));

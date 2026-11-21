@@ -27,6 +27,7 @@ import openfl.system.LoaderContext;
 import report.UserActionRecorder;
 import shim.As3;
 import shim.NavigateToURL;
+import shim.QQOutlets;
 
 /**
  * module.uitools.widgets.PersonInfo —— PersonInfo.as 逐句对应（issue #9
@@ -34,6 +35,9 @@ import shim.NavigateToURL;
  * 开资料窗）、昵称（VIP 黄名）、等级牌、经验条、金币/人品数值；账户变更走
  * NumAnimation 滚动 + 飘字。navigateToURL → shim.NavigateToURL（openfl 支持
  * 不完整，CLAUDE.md 映射规则；VIP 特权链接 html5 开新窗、无浏览器目标留痕）。
+ * 头像加载 → shim.QQOutlets.loadImage（headPic 指向宿主 ucenter 头像服务，
+ * 独立部署无宿主，no-qzone-jsapi 决策族；空头像框与原版跑本部署包一致，
+ * 见 set_url 的 PORT-NOTE）。
  * ROLL_OVER/OUT 监听照抄——悬停合成在 spec/interaction-map.json 落地前不做
  * （见 BLOCKED 项）。
  */
@@ -308,7 +312,14 @@ class PersonInfo extends Sprite {
 			this.addChildAt(_loc3_, 0);
 		}
 		if (param1 != null && param1 != "") {
-			this._loader.load(new URLRequest(param1), new LoaderContext(true));
+			// PORT-NOTE(host-avatar)：原版 `this._loader.load(new URLRequest(param1),
+			// new LoaderContext(true))` 直连宿主 ucenter 头像服务（headPic 由
+			// user_run.php:276 下发）。独立部署没有该宿主：快照 UC_API 是参考部署
+			// 的局域网地址（legacy/snapshot/home-config.php:45），照发在任何部署
+			// 外环境挂死并记资源错（#9 两轮 CI web-smoke 同点红的根因）。出口并入
+			// shim.QQOutlets（no-qzone-jsapi 决策族，deviations 候选待人登记）；
+			// 视觉与原版跑本部署包一致（头像取不到 → IOError 吞掉 → 空头像框）。
+			QQOutlets.loadImage(this._loader, new URLRequest(param1), new LoaderContext(true));
 		}
 		return param1;
 	}

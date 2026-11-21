@@ -50,6 +50,12 @@ legacy 出处：`decompiled main3 module/uitools/`。
     邮件图标 openPostWindow（PostWindow 闭包 stub + Reflect.hasField 门）。
   - `PersonInfo`（← PersonInfo.as）：头像/名字/金币/经验面板，数字滚动
     NumAnimation，点击档案区开 LevelAndExperience 窗（profile/ 5 类）。
+    **头像加载出口并 `QQOutlets.loadImage`（不发送）**：headPic 是宿主
+    环境数据（mync user_run 下发，user_run.php:276 用快照 UC_API 前缀拼
+    出、指向参考部署的局域网地址 legacy/snapshot/home-config.php:45），
+    照发在任何部署外环境挂死并记一条资源错——#9 前两轮 web-smoke 同点
+    红的根因（见 lessons）。空头像框与原版跑本部署包一致（IOError 被
+    onPhotoLoadError 吞掉），deviations 候选。
   - `ShortcutBar`（← ShortcutBar.as 846 行）：600×62 顶条，含 __gift__/
     __flower__/__levelup__/__monthEnd__/__security__/__alarmClock__/__KFC__/
     _teBu_ 九分支 onClicked。月末弹窗（MonthEndWin 闭包 stub）Cookies 记
@@ -61,7 +67,8 @@ legacy 出处：`decompiled main3 module/uitools/`。
     Style.getDisableFilter）、工具箱条、免费礼物图标。
 - **QQ 域外联全走 shim**：QZFL.dialog.create/黄钻包/电脑管家/签到跳转都落
   `shim/QQOutlets.hx`（available=false 早退——无宿主环境下的等价分支），
-  `navigateToURL` 落 `shim/NavigateToURL.hx`。
+  `navigateToURL` 落 `shim/NavigateToURL.hx`；宿主头像 Loader.load 落
+  `QQOutlets.loadImage`（见 PersonInfo 条目）。
 
 ## qui 子集（`src/com/qzone/qui/`）
 

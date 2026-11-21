@@ -297,21 +297,24 @@
   在 js 产物上是 get_x()/set_x()、类匹配走 `o.__class__.__name__`。
   防：断言「显示树里出现了 X」必须拿**对起点的增量**（快照前后计数），
   别拿静态存在当证据——boot 树里本来就飘着别的 Floating/Crop。
-- **`ERR_NETWORK_CHANGED` 是 runner 宿主网络事件，别按 404 类资源错
-  排查**：#9 attempt 2 的 web-smoke 唯一红是 `console.error: Failed to
-  load resource: net::ERR_NETWORK_CHANGED`——Chrome 的
-  NetworkChangeNotifier 看到 runner 宿主网络变化（DHCP/NTP/接口事件）
-  时杀掉恰好 in-flight 的请求；同轮日志里启动标记已置位、canvas 渲染
-  检查过、8 条 .php 全 200、无 pageerror。页面代码既造不出宿主网络
-  变化、也拦不住这个 abort——**这类错没有代码修法**，改请求逻辑只会
-  引入偏差。防：smoke 红先给资源错分两类——404（库没声明/没入库，
-  我们的错，按 #7 那条查 libraries.xml 和数据链）才动代码；
-  `ERR_NETWORK_CHANGED`/`ERR_CONNECTION_*` 这类传输层错走 CLAUDE.md
-  基建抖动条款declare「CI 基建抖动，代码未动」收轮等重跑。declare
-  前先把容器里能验的都验干净自证：html5 编译、`haxe test.hxml`、
-  json-facade、nodeboot --drive 全链（#9 的收→锄→种→浇四断言链在
-  tools/nodeboot/drive-chain9.mjs）；注意本地复现前先跑
-  `bash scripts/sync-legacy-assets.sh`——assets/legacy/ 不入库，
-  新 checkout 没同步时构建带「Could not find library file」警告、
-  nodeboot 404 连环，是环境态不是代码回归。
+- **`ERR_NETWORK_CHANGED` 先找是谁的请求在挂死，别先declare基建抖动**：
+  #9 attempt 2 曾把它归类「runner 宿主网络事件、没有代码修法」而原样重跑——
+  attempt 3 推翻：**传输层错照样有代码侧根因**。完整机制：CI 用真实快照后端，
+  `user_run` 下发 `headPic`（user_run.php:276）＝快照配置的
+  `UC_API=http://192.168.218.129/ucenter`（legacy/snapshot/home-config.php:45，
+  参考部署的**局域网地址**）拼 `/avatar.php`；#9 新翻的 PersonInfo 在启动链必发
+  这个头像请求（updateHostInfo → set_url → Loader.load）——runner 上该地址
+  不可路由，SYN 被丢、请求挂死，恰好被 runner 网络事件杀掉 → 唯一一条
+  `console.error: net::ERR_NETWORK_CHANGED` → web-smoke 红。每次 CI 同样发、
+  同样挂死、同样被杀——两轮同点红不是抖动，是**注定失败的启动期请求**。
+  nodeboot 一直绿的原因是双重的：fixture 里 headPic 是空串（守卫跳过加载，
+  请求根本不发）＋XHR shim 对出网请求无计数（发出去也看不见）。修法：
+  头像出口并入 `shim/QQOutlets.loadImage`（no-qzone-jsapi 决策族，deviations
+  候选待人登记；原版跑本部署包同样取不到头像 → 空头像框，视觉不变）；
+  nodeboot 的 XHR shim 补「出网请求＝必死资源错」tripwire（计数 + 打栈 +
+  不真发，避免随环境漂移），fixture headPic 换成真实下发值，先本地复现
+  （红）再验修复（绿）。防：smoke 资源错先分两类没错，但分类前必须先
+  **定位到具体请求**——浏览器日志不给 URL，交叉证据只有 nodeboot：把 fixture
+  值换成 legacy/snapshot 真实载荷再看出网栈；`ERR_NETWORK_CHANGED` 本身
+  只说明「请求挂死时被网络事件杀」，挂死的请求是谁才是要查的。
 

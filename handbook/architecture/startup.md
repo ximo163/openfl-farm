@@ -42,12 +42,20 @@ DOM/Canvas/XHR 拉起 `export/html5/bin`，`render_xml.php` 仿 xml.php、
 `fixtures/mync-user-run.json` 仿 mync 用户数据，等 `__openflFarmReady`
 （**与 CI `harness/smoke.mjs` 同一就绪标记**）。就绪后**不立即退**，再跑
 `--settle` 秒（模拟 CI 的 500ms 渲染等待 + 尾部异步回调）才收尾。退出码 1
-的三种来源：就绪超时、未捕获异常、**缺失资源**——服务器 404 与 Image src
-文件不存在都计数（CI web-smoke 挂在 console.error，本地与之对齐；就绪
-前 404 走的是库加载 onError 分支，就绪标记照样置位，不看缺失资源就会
-漏报，#8 两轮 CI 即如此）。CI web-smoke 红了先在本地跑它看完整 trace，
-别盲猜。干净基线：8 次 `[CmdLoadFile]`、无 `SymbolClass:` 留痕、无报错、
-零 `[nodeboot] 404/image 404`；字体 WARNING（Arial/微软雅黑）是 openfl
+的三种来源：就绪超时、未捕获异常、**缺失资源**——服务器 404、Image src
+文件不存在、**XHR 出网请求**都计数（CI web-smoke 挂在 console.error，
+本地与之对齐；就绪前 404 走的是库加载 onError 分支，就绪标记照样置位，
+不看缺失资源就会漏报，#8 两轮 CI 即如此）。CI web-smoke 红了先在本地跑
+它看完整 trace，别盲猜。干净基线：8 次 `[CmdLoadFile]`、无
+`SymbolClass:` 留痕、无报错、零 `[nodeboot] 404/image 404`、**零
+`[nodeboot] 出网请求`**——出网＝http/https 且主机非本进程的 XHR：资产已
+全部本地化，离开本进程的请求在任何部署外环境都注定失败（#9 前两轮
+同点红的 `ERR_NETWORK_CHANGED` 即头像 headPic 指向快照 UC_API 的局域网
+地址，浏览器挂死被杀）；nodeboot 不真发（真发会随环境漂移），计缺失
+并打调用栈后走 error 事件。**fixture 必须携带真实下发值**才能看见 CI
+所见的请求——`fixtures/mync-user-run.json` 的 headPic 就是
+user_run.php:276 的原值，别清成空串把检测弄瞎（#9 nodeboot 曾因 fixture
+值失真连绿两轮）。字体 WARNING（Arial/微软雅黑）是 openfl
 嵌字缺失、只影响动态文本度量，就绪标记不受影响。
 `/N?数字` 形态的 404 **是未声明库**：`Assets.loadLibrary("<id>")` 对不在
 libraries.xml 里的 id 落到 AssetManifest 兜底加载 `/<id>?<random>`（id 即

@@ -63,6 +63,12 @@ class TestMain {
 		// issue #10：V4 预览准备——android 真机侧接线（局域网后端基址的
 		// flashvar 默认/覆盖解析、相对 *.php 改写契约）
 		runner.addCase(new shim.AndroidBackendTest());
+		// issue #17：T1 场景运行器（tools/scenario.mjs 种植场景对拍）——
+		// 交付物的数据契约门（场景声明四步进农场→种→浇→收、mod/参数对
+		// mync.php 白名单 + spec/protocol.json + snapshot uid=1、自录基线的
+		// 请求序列/全绿判定/检查点状态）。执行器与 diff 算法演示按 issue
+		// 走 PR 说明 + CI 人工配套，utest 只钉纯数据契约（见测试类头）
+		runner.addCase(new ScenarioRunnerContractTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

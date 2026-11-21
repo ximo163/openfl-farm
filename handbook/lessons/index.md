@@ -363,3 +363,14 @@
   类实测植入错误能被抓到），别留给 android CI 才现形；修 bug 引入的**新**
   代码同样过一遍 CLAUDE.md 的静态目标清单。
 
+## 2026-11 · #17（T1 场景运行器，write-tests 阶段）
+
+- **utest 的 Assert 是「记录后继续」，不是抛错中断**：Assert.fail/notNull
+  之后方法体会接着跑（test_issue17_deliverables_present 三条 FFF 全录即是
+  证据）——「文件缺失」类加载助手在 Assert.fail 后必须 `return null`、调用
+  方跟空值守卫 return；直接落到 File.getContent 会再抛一条，报告里一条
+  失败变「失败 + ERROR」两行噪音（ScenarioRunnerContractTest.loadJson 的
+  三段式写法）。防：写缺文件/缺字段路径时按「fail → return null → 守卫
+  return」，别依赖 Assert 替你截断；另外消息字符串里要字面 `$xxx`（如
+  PHP 的 `$mod_list`）得写 `$$xxx`，`$` 后跟标识符会被当成插值编译错。
+

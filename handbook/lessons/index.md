@@ -414,3 +414,12 @@
   字段——hasField 双查在**所有**目标恒跳过（html5 也一直没文字，隐性
   退化没人发现）。防：剪辑点取 + 后续真属性操作（htmlText/text）的组合，
   按「具名子实例」处理，走 `As3.childOf`（先反射后 getChildByName）。
+- **AS3 有、openfl 没有的属性，Dynamic 写同样是 Invalid field**：第二处
+  真机闪退是 `Invalid field:enabled`（NavigationBar.currentUserChanged 的
+  `m_buttons[NAV_MC].enabled`）——AS3 MovieClip.enabled 是按钮态真属性，
+  openfl MovieClip 没实现。判别法：翻 openfl API 有没有这个属性；有 →
+  cast 回真类型写（FarmLandController VIP 窗口的 tfHrs/tfQD/tf1/tfSum/
+  btnOK 一族同批加固），没有 → ClipProps 侧表 + deviations.json 登记
+  （movieclip-enabled-side-table）。防：真机修闪退别只修报出来的那一个
+  字段，grep 同函数/同路径的 Dynamic 裸写一次清完，否则每轮 APK 10 分钟
+  换一个字段名。

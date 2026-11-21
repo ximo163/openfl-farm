@@ -290,7 +290,12 @@ class NavigationBar extends HBox {
 		if (_loc1_.host != null) {
 			// 原版 `pf2 || _pf`（Boolean||int）的值进 enabled:Boolean 槽位：
 			// As3.or 保原值、truthy 复刻槽位强转后的真值
-			this.m_buttons[NAV_MC].enabled = As3.truthy(As3.or(_loc1_.host.pf2, _loc1_.host._pf));
+			// PORT-NOTE: MovieClip.enabled 是 AS3 按钮态属性，openfl MovieClip
+			// 没有——cpp 上 Dynamic 裸写不存在的字段抛 "Invalid field:enabled"
+			// （#10 真机第二处闪退实证），走 ClipProps 侧表保数据；代码内无
+			// 读取方，鼠标禁用效果未实现（spec/deviations.json
+			// movieclip-enabled-side-table）
+			ClipProps.set(this.m_buttons[NAV_MC], "enabled", As3.truthy(As3.or(_loc1_.host.pf2, _loc1_.host._pf)));
 		}
 	}
 

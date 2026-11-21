@@ -26,6 +26,7 @@ import interfaces.IMsgCenter;
 import module.mainScene.farmLand.widgets.LandItemRender;
 import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
+import openfl.display.InteractiveObject;
 import openfl.display.MovieClip;
 import openfl.display.Sprite;
 import openfl.display.Stage;
@@ -34,6 +35,7 @@ import openfl.events.IOErrorEvent;
 import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
 import openfl.net.URLRequest;
+import openfl.text.TextField;
 import openfl.system.LoaderContext;
 import report.EventRecorder;
 import shim.As3;
@@ -323,13 +325,17 @@ class FarmLandController extends Controller {
 		_loc2_.addChild(_loc1_);
 		var _loc4_:Int = this.model.countNoneMatureLands();
 		var _loc5_:Int = _loc4_ * 3;
-		var tfHrs:Dynamic = Reflect.field(_loc1_, "tfHrs");
+		// PORT-NOTE: 窗口素材的具名文本/按钮子件经 Reflect.field 取出是
+		// Dynamic——text/htmlText/mouseEnabled/filters 是 openfl 真属性，但
+		// Dynamic 裸写在 cpp 上按字段表查找（#10 真机 Invalid field 系列坑），
+		// 一律 cast 回真类型再写（#9 cast 惯例同款）
+		var tfHrs:TextField = cast(Reflect.field(_loc1_, "tfHrs"), TextField);
 		tfHrs.text = Std.string(_loc4_); // AS3 int → text 的 String 隐式转换
-		var tfQD:Dynamic = Reflect.field(_loc1_, "tfQD");
+		var tfQD:TextField = cast(Reflect.field(_loc1_, "tfQD"), TextField);
 		tfQD.text = Std.string(_loc5_);
 		var _loc6_:String = "";
 		if (Settings.getInstance().getStringAttribute("PlaneDiscount") != "1") {
-			var tf1:Dynamic = Reflect.field(_loc1_, "tf1");
+			var tf1:TextField = cast(Reflect.field(_loc1_, "tf1"), TextField);
 			tf1.text = "仅年费VIP尊享此功能";
 		}
 		if (Session.getInstance().isMeVIP == true) {
@@ -339,14 +345,14 @@ class FarmLandController extends Controller {
 			_loc6_ += "&nbsp;x&nbsp;1.0";
 		}
 		_loc5_ = Std.int(Math.floor(_loc5_)); // AS3 Math.floor(...) as int
-		var tfSum:Dynamic = Reflect.field(_loc1_, "tfSum");
+		var tfSum:TextField = cast(Reflect.field(_loc1_, "tfSum"), TextField);
 		tfSum.htmlText = "<font color=\'#E17204\'>" + Std.string(_loc4_ * 3) + "</font>&nbsp;元宝" + _loc6_ + "&nbsp;=&nbsp;<font color=\'#E17204\'>" + _loc5_ + "</font>&nbsp;元宝";
 		if (_loc4_ == 0) {
-			var btnOK:Dynamic = Reflect.field(_loc1_, "btnOK");
+			var btnOK:InteractiveObject = cast(Reflect.field(_loc1_, "btnOK"), InteractiveObject);
 			btnOK.mouseEnabled = false;
-			btnOK.filters = Style.getDisableFilter();
+			btnOK.filters = cast Style.getDisableFilter();
 		} else {
-			var btnOK2:Dynamic = Reflect.field(_loc1_, "btnOK");
+			var btnOK2:InteractiveObject = cast(Reflect.field(_loc1_, "btnOK"), InteractiveObject);
 			btnOK2.mouseEnabled = true;
 			btnOK2.filters = null;
 		}
@@ -650,9 +656,10 @@ class FarmLandController extends Controller {
 			ClipProps.set(dogTip, "cacheAsBitmp", true);
 			// tipText/txt 是素材里具名子实例（TextField，AS3 剪辑点取按子名
 			// 解析）——hasField 在所有目标都只见物理字段（html5 也恒跳过），
-			// 走 childOf 查子（先反射后 getChildByName）
-			var tipField:Dynamic = As3.childOf(dogTip, "tipText");
-			var txtField:Dynamic = As3.childOf(dogTip, "txt");
+			// 走 childOf 查子（先反射后 getChildByName）；htmlText 是真属性，
+			// cast 回 TextField 再写（上方 VIP 窗口 PORT-NOTE 同款）
+			var tipField:TextField = cast(As3.childOf(dogTip, "tipText"), TextField);
+			var txtField:TextField = cast(As3.childOf(dogTip, "txt"), TextField);
 			if (tipField != null) {
 				tipField.htmlText = text;
 			} else if (txtField != null) {

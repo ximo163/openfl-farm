@@ -57,6 +57,14 @@
       "ported": "openfl 无该常量，按常量值字面量 \"networkError\" 注册/构造；HttpOperationEx 捕获 openfl Error 后手工构造该事件直传 ioerrorHandler（只读 .text，类型串不可观察）",
       "why": "Flash Player 里 Loader 不发 NETWORK_ERROR，监听恒不触发；保留双注册形态、以字面量维持类型串一致",
       "date": "2026-11-21"
+    },
+    {
+      "id": "movieclip-enabled-side-table",
+      "module": "main3_v_221（V3c：NavigationBar）",
+      "original": "AS3 MovieClip.enabled（按钮态剪辑不响应鼠标）——currentUserChanged 按宿主 pf2/_pf 置牧场入口按钮的 enabled",
+      "ported": "openfl MovieClip 无 enabled 属性；值经 ClipProps 侧表保留（读写同通道），代码内无读取方，鼠标禁用效果未实现",
+      "why": "cpp 上 Dynamic 裸写不存在的字段抛 Invalid field:enabled（#10 真机第二处闪退实证）；该值只写不读，行为面仅剩鼠标禁用一处差异",
+      "date": "2026-11-21"
     }
   ]
 }

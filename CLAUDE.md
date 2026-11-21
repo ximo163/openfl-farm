@@ -131,8 +131,9 @@
 
 - 原版的 `MouseEvent.CLICK/DOWN/UP` 照翻（OpenFL 移动端自动把触摸合成为鼠标事件）。
 - `ROLL_OVER`/`MOUSE_OVER`/右键/滚轮：**不改原代码**，在 `src/shim/` 的输入适配层
-  按 `spec/interaction-map.json` 的映射合成这些事件。映射表里没有的交互输出
-  `BLOCKED`，不要发明。
+  按 `spec/interaction-map.json` 的映射合成这些事件。映射表**已生成而缺某项映射**
+  时输出 `BLOCKED`，不要发明；**表还没生成（S3 之前）不构成 BLOCKED**——视图片
+  把监听照译即完成，适配层等表出来后统一做（#9 round 1 曾在此误停）。
 
 ## 画面保真（硬需求）
 

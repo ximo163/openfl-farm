@@ -1,17 +1,15 @@
 package;
 
 import openfl.display.MovieClip;
+import shim.SymbolClass;
 
-/**
- * CursorOneClickHand —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
- * 一键收获手型光标。原类不在 main3_v_221 的 ABC 里（FarmStage.as 对它无 import，
- * 编译期来自 farmui 系 RSL 素材库的顶层包类，随素材库装载进 ApplicationDomain）；
- * 这里以顶层包 @:keep 空 MovieClip 保住 register/Type.resolveClass 的类引用，
- * 光标素材与动画随光标片接入。
- */
+// CursorOneClickHand —— farmui_full_v_40.swf 的 SymbolClass 导出符号（char#355），
+// 一键摘取光标。FarmStage 的 m_cursorCtrl.register 直接引用本类（FarmStage.as
+// :138-146 一一对应），#7 曾以空壳保引用，#9 光标片接入真实时间轴。
 @:keep
 class CursorOneClickHand extends MovieClip {
 	public function new() {
 		super();
+		SymbolClass.bind(this, "farmui_full_v_40", "CursorOneClickHand");
 	}
 }

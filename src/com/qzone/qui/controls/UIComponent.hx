@@ -21,7 +21,12 @@ class UIComponent extends Sprite {
 	private var _enabled:Bool;
 	private var _inited:Bool;
 	private var _toolTip:String;
-	private var renderCalls:Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>();
+	// 原文无类型参（new Dictionary()，键是方法闭包）。K 必须是对象类型：
+	// Dictionary 是 @:multiType，K=Dynamic 会落到 StringMap——函数键被 JS 对象
+	// 键强转成字符串，RENDER 帧重放时 key.apply 直接 TypeError（#9 nodeboot
+	// 踩到）。函数类型键落 ObjectMap（LoadManager 的 Dictionary<EventDispatcher,…>
+	// 同款），与 AS3 Dictionary 对象键语义一致
+	private var renderCalls:Dictionary<Dynamic->Void, Array<Dynamic>> = new Dictionary<Dynamic->Void, Array<Dynamic>>();
 	private var _resized:Bool;
 
 	// UIComponent.as:28-37

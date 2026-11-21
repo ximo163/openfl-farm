@@ -28,8 +28,8 @@ class AddExpFloating extends AddMoneyFloating {
 		if (_loc2_ > 2 && _loc2_ < 100 && _loc3_ != null
 			&& (As3.floatOf(Reflect.field(_loc3_, "itemId")) == Consts.FAIRY_LADY
 				|| As3.floatOf(Reflect.field(_loc3_, "itemId")) == Consts.FAIRY_GOD)) {
-			var _loc4_:Dynamic = Reflect.field(this._addAddAnimation, "addValueBox");
-			var addValue:Dynamic = Reflect.field(_loc4_, "addValue");
+			var _loc4_:Dynamic = As3.childOf(this._addAddAnimation, "addValueBox");
+			var addValue:Dynamic = As3.childOf(_loc4_, "addValue");
 			addValue.text = addValue.text + "(↑" + Std.string(Reflect.field(_loc3_, "rate")) + "%)";
 		}
 	}

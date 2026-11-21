@@ -32,10 +32,20 @@ legacy 出处：`decompiled main3 module/uitools/`。
     提示文案表），点击/快捷键（KEY_UP，R=收获/T=一键摘取）调 setCursor。
     setCursor 是光标状态机的**第二入口**（CursorControl 是第一入口）；
     TOOL_UPRED 红地升级按钮、Tool_Wild（activities 片）走闭包 stub。
-    `MODULE_EVENT_CLICK_PACK/CLICK_TOOLBOX` 是自有派发名。
+    `MODULE_EVENT_CLICK_PACK/CLICK_TOOLBOX` 是自有派发名。**工具按钮的
+    素材 tag 是 DefineButton2（按钮符号）**，同名类是 SimpleButton 垫片
+    （`SymbolClass.bindButton`；规则与撞坑见 [assets.md](assets.md)）：
+    TOOLS 表的 ToolHand/ToolHoe 等 + 工具箱/水池角标的 ToolHook/
+    ToolPesticide/ToolWater/CameraButton/ToolZoomIn/ToolZoomOut/PoolInfoBtn
+    （water_ui_v_0 的 ToolFishNet/All 同理）。
   - `NavigationBar`（← NavigationBar.as）：ButtonMaker 建按钮组，按
     Settings/Session 判点亮（未点亮提示窗 ALERT_TYPE_TEXT），跳转目标
-    分流 QzoneJSAPI/navigateToURL shim。
+    分流 QzoneJSAPI/navigateToURL shim。**BUTTONS 表的
+    ButtonSuperMarket/ButtonMill1 与平移箭头 NavigationLeftArrow/
+    NavigationRightArrow 在全部部署 swf 均不导出**——main3 的代码比
+    部署包里的 farmui_full 新一个版本位；空 MovieClip 保启动（原版跑
+    这份部署包同样 null 后 NPE），箭头/超市按钮不渲染是 deviations
+    候选。
   - `LeftSideToolBar`（← LeftSideToolBar.as）：左侧活动图标列（VBox），
     邮件图标 openPostWindow（PostWindow 闭包 stub + Reflect.hasField 门）。
   - `PersonInfo`（← PersonInfo.as）：头像/名字/金币/经验面板，数字滚动
@@ -85,7 +95,12 @@ H/V 滚动条皮肤（ListSkin 例外，见类头）。**仍 stub**：`Panel`、
 - floating/（← common/view/floating/）：`FloatControl` 注册表 + 11 个飘字
   类。收获/加钱/加经验/操作/健康/文字提示逐句翻译；基类 `FloatingBase`
   走 fid 计数 + msgCenter（IMsgCenter）派发。动画全帧驱动
-  （ENTER_FRAME/Timer），数字逐字照抄。
+  （ENTER_FRAME/Timer），数字逐字照抄。宿主层 `FloatingLayer`
+  （framework/layers，#7 闭包 stub → #9 按其头注接入真身：FLOATING_OPEN/
+  CLOSE 监听 + `FloatControl.getClass` 反射实例化 start/addChild）；
+  收获链 FarmLandsView.onHarvestData → openFloat(FLOAT_TYPE_HA) →
+  HarvestAnimation，苗图库 Crop_2_Seed（nc_data.php:6021 asset_id.s，
+  assets 清单 V3c 组）。
 - cursor/（← common/view/cursor/）：`CursorControl` 类注册表
   （m_cusrsorLib——**原版拼写如此，别修**）+ setCursor/useSystem 经
   msgCenter 派发 CursorEvent；`CursorTool`/`CursorCropSeed` 携带工具态。
@@ -104,4 +119,8 @@ H/V 滚动条皮肤（ListSkin 例外，见类头）。**仍 stub**：`Panel`、
 Session 单例每用例自钉 host）、UIToolsModel 派生的 widgets 测试
 （ToolBarTest 用 Type.createEmptyInstance 驱动纯状态机——忠实 ctor 在
 eval 无素材会抛 #2007）。光标状态机在 ToolBarTest 的 onKeyUp 映射断言。
-显示装配（皮肤/排布）不进单测，CI web-smoke 兜底。
+显示装配（皮肤/排布）不进单测，CI web-smoke 兜底。**种收全链的本地
+证据**：`node tools/nodeboot/nodeboot.mjs --drive tools/nodeboot/
+drive-chain9.mjs`（收→锄→种→浇：真实 mync 请求体/应答落地/飘字挂树
+断言，应答 fixture 按 legacy PHP echo 模板；点击派发语义的坑见
+lessons——别改回直点 LandItemRender）。

@@ -91,7 +91,7 @@ class ToolBar extends HBox {
 
 	// ToolBar.as:98-101
 	public function updateGoldLandTime(param1:Int):Void {
-		cast(Reflect.field(cast(this._tools[TOOL_UPRED], ToolBase).getChildAt(0), "updateTime"), TextField).text = Std.string(param1);
+		cast(As3.childOf(cast(this._tools[TOOL_UPRED], ToolBase).getChildAt(0), "updateTime"), TextField).text = Std.string(param1);
 	}
 
 	// ToolBar.as:103-116
@@ -219,12 +219,14 @@ class ToolBar extends HBox {
 				var startTime:Float = _loc5_ == null ? Math.NaN : _loc5_.getTime();
 				var endTime:Float = _loc6_ == null ? Math.NaN : _loc6_.getTime();
 				if (_loc7_ >= startTime && _loc7_ <= endTime) {
-					cast(Reflect.field(_loc1_, "updateTime"), TextField).text = Std.string(Session.getInstance().upGoldLandTime);
+					// PORT-NOTE: 原版 `_loc1_["updateTime"]` 是时间轴具名子实例
+					// （AS3 dynamic 查找），Haxe 经 As3.childOf 补全（#8 Crop step1 先例）
+					cast(As3.childOf(_loc1_, "updateTime"), TextField).text = Std.string(Session.getInstance().upGoldLandTime);
 				} else {
-					cast(Reflect.field(_loc1_, "updateTime"), TextField).text = "0";
+					cast(As3.childOf(_loc1_, "updateTime"), TextField).text = "0";
 				}
 			} else {
-				cast(Reflect.field(_loc1_, "updateTime"), TextField).text = "0";
+				cast(As3.childOf(_loc1_, "updateTime"), TextField).text = "0";
 			}
 		}
 		this._redUpBtn.tipText = this.TOOLS_TIP[TOOL_UPRED];

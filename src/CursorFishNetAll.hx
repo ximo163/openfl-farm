@@ -1,17 +1,15 @@
 package;
 
 import openfl.display.MovieClip;
+import shim.SymbolClass;
 
-/**
- * CursorFishNetAll —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
- * 全塘渔网光标（FarmStage 经 Utils.getClass 反射取类）。原类不在 main3_v_221 的 ABC 里（FarmStage.as 对它无 import，
- * 编译期来自 farmui 系 RSL 素材库的顶层包类，随素材库装载进 ApplicationDomain）；
- * 这里以顶层包 @:keep 空 MovieClip 保住 register/Type.resolveClass 的类引用，
- * 光标素材与动画随光标片接入。
- */
+// CursorFishNetAll —— water_ui_v_0.swf 的 SymbolClass 导出符号（char#39），
+// 全体渔网光标。FarmStage 经 Utils.getClass("CursorFishNetAll") 反射取类注册（FarmStage.as
+// :152-153），#7 曾以空壳保引用，#9 光标片接入真实时间轴。
 @:keep
 class CursorFishNetAll extends MovieClip {
 	public function new() {
 		super();
+		SymbolClass.bind(this, "water_ui_v_0", "CursorFishNetAll");
 	}
 }

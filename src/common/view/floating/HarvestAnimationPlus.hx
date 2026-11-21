@@ -64,7 +64,8 @@ class HarvestAnimationPlus extends FloatingBase {
 			_loc3_ = cast Utils.getMaterial(_loc2_);
 			if (_loc3_ != null) {
 				this._mc = _loc3_;
-				this._numText = cast Reflect.field(_loc3_, "txt");
+				// 原版 `_loc3_["txt"]`：时间轴具名子实例，经 As3.childOf
+				this._numText = cast As3.childOf(_loc3_, "txt");
 				addChild(_loc3_);
 			}
 		} else {

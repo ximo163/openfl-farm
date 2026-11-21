@@ -244,4 +244,57 @@
   `Type.createEmptyInstance`**：ToolBar 的 ctor new 素材会 addChild
   null（eval 立抛），但 setCursor/onKeyUp 是纯逻辑——空实例 + 手工钉
   字段驱动（ToolBarTest 先例）。别为测试改 ctor。
+- **DefineButton2 按钮符号的垫片基类是 SimpleButton，不是 MovieClip**
+  ：#9 工具条素材（ToolHand/ToolHoe 等全部）在 swf 里是 DefineButton2
+  tag——AnimateButtonSymbol.__constructor 往实例写 downState/四态，js
+  上 MovieClip 基类直接炸 `set_downState is not a function`（nodeboot
+  点「收获」按钮即崩才发现）。修法：`extends SimpleButton` +
+  `SymbolClass.bindButton`（bind/bindButton 共用 pending，target 放宽
+  DisplayObject）。防：新增符号 shim 前先 probe swf 的 tag 类型
+  （DefineButton/DefineButton2 char id × SymbolClass 对应），规则已进
+  assets.md 符号 shim 节。
+- **`Dictionary<Dynamic, Dynamic>` 落 StringMap，函数/对象键被 JS 对象
+  键强转成字符串**：openfl Dictionary 是 `@:multiType`，K=Dynamic 时
+  按 @:to 列表**第一个**（toStringMap）统一——UIComponent.renderCalls
+  的键是方法闭包，RENDER 帧重放时字符串键 `apply` 直接 TypeError；
+  EffectManager.effectInstances 键是 DisplayObject 同坑。修法：K 写成
+  具体类型（`Dictionary<Dynamic->Void, …>`/`Dictionary<DisplayObject,
+  …>`）落 ObjectMap，语义同 AS3 Dictionary 对象键。防：见到
+  `new Dictionary<Dynamic,` 全局搜掉，键永远写实际类型。
+- **AS3 `new Date("7/20/2012 00:00:00")` 解析不了得 NaN、不抛；Haxe
+  `Date.fromString` 对美式串直接抛**：Settings.isGiftTime 的
+  monthEnds 配置串就是美式 m/d/Y（xml.php 真实载荷），启动链
+  setConfigDataModel 必经——原以为该分支不可达，Main.hx:253 打脸。
+  修法：`As3.dateOf`（失败回 null）+ null 时按 NaN 语义代入（比较恒
+  false）。防：原版 `new Date(单字符串参)` 一律 dateOf + null 守卫，
+  别信「这个串解析不了、分支死代码」——原版解析不了**不等于分支不走**。
+- **注册 Font 名字传 null 炸 AnimateDynamicTextSymbol 的兜底字体匹配**
+  ：swf 文本符号实例化时若字体未嵌，兜底逻辑 `Font.enumerateFonts()` 循
+  环里 `font.name.replace`——我们 `Main_EMBED_FONT_A` 桩 Font 以
+  `new Font()`（name=null）注册，#9 绑 ToolUpgradeNew 时栈就断在
+  replace。修法：`super("embedFontA")` 传原 fontName。防：桩类基类
+  ctor 的可选参别省——先查消费方拿它做什么再定默认值。
+- **openfl 的 at-target 阶段不放捕获监听；模拟点击必须点显示对象的
+  子节点**：FarmLandsView 把 CLICK 监听 `useCapture=true` 注册在
+  LandItemRender **本体**（FarmLandsView.hx:143），openfl 的
+  `EventDispatcher.__dispatchEvent` 按
+  `listener.useCapture == (phase == CAPTURING)` 过滤——直点本体
+  （`land.dispatchEvent(click)`）一枪不发（drive9 全部
+  act=harvest/scarify/planting/water 断言连红、又全被「树里本来就
+  有」的弱断言掩护成假绿的来源）。真实鼠标命中的是 LandTile 挂进地块
+  项的**底图子节点**，监听在捕获阶段触发、currentTarget==地块项
+  （onMouseEvent 的 CLICK 分支正按 currentTarget 判
+  `__FarmlandItem__`）。防：驱动器/本地对拍模拟点击，先看监听注册的
+  useCapture 与挂载层级——捕获监听派发 target 必须是它的后代。
+- **构建产物把 Haxe 类全关进 lime 的 IIFE，node 侧够不到类与
+  MouseEvent 构造器；驱动句柄从 shim.Harness 出**：nodeboot --drive
+  的驱动器拿不到 `openfl_Lib`/`$hxClasses`（只有 `globalThis.lime`
+  被导出）。修法：`shim/Harness.hx` 在既有 `__openflFarmReady`
+  注入点同时挂 `window.__openflFarmDrive = {stage, MouseEvent,
+  KeyboardEvent}`（CI/浏览器侧无人读，纯本地证据链胶水）。配套：
+  nodeboot 的 mync 服务器按 mod/act 换 fixture（`mync-<mod>-<act>.
+  json`，按 legacy PHP echo 模板造）+ myncLog 抓 POST body；Haxe 属性
+  在 js 产物上是 get_x()/set_x()、类匹配走 `o.__class__.__name__`。
+  防：断言「显示树里出现了 X」必须拿**对起点的增量**（快照前后计数），
+  别拿静态存在当证据——boot 树里本来就飘着别的 Floating/Crop。
 

@@ -154,9 +154,10 @@ class ToolBoxBar extends HBox {
 		return _loc3_;
 	}
 
-	// ToolBoxBar.as:164-172
+	// ToolBoxBar.as:164-172（`param1.target.tipText` 是属性读取——AS3 点取
+	// 走 getter，Reflect.field 只见物理字段恒 null，用 getProperty 对齐）
 	private function onToolRollOver(param1:MouseEvent):Void {
-		var _loc2_:String = Reflect.field(param1.target, "tipText");
+		var _loc2_:String = Reflect.getProperty(param1.target, "tipText");
 		if (_loc2_ == null || _loc2_ == "") {
 			return;
 		}

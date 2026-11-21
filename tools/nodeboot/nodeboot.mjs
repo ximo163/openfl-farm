@@ -19,6 +19,14 @@
 // 排障时可临时在 src/ 加 trace()（html5 的 trace 进 console.log，本工具透传），
 // 看完即撤。
 
+// --drive <mjs>：就绪 + settle 干净后不退出，动态 import 该模块并 await 其
+//  default(ctx)——在同一进程/全局里驱动交互链（CI web-smoke 不点鼠标，链路
+//  证据在本地补）。ctx = { missing, finish, myncLog, sleep }；返回值作退出码，
+//  抛异常按 1 退。--drive 时 mync 应答先按 mod/act 查
+//  fixtures/mync-<mod>-<act>.json，没有才回落 user_run 整包；所有 mync 请求
+//  （URL+POST body）记进 myncLog 供驱动断言。--drive-timeout <秒>（默认 60）
+//  是驱动自身的兜底时限。
+
 import http from "node:http";
 import { createServer } from "node:http";
 import { readFile, copyFile, mkdir, mkdtemp } from "node:fs/promises";
@@ -37,6 +45,10 @@ const PORT = 8123;
 const args = process.argv.slice(2);
 const keep = args.includes("--keep");
 const timeoutSec = Number(args[args.indexOf("--timeout") + 1]) || 30;
+const drivePath = args[args.indexOf("--drive") + 1];
+const driveTimeoutSec = Number(args[args.indexOf("--drive-timeout") + 1]) || 60;
+// mync 请求流水（--drive 断言用）：URL + POST body
+const myncLog = [];
 
 // ---------------------------------------------------------------- php 应答
 // xml.php 三个 mod 的渲染：拷 legacy source/core 的依赖子集到临时目录
@@ -88,11 +100,21 @@ const server = createServer(async (req, res) => {
         body = xmlBodies[mod];
         type = "application/xml";
       } else if (path.endsWith("mync.php")) {
-        body = myncBody;
+        // --drive 时按 mod/act 精确应答（fixtures/mync-<mod>-<act>.json，
+        // 形状抄 nc/mod 对应 php 的 echo），先于 user_run 整包回落
+        const mod = u.searchParams.get("mod") || "";
+        const act = u.searchParams.get("act") || "";
+        const actFile = join(HERE, "fixtures", `mync-${mod}-${act}.json`);
+        body = (drivePath && act && existsSync(actFile)) ? await readFile(actFile, "utf8") : myncBody;
       }
       if (body == null) {
         console.log(`[nodeboot] 未应答的 php：${req.method} ${req.url}`);
         res.writeHead(404); res.end(); return;
+      }
+      if (path.endsWith("mync.php")) {
+        let postBody = "";
+        await new Promise((r) => { req.on("data", (c) => postBody += c); req.on("end", r); });
+        myncLog.push({ url: req.url, body: postBody });
       }
       res.writeHead(200, { "Content-Type": type, "Cache-Control": "no-cache" });
       res.end(body);
@@ -372,7 +394,8 @@ lime.embed("OpenflFarm", "openfl-content", 860, 500, { parameters: {} });
 // 留一个 settle 窗口再收尾，窗口内冒出的缺失资源/异常计入退出码。
 const settleMs = (Number(args[args.indexOf("--settle") + 1]) || 3) * 1000;
 let readyAt = 0;
-const poll = setInterval(() => {
+// --drive 分支 await 交互驱动，回调升 async（fire-and-forget：drive 内部自兜底）
+const poll = setInterval(async () => {
   if (!globalThis.__openflFarmReady) return;
   if (!readyAt) {
     readyAt = Date.now();
@@ -386,7 +409,36 @@ const poll = setInterval(() => {
       console.log(`[nodeboot] FAIL：${missing.length} 个缺失资源`);
       finish(1);
     }
-    finish(0);
+    if (!drivePath) finish(0);
+    else await drive();
   }
 }, 250);
 poll.unref?.();
+
+// ---------------------------------------------------------------- 交互链驱动
+// settle 干净后接 --drive 的模块：跑在同一个 globalThis 里（OpenflFarm.js 经
+// runInThisContext 落进来，openfl_Lib/$hxClasses 等全可及）。驱动抛异常或超时
+// 都按 FAIL 退；正常结束打 PASS。
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+async function drive() {
+  const driverWatch = setTimeout(() => {
+    console.log(`[nodeboot] drive ${driveTimeoutSec}s 超时`);
+    finish(1);
+  }, driveTimeoutSec * 1000);
+  driverWatch.unref?.();
+  try {
+    const mod = await import(drivePath.startsWith("/") ? drivePath : join(REPO, drivePath));
+    const code = await mod.default({ missing, finish, myncLog, sleep });
+    clearTimeout(driverWatch);
+    if (missing.length) {
+      for (const m of missing) console.log(`[nodeboot] 缺失资源 ${m}`);
+      console.log(`[nodeboot] FAIL：${missing.length} 个缺失资源`);
+    }
+    console.log(code === 1 ? "[nodeboot] drive FAIL" : "[nodeboot] drive PASS");
+    finish(code === 1 || missing.length ? 1 : 0);
+  } catch (e) {
+    console.log("[nodeboot] drive 抛异常：");
+    console.log(e && e.stack ? e.stack : String(e));
+    finish(1);
+  }
+}

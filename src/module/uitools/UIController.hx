@@ -608,11 +608,12 @@ class UIController extends Controller {
 		}
 	}
 
-	// UIController.as:640-649（newIconTip 素材的 tipMc.tip 文本链 → Reflect）
+	// UIController.as:640-649（newIconTip 素材的 tipMc.tip 文本链 → As3.childOf，
+	// 时间轴具名子实例经显示列表查找）
 	private function showNewIconTip(param1:String, param2:Point):Void {
 		var _loc3_:MovieClip = cast(Utils.getMaterial("newIconTip"), MovieClip);
 		_loc3_.name = "__newicontip__";
-		cast(Reflect.field(Reflect.field(_loc3_, "tipMc"), "tip"), TextField).text = param1;
+		cast(As3.childOf(As3.childOf(_loc3_, "tipMc"), "tip"), TextField).text = param1;
 		_loc3_.gotoAndPlay(1);
 		_loc3_.x = param2.x;
 		_loc3_.y = param2.y;

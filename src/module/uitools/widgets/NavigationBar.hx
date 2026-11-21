@@ -104,12 +104,16 @@ class NavigationBar extends HBox {
 			}
 			btn = Utils.getMaterial(this.BUTTONS[i]);
 			ButtonMaker.addTarget(btn);
-			btn.name = this.BUTTONS_NAME[i];
+			// PORT-NOTE: btn 原文是 var btn:*，name/scaleX/scaleY 是 DisplayObject
+			// 真属性——AS3 点取走 setter/getter，Dynamic 裸写只落 JS 自有字段、
+			// openfl 内部（getChildByName/变换矩阵）看不见。经 (btn : MovieClip)
+			// 强类型化走真属性（#8 for-each 同款修法）；tipText 是动态属性照裸写。
+			(btn : MovieClip).name = this.BUTTONS_NAME[i];
 			btn.tipText = this.BUTTONS_TIP[i];
 			btn.addEventListener(MouseEvent.CLICK, this.buttonClickHandler);
 			btn.addEventListener(MouseEvent.ROLL_OVER, this.toolRollOver);
 			btn.addEventListener(MouseEvent.ROLL_OUT, this.toolRollOut);
-			btn.scaleX = btn.scaleY = scale;
+			(btn : MovieClip).scaleX = (btn : MovieClip).scaleY = scale;
 			this.m_buttons.push(btn);
 			if (!(i >= this.showBtnIndex + NAV_APP_SHOW_MAX && i < NAV_APP_TOTAL)) {
 				this.addElement(btn);
@@ -119,8 +123,8 @@ class NavigationBar extends HBox {
 						if (_arrow == null) {
 							_arrow = cast(Utils.getMaterial("monthEndArrow"), MovieClip);
 							_arrow.name = "__supermarketarrow__";
-							// 素材剪辑的 tipMc.tip 文本链经动态取（类型面没有该子件）
-							cast(Reflect.field(Reflect.field(_arrow, "tipMc"), "tip"), TextField).text = "全新游戏，精彩无限！";
+							// 素材剪辑的 tipMc.tip 文本链经 As3.childOf 取（时间轴具名子实例）
+							cast(As3.childOf(As3.childOf(_arrow, "tipMc"), "tip"), TextField).text = "全新游戏，精彩无限！";
 							this.addChild(_arrow);
 						}
 						_arrow.mouseEnabled = false;
@@ -136,11 +140,13 @@ class NavigationBar extends HBox {
 		}
 		if (QzoneJSAPI.QPLUS == false && QzoneJSAPI.WB == false) {
 			this.leftArrow = Utils.getMaterial("NavigationLeftArrow");
-			this.leftArrow.name = "leftArrow";
+			// leftArrow/rightArrow 原文 var *:name/x/y 是真属性，经强类型化
+			// （同上 PORT-NOTE）
+			(this.leftArrow : MovieClip).name = "leftArrow";
 			this.leftArrow.addEventListener(MouseEvent.CLICK, this.onScrollBar);
 			this.addChild(this.leftArrow);
 			this.rightArrow = Utils.getMaterial("NavigationRightArrow");
-			this.rightArrow.name = "rightArrow";
+			(this.rightArrow : MovieClip).name = "rightArrow";
 			this.rightArrow.addEventListener(MouseEvent.CLICK, this.onScrollBar);
 			this.addChild(this.rightArrow);
 		}
@@ -188,9 +194,10 @@ class NavigationBar extends HBox {
 		this.x = this.stage.stageWidth - this.width - this.gapH;
 		this.y = 0;
 		if (this.leftArrow != null && this.rightArrow != null) {
-			this.leftArrow.y = this.rightArrow.y = 22;
-			this.leftArrow.x = -10;
-			this.rightArrow.x = 239;
+			// x/y 真属性经强类型化（ctor PORT-NOTE 同款）
+			(this.leftArrow : MovieClip).y = (this.rightArrow : MovieClip).y = 22;
+			(this.leftArrow : MovieClip).x = -10;
+			(this.rightArrow : MovieClip).x = 239;
 		}
 	}
 
@@ -207,11 +214,15 @@ class NavigationBar extends HBox {
 		this.switchIcons();
 		if (QzoneJSAPI.QPLUS == false && QzoneJSAPI.WB == false) {
 			Session.getInstance().m_millOpen = true;
-			if (this.m_buttons[NAV_RESTAURANT].iconNO != null) {
-				this.m_buttons[NAV_RESTAURANT].iconNO.visible = false;
+			// iconNO 是素材按钮的时间轴具名子实例（AS3 dynamic 查找），
+			// 经 As3.childOf 取；visible 落 DisplayObject 真属性
+			var iconNO:Dynamic = As3.childOf(this.m_buttons[NAV_RESTAURANT], "iconNO");
+			if (iconNO != null) {
+				cast(iconNO, openfl.display.DisplayObject).visible = false;
 			}
-			if (this.m_buttons[NAV_MILL].iconNO != null) {
-				this.m_buttons[NAV_MILL].iconNO.visible = false;
+			iconNO = As3.childOf(this.m_buttons[NAV_MILL], "iconNO");
+			if (iconNO != null) {
+				cast(iconNO, openfl.display.DisplayObject).visible = false;
 			}
 		}
 	}
@@ -293,7 +304,8 @@ class NavigationBar extends HBox {
 			UserActionRecorder.recordAction(UserActionRecorder.HF_MYRESTAURANT_CLICKED);
 			ClickReportManager.reportClick("up.banner.icon_restaurant.click");
 		} else if (_loc2_ == "supermarket") {
-			if (this.m_buttons[NAV_SUPERMARKET].currentFrame == 2) {
+			// currentFrame 真属性经强类型化（ctor PORT-NOTE 同款）
+			if ((cast(this.m_buttons[NAV_SUPERMARKET], MovieClip)).currentFrame == 2) {
 				_loc4_ = "";
 				if (As3.parseInt(Settings.getInstance().getStringAttribute("QQSuperMarketVip")) > 0) {
 					_loc4_ = "VIP Lv" + Settings.getInstance().getStringAttribute("QQSuperMarketVip") + "及以上的用户";

@@ -528,10 +528,10 @@ class ShortcutBar extends Box {
 						arrow = cast(Utils.getMaterial("monthEndArrow"), MovieClip);
 						arrow.name = "__monthendarrow__";
 						if (As3.truthy(Settings.getInstance().getMonthEnds("0", "month"))) {
-							cast(Reflect.field(Reflect.field(arrow, "tipMc"), "tip"), TextField).text = Settings.getInstance()
+							cast(As3.childOf(As3.childOf(arrow, "tipMc"), "tip"), TextField).text = Settings.getInstance()
 								.getMonthEnds("0", "month") + "礼包\n火热促销中";
 						} else {
-							cast(Reflect.field(Reflect.field(arrow, "tipMc"), "tip"), TextField).text = "月末大礼包\n火热促销中";
+							cast(As3.childOf(As3.childOf(arrow, "tipMc"), "tip"), TextField).text = "月末大礼包\n火热促销中";
 						}
 						addChild(arrow);
 					}

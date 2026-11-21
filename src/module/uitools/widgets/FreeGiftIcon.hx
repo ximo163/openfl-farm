@@ -37,12 +37,12 @@ class FreeGiftIcon extends MovieClip {
 		} else {
 			_loc4_ = Reflect.field(param1, "unread");
 		}
-		// numBox.num_txt 文本链 → Reflect（swf 动态子件）
-		cast(Reflect.field(Reflect.field(_loc2_, "numBox"), "num_txt"), openfl.text.TextField).text = _loc4_;
+		// numBox.num_txt 文本链 → As3.childOf（swf 动态子件，时间轴具名子实例）
+		cast(As3.childOf(As3.childOf(_loc2_, "numBox"), "num_txt"), openfl.text.TextField).text = _loc4_;
 		if (_loc4_ == "0") {
-			cast(Reflect.field(_loc2_, "numBox"), openfl.display.DisplayObject).visible = false;
+			cast(As3.childOf(_loc2_, "numBox"), openfl.display.DisplayObject).visible = false;
 		} else {
-			cast(Reflect.field(_loc2_, "numBox"), openfl.display.DisplayObject).visible = true;
+			cast(As3.childOf(_loc2_, "numBox"), openfl.display.DisplayObject).visible = true;
 		}
 	}
 

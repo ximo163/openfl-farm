@@ -1,6 +1,8 @@
 package shim;
 
+import openfl.display.DisplayObject;
 import openfl.display.MovieClip;
+import openfl.display.SimpleButton;
 import openfl.utils.AssetLibrary;
 import openfl.utils.Assets;
 #if !eval
@@ -41,8 +43,12 @@ import swf.exporters.animate.AnimateLibrary;
  */
 class SymbolClass {
 	// 按需加载中的库：libraryId → 等待绑定的 (symbolName, target) 列表；
-	// after 收构造器返回后、attach 前登记的待重放写（见 afterAttach）
-	private static var pending:Array<{libraryId:String, symbolName:String, target:MovieClip, after:Array<MovieClip->Void>}> = [];
+	// after 收构造器返回后、attach 前登记的待重放写（见 afterAttach）。
+	// 目标放宽到 DisplayObject：#9 工具条 11 枚素材是 DefineButton2（按钮
+	// 符号，AnimateButtonSymbol.__constructor 往实例写四态），目标得是
+	// SimpleButton（bindButton）；after 只有 MovieClip 路径（afterAttach）
+	// 会登记，SimpleButton 目标恒为空数组
+	private static var pending:Array<{libraryId:String, symbolName:String, target:DisplayObject, after:Array<MovieClip->Void>}> = [];
 
 	// DCE 引用锚。Haxe 只编译从 main 可达（被引用/import）的类型；符号 shim
 	// 只经反射字符串取用（getMaterial/getClass → ApplicationDomain →
@@ -59,6 +65,20 @@ class SymbolClass {
 	#end
 
 	public static function bind(target:MovieClip, libraryId:String, symbolName:String):Void {
+		bindAny(target, libraryId, symbolName);
+	}
+
+	/**
+	 * DefineButton2（按钮符号）的绑定入口：AnimateButtonSymbol.__constructor
+	 * 往实例写 downState/hitTestState/overState/upState 四态，目标必须是
+	 * SimpleButton——MovieClip 实例在 js 上没有这些 setter 直接 TypeError
+	 * （#9 工具条 ToolHoe 等 11 枚）。加载时序与 bind() 完全共用（bindAny）。
+	 */
+	public static function bindButton(target:SimpleButton, libraryId:String, symbolName:String):Void {
+		bindAny(target, libraryId, symbolName);
+	}
+
+	private static function bindAny(target:DisplayObject, libraryId:String, symbolName:String):Void {
 	#if !eval
 		if (dceAnchor == null) {
 			dceAnchor = [
@@ -72,7 +92,26 @@ class SymbolClass {
 				Insect, Weed, Reclaim, CanPickIcon,
 				ItemLoading,
 				PackBarBg,
-				ToolBarBg
+				ToolBarBg,
+				// #9 uitools 片：工具条/导航条按钮、图标、档案条、飘字素材（按钮
+				// 表与图标经 getMaterial 反射，编译期零引用，必须锚进来）
+				ToolArrow, ToolHand, OneClickHand, ToolHoe, ToolInsect, ToolPack, ToolBox, ToolTheft, ToolWeed,
+				ToolUpgradeNew, ToolFishNet, ToolFishNetAll,
+				// #9 ToolBoxBar/UIController 的按钮素材（同上 DefineButton2 组，
+				// 开工具箱/水池角标时才构造，同样零引用）
+				ToolHook, ToolPesticide, ToolWater, CameraButton, ToolZoomIn, ToolZoomOut, PoolInfoBtn,
+				NewHealthModeIcon,
+				ButtonFarm, ButtonMC, ButtonRestaurant, ButtonSuperMarket, ButtonMill1, ButtonWarehouse, ButtonShop,
+				ButtonDecorate, NavigationLeftArrow, NavigationRightArrow,
+				MsgIcon, PostIcon, InformationIcon, CardsGameIcon, CardsGameActivityIcon, FlowerIcon, GiftIcon,
+				HeadBg, TipIcon, SuccessIcon, ErrorIcon, GoldIcon, QB, RPIcon,
+				LevelBlue, LevelYellow, ExpBlue, ExpBlueBg, ExpYellow, ExpYellowBg, LevelAndExperienss,
+				TalkBoxMy1, TalkBoxHe1, AddHealth, AddAnimationEx, HarvestPlusA, HarvestPlusB,
+				LevelUpIcon, MonthEndIcon, MonthEndArrow, NewIconTip, Freegift, FreeGiftAni,
+				// #9 光标片：FarmStage.register 直接引用（编译期可达），锚只为
+				// 与上两组同表可查
+				CursorArrow, CursorHand, CursorHoe, CursorHook, CursorInsect, CursorPesticide,
+				CursorWater, CursorWeed, CursorOneClickHand
 			];
 		}
 #end
@@ -81,8 +120,13 @@ class SymbolClass {
 		// 不抛——原版纯符号构造也不抛
 		trace("SymbolClass: eval 目标无库 " + libraryId + ":" + symbolName);
 #else
-		if (@:privateAccess target.__timeline != null) {
-			return;
+		if (Std.isOfType(target, MovieClip)) {
+			// 时间轴已挂上（同库第二只起）跳过；SimpleButton 无 __timeline，
+			// 恒走绑定（构造器每实例一次，不存在二次绑定）
+			var mc:MovieClip = cast target;
+			if (@:privateAccess mc.__timeline != null) {
+				return;
+			}
 		}
 		// Assets.getLibrary 静态类型是 lime 的 AssetLibrary（无 bind）；
 		// 本流水线的库实例都是 openfl 侧库（AnimateLibrary），收窄后走
@@ -105,13 +149,14 @@ class SymbolClass {
 		}
 		Assets.loadLibrary(libraryId).onComplete(function(lib:AssetLibrary):Void {
 			// 该库这一批等绑的目标全部挂上；再进来的 bind 走上面的同步路径
-			var stillQueued:Array<{libraryId:String, symbolName:String, target:MovieClip, after:Array<MovieClip->Void>}> = [];
+			var stillQueued:Array<{libraryId:String, symbolName:String, target:DisplayObject, after:Array<MovieClip->Void>}> = [];
 			for (entry in pending) {
 				if (entry.libraryId == libraryId) {
 					attach(lib, entry.libraryId, entry.symbolName, entry.target);
-					// 待绑窗口里登记的写按登记序重放一次（见 afterAttach）
+					// 待绑窗口里登记的写按登记序重放一次（见 afterAttach）；
+					// after 只会是 MovieClip 路径登记的（SimpleButton 目标恒空）
 					for (fn in entry.after) {
-						fn(entry.target);
+						fn(cast entry.target);
 					}
 				} else {
 					stillQueued.push(entry);
@@ -127,10 +172,13 @@ class SymbolClass {
 #end
 	}
 
-	private static function attach(library:AssetLibrary, libraryId:String, symbolName:String, target:MovieClip):Void {
+	private static function attach(library:AssetLibrary, libraryId:String, symbolName:String, target:DisplayObject):Void {
 #if !eval
-		if (@:privateAccess target.__timeline != null) {
-			return;
+		if (Std.isOfType(target, MovieClip)) {
+			var mc:MovieClip = cast target;
+			if (@:privateAccess mc.__timeline != null) {
+				return;
+			}
 		}
 		if (!library.bind(symbolName, target)) {
 			trace("SymbolClass: 符号不存在 " + libraryId + ":" + symbolName);

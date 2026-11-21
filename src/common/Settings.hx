@@ -436,8 +436,8 @@ class Settings {
 		return this.getStringAttribute("zhaohuiOpen") == "1" ? true : false;
 	}
 
-	// Settings.as:460-481。setConfigDataModel 只在主程序里被调用，本 swf 内
-	// m_configDataModel 恒 null，日期解析分支不可达
+	// Settings.as:460-481。Main.startup 会 setConfigDataModel（Main.as 同款
+	// 调用），monthEnds[0] 的 start/end 是美式 "M/D/YYYY H:MM:SS" 串
 	public function isGiftTime():Bool {
 		if (this.m_configDataModel == null) {
 			return false;
@@ -448,10 +448,12 @@ class Settings {
 		}
 		var _loc2_:String = Reflect.field(Reflect.field(_loc1_, "0"), "start");
 		var _loc3_:String = Reflect.field(Reflect.field(_loc1_, "0"), "end");
-		// PORT-NOTE: AS3 的 new Date(string) 接受任意解析格式；Haxe 用
-		// Date.fromString（仅 "YYYY-MM-DD[ HH:MM:SS]"）。仅主程序配置可达
-		var _loc4_:Float = Date.fromString(_loc2_).getTime();
-		var _loc5_:Float = Date.fromString(_loc3_).getTime();
+		// PORT-NOTE: AS3 `new Date(美式串)` 解析不了得 .time=NaN（下述比较恒
+		// false、不抛）；Haxe 无此构造，经 As3.dateOf（M/D/YYYY[ H:M:S]，失败
+		// 回 null 按 NaN 语义代入）。Date.fromString 只认 ISO 且对美式串直接
+		// 抛——#9 启动链 ShortcutBar 构造时踩到
+		var _loc4_:Float = As3.dateOf(_loc2_) == null ? Math.NaN : As3.dateOf(_loc2_).getTime();
+		var _loc5_:Float = As3.dateOf(_loc3_) == null ? Math.NaN : As3.dateOf(_loc3_).getTime();
 		var _loc6_:Float = CommonData.serverTime * 1000;
 		if (_loc4_ < _loc6_ && _loc6_ < _loc5_) {
 			return true;

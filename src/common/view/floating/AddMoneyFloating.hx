@@ -29,8 +29,9 @@ class AddMoneyFloating extends FloatingBase {
 		this._addAddAnimation = cast Utils.getMaterial("AddAnimationEx");
 		if (this._addAddAnimation != null) {
 			// 原版 `this._addAddAnimation.addValueBox.addValue.width = 100;`
-			var _loc2_:Dynamic = Reflect.field(this._addAddAnimation, "addValueBox");
-			var addValue:Dynamic = Reflect.field(_loc2_, "addValue");
+			// 时间轴具名子实例链，经 As3.childOf（#8 Crop step1 先例）
+			var _loc2_:Dynamic = As3.childOf(this._addAddAnimation, "addValueBox");
+			var addValue:Dynamic = As3.childOf(_loc2_, "addValue");
 			addValue.width = 100;
 			addChild(this._addAddAnimation);
 		}
@@ -60,8 +61,8 @@ class AddMoneyFloating extends FloatingBase {
 		// 隐式截断回 int）。素材缺位时这里与原版同样在子件访问处抛错，不加
 		// 原版没有的判空
 		var _loc2_:Int = As3.intOf(Reflect.field(this._data, "value"));
-		var _loc3_:Dynamic = Reflect.field(this._addAddAnimation, "addValueBox");
-		var addValue:Dynamic = Reflect.field(_loc3_, "addValue");
+		var _loc3_:Dynamic = As3.childOf(this._addAddAnimation, "addValueBox");
+		var addValue:Dynamic = As3.childOf(_loc3_, "addValue");
 		if (_loc2_ >= 0) {
 			addValue.text = "+" + _loc2_;
 		} else {

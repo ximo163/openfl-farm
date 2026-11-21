@@ -1,5 +1,6 @@
 package com.qzone.qui.managers;
 
+import openfl.display.DisplayObject;
 import openfl.events.EventDispatcher;
 import openfl.utils.Dictionary;
 
@@ -16,8 +17,10 @@ class EffectManager extends EventDispatcher {
 	public static var toolTipEffect:Dynamic;
 	public static var popUpEffect:Dynamic;
 	// EffectManager.as:21（弱键字典，键是动效目标 DisplayObject——Move 存取
-	// tweener、playEffect 收尾用）
-	public static var effectInstances:Dictionary<Dynamic, Dynamic> = new Dictionary<Dynamic, Dynamic>(true);
+	// tweener、playEffect 收尾用）。K 必须是对象类型：Dictionary 是
+	// @:multiType，K=Dynamic 落 StringMap、DisplayObject 键被 JS 对象键强转成
+	// toString() 串，两个同名显示对象会撞键（UIComponent.renderCalls 同款坑）
+	public static var effectInstances:Dictionary<DisplayObject, Dynamic> = new Dictionary<DisplayObject, Dynamic>(true);
 
 	public function new() {
 		super();

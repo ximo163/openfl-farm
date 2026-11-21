@@ -12,11 +12,13 @@ import openfl.text.Font;
  * swf 的 DefineFont 标签里，容器没有 FFDec 无法重导出 ttf（CLAUDE.md 环境边界）；
  * 字体资产的接入（assets/legacy-assets.txt + libraries.xml 同 commit 声明）留待
  * 文本渲染的 V3b/V3c 片。这里保持类形态（Font 子类）让 registerFont 的调用点
- * 照原样编译，不注册任何字形。
+ * 照原样编译，不注册任何字形；super 传原 fontName——留 null 会让
+ * AnimateDynamicTextSymbol 的兜底字体匹配在 font.name.replace 上炸（#9
+ * ToolUpgradeNew 绑定时踩到）。
  */
 @:keep
 class Main_EMBED_FONT_A extends Font {
 	public function new() {
-		super();
+		super("embedFontA");
 	}
 }

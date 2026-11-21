@@ -1037,9 +1037,13 @@ class FriendsModelTest {
 		Assert.equals("", Reflect.field(closed, "text")); // friend_list_tips_2 未配 → 空串
 		Assert.equals(0, countType(log, FriendsModel.EVENT_DATA_LOADING));
 
-		// useflag 缺省（"" → parseInt NaN → 位值非真）也关
+		// useflag 缺省也关：loadLocalSettings 整体替换 m_params
+		//（Settings.as:483-488）→ getStringAttribute 缺键回 ""（Settings.as
+		// :360-373）→ parseInt("") NaN → :1455 位值 NaN → :1457 关
+		Settings.getInstance().loadLocalSettings({});
 		model.loadFriendsData();
 		Assert.equals(3, countType(log, FriendsModel.EVENT_FUNCTION_FORBIDDEN));
+		Assert.equals(0, countType(log, FriendsModel.EVENT_DATA_LOADING)); // :280-283 早退在 :284 之前
 
 		// useflag 开：非 qzone "10" → 十位 1 → 放行到网络分支
 		Settings.getInstance().loadLocalSettings({useflag: "10"});
@@ -1097,21 +1101,30 @@ class FriendsModelTest {
 		Assert.isTrue(lastData(log, FriendsModel.EVENT_DATA_LOADING) == true);
 	}
 
-	// :586-627 loadFriendStatus：健康模式早退不落 m_friendListLocal；
+	// :586-627 loadFriendStatus：健康模式早退不落 m_friendListLocal，但早退
+	// 仍过 onFriendStatusLoaded(null) → :330 一发 DataLoading{show:false}；
 	// 正常路径首调用把参数列表存进 m_friendListLocal（引用）且只存一次；
 	// 状态表已装 + param2=false → 复用；param2=true 强制走请求
 	public function test_loadFriendStatus_local_caching_and_reuse() {
 		var fA = mkFriend(101, 101, 1, 1.0, "甲");
 		var fB = mkFriend(102, 102, 2, 2.0, "乙");
-		var log:Array<Dynamic> = [];
-		listen(log);
 
-		Session.getInstance().healthModeValid = true; // :590-594 健康模式先于
+		// 健康段独立 log（监听会累积，段间用新 log 分开断言）
+		var logH:Array<Dynamic> = [];
+		listen(logH);
+		Session.getInstance().healthModeValid = true; // :590-593 健康模式先于
 		model.loadFriendStatus([fA]); // m_friendListLocal 赋值（:599-601 之后）
 		Assert.isNull(model.friendListLocal);
 		Assert.isTrue(model.m_gotFriendStatus == true);
 		Session.getInstance().healthModeValid = false;
+		// :590-593 早退走 onFriendStatusLoaded(null)：:330 无条件一发
+		// DataLoading{show:false}；此时三处列表引用均 null → 不进
+		// processFriendList，无 RefreshPage
+		Assert.equals(1, countType(logH, FriendsModel.EVENT_DATA_LOADING));
+		Assert.isFalse(firstData(logH, FriendsModel.EVENT_DATA_LOADING) == true);
 
+		var log:Array<Dynamic> = [];
+		listen(log);
 		model.loadFriendStatus([fA, fB]); // 首调用：落 local + 请求 no-op
 		Assert.equals(2, model.friendListLocal.length); // :599-601
 		Assert.equals(fA, model.friendListLocal[0]);

@@ -1,0 +1,313 @@
+{
+    "version": 1,
+    "notes": {
+        "用途": "土地升级数值规格：红土地（upgrade，mync.php:186 读取）、黑土地（upblack，pay.php:15/cgi_farm_upgrade_black.php:3 读取）。",
+        "覆盖对账": [
+            "upgrade.php：24 条（行 4-27，键 \"0\"..\"23\"）",
+            "upblack.php：24 条（行 4-27，键 \"0\"..\"23\"）",
+            "config/nc 共 8 文件，本文件收 2 个；其余见 crops.json/items.json"
+        ],
+        "键含义_代码核实": {
+            "upgrade 键 = 待升级地块下标": "cgi_farm_upgrade.php:21-26：place=status 里第一块 bitmap==0 的地块下标；redland>=24 时拒绝（:16）；:30-31 取 $upgrade[$place]；cgi_farm_shop_pay.php:44 以 itemId-1 作下标购买",
+            "upblack 键 = 已升级黑土地块数": "cgi_farm_upgrade_black.php:15：place=(int)black[\"number\"]",
+            "字段": "level=需要的玩家等级、money=金币、yb=QB 价；响应中折后价 yqd=ceil(yb*0.8)（cgi_farm_upgrade.php:49）、黑土地在 cd 冷却期内价格翻倍（cgi_farm_upgrade_black.php:22-25）",
+            "玩家等级经验曲线不在 config/nc": "等级↔经验是公式不是表：qf_toExp(lv)=intval(pow(lv+0.5,2)*100-25)、qf_toLevel(exp)=floor(sqrt((exp+25)/100)-0.5)（source/common.func.php:100-109）。VIP 等级经验表在 config/_vip.php（config/ 根下，不在本 issue 的 nc/mc 14 文件内，未提取）"
+        },
+        "xml.php对拍": "xml.php 不下发 upgrade/upblack（8 个 mod 均无此数据）；数值只在 mync.php 的 cgi_farm_upgrade/cgi_farm_upgrade_black 响应中出现，无 XML 快照可对拍",
+        "unknown": [
+            "yb 的计量单位：响应中 qd=yb、yqd=ceil(yb*0.8)（cgi_farm_upgrade.php:49），据此推断为 Q 币面值，config 注释未说明"
+        ]
+    },
+    "upgrade": [
+        {
+            "level": 28,
+            "money": 200000,
+            "yb": 20,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:4"
+        },
+        {
+            "level": 29,
+            "money": 220000,
+            "yb": 22,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:5"
+        },
+        {
+            "level": 30,
+            "money": 240000,
+            "yb": 24,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:6"
+        },
+        {
+            "level": 31,
+            "money": 260000,
+            "yb": 26,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:7"
+        },
+        {
+            "level": 32,
+            "money": 290000,
+            "yb": 29,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:8"
+        },
+        {
+            "level": 33,
+            "money": 320000,
+            "yb": 32,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:9"
+        },
+        {
+            "level": 34,
+            "money": 350000,
+            "yb": 35,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:10"
+        },
+        {
+            "level": 35,
+            "money": 380000,
+            "yb": 38,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:11"
+        },
+        {
+            "level": 36,
+            "money": 410000,
+            "yb": 41,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:12"
+        },
+        {
+            "level": 37,
+            "money": 440000,
+            "yb": 44,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:13"
+        },
+        {
+            "level": 38,
+            "money": 480000,
+            "yb": 48,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:14"
+        },
+        {
+            "level": 39,
+            "money": 520000,
+            "yb": 52,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:15"
+        },
+        {
+            "level": 40,
+            "money": 560000,
+            "yb": 56,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:16"
+        },
+        {
+            "level": 41,
+            "money": 600000,
+            "yb": 60,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:17"
+        },
+        {
+            "level": 42,
+            "money": 650000,
+            "yb": 65,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:18"
+        },
+        {
+            "level": 43,
+            "money": 700000,
+            "yb": 70,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:19"
+        },
+        {
+            "level": 44,
+            "money": 770000,
+            "yb": 77,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:20"
+        },
+        {
+            "level": 45,
+            "money": 900000,
+            "yb": 90,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:21"
+        },
+        {
+            "level": 47,
+            "money": 1100000,
+            "yb": 110,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:22"
+        },
+        {
+            "level": 49,
+            "money": 1300000,
+            "yb": 130,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:23"
+        },
+        {
+            "level": 51,
+            "money": 1500000,
+            "yb": 150,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:24"
+        },
+        {
+            "level": 53,
+            "money": 1700000,
+            "yb": 170,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:25"
+        },
+        {
+            "level": 55,
+            "money": 1900000,
+            "yb": 190,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:26"
+        },
+        {
+            "level": 57,
+            "money": 2100000,
+            "yb": 210,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upgrade.php:27"
+        }
+    ],
+    "upblack": [
+        {
+            "level": 40,
+            "money": 500000,
+            "yb": 50,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:4"
+        },
+        {
+            "level": 41,
+            "money": 600000,
+            "yb": 60,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:5"
+        },
+        {
+            "level": 42,
+            "money": 700000,
+            "yb": 70,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:6"
+        },
+        {
+            "level": 43,
+            "money": 800000,
+            "yb": 80,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:7"
+        },
+        {
+            "level": 44,
+            "money": 900000,
+            "yb": 90,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:8"
+        },
+        {
+            "level": 45,
+            "money": 1000000,
+            "yb": 100,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:9"
+        },
+        {
+            "level": 46,
+            "money": 1100000,
+            "yb": 110,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:10"
+        },
+        {
+            "level": 47,
+            "money": 1200000,
+            "yb": 120,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:11"
+        },
+        {
+            "level": 48,
+            "money": 1300000,
+            "yb": 130,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:12"
+        },
+        {
+            "level": 49,
+            "money": 1400000,
+            "yb": 140,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:13"
+        },
+        {
+            "level": 50,
+            "money": 1500000,
+            "yb": 150,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:14"
+        },
+        {
+            "level": 51,
+            "money": 1600000,
+            "yb": 160,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:15"
+        },
+        {
+            "level": 52,
+            "money": 1700000,
+            "yb": 170,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:16"
+        },
+        {
+            "level": 53,
+            "money": 1800000,
+            "yb": 180,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:17"
+        },
+        {
+            "level": 54,
+            "money": 1900000,
+            "yb": 190,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:18"
+        },
+        {
+            "level": 55,
+            "money": 2000000,
+            "yb": 200,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:19"
+        },
+        {
+            "level": 56,
+            "money": 2100000,
+            "yb": 210,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:20"
+        },
+        {
+            "level": 57,
+            "money": 2200000,
+            "yb": 220,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:21"
+        },
+        {
+            "level": 58,
+            "money": 2300000,
+            "yb": 230,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:22"
+        },
+        {
+            "level": 59,
+            "money": 2400000,
+            "yb": 240,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:23"
+        },
+        {
+            "level": 60,
+            "money": 2500000,
+            "yb": 250,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:24"
+        },
+        {
+            "level": 61,
+            "money": 2600000,
+            "yb": 260,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:25"
+        },
+        {
+            "level": 62,
+            "money": 2700000,
+            "yb": 270,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:26"
+        },
+        {
+            "level": 63,
+            "money": 2800000,
+            "yb": 280,
+            "source": "legacy/deploy/QFarmFlash/source/core/config/nc/upblack.php:27"
+        }
+    ]
+}

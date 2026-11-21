@@ -80,6 +80,11 @@ class TestMain {
 		runner.addCase(new com.qzone.sns.entities.PaymentTest());
 		runner.addCase(new com.greensock.core.PropTweenTest());
 		runner.addCase(new module.levelup.LevelUpModelTest());
+		// issue #18（review-impl 要求补的注册行，lessons 条目同 #8 先例：
+		// implement 阶段新增测试文件只能由本阶段注册）——As3.arrayIndex
+		// 字符串键取 AS3 Array 语义：TileList 拼接键绑定、正则下标边界表、
+		// ViewStack Dictionary 混键种死门
+		runner.addCase(new shim.As3ArrayIndexTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

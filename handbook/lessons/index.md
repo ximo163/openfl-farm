@@ -474,8 +474,8 @@
   （多数错位）、"00"/"012" 这类非正则串得 undefined，原版绑定本来就是
   坏的。防：`shim/As3.arrayIndex` 复刻该取值（表驱动测试
   test/shim/As3ArrayIndexTest.hx 钉死；TestMain.hx 是 append-only、
-  implement 阶段碰不得，注册行待 write-tests 轮补——在那之前
-  `haxe test.hxml` 不编译它，standalone Runner 跑过全绿 21 断言）；
+  implement 阶段碰不得，注册行已由 write-tests 轮补进 TestMain.hx
+  issue #18 块（review-impl 驳回点），`haxe test.hxml` 编译并跑绿全 21 断言）；
   「顺手修好原版 bug」必须停在 deviations
   （人维护），代码照抄坏语义。
 - **openfl Dictionary 的 multiType 按 K 解析，`Dictionary<Dynamic,…>` 是

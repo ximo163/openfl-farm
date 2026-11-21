@@ -1,0 +1,272 @@
+{
+ "version": 1,
+ "desc": "S3 默认触屏映射表（issue #16）：把 spec/interactions-legacy.json 的每个语义类别按 issue 默认规则（悬停→长按、右键→长按菜单、滚轮→双指滑动）生成触屏映射。全部 approved:false，人逐条验收后才转 true（属里程碑 4，不在本任务）。实现位置＝src/shim 输入适配层（翻译类里的监听照译不改，见 CLAUDE.md 交互规则）。",
+ "conventions": {
+  "approved": "false＝按默认规则生成、未经人验收；不得据此定稿实现",
+  "覆盖规则": "interactions-legacy.json 的每个 semantics 类别在本表恰有一条映射（「直接映射/不映射」也占一条）；类别内全部条目共用该映射，个别条目要特殊处理由人验收时改",
+  "不发明数值": "长按时长、移动容差、滑动阈值等 issue 未给规格，属实现参数，人验收时定——本表只给方向性规则",
+  "事件合成": "映射＝在 src/shim 合成对应 flash 事件（含捕获阶段）；OpenFL 移动端本就合成 CLICK/MOUSE_DOWN/MOUSE_UP 的条目标「直接映射」"
+ },
+ "defaults_from_issue": [
+  "悬停→长按",
+  "右键→长按菜单",
+  "滚轮→双指滑动"
+ ],
+ "mappings": [
+  {
+   "semantics": "hover-tip",
+   "legacy_events": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_OUT"
+   ],
+   "sites": 208,
+   "examples": [
+    "com.qzone.qui.managers.ToolTipLayer com/qzone/qui/managers/ToolTipLayer.as:47",
+    "com.qzone.qui.managers.ToolTipLayer com/qzone/qui/managers/ToolTipLayer.as:118",
+    "mc.view.farm.DiyScene mc/view/farm/DiyScene.as:182"
+   ],
+   "touch": "长按目标（按住不动）→ 合成 ROLL_OVER/MOUSE_OVER（调出 Tip）；抬起或手指移出目标 → 合成 ROLL_OUT/MOUSE_OUT（隐藏 Tip）",
+   "approved": false,
+   "source": "issue #16 默认规则「悬停→长按」；条目＝spec/interactions-legacy.json hover-tip 类"
+  },
+  {
+   "semantics": "hover-detect",
+   "legacy_events": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT"
+   ],
+   "sites": 8,
+   "examples": [
+    "com.minutes.ui.core.LipiContainer com/minutes/ui/core/LipiContainer.as:184",
+    "com.minutes.ui.core.LipiContainer com/minutes/ui/core/LipiContainer.as:185",
+    "mc.view.main.window.tool.WhistleToolWindow mc/view/main/window/tool/WhistleToolWindow.as:211"
+   ],
+   "touch": "与 hover-tip 同规则：长按落在哪个子目标，就以该子目标为 target 合成 over/out（父级捕获监听照译后自然收到）",
+   "approved": false,
+   "source": "issue #16 默认规则「悬停→长按」；条目＝interactions-legacy hover-detect 类（FarmLandsView.as:250-251 地块悬停等）"
+  },
+  {
+   "semantics": "hover-state",
+   "legacy_events": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_OUT"
+   ],
+   "sites": 28,
+   "examples": [
+    "com.minutes.ui.core.LipiSkin com/minutes/ui/core/LipiSkin.as:66",
+    "com.minutes.ui.core.LipiSkin com/minutes/ui/core/LipiSkin.as:154",
+    "com.minutes.ui.core.LipiSkin com/minutes/ui/core/LipiSkin.as:155"
+   ],
+   "touch": "复用「悬停→长按」：长按期间视为 over（触发换帧/发光等），结束视为 out 还原；纯装饰性变化人验收时可降级为不映射",
+   "approved": false,
+   "source": "issue #16 默认规则「悬停→长按」；条目＝interactions-legacy hover-state 类"
+  },
+  {
+   "semantics": "hover-cursor",
+   "legacy_events": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.MOUSE_OUT",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_MOVE"
+   ],
+   "sites": 35,
+   "examples": [
+    "mc.view.common.InfoWindow mc/view/common/InfoWindow.as:79",
+    "mc.view.common.InfoWindow mc/view/common/InfoWindow.as:80",
+    "mc.view.farm.Research.ResearchWin mc/view/farm/Research/ResearchWin.as:95"
+   ],
+   "touch": "不映射：触屏无指针光标，悬停换光标无意义（工具态光标由已选工具自身表达）；是否在指尖画工具图标待人验收",
+   "approved": false,
+   "source": "issue #16 未给光标类默认规则；条目＝interactions-legacy hover-cursor 类"
+  },
+  {
+   "semantics": "stage-leave",
+   "legacy_events": [
+    "Event.MOUSE_LEAVE"
+   ],
+   "sites": 1,
+   "examples": [
+    "module.Master2 Master2_v_142/scripts/module/Master2.as:202"
+   ],
+   "touch": "不映射：触屏无「鼠标离开」概念；原版唯一用途＝恢复系统光标（Master2.onMouseLeave → Cursor.useSystem(true)），与 hover-cursor 同属无指针场景",
+   "approved": false,
+   "source": "issue #16 未给该类默认规则；条目＝interactions-legacy stage-leave 类"
+  },
+  {
+   "semantics": "drag",
+   "legacy_events": [
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_MOVE",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "sites": 29,
+   "examples": [
+    "com.minutes.ui.control.LipiScrollBar com/minutes/ui/control/LipiScrollBar.as:196",
+    "com.minutes.ui.control.LipiScrollBar com/minutes/ui/control/LipiScrollBar.as:486",
+    "com.minutes.ui.core.LipiPanel com/minutes/ui/core/LipiPanel.as:86"
+   ],
+   "touch": "直接映射：OpenFL 移动端把触摸合成 MOUSE_DOWN/MOUSE_MOVE/MOUSE_UP，拖拽序列（FarmLayer 场景平移、DragManager 窗口拖动、滚动条滑块）无需适配层；与长按类映射的冲突消解（长按后是否进入拖动）待人验收",
+   "approved": false,
+   "source": "CLAUDE.md 交互规则（OpenFL 触摸自动合成鼠标事件）；条目＝interactions-legacy drag 类"
+  },
+  {
+   "semantics": "press",
+   "legacy_events": [
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_UP",
+    "\"mouseDown\"",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "sites": 45,
+   "examples": [
+    "com.minutes.ui.control.JerryNavigation com/minutes/ui/control/JerryNavigation.as:232",
+    "com.minutes.ui.control.LipiScrollBar com/minutes/ui/control/LipiScrollBar.as:204",
+    "com.minutes.ui.control.LipiScrollBar com/minutes/ui/control/LipiScrollBar.as:267"
+   ],
+   "touch": "直接映射：触摸按下/抬起合成 MOUSE_DOWN/MOUSE_UP（含字面量 \"mouseDown\" 10 处）；按住连滚类（滚动条箭头）行为照旧",
+   "approved": false,
+   "source": "CLAUDE.md 交互规则；条目＝interactions-legacy press 类"
+  },
+  {
+   "semantics": "click",
+   "legacy_events": [
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_UP"
+   ],
+   "sites": 282,
+   "examples": [
+    "com.minutes.ui.control.LipiScrollBar com/minutes/ui/control/LipiScrollBar.as:203",
+    "com.minutes.ui.control.LipiScrollBar com/minutes/ui/control/LipiScrollBar.as:299",
+    "com.minutes.ui.control.LipiScrollBar com/minutes/ui/control/LipiScrollBar.as:374"
+   ],
+   "touch": "直接映射：OpenFL 移动端触摸自动合成鼠标点击；含 4 处以 MOUSE_UP 触发的点击语义点",
+   "approved": false,
+   "source": "CLAUDE.md 交互规则（MouseEvent.CLICK/DOWN/UP 照翻，触摸自动合成）；条目＝interactions-legacy click 类"
+  },
+  {
+   "semantics": "move-track",
+   "legacy_events": [
+    "MouseEvent.MOUSE_MOVE"
+   ],
+   "sites": 6,
+   "examples": [
+    "com.qzone.qui.managers.ToolTipLayer com/qzone/qui/managers/ToolTipLayer.as:142",
+    "mc.view.main.cursor.CursorLayer mc/view/main/cursor/CursorLayer.as:82",
+    "mc.view.main.tip.TipLayer mc/view/main/tip/TipLayer.as:67"
+   ],
+   "touch": "直接映射：触摸移动合成 MOUSE_MOVE（Tip 跟随/拖动跟随照常）；无独立悬停指针，仅接触时有 move",
+   "approved": false,
+   "source": "CLAUDE.md 交互规则；条目＝interactions-legacy move-track 类"
+  },
+  {
+   "semantics": "wheel-scroll",
+   "legacy_events": [
+    "MouseEvent.MOUSE_WHEEL"
+   ],
+   "sites": 5,
+   "examples": [
+    "com.minutes.ui.control.NumbericStepper com/minutes/ui/control/NumbericStepper.as:144",
+    "com.minutes.ui.core.LipiContainer com/minutes/ui/core/LipiContainer.as:181",
+    "com.qzone.qui.controls.scrollClasses.ScrollBase com/qzone/qui/controls/scrollClasses/ScrollBase.as:381"
+   ],
+   "touch": "双指上下滑动 → 合成 MOUSE_WHEEL（方向对应原版 delta 符号：上滑＝正）；覆盖 4 处列表/好友列表滚动与 1 处步进器数值增减",
+   "approved": false,
+   "source": "issue #16 默认规则「滚轮→双指滑动」；条目＝interactions-legacy wheel-scroll 类"
+  },
+  {
+   "semantics": "key",
+   "legacy_events": [
+    "KeyboardEvent.KEY_UP",
+    "KeyboardEvent.KEY_DOWN"
+   ],
+   "sites": 10,
+   "examples": [
+    "com.minutes.ui.control.LipiTextArea com/minutes/ui/control/LipiTextArea.as:30",
+    "com.qzone.qui.managers.PopUpLayer com/qzone/qui/managers/PopUpLayer.as:67",
+    "mc.view.main.WindowLayer mc/view/main/WindowLayer.as:125"
+   ],
+   "touch": "待定",
+   "unknown": "issue 未给键盘默认规则。原版按键＝农场工具快捷键 Q/W/E/R/T（main3 ToolBar.onKeyUp:398-415）、Enter 确认/窗口默认键（PopUpLayer/WindowLayer/ValidateCodeWindow）、Enter 发聊天（ProfileMsg×2）、Ctrl+/ 调试窗（DebuggerWindow）；无物理键盘设备时工具本就有点击入口、Enter 语义需替代做法——待人决定",
+   "approved": false,
+   "source": "条目＝interactions-legacy key 类"
+  },
+  {
+   "semantics": "link",
+   "legacy_events": [
+    "TextEvent.LINK"
+   ],
+   "sites": 33,
+   "examples": [
+    "mc.view.common.AlertWindow mc/view/common/AlertWindow.as:172",
+    "mc.view.common.AlertWindow mc/view/common/AlertWindow.as:175",
+    "mc.view.common.ConfirmWindow mc/view/common/ConfirmWindow.as:179"
+   ],
+   "touch": "直接映射：点按文本链接等价鼠标点击（OpenFL 派发 TextEvent.LINK）；html5 目标的链接事件行为在里程碑 4 真机验证",
+   "approved": false,
+   "source": "CLAUDE.md 交互规则；条目＝interactions-legacy link 类"
+  },
+  {
+   "semantics": "context-menu",
+   "legacy_events": [
+    "ContextMenuEvent.MENU_ITEM_SELECT"
+   ],
+   "sites": 2,
+   "examples": [
+    "com.qzone.utils.RightMenu main3_v_221/scripts/com/qzone/utils/RightMenu.as:34",
+    "com.cbmland.ui.RightMenu Master2_v_142/scripts/com/cbmland/ui/RightMenu.as:32"
+   ],
+   "touch": "长按弹出与原版右键相同的菜单：高速模式(&Q) 画质切换（Main.as:126 / Master2.as:145 经 RightMenu.addMenuItem 注册）＋版本号条目（VersionUtil.setRightMenu，无监听）",
+   "unknown": "与「悬停→长按」的冲突消解（长按目标既有 Tip 又要菜单时优先谁）、菜单的弹出位置规则，issue 未给，待人验收",
+   "approved": false,
+   "source": "issue #16 默认规则「右键→长按菜单」；条目＝interactions-legacy context-menu 类"
+  },
+  {
+   "semantics": "unknown",
+   "legacy_events": [
+    "MouseEvent.ROLL_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.MOUSE_UP"
+   ],
+   "sites": 5,
+   "examples": [
+    "mc.view.main.leftInfo.FriendInfo Master2_v_142/scripts/mc/view/main/leftInfo/FriendInfo.as:57",
+    "mc.view.farm.land.House Master2_v_142/scripts/mc/view/farm/land/House.as:19"
+   ],
+   "touch": "无需映射（handler 为空函数，注册存在但无行为）",
+   "unknown": "5 处空 handler（FriendInfo 的 onRollOver/onRollOut×2 组、House.onMouseUp）——语义明确为无行为；待人核对后确认不映射",
+   "approved": false,
+   "source": "条目＝interactions-legacy unknown 类"
+  }
+ ],
+ "coverage": {
+  "rule": "interactions-legacy.categories 的每个类别恰一条映射（含 0 处的 wheel-zoom 见 note）",
+  "mapped": {
+   "click": 282,
+   "context-menu": 2,
+   "drag": 29,
+   "hover-cursor": 35,
+   "hover-detect": 8,
+   "hover-state": 28,
+   "hover-tip": 208,
+   "key": 10,
+   "link": 33,
+   "move-track": 6,
+   "press": 45,
+   "stage-leave": 1,
+   "unknown": 5,
+   "wheel-scroll": 5
+  },
+  "sum_sites": 697,
+  "unmapped_categories": [],
+  "note": "wheel-zoom 在 interactions-legacy 为 0 处（原版无滚轮缩放），不设条目；间接注册 3 条（TileBase 休眠钩子）不占类别计数"
+ }
+}

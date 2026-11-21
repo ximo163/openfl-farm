@@ -107,6 +107,15 @@ class WelcomeModelTest {
 		Session.getInstance().currentUser = friend;
 	}
 
+	// me 复位 true（currentUser._uId 回 1 == host._uId）。utest 的 setup 按
+	// 测试函数跑、不按 for 轮次：轮内 visitFriendFarm 改的是 Session 单例，
+	// 不显式复位就漏进下一轮（#21 implement 驳回点，lessons #21 条）
+	function backToOwnFarm():Void {
+		var me = new Player({});
+		me._uId = 1;
+		Session.getInstance().currentUser = me;
+	}
+
 	// 装一个「进行中」的任务（旧 id 空间，flag=1）
 	function activateOwnTask(id:Int):Void {
 		model.currentTask = makeTask(id, 1);
@@ -298,6 +307,11 @@ class WelcomeModelTest {
 		var log:Array<Dynamic> = [];
 		listen(log);
 		activateOwnTask(1); // 任务 1：harvest，me:true
+		// changed for #21: currentTask 装载无条件派发一次 TaskChanged
+		//（:194，与 test_setCurrentTask_old_space…的每装载一次同口径），
+		// 清 log 后才能观测「updateTask 不派发本类事件」——原断言的 0 与
+		// 装载必派发矛盾，无忠实实现能过
+		log.resize(0);
 
 		model.taskComp("harvest", {"code": 1}); // FarmLandModel.as:905 派发形状
 		Assert.isTrue(model.m_taskUpdating, "三门全对应进入 updateTask（:159→:134）");
@@ -330,6 +344,12 @@ class WelcomeModelTest {
 			[8, "water"], [9, "clearWeed"], [10, "spraying"], [11, "harvest"]
 		];
 		for (row in rows) {
+			// changed for #21: setup 按测试函数跑、不按轮次，上一轮
+			// visitFriendFarm 改写的 Session.currentUser 会漏进本轮——
+			// taskComp 以 Session.getInstance().me 对表（:154），不复位则
+			// 「自己农场不应触发」实际跑在 me=false 下、与轮尾「好友农场
+			// 应触发」同条件而互相矛盾；每轮先显式回自己农场
+			backToOwnFarm();
 			model = new WelcomeModel();
 			activateOwnTask(row[0]);
 			model.taskComp(row[1], {"code": 1});

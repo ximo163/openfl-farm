@@ -80,7 +80,8 @@ task_update 应答回显的是**刚完成的旧任务**且 taskFlag=2（待领�
   场景见 lessons（#21）。
 - **taskComp 的 me 三门**：`Session.getInstance().me` 是「当前在不在自己
   农场」，与表行的 me（任务该在哪做）比对——好友农场做 me:true 的任务
-  不算数。测试这两门的用例见 test 文件（#21 收尾有两例测试自相矛盾，
-  走了 NEEDS-TESTS，见 lessons）。
+  不算数。测试这两门的用例见 test 文件（#21 attempt 1 曾有两例自相矛盾
+  ——装载后没清 TaskChanged 计数、循环内没复位 Session——attempt 2 已修，
+  坑记 lessons）。
 - `onNetError` 里小写 `"cmdId"` 读键是原版笔误（请求侧只产 `"cmdID"`，
   该分支恒假），照抄不修；WelcomeModel.hx:96-97 有注。

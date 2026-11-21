@@ -25,16 +25,17 @@ import common.Settings;
  *
  * 后端地址固定拼 CORE_PATH（build.sh:40 的部署关系 source/core →
  * www/home/qqfarm/core/，与 SwfUrlBase.CORE_BASE 是同一部署事实的两份拷贝）：
- * base 只写 scheme://host[:port]，如 http://192.168.1.100:8089。
+ * base 只写 scheme://host[:port]，如 http://10.1.1.22:8089。
  */
 class AndroidBackend {
 	// flashvar 键名（shim 自造，nc.htm:18-91 没有此键；android 分支专用）
 	public static final BACKEND_VAR:String = "farm_backend";
 
-	// 所有者按参考部署改这里：compose 端口默认 8089（legacy/snapshot/README.md
-	// 的自检 curl 即 127.0.0.1:8089）。BIND_IP 只绑局域网、绝不暴露公网
-	// （patches/002 下访问者即管理员）——那半边由人改，客户端只认这里的地址
-	public static final DEFAULT_BASE:String = "http://192.168.1.100:8089";
+	// 后端实际地址（2026-11-21 所有者指定 10.1.1.22:8089；compose 端口默认 8089，
+	// legacy/snapshot/README.md 的自检 curl 即此端口）。BIND_IP 只绑内网、绝不
+	// 暴露公网（patches/002 下访问者即管理员）——那半边由人管，客户端只认这里。
+	// 换地址 = 改这行重出 APK；flashvar farm_backend 覆盖可免重出（测试用）。
+	public static final DEFAULT_BASE:String = "http://10.1.1.22:8089";
 
 	// legacy/deploy/QFarmFlash/build.sh:40 `rsync -a source/core/ www/home/qqfarm/core/`
 	private static final CORE_PATH:String = "home/qqfarm/core/";

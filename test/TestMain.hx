@@ -93,6 +93,12 @@ class TestMain {
 		// cost 双源合并降序/systemMsg ret 门/fish 映射）、留言列表收发
 		// 清空、feeds ecode 门、网络失败文案、reset 重开已读门
 		runner.addCase(new module.messages.MessageModelTest());
+		// issue #20：friends 模块（write-tests 阶段，对 stub 失败）——
+		// FriendsModel 纯逻辑：排序/过滤/分页/搜索（filterOut 保留极性已按
+		// 字节码核对，tools/DumpAbcMethod.hx）、cgi_farm_getstatus_filter
+		// 状态表（"1"-"7"）装载与本地推进、门位（serverDown/forbidden/
+		// useflag）、应答分派（列表补自己/过滤增删/状态装载）
+		runner.addCase(new module.friend.FriendsModelTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

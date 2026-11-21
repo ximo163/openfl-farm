@@ -18,5 +18,13 @@ class Friend {
 	public var me:Bool;
 	public var _uId:UInt;
 
+	// issue #20（friends）引用面补齐（Friend.as:7-35 字段区，同上文模式）：
+	// FriendsModel 列表处理写 sort/status（processFriendList/sortBy）、hasMe
+	// 读 _userId。其余成员（importObject/importFromCache/importFromPlayer/
+	// _fid getter，Friend.as:47-131）仍留给实现阶段。
+	public var _userId:UInt;
+	public var sort:Int;
+	public var status:Dynamic;
+
 	public function new(param1:Dynamic = null) {}
 }

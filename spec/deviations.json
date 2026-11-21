@@ -25,6 +25,38 @@
       "ported": "照译；openfl 的 flash.system.Security 无实际沙箱作用，等同 no-op",
       "why": "Flash 沙箱概念在 openfl 各目标不存在，无需等效物",
       "date": "2026-11-17"
+    },
+    {
+      "id": "monthend-package-lowercase",
+      "module": "main3_v_221（V3c：MonthEndWin stub）",
+      "original": "MonthEndWin 在包 module.mainScene.npc.MonthEnd 下（包段大写开头，随 MonthEnd.as）",
+      "ported": "包段降为小写 monthend（module.mainScene.npc.monthend.MonthEndWin），类名/文件名不动；反射名无调用方",
+      "why": "Haxe 点路径把大写开头的段解析为模块名而非包段，原路径不可 import（Type not found）",
+      "date": "2026-11-21"
+    },
+    {
+      "id": "qqoutlets-shim",
+      "module": "main3_v_221（V3c：工具区 PersonInfo/NavigationBar/ShortcutBar/ToolBoxBar 等）",
+      "original": "QzoneJSAPI/Utils/EventRecorder 经 ExternalInterface 调 QZone 宿主 JS（fusion2/SwfAppLib）、sendToURL 上报、PersonInfo 头像走宿主图片 URL——main3 侧多类调用",
+      "ported": "出口统一指到 src/shim/QQOutlets.hx：常量 available=false，call/addCallback/sendToURL/头像加载一律不发送（call 返回 null），调用点保持原形态、自然落到各自的「宿主不可用」分支（与原版在非 QZone 页面的兜底一致，如 QzoneJSAPI.addGToken 原样返回传入 URL）",
+      "why": "独立页面没有 QZone 宿主 JS；openfl html5 的 ExternalInterface.available=true 会真 eval 页面 JS 并抛 ReferenceError，以常量 false 表达宿主不存在（2026-11-17 no-qzone-jsapi 同源决定，本条覆盖 main3 侧出口）",
+      "date": "2026-11-21"
+    },
+    {
+      "id": "scrollbase-content-noop-setter",
+      "module": "main3_v_221（V3c：qui ScrollBase/Container）",
+      "original": "qui ScrollBase.content 仅 getter，无写路径",
+      "ported": "基类挂 no-op setter（set_content 原样返回参数），子类 Container 的 (get,set) 覆写形态保留",
+      "why": "Haxe 属性覆写不允许 (get,never)→(get,set) 扩 accessor；原版对 ScrollBase 形态写 content 编译不过、无调用方，写值丢弃不影响链路",
+      "date": "2026-11-21"
+    },
+    {
+      "id": "ioerrorevent-network-error-literal",
+      "module": "main3_v_221（V3c：HttpOperationEx/NPCView/ShortcutBar）",
+      "original": "AS3 IOErrorEvent.NETWORK_ERROR（AIR 专有常量，值 \"networkError\"）用于事件监听与构造",
+      "ported": "openfl 无该常量，按常量值字面量 \"networkError\" 注册/构造；HttpOperationEx 捕获 openfl Error 后手工构造该事件直传 ioerrorHandler（只读 .text，类型串不可观察）",
+      "why": "Flash Player 里 Loader 不发 NETWORK_ERROR，监听恒不触发；保留双注册形态、以字面量维持类型串一致",
+      "date": "2026-11-21"
     }
   ]
 }

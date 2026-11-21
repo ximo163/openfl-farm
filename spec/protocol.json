@@ -1581,16 +1581,26 @@
        "code": {
         "type": "int",
         "meaning": "恒为 1",
-        "source": "cgi_farm_newyear_getflag.php:9"
+        "source": "cgi_farm_newyear_getflag.php:4"
        },
-       "flag": {
+       "ecode": {
         "type": "int",
-        "meaning": "app_qqfarm_nc.chris == 20110101 时为 1，否则 0（新年活动标记）",
-        "source": "cgi_farm_newyear_getflag.php:4,6-9"
+        "meaning": "恒为 0",
+        "source": "cgi_farm_newyear_getflag.php:4"
+       },
+       "first_poup": {
+        "type": "bool",
+        "meaning": "恒为 false",
+        "source": "cgi_farm_newyear_getflag.php:4"
+       },
+       "newopen": {
+        "type": "bool",
+        "meaning": "恒为 false",
+        "source": "cgi_farm_newyear_getflag.php:4"
        }
       }
      },
-     "notes": "纯查询，无写库。",
+     "notes": "全文仅一行固定 echo（:4），不读参数、不碰数据库；头注释\"出售成鱼\"（:2）与实现不符（chris/20110101 的新年标记逻辑在 task_checkbitmap.php，不在本文件）。",
      "client": [],
      "client_note": "本仓库 5 个反编译 swf 内未见调用方（旧版客户端或未随包反编译的插件 swf 的兼容残留；服务端单侧保留不影响协议对拍）",
      "source": "legacy/deploy/QFarmFlash/source/core/source/nc/mod/cgi_farm_newyear_getflag.php 全文"
@@ -2075,33 +2085,51 @@
      "dispatch_query": [
       "cgi_farm_sell_crystal"
      ],
-     "params": {},
+     "params": {
+      "num": {
+       "type": "int",
+       "required": true,
+       "meaning": "卖出数量；持有数（app_qqfarm_user.crystal[id]）不足时 die",
+       "source": "cgi_farm_sell_crystal.php:7 (int)$_REQUEST['num']；:11-13"
+      },
+      "id": {
+       "type": "int",
+       "required": true,
+       "meaning": "水晶 id（crystalinf 配置键：1=蓝水晶…，见 config/mc/crystalinf.php）",
+       "source": "cgi_farm_sell_crystal.php:8 (int)$_REQUEST['id']；:11,14"
+      }
+     },
      "returns": {
       "format": "json",
       "fields": {
        "code": {
         "type": "int",
-        "meaning": "恒为 1（stub，不做任何实际卖出）",
-        "source": "cgi_farm_sell_crystal.php:4"
+        "meaning": "1=成功；0=失败（持有数不足）",
+        "source": "cgi_farm_sell_crystal.php:12,24"
+       },
+       "direction": {
+        "type": "string",
+        "meaning": "成功：\"成功卖出<font color=\\\"#0099FF\\\"> <b>N</b> </font>个{水晶名}，得到金币<font color=\\\"#FF6600\\\"> <b>M</b> </font>\"（含 HTML 标签）；失败：\"请确认数值！\"",
+        "source": "cgi_farm_sell_crystal.php:12,24"
        },
        "ecode": {
         "type": "int",
-        "meaning": "恒为 0",
-        "source": "cgi_farm_sell_crystal.php:4"
+        "meaning": "恒 0（成功时输出）",
+        "source": "cgi_farm_sell_crystal.php:24"
        },
-       "first_poup": {
-        "type": "bool",
-        "meaning": "恒为 false",
-        "source": "cgi_farm_sell_crystal.php:4"
+       "money": {
+        "type": "int",
+        "meaning": "= crystalinf[id].sale * num，已加到 app_qqfarm_user.money",
+        "source": "cgi_farm_sell_crystal.php:14,22,24"
        },
-       "newopen": {
-        "type": "bool",
-        "meaning": "恒为 false",
-        "source": "cgi_farm_sell_crystal.php:4"
+       "（错误分支）id": {
+        "type": "int",
+        "meaning": "失败时恒 0",
+        "source": "cgi_farm_sell_crystal.php:12"
        }
       }
      },
-     "notes": "注释写\"出售成鱼\"但实现是空壳：不读参数、不碰数据库，固定回显这一行。；农场侧 CMD_SELL_CRYSTAL 发的是 \"cgi_farm_sell_crystal\"（无 mod= 前缀）→ 服务端 mod 名为空串，落进 mod_list 的空条目，include 失败、空响应；卖水晶实际走牧场侧 mymc.php?mod=cgi_farm_sell_crystal（Master2 WildCommand.as:66）",
+     "notes": "完整的「单个卖出水晶」实现，与 mc 侧同名文件逐字节相同（diff 核实）：单价 crystalinf 来自 qf_getCache('crystalinf','/mc/')（:4；配置源 legacy/deploy/QFarmFlash/source/core/config/mc/crystalinf.php：id/name/sale/type），卖完后数量为 0 的水晶键从 crystal 中删除（:16-20）。mync.php mod_list 含本 mod 名（mync.php:119），故 mync.php?mod=cgi_farm_sell_crystal 可执行本文件；但农场侧 CMD_SELL_CRYSTAL 发的是 \"cgi_farm_sell_crystal\"（无 mod= 前缀）→ 服务端 mod 名为空串，落进 mod_list 末尾的空条目（mync.php:168），include 失败、空响应；卖水晶实际走牧场侧 mymc.php?mod=cgi_farm_sell_crystal（Master2 WildCommand.as:66）",
      "client": [
       {
        "swf": "main3_v_221",
@@ -5843,7 +5871,7 @@
       "fields": {
        "body(默认)": {
         "type": "array",
-        "meaning": "每好友 {uId:int, uin:int(=uId), userName:string, headPic:string(小头像), yellowlevel:int qf_toVipLevel(vip.exp), yellowstatus:int vip.status, exp:int, pastrureExp:int(=exp), money:int, pf:int}；exp<1 时 exp=0 且 pf=0",
+        "meaning": "每好友 {uId:int, uin:int(=uId), userName:string, headPic:string(小头像), yellowlevel:int qf_toVipLevel(vip.exp), yellowstatus:int vip.status, exp:int, pastrueExp:int(=exp), money:int, pf:int}；exp<1 时 exp=0 且 pf=0（键名 pastrueExp 照抄原文，无 r；客户端同拼写：entities/Friend.as:64、Master2 mc/control/MainCommand.as:2223-2225）",
         "source": "friend.php:31-34; :46; :52-54"
        },
        "body(refresh=friend)": {
@@ -7525,7 +7553,7 @@
        }
       }
      },
-     "notes": "与 cgi_farm_newyear_getflag 同型：chris 列与 20110101 比较，纯查询。",
+     "notes": "纯查询：chris 列与 20110101 比较，无写库（新年标记逻辑只在本文件，cgi_farm_newyear_getflag 不做此比较）。",
      "client": [],
      "client_note": "本仓库 5 个反编译 swf 内未见调用方（旧版客户端或未随包反编译的插件 swf 的兼容残留；服务端单侧保留不影响协议对拍）",
      "source": "legacy/deploy/QFarmFlash/source/core/source/nc/mod/task_checkbitmap.php 全文"

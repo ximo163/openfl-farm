@@ -144,7 +144,10 @@ class SymbolClass {
 				// WelcomeView/WelcomeTaskWindow 经 getMaterial 反射构造、
 				// requestClass 类定义探测，编译期零引用，必须锚进来）
 				TaskAwokeButton, TaskingButton,
-				Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11
+				Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11,
+				// #29 dog 片：狗粮盆双态图与道具边框（DogBowl/DogFoodWindow 经
+				// getMaterial/getClass 反射构造，编译期零引用）
+				DogFood, DogFoodNull, ItemBorder
 			];
 		}
 #end

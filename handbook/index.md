@@ -9,9 +9,9 @@
 
 | 你要动的东西 | 先读 | 主要 legacy 出处 |
 |---|---|---|
-| 启动链（预加载器 → config → main3 → 模块加载） | [architecture/startup.md](architecture/startup.md) | `decompiled main3 module/Main.as`、`FarmApplication.as` |
+| 启动链（预加载器 → config → main3 → 模块加载与四个外部 swf 模块壳） | [architecture/startup.md](architecture/startup.md) | `decompiled main3 module/Main.as`、`FarmApplication.as` |
 | 网络请求与返回解析 | [architecture/net.md](architecture/net.md) | `decompiled main3 framework/net/`、`legacy/deploy` 的 PHP |
-| 会话与全局数据（Session、Model、FarmLandModel、实体 Player） | [architecture/data.md](architecture/data.md) | `decompiled main3 common/Session.as`、`module/mainScene/farmLand/`、`entities/Player.as` |
+| 会话与全局数据（Session、Model、FarmLandModel、实体 Player/PoolFish） | [architecture/data.md](architecture/data.md) | `decompiled main3 common/Session.as`、`module/mainScene/farmLand/`、`entities/Player.as`、`entities/PoolFish.as` |
 | 农田场景渲染（farmLand 视图/控件、背景装饰槽、NPC、qui 窗口链） | [architecture/farmscene.md](architecture/farmscene.md) | `decompiled main3 module/mainScene/` |
 | 工具区与通用视图（uitools 模块、qui 控件子集、飘字/光标） | [architecture/uitools.md](architecture/uitools.md) | `decompiled main3 module/uitools/`、`com/qzone/qui/`、`common/view/` |
 | 升级弹窗（module/levelup、Update.* 面板符号、levelUpUI 库） | [architecture/levelup.md](architecture/levelup.md) | `decompiled main3 module/levelup/` |

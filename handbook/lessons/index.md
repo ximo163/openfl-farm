@@ -832,3 +832,51 @@
   不上。防：eval 测试里一切时间戳只用 `shim.As3.getTimer` 一个域种/读；
   `haxe test.hxml` 无预兆由绿转红且只红计时类用例时，先探针两钟值再查
   代码（修法在测试 import 行，write-tests 阶段的事）。
+
+## 2026-11 · #29（write-tests：模块桩清尾）
+
+- **throw stub 不能落在 web-smoke 启动路径上——失败杠杆选 smoke 不经过
+  的面**：FarmApplication.startup 在 web-smoke 里 500ms 派发
+  MSG_LOAD_WATER → `ModuleWater.onModuleLoadSuccess` 原地执行，哪怕类
+  还是 stub；write-tests 若顺手给 onModuleLoadSuccess 写 throw stub，
+  write-tests 与 implement 两个 commit 之间 CI web-smoke 必挂
+  pageerror。防：给「模块壳/启动链邻接」类扩被测面前先过一遍 smoke
+  启动序列（architecture/startup.md 的 loadLater/直接 load 清单），
+  smoke 会路过的方法保持基类 no-op 继承（Module.onModuleLoadSuccess
+  本来就是空实现），用 `_reportID` 未置、空 load 覆写/unload 不调
+  super 这些 smoke 不读的基类语义反转做 stub 阶段的失败点；要钉
+  onModuleLoadSuccess 的分支就让测试直调私有方法（utest 里失败可控，
+  smoke 里没人调它）。同轮 addFood/onZoom/PoolFish 全在交互或回包路径
+  上（smoke 点不到）才敢用 throw。
+- **openfl 不执行外部 swf 的 AS3 → 模块控制器的「反射失败分支」是可钉
+  的移植终态**：四个模块壳的 onModuleLoadSuccess 经
+  `Utils.getClass("module.shop.ShopController"…)` 从功能 swf 的
+  ApplicationDomain 找控制器类；openfl 把 swf 当纯资产、AS3 字节码不
+  执行，eval/html5 上 `hasDefinition` 恒 false → getClass 回 null
+  （probe 验证四个类名全 null）→ 照译的解析失败分支 `_shopCtrl` 等保持
+  null。这个 null 不是「还没实现」的过渡态，而是移植后的真实行为——
+  测试断言 isNull 恰好把后续「功能 swf 翻译」批次的接入点钉死：那批把
+  控制器类翻进主域并注册后，这组断言转红就是「接入完成、该改期望」的
+  信号，不会无声漂过。防：模块壳类照译 onModuleLoadSuccess 时别给
+  getClass null 加兜底/重试——失败分支照抄，配 isNull 钉板。
+
+## 2026-11 · #29（implement：狗狗交互片 + 鱼实体 + 四模块壳）
+
+- **Int 对 UInt 常量的比较是无符号域，负值恒翻**：AS3 `int >= uint` 两侧先
+  升 Number（-1 >= 3 为假）；Haxe 的 UInt abstract 给 `>=`/`<` 等全部
+  @:op 了**无符号**实现（std/UInt.hx #else 分支：异号即比符号位，-1 当
+  0xFFFFFFFF），`level >= Consts.FISH_MAX_LEVEL` 在 level=-1（无配置/
+  时钟偏斜）时 eval 直接恒真——PoolFishTest 两条 canHarvest 断言连红。
+  修法：比较点把 uint 常量显式回 Int（`(Consts.FISH_MAX_LEVEL:Int)`，
+  probe 验证恢复有符号），等值比较两个域对涉及的值同果、可不处理。
+  防：uint 常量（原版 `:uint` 的那些）进比较表达式时查一眼操作数会不会
+  是负值 Int；原版 `int` 的常量照 Int 声明就没有这个坑（ORGANIC_FERTILIZER_
+  ID 先例）。
+- **cpp 全量 include 扫描的 exclude 表要写全限定模块名**：#18 记过
+  「小写模块名（mx_internal.hx）必须进 exclude 表」，4.3.6 的
+  `include(pack, rec, ignore, classPaths)` 里 ignore 匹配**模块全名**——
+  传 `['mx_internal']` 照样红（"Module mx.core.mx_internal does not
+  have a valid name" 且只此一行、直接退），传 `['mx.core.mx_internal']`
+  才放过。另：html5 debug.hxml 里的 `-D no-compilation` 也是 html5 专属
+  项，一并去掉才落到「只剩 `Error: Library hxcpp is not installed`」的
+  判据形态（留着则 0 错 0 输出退出 0，同样过 typer 但和文档判据对不上）。

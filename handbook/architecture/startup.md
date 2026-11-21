@@ -35,6 +35,30 @@
   for-each 条目（#8 CI 红的根因，改动这两处时别把强类型读退化回去）。
 - 资产入库与声明的机制见 [assets.md](assets.md)。
 
+## 模块壳与外部功能 swf（#29 起四壳全真）
+
+`ModuleShop`/`ModuleWarehouse`/`ModuleDecorate`/`ModuleWater`（issue #29
+整类翻译，替换 #7 模块壳 stub）：`startup` 里 loadLater/直接 load 的四条
+注册线（shop/warehouse 见 FarmApplication.hx:937-945、water :956-957），
+壳本体只做三件事——`_reportID` 上报号（160591/160592/160593/160619）、
+空 `load` 覆写（**不调 super**，_loaded 不置真）、`unload` 收控制器。
+`onModuleLoadSuccess` 经 `Utils.getClass` 反射功能 swf 里的控制器类
+（shop_v_7 的 ShopController、warehouse_v_23 的 bag/house 双控制器、
+decorate_v_0 的 DecorateController、pool_v_13 的 WaterController）。
+**openfl 不执行外部 swf 的 AS3 → getClass 恒 null → 控制器保持 null，
+这是移植终态不是待办**（lessons #29 条目；测试用 isNull 把接入点钉死，
+功能 swf 翻译批次接入后断言转红即该改期望）。停网复位
+（onNetRequestStopped）的 `["model"]["resetLoadingFlags"]()` 鸭式调用照
+Reflect 翻（控制器类型期是基类 Controller，没有 model 公共成员）。
+ModuleWater 特有：ctor 收听 MSG_ZOOM；控制器未装时 onGameLoop（主循环对
+全部注册模块逐帧调、**不看 _loaded**，FarmApplication.onMainLoop）在
+LAYER_SCENE_CONTENT 摆 FarmLoading 占位（x=746/y=620，bigmode 1.3×）、
+onModuleLoadSuccess 装好后移除——反射失败终态下占位**常驻**（web-smoke
+期间可见；原版装好 swf 才移除，属功能 swf 批次接入前的既知视觉偏差，
+deviations 候选）；其 `_loading:MovieClip` 与基类 Module
+`_loading:Boolean` 同名异型，改名 `m_loading` 拆槽（lessons #21
+同名异型条）。
+
 ## 本地无浏览器验证启动链（nodeboot）
 
 `node tools/nodeboot/nodeboot.mjs [--timeout 45] [--settle 3]`：node 里垫

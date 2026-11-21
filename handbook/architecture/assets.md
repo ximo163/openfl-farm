@@ -32,7 +32,10 @@
   `diy/board/1.swf` vs `diy/1.swf`，nc_data.php:2260/:51）以目录前缀消歧
   （LocalSwfLoader 的 diy/board/ 特判 → 库名 `board_1`，libraries.xml 同款
   id）——撞库不 404、槽位装错图，CI 冒烟拦不住，新撞库照式扩特判 +
-  CropLifecycleLibrariesTest 那样的消歧断言。
+  CropLifecycleLibrariesTest 那样的消歧断言。onComplete 会把 content 经
+  `super.addChildAt(content, 0)` 挂进显示列表（#21：help.swf 引导是首个
+  把 loader 本身 addChild 的调用方，不挂内容就整屏空白；openfl 原生
+  Loader 内部同款行为，只读字段的调用方不受影响）。
 - **SymbolClass 符号 shim**（`src/shim/SymbolClass.hx` + 各同名类）：原版
   swf 的 SymbolClass 把导出符号绑到同名 AS3 类，视图 `new Farmland_Lite()`
   直构带时间轴；openfl 只有 `Assets.getMovieClip` 实例化才挂时间轴。同

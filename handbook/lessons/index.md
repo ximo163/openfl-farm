@@ -752,3 +752,39 @@
   用 `As3.hasProp` 区分后只修关系层。防：写完 PORT-NOTE 回读代码核对
   （attempt 3 的 note 语义写对、代码反着做，note 成了误导源）；同形态
   先 rg 同模块已有译法再动笔。
+
+## 2026-11 · #21（tasks 模块：新手任务/欢迎引导）
+
+- **`super.方法` 取不了闭包（Cannot create closure on super method）**：
+  AS3 里 `addEventListener(CLICK, super.confirmButtonClick)` 合法——闭包
+  绑定的是父类实现；Haxe 直接编译红。本类**没有覆写**该方法时 `this.`
+  与 `super.` 是同一实现，`this.confirmButtonClick` 等价替换 + PORT-NOTE
+  即可（WelcomeTaskWindow.init）。已覆写过的场景没有等价写法：抽一个
+  `private function onXxx()` 成员转发再挂。防：rg `super\.` 后跟非 `(` 的
+  形态（作为值传递）都要处理，别只盯调用。
+- **AS3 private 字段同名异型遮蔽 = 两个独立槽，改名拆槽而不是 override**：
+  WelcomeTaskWindow 声明 `_mode:int`，基类 BaseWindow 已有
+  `_mode:Boolean`——AS3 private 不进子类作用域，两个 `_mode` 互不相干
+  （本类从未碰基类 mode 属性的存储位）；Haxe 同名异型重定义直接红，而
+  「改 override 访问器」（#18 的 Redefinition 条）在这不适用：两者语义
+  无关、没有可统一的属性。修法：子类槽改名（`m_mode`）+
+  `PORT-NOTE(shadow)`，读写点与原类一一对应。防：给 stub 基类补字段前
+  先 rg 全部子类的同名字段；翻译时撞红先分清「同一状态量的两份声明」
+  （override/accessor 路）还是「碰巧同名的两个槽」（改名路）。
+- **utest 的 setup() 按**测试函数**跑，不按循环轮次跑**：一个测试函数
+  内多轮 `for (i in …)` 共享同一份 setup 产物和**单例状态**——
+  WelcomeModelTest 在轮内 `visitFriendFarm()` 改写
+  `Session.getInstance().currentUser` 指望「下一轮 setup 复原」，实际轮
+  间泄漏，后 3 轮的断言全在错误的 Session 极性下跑（#21 两例
+  NEEDS-TESTS 之一）。防：测试里动单例（Session/Settings）的，要么轮内
+  显式复原，要么拆成独立测试函数；write-tests 阶段对「好友/自己农场」
+  这类极性翻转的用例，逐轮心算一遍 Session 状态再定期望值。
+- **LocalSwfLoader 补了显示挂载（content 进显示列表）**：原版 Flash 的
+  `loader.content` 恒为 loader 的唯一子件、Loader 本身被 addChild 时引导
+  内容跟着可见；shim 早期只直设 `content` 字段（RSLManager 等只读字段的
+  调用方够用），#21 的 help.swf 是首个把 **loader 本身挂进显示列表**的
+  调用方，不 attach 内容就整屏空白。修法：onComplete 里
+  `super.addChildAt(content, 0)`（super 不能进闭包，抽成员方法），与
+  openfl 原生 Loader 的内部行为一致。防：新的「可见 Loader」调用方（引
+  导/全屏装饰类）直接用 LocalSwfLoader 即可；再改这个 shim 时记得显示
+  挂载是承重行为（assets.md 已补注）。

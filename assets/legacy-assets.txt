@@ -76,3 +76,12 @@ source/core/module/mc/levelup/levelUpUI_v_1.swf
 # 是运行期注册表，#pasture 接线 mcloader/Master2 加载链才 push 域——现仅
 # 入库声明，html5 运行期暂无人请求：
 source/core/module/mc/main/farmui1_v_42.swf
+#
+# tasks 模块（issue #21）：新手任务素材两件。fresherTask RSL（nc_data.php:39
+# secondList → module/ui/main/task_v_2.swf）导出 taskAwokeButton/taskingButton
+# （WelcomeView 书页按钮）与 task1..task11（WelcomeTaskWindow 任务插图），
+# requestClass/getMaterial 反射构造 + SymbolClass.bind 按需拉起；新手引导
+# help.swf（nc_data.php:38 → module/ui/main/outswf/help.swf）由 WelcomeView.
+# showNewGuide 经 LocalSwfLoader 装载（URL → 库 "help"）：
+source/core/module/ui/main/task_v_2.swf
+source/core/module/ui/main/outswf/help.swf

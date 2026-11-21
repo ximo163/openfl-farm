@@ -106,4 +106,15 @@
          （不 preload）。与 assets/legacy-assets.txt 同 commit 增删 -->
     <library path="assets/legacy/source/core/module/mc/main/farmui1_v_42.swf" id="farmui1_v_42" />
 
+    <!-- tasks 模块（issue #21）：新手任务素材。fresherTask RSL（nc_data.php:39
+         secondList → module/ui/main/task_v_2.swf，注意不是 spec assets ref 里的
+         mc/main/task_v_1.swf——运行期 URL 由 config secondList 决定）导出
+         taskAwokeButton/taskingButton/task1..task11，requestClass/getMaterial
+         反射到同名 shim 类（src/Task*.hx）后 SymbolClass.bind 按需拉起本库。
+         help.swf（nc_data.php:38）是 WelcomeView.showNewGuide 的新手引导，
+         LocalSwfLoader 按 URL 尾段映射库名 "help"。均不 preload：原版为运行期
+         加载。与 assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/main/task_v_2.swf" id="task_v_2" />
+    <library path="assets/legacy/source/core/module/ui/main/outswf/help.swf" id="help" />
+
 </project>

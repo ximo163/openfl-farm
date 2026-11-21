@@ -1,6 +1,7 @@
 package shim;
 
 import openfl.Assets;
+import openfl.display.DisplayObject;
 import openfl.display.Loader;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
@@ -72,9 +73,20 @@ class LocalSwfLoader extends Loader {
 			Reflect.setField(this.contentLoaderInfo, "applicationDomain", ApplicationDomain.currentDomain);
 			Reflect.setField(this.contentLoaderInfo, "bytesLoaded", 1);
 			Reflect.setField(this.contentLoaderInfo, "bytesTotal", 1);
+			// 显示树同样挂上（#21：WelcomeView 把 loader 本身 addChild 进
+			// 显示列表、引导内容要可见——Flash 的 content 恒为 loader 的唯一
+			// 子件；openfl 原生加载路径内部就是 super.addChildAt(content, 0)
+			//（Loader.hx 的 content 装载段），RSLManager 等只读字段的调用方
+			// 不受影响）。super 调用不能落在闭包里（Haxe 限制），抽成员方法
+			attachContent(content);
 			this.contentLoaderInfo.dispatchEvent(new Event(Event.COMPLETE));
 		}).onError(function(e) {
 			this.contentLoaderInfo.dispatchEvent(new IOErrorEvent(IOErrorEvent.IO_ERROR, false, false, Std.string(e)));
 		});
+	}
+
+	// super.addChildAt 的落点（super 不能出现在本地函数内）
+	private function attachContent(content:DisplayObject):Void {
+		super.addChildAt(content, 0);
 	}
 }

@@ -139,7 +139,12 @@ class SymbolClass {
 				Status_1, Status_2, Status_3, Status_pre, Status_u, Status_z,
 				List_Close_WB, List_Open_WB, Status_6,
 				Sort0, Sort1, Sort2, Sort3, SortMe,
-				VipL1, VipL2, VipL3, VipL4, VipL5, VipL6, VipL7
+				VipL1, VipL2, VipL3, VipL4, VipL5, VipL6, VipL7,
+				// #21 tasks 片：新手任务书页按钮与任务插图（task_v_2.swf；
+				// WelcomeView/WelcomeTaskWindow 经 getMaterial 反射构造、
+				// requestClass 类定义探测，编译期零引用，必须锚进来）
+				TaskAwokeButton, TaskingButton,
+				Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11
 			];
 		}
 #end

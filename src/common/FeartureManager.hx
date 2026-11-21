@@ -12,9 +12,12 @@ class FeartureManager {
 	public function new() {}
 
 	// FeartureManager.as:11-16
+	// PORT-NOTE: Haxe 的 % 优先级高于 /（AS3 同级左结合），`x/100%10`
+	// 会解析成 x/(100%10) 即 x/0，必须显式括号（同 FarmLite.openByFlashVar
+	// 的坑；修正前恒 0 → 恒「关」）
 	public static function openByFlashVar():Bool {
 		var _loc1_:String = Settings.getInstance().getStringAttribute("useflag");
-		var _loc2_:Int = Std.int(As3.intOf(_loc1_) / 100 % 10);
+		var _loc2_:Int = As3.intOf((As3.parseInt(_loc1_) / 100) % 10);
 		return _loc2_ == 0;
 	}
 

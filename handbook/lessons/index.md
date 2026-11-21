@@ -687,3 +687,68 @@
   （"#1010" 本就在串里，errorID 无消费方）。防：`new openfl.errors.*` 前先
   看本机 `openfl/<版本>/src/openfl/errors/` 的构造器签名，别按 flash
   文档默写。
+
+## 2026-11 · #20（friends 模块）
+
+- **CWS swf 的二进制 grep 查不到符号，符号清单只认 dump_swf.php**：部署包
+  swf 全是 zlib 压缩的 CWS——`grep -a 符号名 *.swf` 连导出类名的**已存在**
+  符号都打不中（本仓 farmui 全库实测，Sort0 这种确定存在的也 miss）。#20
+  前段曾据「二进制搜不到」误判 Sort1/2/3 不在部署包、险些漏掉三枚等级底图
+  垫片；`php tools/dump_swf.php`（先解压再吐 SymbolClass/tag 表）重核才
+  纠正。防：涉「某符号在不在 swf 里」一律走 dump_swf.php，二进制 grep 的
+  结果只能当「没找到」，不能当「不存在」。
+- **SymbolClass 绑 BitmapData 的链接位图有既定垫片形态**：AS3 对链接位图
+  `new Sort0(24,24)` 的宽高参数被 Flash 无视、实例即图像自身像素——Haxe 侧
+  垫片 `extends BitmapData` + `super(w,h,true,0)`（底必须 0 全透明，落
+  AS3 BitmapData 默认 0xFFFFFFFF 白就是视觉差）+ `SymbolClass.bindBitmap`
+  从 `Assets.getBitmapData("库:名")` copyPixels；解析链（openfl
+  Assets.getBitmapData → AnimateLibrary bitmapClassNames，导出器对
+  DefineBits 类符号记 data2.className）在 SymbolClass.hx bindBitmap 头注
+  里钉死。preload 库（farmui_full_v_40）构造即得像素；非 preload 库走
+  bind 的按需 loadLibrary 窗口，与 MovieClip 垫片同源。防：再译「反射 new
+  位图类」先照此形态，别在调用方改尺寸/改白底。
+- **Haxe 的期望类型会压进三元表达式，`Int > (c ? 0 : floatOf())` 把两支
+  都逼成 Int**：比较左是 Int 时右操作数按 Int 期望传播——三元里 `0` 过了、
+  floatOf 支直接红「Float should be Int」（FriendItemRender:338，写成
+  `0.0` 也救不了：两支一起被压）。修法：三元先落进显式 `Float` 局部再比
+  （`var f:Float = c ? 0 : As3.floatOf(x); if (i > f)`）。防：`Int/Float 与
+  「条件给值」直接比`的写法一律先落局部；编译红指进三元时先想期望类型
+  传播，不是类型真错。
+- **NEEDS-TESTS 必须是最终回复的最后一行，路由只认这一行**：#20 attempt 1
+  把三处测试矛盾的完整分析写进了总结正文，但没有以 `NEEDS-TESTS: …` 单行
+  收尾——orchestrator 判「verification failed (test)」按普通失败原样重跑了
+  implement（attempt 2 重复得出同结论，白耗一轮）。正文分析再充分也不触发
+  回 write-tests 的路由。防：判明测试错，最后一行单独输出
+  `NEEDS-TESTS: <哪个测试错在哪里，legacy 的出处>`，其后不再有任何文字。
+- **implement 与 approved 测试期望冲突的裁决链**：先 diff 两份反编译
+  （`xfl/` vs `scripts/`，同源 FFDec 渲染一致可排除单份渲染错），再 retarget
+  `tools/DumpAbcMethod.hx`（改 TARGET_METHODS）读部署 swf 的 ABC——分支
+  跳转、break、就地 sort 这类控制流/引用事实字节码一锤定音，比反编译文本
+  互证强。#20 的 :379/:845/:1149 三处走完这条链才 NEEDS-TESTS；同测试文件
+  **自相矛盾**（:171 断言 m_sortField="exp"、:377 断言回绕页=1，而 :379/
+  :1149 的期望与之冲突）是测试笔误的强信号。防：别为让错测试变绿改实现
+  ——那是「针对测试写特判」，还会红掉同文件里对照 legacy 的其他断言。
+- **`var n:int = Number表达式` 的截断会透过 Boolean 门显形，int 声明别
+  「简化」成 Float**：openByFlashVar（FriendsModel.as:1445-1466）的
+  `_loc2_ = parseInt(s)/10%10` 后接 `!Boolean(_loc2_)`——implement
+  attempt 3 把 `_loc2_` 译成 Float，useflag="11111101" 的十位在 Number
+  下是 0.1（真值、放行），原版 convert_i 截断成 0（禁用）；review 用
+  `tools/DumpAbcMethod.hx` 读部署 swf 的 ABC（OToInt）核实。属上文
+  「int 收 Number 要显式截断」一族，但这次的坑更隐蔽：截断语义只藏在
+  int 声明里，反编译文本的比较链看着无害，固定部署参数
+  （useflag="11111111"）又把分支掩盖成不可达。防：int 声明照抄 +
+  `As3.intOf` 包赋值；被部署常量掩盖的分支按声明/字节码核，别按
+  「跑起来对」放行。
+- **`!= false` 与 `>= 0` 的宽松比较要按 ECMA 分运算复刻，floatOf 不是
+  万能答案**：宽松等价（`_loc1_ != false`，FriendsModel.forbidden
+  :1471）先 ToNumber——`""`/纯空白按 Number("")==0 与 false 判等（即
+  不禁止），非数字文案 NaN ≠ 0（禁止）；而 Haxe 的 `As3.floatOf` 是
+  parseFloat 语义（""/空白→NaN），须补 `StringTools.trim(Std.string(x))
+  != ""`（FriendsView.onCollapseView :524 的既有形态）。关系比较
+  （`data["leftQuota"] >= 0`，FriendsController.onUpdataBack）对显式
+  JSON null 是 ToNumber(null)=0（成立）、键缺位是 undefined→NaN（恒
+  假），宽松等价里 null==0 规范又恰为 false——同一 if 内外两层的 null
+  语义相反，不能一个 floatOf 包打；Haxe 里缺位与显式 null 都落 null，
+  用 `As3.hasProp` 区分后只修关系层。防：写完 PORT-NOTE 回读代码核对
+  （attempt 3 的 note 语义写对、代码反着做，note 成了误导源）；同形态
+  先 rg 同模块已有译法再动笔。

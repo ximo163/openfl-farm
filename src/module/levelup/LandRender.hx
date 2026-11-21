@@ -31,12 +31,13 @@ class LandRender extends Sprite {
 
 	private var _ui:Sprite;
 
-	// :24-31
+	// :24-31（`Utils.getMaterial(...) as Sprite`：取一次素材再 isOfType 门
+	// + 直取——别在条件和取值里各调一次 getMaterial，符号壳会构造两份）
 	public function new(param1:Dynamic) {
 		super();
 		this._data = param1;
-		this._ui = Std.isOfType(Utils.getMaterial("Update.landRender"), Sprite)
-			? cast(Utils.getMaterial("Update.landRender"), Sprite) : null;
+		var _loc1_:Dynamic = Utils.getMaterial("Update.landRender");
+		this._ui = Std.isOfType(_loc1_, Sprite) ? cast(_loc1_, Sprite) : null;
 		addChild(this._ui);
 		this.setData();
 	}

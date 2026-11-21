@@ -80,6 +80,11 @@ class TestMain {
 		runner.addCase(new com.qzone.sns.entities.PaymentTest());
 		runner.addCase(new com.greensock.core.PropTweenTest());
 		runner.addCase(new module.levelup.LevelUpModelTest());
+		// issue #18 实现返工（review 驳回项）：TileList.as:124 的字符串拼接
+		// 下标语义（As3.arrayIndex：AS3 Array 按字符串键，非正则串 undefined/
+		// 正则串落错位元素——原版绑定本来就坏）与 ViewStack.as:25-28 的
+		// Dictionary 混键死门（name 键读恒 miss）
+		runner.addCase(new shim.As3ArrayIndexTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

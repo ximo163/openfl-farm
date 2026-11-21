@@ -2,17 +2,23 @@ package com.qzone.qui.containers;
 
 import openfl.display.DisplayObject;
 import openfl.utils.Dictionary;
+import shim.As3;
 
 /**
  * com.qzone.qui.containers.ViewStack —— ViewStack.as 逐句对应（issue #18
  * qui 收尾：容器片）。视图栈：子视图索引切换，未选中即从显示列表摘除。
- * _childObject 是按 DisplayObject 对象键的 Dictionary（对象身份键，非名）。
+ * PORT-NOTE: _childObject 原版是 AS3 Dictionary 混键种一表两用——addView
+ * 的读门（ViewStack.as:25）按 **name 字符串键**读、写入（:28）与 removeView
+ * 的 delete（:52）按**对象键**。字符串键从未写入 → 读门恒过，原版去重从未
+ * 生效（同视图重复 addView 会重复入列），照译死门不修（偏差只进
+ * spec/deviations.json，人维护）。Haxe 侧用 Dictionary<{}, Bool>
+ * （对象身份键）同存两种键形，字符串读恒 miss → null，与 AS3 段一致。
  */
 class ViewStack extends Container {
 	// ViewStack.as:11-18
 	private var _currentChild:DisplayObject;
 
-	private var _childObject:Dictionary<DisplayObject, Bool>;
+	private var _childObject:Dictionary<{}, Bool>;
 
 	private var _currentIndex:Int = -1;
 
@@ -21,12 +27,15 @@ class ViewStack extends Container {
 	// :20-24
 	public function new() {
 		super();
-		this._childObject = new Dictionary<DisplayObject, Bool>();
+		this._childObject = new Dictionary<{}, Bool>();
 	}
 
 	// :26-39
 	public function addView(param1:DisplayObject):DisplayObject {
-		if (this._childObject.get(param1) != true) {
+		// `!this._childObject[param1.name]`：name 为 null 时 AS3 读
+		// dict[null] 得 undefined 同过门，短路先判，防静态目标
+		// ObjectMap.get(null) 未定义行为
+		if (param1.name == null || !As3.truthy(this._childObject.get(param1.name))) {
 			this._childArray.push(param1);
 			this._childObject.set(param1, true);
 			if (this._childArray.length == 1) {

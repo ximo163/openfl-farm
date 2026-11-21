@@ -5,11 +5,12 @@ import shim.As3;
 /**
  * com.qzone.sns.entities.Payment —— Payment.as 逐句对应（issue #18 farm-basic
  * 收尾：支付片整类翻译）。支付单实体：全局序号、对账参数拼装、回调派发。
- * AS3 final class → Haxe 默认不可继承（不写 extends 即 final 语义近似，类名
- * 对应关系为准）。支付参数最终发往 Qzone 收银台（域外联，QQOutlets shim 出口），
- * 客户端反编译即唯一依据。_stamp 取 getTimer() 真实时钟（:36）。
+ * AS3 `public final class` → Haxe `final class`（不写 extends 并不等于
+ * final——Haxe 类默认可继承，final 必须显式）。支付参数最终发往 Qzone
+ * 收银台（域外联，QQOutlets shim 出口），客户端反编译即唯一依据。
+ * _stamp 取 getTimer() 真实时钟（:36）。
  */
-class Payment {
+final class Payment {
 	// Payment.as:8
 	public static var BILL_SEQ:UInt = 1;
 

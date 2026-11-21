@@ -459,3 +459,39 @@
   Haxe 的 splice(pos, len) 没有 ...values 插入参，照抄 arity 直接
   "Too many arguments"；删除用途照抄可用（全仓 7 处先例），插入用途换
   insert（TileBase.addElementAt）。
+
+## 2026-11 · #18（实现返工：review 驳回六项 + 扫尾）
+
+- **Haxe 方法全虚，原版的 `super.init()` 必须照写**：BaseWindow.as:47 的
+  `super.init()` 是非虚直落（Container→UIComponent：setSkin/setSize/
+  setEnabled、_inited=true）；Haxe 里 `this.init()` 虚分派到最派生覆写
+  （LevelAndExperience.init 不调 super），基类初始化整段静默丢失。防：
+  AS3 源里的 `super.方法()` 一律照抄成 `super.方法()`，别顺手改
+  this.；Haxe 的 private 对子类可见、super 可调，编得过。
+- **AS3 String + Number 是拼接不是加**：TileList.as:124
+  `_data[_loc2_ + _loc3_ * maxGrop]`，for-in 键是 String，"1"+12 得
+  "112"——字符串键取 AS3 Array：正则数字串（无前导零、≤2^32-2）按下标
+  （多数错位）、"00"/"012" 这类非正则串得 undefined，原版绑定本来就是
+  坏的。防：`shim/As3.arrayIndex` 复刻该取值（表驱动测试
+  As3ArrayIndexTest 钉死）；「顺手修好原版 bug」必须停在 deviations
+  （人维护），代码照抄坏语义。
+- **openfl Dictionary 的 multiType 按 K 解析，`Dictionary<Dynamic,…>` 是
+  StringMap**：K=Dynamic 撞上 @:to 首选 `toStringMap<K:String>`，对象键
+  `.set` 在 eval 直接抛 "Unexpected value VObject(...), expected string"
+  （实测）；AS3 Dictionary 混键种一表（ViewStack.as:25 按 name 字符串键
+  读、:28 按对象键写——读门恒过、去重从未生效，照译死门）要用
+  `Dictionary<{}, Bool>`（解析成 ObjectMap，String 可与 {} 统一，
+  字符串读恒 miss=AS3 的 undefined）。
+- **AS3 Number 字段默认 NaN，Haxe Float 零初始化成 0.0**：
+  TweenCore.as:44 `_pauseTime:Number` 未暂停时是 NaN，setTotalTime:274 的
+  `Boolean(x) || x == 0` 门靠它才走 timeline 分支；零初始化误命中 `== 0`
+  分支。防：AS3 里没赋初值的 Number 字段，Haxe 侧显式 `= Math.NaN`
+  （局部变量同理；NaN 默认**参**仍禁，见 ScrollEvent 先例）。
+- **AS3 `final class` 的 final 要照写**：Haxe 类不写 extends 也能被继承，
+  「不写 extends 即 final 语义近似」是错觉（Payment 被驳）；公共 API
+  契约差一词，照抄 `final class`。
+- **`Utils.getMaterial(x) as T` 别译成双调**：条件/取值各调一次会构造两份
+  符号壳（LevelUpWindow×5、BaseTileItem×2、SeedItemRender、LandRender 均
+  踩过）——取一次进局部再 `Std.isOfType` 门 + 直取；`as T` 的失配落
+  null 语义也在这一步保住（ContentWindow 的 `as String` 曾被丢，
+  非 String 值原版落 null、端口裸透传）。

@@ -140,7 +140,12 @@ BackgroundModel 的五槽里（与 background 节的「DECOR_DOG 不是槽」互
 Label + 可选 ControlBar；`TitleWindow` 加 22px 头部热区与右上关闭钮
 （close() 派发 Event.CLOSE + closeFn 短路调）；`BaseWindow` 换
 WindowBg/CloseButton 符号皮肤、ADDED_TO_STAGE→initalize→addedToLayer
-生命周期、data 带 width/height 置 _recenter 等 onEffectEnd 居中。
+生命周期、data 带 width/height 置 _recenter 等 onEffectEnd 居中。**窗口
+两段式初始化别动**（#18 实现返工）：initalize 里是 `super.init()` 非虚
+直落父链（Container→UIComponent 的 setSkin/setSize/setEnabled、
+_inited=true），和 Event.ADDED 的虚调 `this.init()`（走最派生覆写，
+LevelAndExperience.init 不调 super）是两条不同路径——Haxe 方法全虚，
+写成 this.init() 基类初始化整段丢失。
 `AddButtonWindow`/`AlertWindow` 等仍是 #7/#8 的形态 stub（不在 farm-basic
 spec 清单里，做窗口片时按其头注接真）。`Button` 也是真身（Button.as 逐句，
 `selected/toggle` 是 get/set 属性，跨类互斥走 Reflect.setProperty，

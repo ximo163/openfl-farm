@@ -25,12 +25,13 @@ class SeedItemRender extends Sprite {
 
 	private var _ui:Sprite;
 
-	// :20-26
+	// :20-26（`Utils.getMaterial(...) as Sprite`：取一次素材再 isOfType 门
+	// + 直取，别双调 getMaterial）
 	public function new(param1:Seed) {
 		super();
 		this._data = param1;
-		this._ui = Std.isOfType(Utils.getMaterial("Update.seedsRender"), Sprite)
-			? cast(Utils.getMaterial("Update.seedsRender"), Sprite) : null;
+		var _loc1_:Dynamic = Utils.getMaterial("Update.seedsRender");
+		this._ui = Std.isOfType(_loc1_, Sprite) ? cast(_loc1_, Sprite) : null;
 		this.setData();
 	}
 

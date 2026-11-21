@@ -55,7 +55,10 @@ class TweenCore {
 
 	public var gc:Bool;
 
-	private var _pauseTime:Float;
+	// TweenCore.as:44（AS3 Number 字段默认 NaN——setTotalTime :274 的
+	// `Boolean(_pauseTime) || _pauseTime == 0` 门靠 NaN 才走 timeline 分支；
+	// Haxe Float 零初始化成 0.0 会误命中 `== 0`）
+	private var _pauseTime:Float = Math.NaN;
 
 	public var cacheIsDirty:Bool;
 

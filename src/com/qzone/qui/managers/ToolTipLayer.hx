@@ -10,6 +10,7 @@ import openfl.events.MouseEvent;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
 import shim.As3;
+import shim.ClipProps;
 
 /**
  * com.qzone.qui.managers.ToolTipLayer —— ToolTipLayer.as 逐句对应（issue #18
@@ -21,6 +22,10 @@ import shim.As3;
  * - `_loc2_.hasOwnProperty("toolTip")` → As3.hasProp（Reflect.hasField 查不到
  *   UIComponent.toolTip 这类存取器属性，js/eval 上会漏）。
  * - `this._tipStr = _loc2_["toolTip"]` → Reflect.getProperty（走属性 getter）。
+ * - 动态属性挂值（AS3 dynamic class 的 `clip["toolTip"]=…`，TitleWindow 的
+ *   关闭钮）在 Haxe 侧走 ClipProps 侧表（cpp 裸按名写抛 "Invalid field"，
+ *   Reflect 读不见），先查侧表再落 Reflect——两侧对齐 AS3 「实例动态属性
+ *   先于存取器」的取值序。
  * - EffectManager 第 4 参是 `...rest`：单参调用收成 [this._toolTip]。
  */
 @:keep
@@ -46,8 +51,9 @@ class ToolTipLayer extends Sprite {
 	private function setToolTip(param1:MouseEvent):Void {
 		var _loc3_:Point = null;
 		var _loc2_:DisplayObject = Std.isOfType(param1.target, DisplayObject) ? cast(param1.target, DisplayObject) : null;
-		if (_loc2_ != null && As3.hasProp(_loc2_, "toolTip")) {
-			this._tipStr = Reflect.getProperty(_loc2_, "toolTip");
+		if (_loc2_ != null && (ClipProps.has(_loc2_, "toolTip") || As3.hasProp(_loc2_, "toolTip"))) {
+			this._tipStr = ClipProps.has(_loc2_, "toolTip")
+				? ClipProps.get(_loc2_, "toolTip") : Reflect.getProperty(_loc2_, "toolTip");
 			if (As3.truthy(this._tipStr)) {
 				_loc3_ = _loc2_.parent.localToGlobal(new Point(_loc2_.x, _loc2_.y));
 				this._rect.x = _loc3_.x;

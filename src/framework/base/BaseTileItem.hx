@@ -62,15 +62,18 @@ class BaseTileItem extends Sprite {
 		dispatchEvent(_loc2_);
 	}
 
-	// :61-86（`Utils.getMaterial(param1) as Sprite`）
+	// :61-86（`Utils.getMaterial(param1) as Sprite`：取一次素材再 isOfType
+	// 门 + 直取，别双调 getMaterial——符号壳会构造两份）
 	private function createBackground(param1:String, param2:Int = 0, param3:Int = 0):Void {
+		var _loc1_:Dynamic = null;
 		if (this._bg != null) {
 			return;
 		}
 		if (param1 == "") {
 			return;
 		}
-		this._bg = Std.isOfType(Utils.getMaterial(param1), Sprite) ? cast(Utils.getMaterial(param1), Sprite) : null;
+		_loc1_ = Utils.getMaterial(param1);
+		this._bg = Std.isOfType(_loc1_, Sprite) ? cast(_loc1_, Sprite) : null;
 		if (this._bg != null) {
 			this._bg.x = 0;
 			this._bg.y = 0;
@@ -84,15 +87,17 @@ class BaseTileItem extends Sprite {
 		}
 	}
 
-	// :88-112
+	// :88-112（同上：取一次素材再 isOfType 门 + 直取）
 	private function createMask(param1:String, param2:Int = 0, param3:Int = 0):Void {
+		var _loc1_:Dynamic = null;
 		if (this._mask != null) {
 			return;
 		}
 		if (param1 == "") {
 			return;
 		}
-		this._mask = Std.isOfType(Utils.getMaterial(param1), Sprite) ? cast(Utils.getMaterial(param1), Sprite) : null;
+		_loc1_ = Utils.getMaterial(param1);
+		this._mask = Std.isOfType(_loc1_, Sprite) ? cast(_loc1_, Sprite) : null;
 		if (this._mask != null) {
 			if (param2 > 0) {
 				this._mask.width = param2;

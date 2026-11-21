@@ -19,9 +19,11 @@ import shim.As3;
  * PORT-NOTE:
  * - `_loc6_.x = ...` 瓦片可能是 Point（占位）或 DisplayObject，按名写统一走
  *   Reflect.setProperty（js 裸 Dynamic 写只落影子字段）。
- * - `_data[_loc2_ + _loc3_ * this.maxGrop]`：AS3 里 for-in 键是 String，与
- *   Number 相加得字符串下标再按数组索引取——键恒为数字串，等价
- *   As3.intOf(_loc2_) + _loc3_ * maxGrop。
+ * - `_data[_loc2_ + _loc3_ * this.maxGrop]`：AS3 里 for-in 键 _loc2_ 是
+ *   String，String + Number 是**拼接**不是数值加（"1"+12→"112"），再按
+ *   字符串键取数组——"00"/"012" 这类非正则数字串落 undefined、"112" 这类
+ *   正则串落错位元素，原版数据绑定本来就是坏的，照译不修（偏差只进
+ *   spec/deviations.json，人维护）。As3.arrayIndex 复刻该取值语义。
  * - `for(_loc3_ in this.groupInfo)`：AS3 for-in 按现存下标升序枚举（分组建
  *   表按行号顺序写满），等价 0...length 索引遍历。
  */
@@ -136,8 +138,11 @@ class TileList extends TileBase {
 						}
 					}
 					if (_loc1_.parent == null) {
+						// TileList.as:124 `_data[_loc2_ + _loc3_ * this.maxGrop]`：
+						// String 键 + Number 是 AS3 拼接，字符串键按
+						// As3.arrayIndex 取（PORT-NOTE 见类头）——照译不修
 						Reflect.setProperty(_loc1_, this.dataField,
-							this._data[As3.intOf(_loc2_) + _loc3_ * this.maxGrop]);
+							As3.arrayIndex(this._data, _loc2_ + Std.string(_loc3_ * this.maxGrop)));
 						eventHandle(_loc1_);
 						this.content.addChild(_loc1_);
 					}

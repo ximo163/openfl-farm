@@ -46,11 +46,14 @@ class BaseWindow extends TitleWindow {
 		addEventListener(Event.ADDED_TO_STAGE, this.initalize, false, 0, true);
 	}
 
-	// :42-58
+	// :42-58（`super.init()`：AS3 非虚直落父链（Container→UIComponent 的
+	// setSkin/setSize/setEnabled、_inited=true）；Haxe 方法全虚，this.init()
+	// 会分派到最派生覆写（LevelAndExperience.init 不调 super），基类初始化
+	// 整段丢失——必须写 super.init() 复刻两段式初始化）
 	public function initalize(param1:Event):Void {
 		param1.target.removeEventListener(Event.ADDED_TO_STAGE, this.initalize);
 		if (this._inited == false) {
-			this.init();
+			super.init();
 		}
 		if (closeButton != null) {
 			closeButton.useHandCursor = true;

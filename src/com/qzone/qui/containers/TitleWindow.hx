@@ -9,15 +9,18 @@ import openfl.events.Event;
 import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
+import shim.ClipProps;
 
 /**
  * com.qzone.qui.containers.TitleWindow —— TitleWindow.as 逐句对应（issue #18
  * qui 收尾：容器片整类翻译，替换 #8 的闭包 stub）。标题窗：Panel + 头部热区
  * （22px 高透明矩形，尺寸随 setSize 重画）+ 右上关闭按钮。close() 派发
  * Event.CLOSE 并短路调用 closeFn（PreviewDiyWindow/LeftSideToolBar 依赖）。
- * PORT-NOTE: `this.closeButton["toolTip"] = "关闭"`——Sprite 上无 toolTip
- * 属性，按名写走 Reflect.setProperty（js 裸 Dynamic 写只落影子字段），
- * ToolTipLayer 同名读取对得上。
+ * PORT-NOTE: `this.closeButton["toolTip"] = "关闭"`——AS3 侧 PanelCloseButton
+ * 是 dynamic class（Master2 symbol13），按名挂动态属性；Haxe 壳类密封，
+ * 裸按名写（Reflect.setProperty）在静态目标上抛 "Invalid field"（main 上
+ * #10 真机 Invalid field:tipText 同型坑），走 ClipProps 侧表，
+ * ToolTipLayer.setToolTip 读侧配对同查。
  */
 @:keep
 class TitleWindow extends Panel {
@@ -77,7 +80,7 @@ class TitleWindow extends Panel {
 			this.closeButton = cast Type.createInstance(this.closeButtonSkin, []);
 			ButtonMaker.addTarget(this.closeButton);
 			this.closeButton.useHandCursor = false;
-			Reflect.setProperty(this.closeButton, "toolTip", "关闭");
+			ClipProps.set(this.closeButton, "toolTip", "关闭");
 			this.closeButton.visible = this._showCloseButton;
 			this.addChild(this.closeButton);
 			this.closeButton.addEventListener(MouseEvent.CLICK, this.onClose);

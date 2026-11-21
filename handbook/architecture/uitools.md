@@ -110,6 +110,15 @@ EffectManager 同为签名 stub（PopUpLayer/ToolTipLayer 调它们空体）。
   js 上裸 `dyn.prop = v` 只写影子字段、typed 读回 0，set_selected 这类
   setter 根本不走（Button.selected、TabBar 加瓦片、ScrollThumb、
   RadioGroup 互斥全踩过）。读走 Reflect.getProperty 即可。
+- **AS3 dynamic class 的实例动态属性走 `shim/ClipProps` 侧表**（#18 实现返
+  工）：原版在 swf 符号类上随手挂属性（`closeButton["toolTip"]="关闭"`，
+  TitleWindow.as:68——PanelCloseButton 是 `public dynamic class`），Haxe 壳
+  类密封，`Reflect.setProperty` 写不存在字段在 cpp/Android 直接抛
+  "Invalid field"（main #10 真机 Invalid field:tipText 同型坑，CLAUDE.md
+  硬规则三选一之一）。写 `ClipProps.set`、读侧配对先查
+  `ClipProps.has/get`（ToolTipLayer.setToolTip：实例动态属性先于存取器，
+  对齐 AS3 取值序）。main 已有同款 ClipProps 机制（ToolBar/NavigationBar
+  的 tipText），本仓与 main 同文件名同内容，合并零冲突。
 - **AS3 密封类 hasOwnProperty ≠ Reflect.hasField**（#18）：js/eval 上
   hasField 只看实例物理字段，原型方法（TitleWindow.keyEnter）和 get/set
   存取器属性（UIComponent.toolTip）都查不到——译成 `As3.hasProp`

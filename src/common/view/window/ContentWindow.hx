@@ -74,7 +74,9 @@ class ContentWindow extends AddButtonWindow {
 			this.height = As3.intOf(Reflect.field(_loc1_, "height"));
 		}
 		if (Reflect.field(_loc1_, "title") != null) {
-			this.title = Reflect.field(_loc1_, "title");
+			// `as String`：值非 String 时落 null（AS3 as 强转），非 toString 归一
+			this.title = Std.isOfType(Reflect.field(_loc1_, "title"), String)
+				? cast(Reflect.field(_loc1_, "title"), String) : null;
 		}
 		if (Reflect.field(_loc1_, "yellowTip") != null
 			&& Std.isOfType(Reflect.field(_loc1_, "yellowTip"), TextField)) {

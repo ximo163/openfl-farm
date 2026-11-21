@@ -338,24 +338,26 @@ class LevelUpWindow extends Sprite {
 		}
 	}
 
-	// :368-440
+	// :368-440（每个分支 `Utils.getMaterial(...) as Sprite`：取一次素材再
+	// isOfType 门 + 直取，别双调 getMaterial——符号壳会构造两份）
 	private function createPanel():Void {
 		var _loc1_:Dynamic = null;
+		var _loc2_:Dynamic = null;
 		if (this._shareType == LAND_AND_SEEDS) {
-			this._panelUI = Std.isOfType(Utils.getMaterial("Update.bigPanel"), Sprite)
-				? cast(Utils.getMaterial("Update.bigPanel"), Sprite) : null;
+			_loc2_ = Utils.getMaterial("Update.bigPanel");
+			this._panelUI = Std.isOfType(_loc2_, Sprite) ? cast(_loc2_, Sprite) : null;
 		} else if (this._shareType == ONLY_SEEDS) {
-			this._panelUI = Std.isOfType(Utils.getMaterial("Update.seedsPanel"), Sprite)
-				? cast(Utils.getMaterial("Update.seedsPanel"), Sprite) : null;
+			_loc2_ = Utils.getMaterial("Update.seedsPanel");
+			this._panelUI = Std.isOfType(_loc2_, Sprite) ? cast(_loc2_, Sprite) : null;
 		} else if (this._shareType == ONLY_LAND) {
-			this._panelUI = Std.isOfType(Utils.getMaterial("Update.landPanel"), Sprite)
-				? cast(Utils.getMaterial("Update.landPanel"), Sprite) : null;
+			_loc2_ = Utils.getMaterial("Update.landPanel");
+			this._panelUI = Std.isOfType(_loc2_, Sprite) ? cast(_loc2_, Sprite) : null;
 		} else if (this._shareType == ONLY_LAND_NEXT) {
-			this._panelUI = Std.isOfType(Utils.getMaterial("Update.nextLandPanel"), Sprite)
-				? cast(Utils.getMaterial("Update.nextLandPanel"), Sprite) : null;
+			_loc2_ = Utils.getMaterial("Update.nextLandPanel");
+			this._panelUI = Std.isOfType(_loc2_, Sprite) ? cast(_loc2_, Sprite) : null;
 		} else if (this._shareType == ONLY_TEXT) {
-			this._panelUI = Std.isOfType(Utils.getMaterial("Update.emptyPanel"), Sprite)
-				? cast(Utils.getMaterial("Update.emptyPanel"), Sprite) : null;
+			_loc2_ = Utils.getMaterial("Update.emptyPanel");
+			this._panelUI = Std.isOfType(_loc2_, Sprite) ? cast(_loc2_, Sprite) : null;
 		}
 		if (this._panelUI != null) {
 			_loc1_ = As3.childOf(this._panelUI, "levelTxt");

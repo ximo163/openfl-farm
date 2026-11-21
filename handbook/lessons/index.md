@@ -752,3 +752,83 @@
   用 `As3.hasProp` 区分后只修关系层。防：写完 PORT-NOTE 回读代码核对
   （attempt 3 的 note 语义写对、代码反着做，note 成了误导源）；同形态
   先 rg 同模块已有译法再动笔。
+
+## 2026-11 · #21（tasks 模块：新手任务/欢迎引导）
+
+- **`super.方法` 取不了闭包（Cannot create closure on super method）**：
+  AS3 里 `addEventListener(CLICK, super.confirmButtonClick)` 合法——闭包
+  绑定的是父类实现；Haxe 直接编译红。本类**没有覆写**该方法时 `this.`
+  与 `super.` 是同一实现，`this.confirmButtonClick` 等价替换 + PORT-NOTE
+  即可（WelcomeTaskWindow.init）。已覆写过的场景没有等价写法：抽一个
+  `private function onXxx()` 成员转发再挂。防：rg `super\.` 后跟非 `(` 的
+  形态（作为值传递）都要处理，别只盯调用。
+- **AS3 private 字段同名异型遮蔽 = 两个独立槽，改名拆槽而不是 override**：
+  WelcomeTaskWindow 声明 `_mode:int`，基类 BaseWindow 已有
+  `_mode:Boolean`——AS3 private 不进子类作用域，两个 `_mode` 互不相干
+  （本类从未碰基类 mode 属性的存储位）；Haxe 同名异型重定义直接红，而
+  「改 override 访问器」（#18 的 Redefinition 条）在这不适用：两者语义
+  无关、没有可统一的属性。修法：子类槽改名（`m_mode`）+
+  `PORT-NOTE(shadow)`，读写点与原类一一对应。防：给 stub 基类补字段前
+  先 rg 全部子类的同名字段；翻译时撞红先分清「同一状态量的两份声明」
+  （override/accessor 路）还是「碰巧同名的两个槽」（改名路）。
+- **utest 的 setup() 按**测试函数**跑，不按循环轮次跑**：一个测试函数
+  内多轮 `for (i in …)` 共享同一份 setup 产物和**单例状态**——
+  WelcomeModelTest 在轮内 `visitFriendFarm()` 改写
+  `Session.getInstance().currentUser` 指望「下一轮 setup 复原」，实际轮
+  间泄漏，后 3 轮的断言全在错误的 Session 极性下跑（#21 两例
+  NEEDS-TESTS 之一）。防：测试里动单例（Session/Settings）的，要么轮内
+  显式复原，要么拆成独立测试函数；write-tests 阶段对「好友/自己农场」
+  这类极性翻转的用例，逐轮心算一遍 Session 状态再定期望值。
+- **LocalSwfLoader 补了显示挂载（content 进显示列表）**：原版 Flash 的
+  `loader.content` 恒为 loader 的唯一子件、Loader 本身被 addChild 时引导
+  内容跟着可见；shim 早期只直设 `content` 字段（RSMManager 等只读字段的
+  调用方够用），#21 的 help.swf 是首个把 **loader 本身挂进显示列表**的
+  调用方，不 attach 内容就整屏空白。修法：onComplete 里把挂载+字段补齐
+  +COMPLETE 派发整体交给 openfl 原生完成路径 `Loader_onComplete`
+  （经 `@:access` 调私有成员，见下条）；直接照抄原生路径的
+  `super.addChildAt(content, 0)` 是**错的**——super 只上溯一层。
+  防：新的「可见 Loader」调用方（引导/全屏装饰类）直接用 LocalSwfLoader
+  即可；再改这个 shim 时记得显示挂载是承重行为（assets.md 已补注）。
+- **super 只上溯一层，Loader 子类照抄原生路径的 super 调用会命中
+  父类自己的覆写**：openfl 原生 `Loader_onComplete`（Loader.hx content
+  装载段）内部 `super.addChildAt(content, 0)` 之所以合法，是它从 **Loader
+  自己**出发、super 落到 DisplayObjectContainer；从子类 LocalSwfLoader
+  调 `super.addChildAt` 落到的是 **Loader 自己的 #2069 覆写**（Flash
+  同款禁令：Loader 不许 addChild）——#21 attempt 1 就这么写的，本地
+  html5 全量编译绿、单测绿（不跑显示链），CI web-smoke 的
+  `pageerror: openfl_errors_Error` 一条红：启动链第一个走 LocalSwfLoader
+  的库装载就把 ready 标记卡死。Haxe 没有 super.super，也没有任何公开口
+  绕过覆写；等价口是 `@:access(openfl.display.Loader)` 调私有
+  `Loader_onComplete`——它的字段补齐（content/contentLoaderInfo.content/
+  宽高）/挂载/COMPLETE 派发顺序即原生语义，各目标通用（Loader.content 等
+  都是 `(default, null)` 物理字段，Reflect 直写本来也通，但原生路径连
+  手补的顺序风险一并免了）。
+  版本耦合：Loader_onComplete 是 openfl 9.5.2 的私有函数名，升版改名会
+  编译红在 LocalSwfLoader.hx（shim 定位就是版本胶水）。
+  防：**给 openfl 类写子类时想复用其内部行为，先看该行为的方法体在哪个
+  类层**——覆写墙（Stage 的 IllegalOperationError、Loader 的 #2069 这类
+  Flash 语义禁令）只拦子类入口，openfl 自己的内部调用不受拦；子类复用
+  走 @:access 进私有函数，别照抄 super 形态。
+- **CI pageerror 对 Haxe 抛出的 openfl Error 只剩类名，消息和栈都不可见
+  ——先 nodeboot 复现拿全栈**：`openfl.errors.Error extends
+  haxe.Exception`，浏览器里不是原生 JS Error——smoke.mjs 的
+  `e.stack ? e.stack : String(e)` 落到 String(e) 只打出
+  `openfl_errors_Error`（没消息、没栈、没帧）；同一错误在 nodeboot 的
+  uncaughtException 里 `e.stack` 是真的，打出 `Error #2069: …` + 全帧。
+  #21 attempt 2 的 CI 日志就只有一行类名，凭它只能知道「openfl Error 族」，
+  定位靠 nodeboot 同路径复现（30 秒内拿到消息+帧）。防：CI 红在
+  `pageerror: openfl_errors_XXX` 时按类名圈范围（rg openfl 源+src/ 的
+  `new XXX`），然后 nodeboot 跑启动链看完整栈，别按类名盲猜改代码。
+- **eval 的 `openfl.Lib.getTimer()` 是「纪元毫秒 Int32 回绕值」，随墙钟
+  漂移变号——跨时钟播种的测试是 49.7 天定时炸弹**：lime 在 eval/sys 上
+  是 `Std.int(Sys.time()*1000)`（Sys.time=纪元秒，探针实测），回绕值在
+  2026-11-21 ~21:25 UTC 越过 2^32 边界由负转正（As3.hx PORT-NOTE 记的
+  「为负」就是负半周）。`HttpOperationExTest` 用它播种 `m_timerValue`、
+  实现读 `shim.As3.getTimer()`（毫秒自首调，恒小正值），两钟零点无关：
+  负半周播种恒满足超时比较（#7 批准时全绿），正半周恒不满足（#21 收工
+  时同树连红，前后两轮绿的分界恰是越界时刻）。同钟播种的 probe 证明
+  实现照发超时 FAULT——移植无错，测试混了两个钟域，和 legacy
+  （HttpOperationEx.as:71/:108 单一 flash.utils.getTimer 种读同钟）对
+  不上。防：eval 测试里一切时间戳只用 `shim.As3.getTimer` 一个域种/读；
+  `haxe test.hxml` 无预兆由绿转红且只红计时类用例时，先探针两钟值再查
+  代码（修法在测试 import 行，write-tests 阶段的事）。

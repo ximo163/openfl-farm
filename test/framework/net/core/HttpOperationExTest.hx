@@ -2,7 +2,14 @@ package framework.net.core;
 
 import com.qzone.qfa.managers.events.RequestEvent;
 import framework.net.CommandDefs;
-import openfl.Lib.getTimer;
+// changed for #21（implement 送回）：播种须与实现同钟。legacy
+// HttpOperationEx.as:77/:109 种/读同用 flash.utils.getTimer（播放器启动
+// 毫秒，恒非负），实现照翻为 shim.As3.getTimer（HttpOperationEx.hx:6）。
+// 原来种子的 openfl.Lib.getTimer 在 eval 上是纪元毫秒 Int32 回绕值，正半周
+// 恒小于进程内 As3.getTimer()，60s 窗永不越过（2026-11-21 ~21:25 UTC
+// 越界当天 #21 全树转红；见 handbook/lessons/index.md「49.7 天定时炸弹」条）。
+// 同钟后 m_timerValue 差值 ≥61000，断言才真正「不依赖具体钟值」。
+import shim.As3.getTimer;
 import openfl.events.Event;
 import openfl.events.HTTPStatusEvent;
 import openfl.events.IOErrorEvent;

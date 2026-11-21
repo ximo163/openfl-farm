@@ -13,6 +13,8 @@ class Consts {
 	public static final NET_HTTP_METHOD_GET:String = URLRequestMethod.GET;
 	public static final NET_HTTP_METHOD_POST:String = URLRequestMethod.POST;
 	public static final ALERT_TYPE_ERROR:String = "error";
+	// Consts.as:218（issue #21：onTaskAllOver 的全部完成提示窗类型）
+	public static final ALERT_TYPE_SUCCESS:String = "success";
 	// Consts.as:222（issue #20：好友列表功能开关提示窗类型）
 	public static final ALERT_TYPE_TIP:String = "tip";
 	// Consts.as:224（issue #9：NavigationBar 超市未点亮提示窗类型）
@@ -196,6 +198,10 @@ class Consts {
 	public static final WINDOW_NAME_REGIFT:String = "PickupGiftWindow";
 	public static final WINDOW_NAME_REGIFT_CARD:String = "REGiftWindow";
 	public static final WINDOW_NAME_REQUEST_ERROR:String = "RequestErrorWindow";
+	// Consts.as:190（issue #21：WelcomeTaskWindow 注册名）
+	public static final WINDOW_NAME_TASK_ACCEPT:String = "WelcomeTaskWindow";
+	// Consts.as:192（issue #21：TaskOverWindow 注册名）
+	public static final WINDOW_NAME_TASK_OVER:String = "TaskOverWindow";
 	public static final WINDOW_NAME_UPGRADE_RED:String = "UpgradeRedLandWindow";
 	public static final WINDOW_NAME_VALIDATE:String = "ValidateCodeWindow";
 	public static final WINDOW_NAME_ABUTTON:String = "AddButtonWindow";

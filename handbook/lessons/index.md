@@ -473,7 +473,10 @@
   "112"——字符串键取 AS3 Array：正则数字串（无前导零、≤2^32-2）按下标
   （多数错位）、"00"/"012" 这类非正则串得 undefined，原版绑定本来就是
   坏的。防：`shim/As3.arrayIndex` 复刻该取值（表驱动测试
-  As3ArrayIndexTest 钉死）；「顺手修好原版 bug」必须停在 deviations
+  test/shim/As3ArrayIndexTest.hx 钉死；TestMain.hx 是 append-only、
+  implement 阶段碰不得，注册行待 write-tests 轮补——在那之前
+  `haxe test.hxml` 不编译它，standalone Runner 跑过全绿 21 断言）；
+  「顺手修好原版 bug」必须停在 deviations
   （人维护），代码照抄坏语义。
 - **openfl Dictionary 的 multiType 按 K 解析，`Dictionary<Dynamic,…>` 是
   StringMap**：K=Dynamic 撞上 @:to 首选 `toStringMap<K:String>`，对象键

@@ -1,0 +1,67 @@
+{
+  "name": "plant",
+  "desc": "V3 种植场景（issue #17）：进农场→种→浇→收。数据取 legacy/snapshot uid=1（land4 空地播种、land2 唯一干旱地浇水、land0 唯一成熟白萝卜收获）；期望请求与 mync.php $mod_list 的 mod 定义一致，参数值按 uid=1 快照可推（出处在 test/ScenarioRunnerContractTest.hx 逐条标注）。场景声明是判定输入、基线记录是判定输出，两侧同构（tools/scenario.mjs 头注的格式契约）。",
+  "steps": [
+    {
+      "name": "enter",
+      "desc": "进农场：等启动链就绪（nodeboot --drive 本就在就绪后接管；Ruffle 侧同义）。检查点：user_run 请求已发出（mync.php:94），uid=1 初始地块状态（initialized.sql:5718：land0 a=2 b=6、land2 a=2 h=0）。",
+      "action": { "type": "waitForReady" },
+      "checkpoint": {
+        "requests": [
+          { "mod": "user", "act": "run", "params": {} }
+        ],
+        "state": {
+          "lands": {
+            "0": { "cId": 2, "cropStatus": 6 },
+            "2": { "cId": 2, "humidity": 0 }
+          }
+        }
+      }
+    },
+    {
+      "name": "plant",
+      "desc": "种：设种子光标（背包选种同一入口，CursorCropSeed 带 \"1,<cId>\"，白萝卜 cId=2，cropstype.php:5）→ 点空地 4（planting.php:12-13 要求 a==0，uid=1 仅 land4/5 空）。应答按 farmlandstatus_planting.php:79 落地 _cId=2。",
+      "action": { "type": "clickLand", "place": 4, "setCursor": { "name": "CursorCropSeed", "args": "1,2" } },
+      "checkpoint": {
+        "requests": [
+          { "mod": "farmlandstatus", "act": "planting", "params": { "place": "4", "cId": "2" } }
+        ],
+        "state": {
+          "lands": {
+            "4": { "cId": 2 }
+          }
+        }
+      }
+    },
+    {
+      "name": "water",
+      "desc": "浇：按 Q 切浇水光标（ToolBar.onKeyUp 的 Q 键链，与工具条按钮二选一）→ 点干旱地 2（water.php:23-25 对 h==1 静默 exit，uid=1 仅 land2 h=0 且有苗）。应答按 farmlandstatus_water.php:65 humidity:1 落地。",
+      "action": { "type": "clickLand", "place": 2, "keyUp": { "keyCode": 81 } },
+      "checkpoint": {
+        "requests": [
+          { "mod": "farmlandstatus", "act": "water", "params": { "place": "2", "ownerId": "1" } }
+        ],
+        "state": {
+          "lands": {
+            "2": { "humidity": 1 }
+          }
+        }
+      }
+    },
+    {
+      "name": "harvest",
+      "desc": "收：点工具条「收获」（ToolBar TOOLS 表 TOOL_HAND=1）→ 点成熟地 0（harvest.php:23-26 守卫 b==6 且 m>=1，uid=1 仅 land0 b=6 m=16）。白萝卜 maturingTime=1 → 应答 b=7（harvest.php:50-53），echo :94-95 status.cropStatus=7 落地。",
+      "action": { "type": "clickLand", "place": 0, "clickTool": { "index": 1 } },
+      "checkpoint": {
+        "requests": [
+          { "mod": "farmlandstatus", "act": "harvest", "params": { "place": "0" } }
+        ],
+        "state": {
+          "lands": {
+            "0": { "cropStatus": 7 }
+          }
+        }
+      }
+    }
+  ]
+}

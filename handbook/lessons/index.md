@@ -363,3 +363,37 @@
   类实测植入错误能被抓到），别留给 android CI 才现形；修 bug 引入的**新**
   代码同样过一遍 CLAUDE.md 的静态目标清单。
 
+## 2026-11 · #17（T1 场景运行器，write-tests 阶段）
+
+- **utest 的 Assert 是「记录后继续」，不是抛错中断**：Assert.fail/notNull
+  之后方法体会接着跑（test_issue17_deliverables_present 三条 FFF 全录即是
+  证据）——「文件缺失」类加载助手在 Assert.fail 后必须 `return null`、调用
+  方跟空值守卫 return；直接落到 File.getContent 会再抛一条，报告里一条
+  失败变「失败 + ERROR」两行噪音（ScenarioRunnerContractTest.loadJson 的
+  三段式写法）。防：写缺文件/缺字段路径时按「fail → return null → 守卫
+  return」，别依赖 Assert 替你截断；另外消息字符串里要字面 `$xxx`（如
+  PHP 的 `$mod_list`）得写 `$$xxx`，`$` 后跟标识符会被当成插值编译错。
+
+## 2026-11 · #17（T1 场景运行器，implement 阶段）
+
+- **mync 应答不带 place 回显会把操作落到别的地块**：真实 PHP 把请求的
+  place 回显进应答的 farmlandIndex（farmlandstatus_planting.php:79、
+  water :65、harvest :94-95），客户端按**应答的** farmlandIndex 落地
+  （FarmLandModel.onOperateSuccessPlant 等）——nodeboot 的按 act fixture
+  （farmlandIndex=0）应答「种 4 号地」的请求时把 land0 的 _step 重置成 0，
+  后续 harvest 被 canHavest 的 _step==5 守卫静默吞掉（无请求、无报错）。
+  修法：nodeboot 按 `mync-<mod>-<act>-<place>.json` → `mync-<mod>-<act>.
+  json` → user_run 整包分档。防：给交互链换地块跑，先看应答 echo 的
+  farmlandIndex 是不是「请求的 place」，不是就补 -<place> fixture。
+- **POST body 的 farmKey/farmTime 随墙钟漂移，进基线 diff 必红**：
+  farmTime=CommonData.serverTime 随经过秒数走（CommonData.hx:144-148，
+  实测 user_run 恒 0、操作请求每秒+1），farmKey=MD5(farmTime+盐)
+  （Main.hx:230-236）。同一次行为两次运行必不同；scenario.mjs 记录时剥
+  这两个键后实测两次运行字节级一致。防：跨侧（Ruffle）基线导出剥同样的
+  键；任何「录请求做对比」的格式都要先分清哪些参数是时间敏感的校验材料。
+- **新工作区 nodeboot 永不就绪，先想 assets/legacy 同步**：assets/legacy/
+  不入库（构建时 scripts/sync-legacy-assets.sh 同步），新克隆/新容器里
+  没有——库全 404、`__openflFarmReady` 永不置位、30s 看门狗超时，日志里
+  只见 `/lite_ui_v_0?数字` 一条 404。防：跑 nodeboot/scenario 前确认
+  assets/legacy/ 已同步（本地跑一遍 sync 脚本即可，不违规）。
+

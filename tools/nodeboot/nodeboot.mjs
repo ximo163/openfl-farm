@@ -103,21 +103,34 @@ const server = createServer(async (req, res) => {
         body = xmlBodies[mod];
         type = "application/xml";
       } else if (path.endsWith("mync.php")) {
-        // --drive 时按 mod/act 精确应答（fixtures/mync-<mod>-<act>.json，
-        // 形状抄 nc/mod 对应 php 的 echo），先于 user_run 整包回落
-        const mod = u.searchParams.get("mod") || "";
-        const act = u.searchParams.get("act") || "";
-        const actFile = join(HERE, "fixtures", `mync-${mod}-${act}.json`);
-        body = (drivePath && act && existsSync(actFile)) ? await readFile(actFile, "utf8") : myncBody;
+        // POST body 先收：myncLog 记录（URL+body）+ 按 place 选应答都要用它
+        let postBody = "";
+        await new Promise((r) => { req.on("data", (c) => postBody += c); req.on("end", r); });
+        myncLog.push({ url: req.url, body: postBody });
+        // --drive 时按 mod/act 精确应答（fixtures/mync-<mod>-<act>.json，形状抄
+        // nc/mod 对应 php 的 echo）。带 place 的请求先试
+        // fixtures/mync-<mod>-<act>-<place>.json：真实 PHP 把请求的 place 回显进
+        // farmlandIndex（farmlandstatus_planting.php:79 "farmlandIndex":$place，
+        // water :65 / harvest :94-95 同款），而客户端按应答的 farmlandIndex 落地
+        // （onOperateSuccessPlant 等），不分 place 的应答会把「种 4 号地」落到
+        // 0 号地（issue #17 场景实测踩中）。没有按 place 的文件再回落
+        // mync-<mod>-<act>.json、user_run 整包
+        if (drivePath) {
+          const mod = u.searchParams.get("mod") || "";
+          const act = u.searchParams.get("act") || "";
+          const place = new URLSearchParams(postBody).get("place");
+          const placeFile = mod && act && place != null ? join(HERE, "fixtures", `mync-${mod}-${act}-${place}.json`) : null;
+          const actFile = mod && act ? join(HERE, "fixtures", `mync-${mod}-${act}.json`) : null;
+          body = placeFile && existsSync(placeFile) ? await readFile(placeFile, "utf8")
+            : actFile && existsSync(actFile) ? await readFile(actFile, "utf8")
+              : myncBody;
+        } else {
+          body = myncBody;
+        }
       }
       if (body == null) {
         console.log(`[nodeboot] 未应答的 php：${req.method} ${req.url}`);
         res.writeHead(404); res.end(); return;
-      }
-      if (path.endsWith("mync.php")) {
-        let postBody = "";
-        await new Promise((r) => { req.on("data", (c) => postBody += c); req.on("end", r); });
-        myncLog.push({ url: req.url, body: postBody });
       }
       res.writeHead(200, { "Content-Type": type, "Cache-Control": "no-cache" });
       res.end(body);

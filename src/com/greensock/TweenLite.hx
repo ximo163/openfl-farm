@@ -1,5 +1,6 @@
 package com.greensock;
 
+import com.greensock.core.SimpleTimeline;
 import shim.As3;
 
 /**
@@ -11,9 +12,44 @@ import shim.As3;
  * stub 语义：立即把 vars 里的目标属性写上并同步调 onComplete/
  * onCompleteParams——终态与原版一致（切换完成后 toolbar 派发、光标复位
  * 都会照常发生），中间的插值动画随补间库片整体翻译（届时对拍场景连拍）。
+ *
+ * issue #18 补：core 片（TweenCore/SimpleTimeline）已整类翻译，这里加上
+ * TweenCore 构造链依赖的四个静态（TweenLite.as:12-20、initClass :128-145，
+ * 逐句照抄）。PORT-NOTE: initClass 里 `_shape.addEventListener(
+ * ENTER_FRAME, updateAll)` 的每帧推进循环属于 TweenLite 本体，仍随补间库
+ * 片翻译——stub 只建出两根根时间轴（cachedStartTime/autoRemoveChildren
+ * 原值），不挂帧驱动。
  */
 @:keep
 class TweenLite {
+	// TweenLite.as:12-20（stub 只保 core 片构造链用到的四个）
+	public static var rootTimeline:SimpleTimeline;
+
+	public static var rootFramesTimeline:SimpleTimeline;
+
+	public static var overwriteManager:Dynamic;
+
+	// 原版未初始化 Number 静态为 NaN（TweenCore 构造以此为未建标志），
+	// Haxe 静态默认 0.0，显式置 NaN
+	public static var rootFrame:Float = Math.NaN;
+
+	// TweenLite.as:128-145（initClass，逐句；帧驱动 hookup 见类头 PORT-NOTE）
+	public static function initClass():Void {
+		rootFrame = 0;
+		rootTimeline = new SimpleTimeline(null);
+		rootFramesTimeline = new SimpleTimeline(null);
+		rootTimeline.cachedStartTime = As3.getTimer() * 0.001;
+		rootFramesTimeline.cachedStartTime = rootFrame;
+		rootTimeline.autoRemoveChildren = true;
+		rootFramesTimeline.autoRemoveChildren = true;
+		if (overwriteManager == null) {
+			overwriteManager = {
+				"mode": 1,
+				"enabled": false
+			};
+		}
+	}
+
 	public function new(param1:Dynamic = null, param2:Float = 0, param3:Dynamic = null) {}
 
 	// TweenLite.to 的 stub：终态直写 + 同步 onComplete（见类头）

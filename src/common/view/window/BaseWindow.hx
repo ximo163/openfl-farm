@@ -1,43 +1,76 @@
 package common.view.window;
 
 import com.qzone.qui.containers.TitleWindow;
+import com.qzone.qui.core.Align;
+import com.qzone.qui.effects.Move;
 import interfaces.IMsgCenter;
+import openfl.events.Event;
+import openfl.text.TextFormat;
 
 /**
- * common.view.window.BaseWindow —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
- * 窗口基类（原版继承 qui TitleWindow，带 data/windowName/mode 存取与
- * 初始化生命周期）属于通用视图的窗口片；这里只保公共 API 形态
- * （BaseWindow.as:25-118 的签名）让 WindowControl/FarmApplication 编译，
- * 标题栏/布局/关闭按钮随窗口片接入。
+ * common.view.window.BaseWindow —— BaseWindow.as 逐句对应（issue #18 qui
+ * 收尾：通用窗口片整类翻译，替换 #7 的签名 stub）。通用窗口基类：换
+ * WindowBg/CloseButton 皮肤、居中标题、ADDED_TO_STAGE 触发 initalize →
+ * addedToLayer 生命周期；data 带 width/height 时置 _recenter，等动效结束
+ * onEffectEnd 再居中（PopUpLayer 的 In 效果回调会调到它）。
  */
 @:keep
 class BaseWindow extends TitleWindow {
-	// BaseWindow.as:27
-	private var _data:Dynamic;
+	// BaseWindow.as:13-23
+	private var _mode:Bool;
 
-	// BaseWindow.as:29
-	private var _windowName:String = "";
-
-	// BaseWindow.as:31
-	private var _mode:Bool = false;
-
-	// BaseWindow.as:15（protected → private：Haxe 私有对子类可见；
-	// PreviewDiyWindow.recover 经继承链用）
 	private var m_msgCenter:IMsgCenter;
 
-	// BaseWindow.as:25-40
+	private var _recenter:Bool;
+
+	private var _data:Dynamic;
+
+	private var _isInit:Bool;
+
+	private var _windowName:String;
+
+	// :25-40
 	public function new(param1:IMsgCenter = null) {
 		super();
 		this.m_msgCenter = param1;
+		defaultSkin = WindowBg;
+		closeButtonSkin = CloseButton;
+		showCloseButton = true;
+		titleAlign = Align.CENTER;
+		titleDefautFormat = new TextFormat("Verdana", 16, 16777215, true);
+		effect = Move;
+		this._data = null;
+		this._isInit = false;
+		this._mode = false;
+		this._recenter = false;
+		addEventListener(Event.ADDED_TO_STAGE, this.initalize, false, 0, true);
 	}
 
-	// BaseWindow.as:42-58（initalize：加入舞台后的初始化，窗口片翻译）
-	public function initalize(param1:Dynamic):Void {}
+	// :42-58
+	public function initalize(param1:Event):Void {
+		param1.target.removeEventListener(Event.ADDED_TO_STAGE, this.initalize);
+		if (this._inited == false) {
+			this.init();
+		}
+		if (closeButton != null) {
+			closeButton.useHandCursor = true;
+		}
+		if (panelTitle != null) {
+			panelTitle.y = 3;
+		}
+		this.addedToLayer();
+	}
 
-	// BaseWindow.as:60-68（onEffectEnd：开关窗动效结束，窗口片翻译）
-	public function onEffectEnd():Void {}
+	// :60-68
+	public function onEffectEnd():Void {
+		if (this._recenter == true && parent != null) {
+			x = (parent.width - this.width) * 0.5;
+			y = (parent.height - this.height) * 0.5;
+			this._recenter = false;
+		}
+	}
 
-	// BaseWindow.as:70-78
+	// :70-78
 	public var mode(get, set):Bool;
 
 	private function get_mode():Bool {
@@ -49,34 +82,51 @@ class BaseWindow extends TitleWindow {
 		return param1;
 	}
 
-	// BaseWindow.as:80-91
+	// :80-83 + :99-111（AS3 public get/set data 对）
 	public var data(get, set):Dynamic;
 
 	private function get_data():Dynamic {
 		return this._data;
 	}
 
-	private function set_data(param1:Dynamic):Dynamic {
-		this._data = param1;
-		return param1;
+	// :85-87（空实现：子类覆写点，ContentWindow 覆写）
+	private function setData():Void {}
+
+	// :89-92（默认只落 _isInit，子类覆写点）
+	private function addedToLayer():Void {
+		this._isInit = true;
 	}
 
-	// BaseWindow.as:94-97
+	// :94-97 + :118-121（AS3 public get/set windowName 对）
 	public var windowName(get, set):String;
-
-	private function get_windowName():String {
-		return this._windowName;
-	}
 
 	private function set_windowName(param1:String):String {
 		this._windowName = param1;
 		return param1;
 	}
 
-	// BaseWindow.as:113-116
+	// :99-111（`_data.hasOwnProperty("width")`：数据是匿名记录 → hasField）
+	private function set_data(param1:Dynamic):Dynamic {
+		this._data = param1;
+		this._recenter = false;
+		if (this._data != null) {
+			if (Reflect.hasField(this._data, "width") == true || Reflect.hasField(this._data, "height") == true) {
+				this._recenter = true;
+			}
+		}
+		this.setData();
+		return param1;
+	}
+
+	// :113-116
 	public var isInit(get, never):Bool;
 
 	private function get_isInit():Bool {
-		return false;
+		return this._isInit;
+	}
+
+	// :118-121
+	private function get_windowName():String {
+		return this._windowName;
 	}
 }

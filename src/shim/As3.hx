@@ -34,6 +34,24 @@ class As3 {
 	}
 
 	/**
+	 * AS3 密封类实例的 hasOwnProperty（含 trait：方法与 get/set 属性）。
+	 * Haxe 的 Reflect.hasField 只看实例自有字段，原型上的方法
+	 * （TitleWindow.keyEnter）和存取器属性（UIComponent.toolTip）都查不到，
+	 * js/eval 上会漏——Reflect.field 沿原型链且走属性 getter，兜底补全。
+	 * 值为 null 的真字段两侧都判真（AS3 hasOwnProperty 不看值）。
+	 */
+	public static function hasProp(o:Dynamic, name:String):Bool {
+		if (o == null) {
+			return false;
+		}
+		if (Reflect.hasField(o, name)) {
+			return true;
+		}
+		return Reflect.field(o, name) != null;
+	}
+
+
+	/**
 	 * AS3 的 `x == "字面量"`（String 常量一侧）：另一侧是 Number 时按
 	 * Number(字符串) 比较（"1"==1 为真），是 String 时直比。
 	 * Haxe 对 Dynamic == String 走严格比较，1 == "1" 为假，不等价。

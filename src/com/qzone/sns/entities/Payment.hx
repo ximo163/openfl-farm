@@ -1,13 +1,13 @@
 package com.qzone.sns.entities;
 
-import openfl.errors.Error;
+import shim.As3;
 
 /**
- * com.qzone.sns.entities.Payment —— issue #18 write-tests 签名 stub
- * （Payment.as 65 loc，farm-basic 收尾：支付片整类翻译）。
- * 支付单实体：全局序号、对账参数拼装、回调派发。字段与方法签名照抄
- * （AS3 Function → Dynamic、Object → Dynamic），体 throw not implemented。
- * _stamp 取 getTimer() 真实时钟（:36），测试不断言它。
+ * com.qzone.sns.entities.Payment —— Payment.as 逐句对应（issue #18 farm-basic
+ * 收尾：支付片整类翻译）。支付单实体：全局序号、对账参数拼装、回调派发。
+ * AS3 final class → Haxe 默认不可继承（不写 extends 即 final 语义近似，类名
+ * 对应关系为准）。支付参数最终发往 Qzone 收银台（域外联，QQOutlets shim 出口），
+ * 客户端反编译即唯一依据。_stamp 取 getTimer() 真实时钟（:36）。
  */
 class Payment {
 	// Payment.as:8
@@ -32,21 +32,36 @@ class Payment {
 
 	// :26-37
 	public function new(param1:UInt, param2:Int, param3:UInt, param4:Int) {
-		throw new Error("not implemented");
+		this.bill = BILL_SEQ++;
+		this.misc = null;
+		this.callback = null;
+		this.id = param1;
+		this.type = param2;
+		this.shopType = param4;
+		this.num = param3;
+		this._stamp = As3.getTimer();
 	}
 
 	// :39-42
 	public static function nextSeq():UInt {
-		throw new Error("not implemented");
+		return BILL_SEQ++;
 	}
 
-	// :44-50
+	// :44-50（AS3 Function 调用 → Dynamic 反射调用）
 	public function notify(param1:Int, param2:Bool, param3:Dynamic):Void {
-		throw new Error("not implemented");
+		if (this.callback != null) {
+			this.callback(param1, param2, this, param3);
+		}
 	}
 
 	// :52-61
 	public function buildCheckParams():Dynamic {
-		throw new Error("not implemented");
+		return {
+			"clientBill": this.bill,
+			"itemId": this.id,
+			"itemType": this.type,
+			"itemNum": this.num,
+			"shopType": this.shopType
+		};
 	}
 }

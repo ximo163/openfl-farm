@@ -444,3 +444,147 @@
   请求名与 getDefaultFont 的路径串（findFont 两类匹配都覆盖）。防：
   凡「html5 绿、真机汉字空」类文字问题先查 TextEngine 字体解析链，别猜
   翻译缺漏；加字体别名先看 lime Font.cpp 的拷贝行为再定实例数。
+
+## 2026-11 · #18（farm-basic 收尾：qui 全量 + 管理器 + levelup + greensock core）
+
+- **AS3 密封类 hasOwnProperty ≠ Reflect.hasField**：js/eval 的 hasField 只
+  看实例物理字段，原型方法（TitleWindow.keyEnter，PopUpLayer.stageKeyUp
+  按名调它）和 get/set 存取器属性（UIComponent.toolTip，ToolTipLayer 靠它
+  显提示）都查不到——照字面译 hasField 会把这两条行为链静默断掉（编译绿、
+  门禁也未必立刻红）。防：`x.hasOwnProperty("名")` 译成 `As3.hasProp`
+  （hasField || field != null，走原型链与属性 getter），见 shim/As3.hx 头注。
+- **swf 符号「大写包段.小写类段」的注册键要 @:native**：`Update.bigPanel`
+  这类符号名不能照原路径声明——Haxe 点路径把大写开头段解析为模块名
+  （monthend-package-lowercase deviations 同因，import 直接 Type not
+  found）。修法：root 包建大写类 + `@:native("Update.bigPanel")` 改运行时
+  注册键，`Utils.getMaterial` 反射字符串一字不动（UpdateBigPanel.hx 等 7 枚）。
+- **EffectManager 的 In/Out 第 4 参是 `...rest` 不是单参**：ToolTipLayer
+  `EffectManager.In(this,tip,cb,this._toolTip)` 是「回调参数表」——stub 侧
+  收成 `[this._toolTip]`，PopUpLayer 同（`[param1]`）；真身翻译时 rest →
+  `args:Array<Dynamic>` 按 CLAUDE.md ...rest 规则。
+- **openfl 泛型 addEventListener 可以用 Dynamic 覆写**：ExtLoader 转发
+  COMPLETE/PROGRESS 到 contentLoaderInfo 的 `override public function
+  addEventListener(param1:String, param2:Dynamic, ...)` —— openfl 的
+  `<T>(EventType<T>, T->Void)` 与 Dynamic 双向统一，直接编过；别为覆写
+  改调用方类型。
+- **swf 符号具名子件的写路径 = As3.childOf + Reflect.setProperty**：
+  `panelUI["levelTxt"].htmlText = ...` 在 openfl 动画运行时里子件不是实例
+  字段（#8 Crop step1 先例），childOf（字段→getChildByName）取；写必须走
+  setProperty，js 裸 Dynamic 写只落影子字段。`.y +=` 这类读写混合按
+  getProperty + setProperty 两步拆（LevelUpWindow.createPanel 全套）。
+- **include 全量 cpp typer 扫描是唯一真实编译检查，html5 绿不算数**：
+  本轮新译的窗口链/levelup 类全都 dce 不可达（ApplicationMain 起没有任何
+  引用链），`openfl build html5` 根本不解析这些文件——8 处硬错（protected
+  关键字、无父类 super()、Float→Int、extends abstract、cast 带参、
+  openfl 缺常量）在 html5 全绿的情况下躺着过了全部门禁，靠 #15 的
+  `--macro include("", true, [...], ["src"])` + `-cpp` 扫描才暴露。
+  新译代码即使全部门禁绿也要跑一遍扫描；只到 `Library hxcpp is not
+  installed` 即算通过。两个配置坑：小写模块名（mx_internal.hx，对应关系
+  钉死文件名）解析器拒载，必须进 include 的 exclude 表；include 的
+  classPaths 参数必须限 `["src"]`，否则 swf 库 classpath 根下的
+  SWFTimelineContainer 等也进扫描报无关错。
+- **unsafe cast 的目标类型参数必须是 Dynamic**：`cast(x, Array<Seed>)`
+  恒红（源是 Dynamic 也救不了），只有 `Array<Dynamic>` 合法。带类型的
+  AS3 for-each 照 `for (_loc3_:Seed in cast(x, Array<Dynamic>))` 译——
+  预声明的循环变量保 Seed，Dynamic 迭代元素隐式统一（Player.hx:123 起
+  全仓 cast 到 Array<Dynamic> 是唯一合法形态）。
+- **openfl 的 ByteArray 是 abstract，不能 extends**：openfl 9 起
+  `abstract ByteArray(ByteArrayData)`，AS3 的 `extends ByteArray` 直接
+  "Should extend by using a class"。改继承底层运行时类 ByteArrayData
+  （模块子类型，全限定 `openfl.utils.ByteArray.ByteArrayData`，裸
+  `openfl.utils.ByteArrayData` Type not found）——abstract 对 ByteArrayData
+  双向隐式转换，IS-A 语义不破（mx/core/ByteArrayAsset.hx PORT-NOTE）。
+- **FFDec 在无父类构造器里也照印 super()，Haxe 无父类不可调**：
+  WindowLabelMaker/WindowTabBarMaker（以及 PluginProxy）原样照抄的
+  `super();` 编译红——AS3 一切类默认继承 Object 所以反编译里句句有；Haxe
+  无 extends 的类直接删掉这行，其余构造体照抄。
+- **openfl/events/IOErrorEvent 缺 DISK/NETWORK/VERIFY_ERROR 常量**：
+  openfl 源码里这三行被注释掉（IOErrorEvent.hx:20,76,77）不可引用；
+  Flash Player 原值是普通字符串（"diskError"/"networkError"/"verifyError"），
+  照值内联 + 注明出处（ExtLoader.addEventListener PORT-NOTE）。
+- **AS3 splice(pos, 0, item) 的零删插入 = Haxe Array.insert**：
+  Haxe 的 splice(pos, len) 没有 ...values 插入参，照抄 arity 直接
+  "Too many arguments"；删除用途照抄可用（全仓 7 处先例），插入用途换
+  insert（TileBase.addElementAt）。
+
+## 2026-11 · #18（实现返工：review 驳回六项 + 扫尾）
+
+- **Haxe 方法全虚，原版的 `super.init()` 必须照写**：BaseWindow.as:47 的
+  `super.init()` 是非虚直落（Container→UIComponent：setSkin/setSize/
+  setEnabled、_inited=true）；Haxe 里 `this.init()` 虚分派到最派生覆写
+  （LevelAndExperience.init 不调 super），基类初始化整段静默丢失。防：
+  AS3 源里的 `super.方法()` 一律照抄成 `super.方法()`，别顺手改
+  this.；Haxe 的 private 对子类可见、super 可调，编得过。
+- **AS3 String + Number 是拼接不是加**：TileList.as:134
+  `_data[_loc2_ + _loc3_ * maxGrop]`，for-in 键是 String，"1"+12 得
+  "112"——字符串键取 AS3 Array：正则数字串（无前导零、≤2^32-2）按下标
+  （多数错位）、"00"/"012" 这类非正则串得 undefined，原版绑定本来就是
+  坏的。防：`shim/As3.arrayIndex` 复刻该取值（表驱动测试
+  test/shim/As3ArrayIndexTest.hx 钉死；TestMain.hx 是 append-only、
+  implement 阶段碰不得，注册行已由 write-tests 轮补进 TestMain.hx
+  issue #18 块（review-impl 驳回点），`haxe test.hxml` 编译并跑绿全 21 断言）；
+  「顺手修好原版 bug」必须停在 deviations
+  （人维护），代码照抄坏语义。
+- **openfl Dictionary 的 multiType 按 K 解析，`Dictionary<Dynamic,…>` 是
+  StringMap**：K=Dynamic 撞上 @:to 首选 `toStringMap<K:String>`，对象键
+  `.set` 在 eval 直接抛 "Unexpected value VObject(...), expected string"
+  （实测）；AS3 Dictionary 混键种一表（ViewStack.as:25 按 name 字符串键
+  读、:28 按对象键写——读门恒过、去重从未生效，照译死门）要用
+  `Dictionary<{}, Bool>`（解析成 ObjectMap，String 可与 {} 统一，
+  字符串读恒 miss=AS3 的 undefined）。
+- **AS3 Number 字段默认 NaN，Haxe Float 零初始化成 0.0**：
+  TweenCore.as:44 `_pauseTime:Number` 未暂停时是 NaN，setTotalTime:274 的
+  `Boolean(x) || x == 0` 门靠它才走 timeline 分支；零初始化误命中 `== 0`
+  分支。防：AS3 里没赋初值的 Number 字段，Haxe 侧显式 `= Math.NaN`
+  （局部变量同理；NaN 默认**参**仍禁，见 ScrollEvent 先例）。
+- **AS3 `final class` 的 final 要照写**：Haxe 类不写 extends 也能被继承，
+  「不写 extends 即 final 语义近似」是错觉（Payment 被驳）；公共 API
+  契约差一词，照抄 `final class`。
+- **`Utils.getMaterial(x) as T` 别译成双调**：条件/取值各调一次会构造两份
+  符号壳（LevelUpWindow×5、BaseTileItem×2、SeedItemRender、LandRender 均
+  踩过）——取一次进局部再 `Std.isOfType` 门 + 直取；`as T` 的失配落
+  null 语义也在这一步保住（ContentWindow 的 `as String` 曾被丢，
+  非 String 值原版落 null、端口裸透传）。
+
+## 2026-11 · #18（implement attempt 2：main 合并后受保护文件回基线）
+
+- **orchestrator 把 main 并进任务分支后，受保护/append-only 文件相对本
+  阶段基线会出现「不是我写的 diff」**：34166ac3（merge 2e0b4a1e ⊕ main
+  e43a669f）把 main 的 TestMain.hx 注册块（#10 ClipPropsTest 两行）带进
+  工作树，stage 门禁按「本阶段基线（write-tests commit）→ 工作树」判
+  append-only 违规，整轮 attempt 在任何检查前被拒——diff 来源是 merge
+  也照样拒。恢复：驳回信点名哪个文件就用信里给的基线 commit 精确恢复
+  （`git checkout <基线> -- <file>`），恢复完该文件的其余内容（来自
+  main 的 CLAUDE.md/spec 等）**不要顺手一起恢复**——信没点名的动了
+  反而是新违规。本轮恢复后 TestMain.hx 少了 main 的 ClipPropsTest 注册
+  行，`haxe test.hxml` 只编 TestMain 可达闭包、未注册的 ClipPropsTest.hx
+  不参编，全绿不受影响；回 main 的最终合并由 orchestrator/人解决。
+- **merge 轮开工先自查受保护文件对基线的 diff**（`git diff <基线> --
+  test/ Project.xml *.hxml`），在写任何代码前把点名文件恢复掉，别把
+  一整轮花在会被预检拒掉的树上。
+
+## 2026-11 · #18（write-tests 3/4 驳回后的 implement 返工：数字 id 形状是承重的）
+
+- **fixture 的字段形状和值一样是测试对象**：nc_data.php 的作物 id 是 JSON
+  **数字**（:6020 `"id": 1`），早期 fixture 钉成字符串，恰好绕开两处 AS3
+  数字↔字符串隐式转换（Settings.as:390 松等、LevelUpModel.as:105 String
+  形参收数字实参的隐式强转），exclude_seeds 过滤静默失效也测不出来——
+  review-tests 连驳两轮才现形。「fixture 从真实载荷抽、改内容不可」对
+  **形状**同样成立：数字就钉数字。防：写用例前先到拼 JSON 的 PHP/配置
+  里确认字面形状，别按 Haxe 类型的直觉起 fixture。
+- **AS3 松等的 String 一侧可以是形参/变量，不止字面量**：lessons #8 的
+  防线（`== "字面量"` 一律 eqString）grep 不出这一批——Settings 四个
+  getXxxByID（fish_info/secondList/item_info/crops，Settings.as:104/162/
+  238/:390）与 FarmLiteModel.as:383 都是 `_loc3_["id"] == param1`，param1
+  是 String 变量。本轮五个点全改 eqString。防：Dynamic 与 String 的比较
+  一律 eqString，右侧不论是字面量还是变量。
+- **数字实参 → String 形参的隐式强转要显式复刻**：原版
+  `isNotShow(_loc3_["id"])` 把数字 256 强转 "256" 才命中 exclude_seeds；
+  Haxe 裸传数字时 indexOf 严格等值恒 miss（js/eval 不报错、静默失效）。
+  防：传参处显式 `Std.string(...)` + PORT-NOTE。
+- **同形状全库扫尾**：`grep 'Reflect.field(...) == 变量'` 收尾——
+  PopUpManager.hx:68/99 是对象引用比较（AS3/AS3 语义相同，不改）；
+  ConfigMerger.hx:161 是第三种变体 `Dynamic == Dynamic`（两表 id 双数字/
+  双字符串形状不一致时 AS3 松等命中、严格 miss 会把本该合并的条目
+  当新条目追加），无测试钉住且在 #7 的合并中枢路径上，未动、列为
+  deviations 候选待人裁决。

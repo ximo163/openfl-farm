@@ -106,7 +106,10 @@ class Settings {
 			return null;
 		}
 		for (_loc3_ in _loc2_) {
-			if (Reflect.field(_loc3_, "id") == param1) {
+			// AS3 `_loc3_["id"] == param1` 松等：nc_data.php 等配置的 id 是
+			// JSON 数字（:6020 `"id": 1`），数字 == "1" 命中，严格 == 恒失配
+			// （lessons #8，GetCropID.hx getCropByID 先例）
+			if (As3.eqString(Reflect.field(_loc3_, "id"), param1)) {
 				return _loc3_;
 			}
 		}
@@ -156,7 +159,8 @@ class Settings {
 			return "";
 		}
 		for (_loc3_ in _loc2_) {
-			if (Reflect.field(_loc3_, "id") == param1) {
+			// 同 getFishByID：AS3 松等（Settings.as:162）
+			if (As3.eqString(Reflect.field(_loc3_, "id"), param1)) {
 				return this.replaceAppImg(Reflect.field(_loc3_, "src"));
 			}
 		}
@@ -221,7 +225,8 @@ class Settings {
 			return null;
 		}
 		for (_loc3_ in _loc2_) {
-			if (Reflect.field(_loc3_, "id") == param1) {
+			// 同 getFishByID：AS3 松等（Settings.as:238）
+			if (As3.eqString(Reflect.field(_loc3_, "id"), param1)) {
 				return _loc3_;
 			}
 		}
@@ -362,7 +367,9 @@ class Settings {
 			return null;
 		}
 		for (_loc3_ in _loc2_) {
-			if (Reflect.field(_loc3_, "id") == param1) {
+			// 同 getFishByID：AS3 松等（Settings.as:390；#18 测试钉子：数字
+			// id 形状下严格 == 恒 miss，LevelUpModel 过滤链 :102 第一步全灭）
+			if (As3.eqString(Reflect.field(_loc3_, "id"), param1)) {
 				return _loc3_;
 			}
 		}

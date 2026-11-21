@@ -111,7 +111,24 @@ class SymbolClass {
 				// #9 光标片：FarmStage.register 直接引用（编译期可达），锚只为
 				// 与上两组同表可查
 				CursorArrow, CursorHand, CursorHoe, CursorHook, CursorInsect, CursorPesticide,
-				CursorWater, CursorWeed, CursorOneClickHand
+				CursorWater, CursorWeed, CursorOneClickHand,
+				// #18 qui 收尾：qui 皮肤/窗件符号（ButtonDefaultSkin 等皮肤表
+				// 静态引用 Table 类，符号本体仍零外部引用，锚进来；
+				// TabBg/TabDefault/TabSelected/WindowBg/CloseButton/
+				// DataLoading_mc 经 Utils.getClass / ResourceManager 反射构造）
+				com.qzone.qui.skins.ButtonSkin, com.qzone.qui.skins.ButtonSelectedSkin,
+				com.qzone.qui.skins.ToolTipSkin,
+				com.qzone.qui.skins.TextInputSkin, com.qzone.qui.skins.TextInputFocusSkin,
+				com.qzone.qui.skins.TabSkin, com.qzone.qui.skins.TabSelectedSkin,
+				com.qzone.qui.skins.RadioButtonSkin, com.qzone.qui.skins.RadioButtonSelectedSkin,
+				com.qzone.qui.skins.PanelSkin, com.qzone.qui.skins.PanelControlBarSkin, com.qzone.qui.skins.PanelCloseButton,
+				TabBg, TabDefault, TabSelected, WindowBg, CloseButton, DataLoading_mc,
+				// #18 升级弹窗：Update.* 面板符号（LevelUpWindow/LandRender/
+				// SeedItemRender 经 Utils.getMaterial 反射构造；landPanel/
+				// nextLandPanel/landRender 部署包缺符号，空壳仍锚——
+				// Type.resolveClass 可得）
+				UpdateBigPanel, UpdateSeedsPanel, UpdateEmptyPanel, UpdateSeedsRender,
+				UpdateLandPanel, UpdateNextLandPanel, UpdateLandRender
 			];
 		}
 #end

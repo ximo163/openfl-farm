@@ -90,4 +90,13 @@
          assets/legacy-assets.txt 同 commit 增删 -->
     <library path="assets/legacy/source/core/module/ui/allcrops/Crop_2_Seed.swf" id="Crop_2_Seed" />
 
+    <!-- 升级弹窗（issue #18）：LevelUpModel.getPanelURL（Settings getSecondUrl
+         "levelUpUI"）指向 module/mc/levelup/levelUpUI_v_1.swf；LevelUpWindow
+         在 Update.bigPanel 反射不到时经 RSLLoader 按该 URL 拉起，Update.*
+         面板符号绑定走本库（SymbolClass.bind "levelUpUI_v_1"；
+         LocalSwfLoader 按文件名映射库名）。Update.landPanel/nextLandPanel/
+         landRender 本库未导出（部署包全 swf 扫描），空壳 shim 见
+         src/UpdateLandPanel.hx 注。与 assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/mc/levelup/levelUpUI_v_1.swf" id="levelUpUI_v_1" />
+
 </project>

@@ -62,3 +62,10 @@ source/core/module/ui/farm/diy/board/1.swf
 # getSeedName → GetCropID.getSeedUrl 按 nc_data.php:6021 asset_id.s=2255 →
 # asset 表 Crop_2_Seed.swf；收一次白萝卜时拉起，缺库 404）：
 source/core/module/ui/allcrops/Crop_2_Seed.swf
+#
+# 升级弹窗（issue #18）：LevelUpWindow.initUI 在 Utils.getClass("Update.bigPanel")
+# 反射不到时经 RSLLoader 拉 LevelUpModel.getPanelURL（Settings getSecondUrl
+# "levelUpUI" → module/mc/levelup/levelUpUI_v_1.swf）；Update.*/ 符号绑定走本库
+# （SymbolClass.bind "levelUpUI_v_1"）。Update.landPanel/nextLandPanel/landRender
+# 本库未导出（部署包全 swf 扫描），空壳 shim 见 src/UpdateLandPanel.hx 注：
+source/core/module/mc/levelup/levelUpUI_v_1.swf

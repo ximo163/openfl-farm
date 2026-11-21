@@ -79,9 +79,18 @@ boxClasses.Box`、scrollClasses 全套（`ScrollBase/ScrollBar/ScrollThumb/
 ScrollBarMode/ScrollPolicy`）、`HScrollBar/VScrollBar`、core 的
 `Align/Direction`、`styles.Style`、`makers.ButtonMaker`、
 `events.ScrollEvent`、utils 的 `EventUtil/FrameTimer`、skins 的
-H/V 滚动条皮肤（ListSkin 例外，见类头）。**仍 stub**：`Panel`、`Button`
-（签名 stub，已重定基到真 UIComponent/Label，皮肤装配随后续模块）、
-`TitleWindow`（#8 闭包 stub，见 farmscene.md）。
+H/V 滚动条皮肤（ListSkin 例外，见类头）。
+
+#18（farm-basic 收尾）把余下 qui 类全部译成真身：控件
+`Button/ToolTip/TextInput/TextArea/RadioButton/TabBar/ScrollThumb`，
+容器 `Panel/TitleWindow/ControlBar/ViewStack/TileList`（+
+`tileClasses.TileBase/TileButton`），管理器 `PopUpManager/PopUpLayer/
+ToolTipManager/ToolTipLayer`，makers `RadioGroup/TipInputMaker`，
+`events.ResizeEvent`、`utils.TextFormatUtil`、12 个皮肤符号 shim 与
+`ButtonDefaultSkin` 等 4 张皮肤表。原 #8/#9 的 `Panel/TitleWindow/Button`
+stub 全部退役（旧调用方编译期已按同签名接上）。ScrollBar 本体仍是 #9
+签名 stub（不构造 ScrollThumb，滑块装配随后续模块），DragManager/
+EffectManager 同为签名 stub（PopUpLayer/ToolTipLayer 调它们空体）。
 
 约定（改这些类前必读）：
 
@@ -97,6 +106,23 @@ H/V 滚动条皮肤（ListSkin 例外，见类头）。**仍 stub**：`Panel`、
   delta, bubbles, cancelable)——param2 是 detail，照原文。
 - `Math.NaN` 不是合法默认参：NaN 默认参一律 `Null<Float> = null` +
   ctor 归一（ScrollEvent 先例）。
+- **按名写 openfl 对象必须 `Reflect.setProperty`**（#18 扩到全部新类）：
+  js 上裸 `dyn.prop = v` 只写影子字段、typed 读回 0，set_selected 这类
+  setter 根本不走（Button.selected、TabBar 加瓦片、ScrollThumb、
+  RadioGroup 互斥全踩过）。读走 Reflect.getProperty 即可。
+- **AS3 dynamic class 的实例动态属性走 `shim/ClipProps` 侧表**（#18 实现返
+  工）：原版在 swf 符号类上随手挂属性（`closeButton["toolTip"]="关闭"`，
+  TitleWindow.as:68——PanelCloseButton 是 `public dynamic class`），Haxe 壳
+  类密封，`Reflect.setProperty` 写不存在字段在 cpp/Android 直接抛
+  "Invalid field"（main #10 真机 Invalid field:tipText 同型坑，CLAUDE.md
+  硬规则三选一之一）。写 `ClipProps.set`、读侧配对先查
+  `ClipProps.has/get`（ToolTipLayer.setToolTip：实例动态属性先于存取器，
+  对齐 AS3 取值序）。main 已有同款 ClipProps 机制（ToolBar/NavigationBar
+  的 tipText），本仓与 main 同文件名同内容，合并零冲突。
+- **AS3 密封类 hasOwnProperty ≠ Reflect.hasField**（#18）：js/eval 上
+  hasField 只看实例物理字段，原型方法（TitleWindow.keyEnter）和 get/set
+  存取器属性（UIComponent.toolTip）都查不到——译成 `As3.hasProp`
+  （hasField || field != null，见 shim/As3.hx 头注）。
 
 ## 通用视图（`src/common/view/`）
 

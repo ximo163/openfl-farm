@@ -344,7 +344,10 @@ class FarmLiteModel extends EventDispatcher {
 			return null;
 		}
 		for (_loc2_ in (this._seedConfig : Array<Dynamic>)) {
-			if (Reflect.field(_loc2_, "id") == param1) {
+			// FarmLiteModel.as:383 的 `_loc2_["id"] == param1` 是 AS3 松等：
+			// crops 配置 id 是 JSON 数字、形参是 String，数字 == "1" 命中；
+			// 严格 == 恒 miss（#18 Settings.getCropByID 同款返工）
+			if (As3.eqString(Reflect.field(_loc2_, "id"), param1)) {
 				return _loc2_;
 			}
 		}

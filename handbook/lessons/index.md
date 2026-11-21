@@ -562,3 +562,29 @@
 - **merge 轮开工先自查受保护文件对基线的 diff**（`git diff <基线> --
   test/ Project.xml *.hxml`），在写任何代码前把点名文件恢复掉，别把
   一整轮花在会被预检拒掉的树上。
+
+## 2026-11 · #18（write-tests 3/4 驳回后的 implement 返工：数字 id 形状是承重的）
+
+- **fixture 的字段形状和值一样是测试对象**：nc_data.php 的作物 id 是 JSON
+  **数字**（:6020 `"id": 1`），早期 fixture 钉成字符串，恰好绕开两处 AS3
+  数字↔字符串隐式转换（Settings.as:390 松等、LevelUpModel.as:105 String
+  形参收数字实参的隐式强转），exclude_seeds 过滤静默失效也测不出来——
+  review-tests 连驳两轮才现形。「fixture 从真实载荷抽、改内容不可」对
+  **形状**同样成立：数字就钉数字。防：写用例前先到拼 JSON 的 PHP/配置
+  里确认字面形状，别按 Haxe 类型的直觉起 fixture。
+- **AS3 松等的 String 一侧可以是形参/变量，不止字面量**：lessons #8 的
+  防线（`== "字面量"` 一律 eqString）grep 不出这一批——Settings 四个
+  getXxxByID（fish_info/secondList/item_info/crops，Settings.as:104/162/
+  238/:390）与 FarmLiteModel.as:383 都是 `_loc3_["id"] == param1`，param1
+  是 String 变量。本轮五个点全改 eqString。防：Dynamic 与 String 的比较
+  一律 eqString，右侧不论是字面量还是变量。
+- **数字实参 → String 形参的隐式强转要显式复刻**：原版
+  `isNotShow(_loc3_["id"])` 把数字 256 强转 "256" 才命中 exclude_seeds；
+  Haxe 裸传数字时 indexOf 严格等值恒 miss（js/eval 不报错、静默失效）。
+  防：传参处显式 `Std.string(...)` + PORT-NOTE。
+- **同形状全库扫尾**：`grep 'Reflect.field(...) == 变量'` 收尾——
+  PopUpManager.hx:68/99 是对象引用比较（AS3/AS3 语义相同，不改）；
+  ConfigMerger.hx:161 是第三种变体 `Dynamic == Dynamic`（两表 id 双数字/
+  双字符串形状不一致时 AS3 松等命中、严格 miss 会把本该合并的条目
+  当新条目追加），无测试钉住且在 #7 的合并中枢路径上，未动、列为
+  deviations 候选待人裁决。

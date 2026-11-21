@@ -363,7 +363,6 @@
   类实测植入错误能被抓到），别留给 android CI 才现形；修 bug 引入的**新**
   代码同样过一遍 CLAUDE.md 的静态目标清单。
 
-<<<<<<< HEAD
 ## 2026-11 · #17（T1 场景运行器，write-tests 阶段）
 
 - **utest 的 Assert 是「记录后继续」，不是抛错中断**：Assert.fail/notNull

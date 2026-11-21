@@ -1325,13 +1325,18 @@ class FriendsModel extends EventDispatcher {
 	}
 
 	// FriendsModel.as:1445-1466
+	// PORT-NOTE: 原版 _loc2_ 声明为 int（AS3:1447），赋值处字节码是
+	// convert_i——Number 结果先截断再进 Boolean 门。十位若不截断，
+	// "11111101" 的 /10%10=0.1 为真值会放行，原版 int 后得 0 → 禁用。
+	// 另 Haxe 的 % 优先级高于 /（AS3 同级左结合），除模链必须显式括号
+	//（同 FarmLite.openByFlashVar 的坑）。
 	private function openByFlashVar():Bool {
-		var _loc2_:Float = 0;
+		var _loc2_:Int = 0;
 		var _loc1_:String = Settings.getInstance().getStringAttribute("useflag");
 		if (Settings.getInstance().mode == "qzone") {
-			_loc2_ = As3.parseInt(_loc1_) % 10;
+			_loc2_ = As3.intOf(As3.parseInt(_loc1_) % 10);
 		} else {
-			_loc2_ = As3.parseInt(_loc1_) / 10 % 10;
+			_loc2_ = As3.intOf((As3.parseInt(_loc1_) / 10) % 10);
 		}
 		if (!As3.truthy(_loc2_)) {
 			dispatchEvent(new CommonEvent(EVENT_FUNCTION_FORBIDDEN, {
@@ -1346,9 +1351,11 @@ class FriendsModel extends EventDispatcher {
 	// FriendsModel.as:1468-1480
 	private function forbidden():Bool {
 		var _loc1_:Dynamic = FeartureManager.friendListMod();
-		// PORT-NOTE: 原版 `!= false` 是宽松比较（空串文案按 Number("")==0
-		// 与 false 判等、即不禁止），Haxe Dynamic != 严格，floatOf 复刻
-		if (As3.floatOf(_loc1_) != 0) {
+		// PORT-NOTE: 原版 `!= false` 是宽松比较（false 先按 ToNumber→0）：
+		// 空串/纯空白文案 Number("")==0 与 false 判等、即不禁止；非数字文案
+		// Number=NaN ≠ 0、即禁止。与 FriendsView.onCollapseView 同一形态
+		//（floatOf 是 parseFloat 语义，""/空白得 NaN，须补 trim 判空）
+		if (As3.floatOf(_loc1_) != 0 && StringTools.trim(Std.string(_loc1_)) != "") {
 			dispatchEvent(new CommonEvent(EVENT_FUNCTION_FORBIDDEN, {
 				"type": Consts.ALERT_TYPE_TIP,
 				"text": _loc1_

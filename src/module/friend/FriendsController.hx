@@ -63,9 +63,13 @@ class FriendsController extends Controller {
 		if(_loc4_ != null) {
 			_loc4_.updateStatusFlag();
 		}
-		// `["leftQuota"] >= 0`：松散关系比较按 Number；缺位 AS3 undefined→NaN
-		//（恒假）恰被 floatOf(null)=NaN 复刻
-		if(As3.floatOf(Reflect.field(param1.data, "leftQuota")) >= 0) {
+		// `["leftQuota"] >= 0`：松散关系比较按 ToNumber——键缺位 AS3
+		// undefined→NaN（恒假）、显式 JSON null→ToNumber(null)=0（≥0 成立
+		// 走配额分支）。Haxe 里缺位与显式 null 都落 null（floatOf 一律
+		// NaN），用 hasProp 把显式 null 区分出来补 0。内层 `== 0` 是宽松
+		// 等价（规范里 null==0 为 false），floatOf 的 NaN==0 恰好复刻，不动
+		var _loc6_:Float = As3.hasProp(param1.data, "leftQuota") && Reflect.field(param1.data, "leftQuota") == null ? 0 : As3.floatOf(Reflect.field(param1.data, "leftQuota"));
+		if(_loc6_ >= 0) {
 			if(As3.floatOf(Reflect.field(param1.data, "leftQuota")) == 0) {
 				_loc5_ = "金币<font color=\'#ff0000\'>+" + Reflect.field(param1.data, "money")
 					+ "</font>，好友<font color=\'#ff0000\'>接受邀请后</font>，可获得稀有海芋种子<font color=\'#ff0000\'>1颗</font>。您今天不能再发送召回邀请信息了！";

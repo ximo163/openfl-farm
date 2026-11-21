@@ -728,3 +728,27 @@
   **自相矛盾**（:171 断言 m_sortField="exp"、:377 断言回绕页=1，而 :379/
   :1149 的期望与之冲突）是测试笔误的强信号。防：别为让错测试变绿改实现
   ——那是「针对测试写特判」，还会红掉同文件里对照 legacy 的其他断言。
+- **`var n:int = Number表达式` 的截断会透过 Boolean 门显形，int 声明别
+  「简化」成 Float**：openByFlashVar（FriendsModel.as:1445-1466）的
+  `_loc2_ = parseInt(s)/10%10` 后接 `!Boolean(_loc2_)`——implement
+  attempt 3 把 `_loc2_` 译成 Float，useflag="11111101" 的十位在 Number
+  下是 0.1（真值、放行），原版 convert_i 截断成 0（禁用）；review 用
+  `tools/DumpAbcMethod.hx` 读部署 swf 的 ABC（OToInt）核实。属上文
+  「int 收 Number 要显式截断」一族，但这次的坑更隐蔽：截断语义只藏在
+  int 声明里，反编译文本的比较链看着无害，固定部署参数
+  （useflag="11111111"）又把分支掩盖成不可达。防：int 声明照抄 +
+  `As3.intOf` 包赋值；被部署常量掩盖的分支按声明/字节码核，别按
+  「跑起来对」放行。
+- **`!= false` 与 `>= 0` 的宽松比较要按 ECMA 分运算复刻，floatOf 不是
+  万能答案**：宽松等价（`_loc1_ != false`，FriendsModel.forbidden
+  :1471）先 ToNumber——`""`/纯空白按 Number("")==0 与 false 判等（即
+  不禁止），非数字文案 NaN ≠ 0（禁止）；而 Haxe 的 `As3.floatOf` 是
+  parseFloat 语义（""/空白→NaN），须补 `StringTools.trim(Std.string(x))
+  != ""`（FriendsView.onCollapseView :524 的既有形态）。关系比较
+  （`data["leftQuota"] >= 0`，FriendsController.onUpdataBack）对显式
+  JSON null 是 ToNumber(null)=0（成立）、键缺位是 undefined→NaN（恒
+  假），宽松等价里 null==0 规范又恰为 false——同一 if 内外两层的 null
+  语义相反，不能一个 floatOf 包打；Haxe 里缺位与显式 null 都落 null，
+  用 `As3.hasProp` 区分后只修关系层。防：写完 PORT-NOTE 回读代码核对
+  （attempt 3 的 note 语义写对、代码反着做，note 成了误导源）；同形态
+  先 rg 同模块已有译法再动笔。

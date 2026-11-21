@@ -13,6 +13,8 @@ class Consts {
 	public static final NET_HTTP_METHOD_GET:String = URLRequestMethod.GET;
 	public static final NET_HTTP_METHOD_POST:String = URLRequestMethod.POST;
 	public static final ALERT_TYPE_ERROR:String = "error";
+	// Consts.as:222（issue #20：好友列表功能开关提示窗类型）
+	public static final ALERT_TYPE_TIP:String = "tip";
 	// Consts.as:224（issue #9：NavigationBar 超市未点亮提示窗类型）
 	public static final ALERT_TYPE_TEXT:String = "text";
 	public static final MSG_REQUEST_NET_CLIENT_ERROR:String = "RequestNetError";
@@ -106,6 +108,8 @@ class Consts {
 	public static final MSG_CHECK_HEALTHMODE:String = "CheckHealthMode";
 	// Consts.as:318（野兽偷菜完成提示）
 	public static final MSG_WILD_BEAST_STEAL:String = "StealCrop";
+	// Consts.as:324（issue #20：召回好友请求应答，FriendsController 监听）
+	public static final MSG_BACK_UPDATE_STATUS:String = "msg_back_update_status";
 	// Consts.as:330（任务完成待检）
 	public static final MSG_CHECK_TASK:String = "CheckTaskComplete";
 	// Consts.as:340（issue #9：每日礼包领取触发，UIController 监听）
@@ -134,6 +138,8 @@ class Consts {
 	public static final MSG_CALL_PLANE:String = "CallPlane";
 	// Consts.as:366（issue #9：水池模块打开，UIController 监听刷工具条）
 	public static final MSG_POOL_OPEN:String = "WaterPoolOpened";
+	// Consts.as:374（issue #20：鱼塘状态位更新，FriendsController 监听）
+	public static final MSG_REFRESH_FISH_FRIENDLIST:String = "RefreshFishStatusInFriendList";
 	// Consts.as:380（issue #9：水池容量刷新，UIController 画 PoolInfo 角标）
 	public static final MSG_REFRESH_POOLINFO:String = "RefreshPoolInfo";
 	// Consts.as:382（issue #9：PoolInfo 角标点击开窗）
@@ -152,6 +158,8 @@ class Consts {
 	public static final MSG_REMOVE_SHORTCUT_ICON:String = "RemoveShortcutBarIcon";
 	// Consts.as:396（issue #9：免费礼物数清零）
 	public static final MSG_FREEGIFT_COUNT_OUT:String = "freegiftcountout";
+	// Consts.as:398（issue #20：精灵供奉完成，FriendsController 列表去 "7"）
+	public static final MSG_FAIRY_DONATED:String = "DonateFriendFairy";
 	// Consts.as:402（issue #9：签到活动图标增删）
 	public static final MSG_REFRESH_CARDSGAME:String = "CardsGameUpdated";
 	// Consts.as:600（issue #9：ShortcutBar 监听安装入口图标）

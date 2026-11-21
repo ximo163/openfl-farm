@@ -22,6 +22,16 @@ class UserActionRecorder {
 	// UserActionRecorder.as:40/:42（issue #9：收获手/一键摘取上报）
 	public static final HF_TOOL_HAND_CLICKED:String = "18";
 	public static final HF_TOOL_ONECLICK_CLICKED:String = "19";
+	// UserActionRecorder.as:44-58（issue #20：好友列表开合/排序/搜索/翻页/
+	// 状态刷新上报）
+	public static final HF_FRIENDLIST_OPEN:String = "20";
+	public static final HF_FRIENDLIST_CLOSE:String = "21";
+	public static final HF_FRIENDLIST_SORT_EXP:String = "22";
+	public static final HF_FRIENDLIST_SORT_GOLD:String = "23";
+	public static final HF_FRIENDLIST_SEARCH:String = "26";
+	public static final HF_FRIENDLIST_REFRESH_STATUS:String = "27";
+	public static final HF_FRIENDLIST_BACK:String = "28";
+	public static final HF_FRIENDLIST_NEXT:String = "29";
 	// UserActionRecorder.as:92/:94/:96（V3b：NPCView 点牧场/看板/狗盆上报）
 	public static final HF_TO_PASTURE_CLICKED:String = "10300";
 	public static final HF_BILLBOARD_CLICKED:String = "10301";

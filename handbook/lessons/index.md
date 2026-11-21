@@ -297,4 +297,21 @@
   在 js 产物上是 get_x()/set_x()、类匹配走 `o.__class__.__name__`。
   防：断言「显示树里出现了 X」必须拿**对起点的增量**（快照前后计数），
   别拿静态存在当证据——boot 树里本来就飘着别的 Floating/Crop。
+- **`ERR_NETWORK_CHANGED` 是 runner 宿主网络事件，别按 404 类资源错
+  排查**：#9 attempt 2 的 web-smoke 唯一红是 `console.error: Failed to
+  load resource: net::ERR_NETWORK_CHANGED`——Chrome 的
+  NetworkChangeNotifier 看到 runner 宿主网络变化（DHCP/NTP/接口事件）
+  时杀掉恰好 in-flight 的请求；同轮日志里启动标记已置位、canvas 渲染
+  检查过、8 条 .php 全 200、无 pageerror。页面代码既造不出宿主网络
+  变化、也拦不住这个 abort——**这类错没有代码修法**，改请求逻辑只会
+  引入偏差。防：smoke 红先给资源错分两类——404（库没声明/没入库，
+  我们的错，按 #7 那条查 libraries.xml 和数据链）才动代码；
+  `ERR_NETWORK_CHANGED`/`ERR_CONNECTION_*` 这类传输层错走 CLAUDE.md
+  基建抖动条款declare「CI 基建抖动，代码未动」收轮等重跑。declare
+  前先把容器里能验的都验干净自证：html5 编译、`haxe test.hxml`、
+  json-facade、nodeboot --drive 全链（#9 的收→锄→种→浇四断言链在
+  tools/nodeboot/drive-chain9.mjs）；注意本地复现前先跑
+  `bash scripts/sync-legacy-assets.sh`——assets/legacy/ 不入库，
+  新 checkout 没同步时构建带「Could not find library file」警告、
+  nodeboot 404 连环，是环境态不是代码回归。
 

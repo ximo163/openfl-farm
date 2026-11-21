@@ -6,13 +6,17 @@ required_checks: []
 protected: [legacy/, spec/, checks/, scripts/, harness/, ci/, .github/, "*.md", Project.xml, "*.hxml"]
 suites: {}
 preflight: []
-budget: { max_runs: 8, max_time: 2h }
+budget: { max_runs: 8, max_time: 4h }   # ≥ 3 attempts × 90m 的最坏情况（2026-11-21 与 turn 上限配套调）
 stages:
   - id: plan
     kind: plan
     model: strong
     prompt: prompts/plan.md
-    max_turns: 120
-    timeout: 60m
+    # 200/90m（2026-11-21）：#22 pasture 拆分要读 350 类的 spec/modules/
+    # pasture.json 全清单再产出拆分评论，读量与默认流水线 write-tests 的大
+    # 模块同级（那里 300/90m 是 #7 实测调出来的）。旧值 120/60m 从未跑过，
+    # 无人值守下不留未校准的短板。
+    max_turns: 200
+    timeout: 90m
     attempts: 3
     escalate: { after: 2, models: [strong2] }

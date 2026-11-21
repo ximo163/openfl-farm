@@ -9,14 +9,19 @@ suites:
   spec: { cmd: "bash checks/spec-valid.sh", timeout: 2m }
   manifest: { cmd: "bash checks/manifest-valid.sh", timeout: 2m }
 preflight: [manifest]
-budget: { max_runs: 12, max_time: 4h }
+budget: { max_runs: 12, max_time: 6h }
 stages:
   - id: extract
     kind: agent
     model: strong
     prompt: prompts/spec.md
-    max_turns: 200
-    timeout: 60m
+    # 300/90m（2026-11-21 对齐默认流水线 write-tests 的证据口径）：同为 strong
+    # 模型的大读大写阶段，#7 实测 174 calls 贴 160 上限后调的 300。S4 在旧值
+    # 200/60m 内过，但 S1（全部 mod 的参数/字段）/S3（两 swf 全部监听）的
+    # 提取量不低于 write-tests 大模块的写作量——无人值守连跑等撞墙再调就是
+    # 白烧一轮（#7 教训）。
+    max_turns: 300
+    timeout: 90m
     allowed_paths: ["spec/"]
     verify: [spec]
     ci: local

@@ -1,10 +1,14 @@
-// 一次性 ABC 字节码核对工具（issue #20 write-tests 阶段，用后可删）。
+// 一次性 ABC 字节码核对工具（issue #20，用后可删）。
 // 动机：FFDec 反编译的 FriendsModel.filterOut 闭包是
 //   return m_friendListFilter.hasOwnProperty(param1._uin);
 // （Array.filter 保留返回 true 的项 → 表内好友被「保留」），但 FriendsView 的
 // 用法是表内好友仅 setGray、仍照常渲染——两种极性都说不通，怀疑 FFDec 丢了
 // 取反。本工具直接读部署 swf 的 DoABC，按类/方法名打印字节码（含闭包），以
 // 字节码为唯一依据。
+// 实现阶段二次复用（attempt 2，2026-11-21）：retarget 到 goBackPage/goNextPage/
+// onFriendsDataLoaded/processFriendList/friendSort，核对 approved 测试三处存疑
+// 期望（FriendsModelTest :379/:845/:1149）是否 FFDec 忠实——分支结构、break、
+// sort 就地重排。filterOut 一轮的结论不变，仍见 test 头注。
 // 依赖 format 3.7.0（CLAUDE.md：只供 tools/ 下的一次性工具用，不进工程）。
 // 用法（容器内，仓库根目录）：haxe -cp tools -lib format -main DumpAbcMethod --interp
 
@@ -13,9 +17,9 @@ import haxe.io.BytesInput;
 import sys.io.File;
 
 class DumpAbcMethod {
-	// FriendsModel.as:691-708 filterOut（含 filterFn 闭包）
+	// issue #20 implement 阶段：五方法核对（filterOut 一轮已毕，见头注）
 	static var TARGET_CLASS = "FriendsModel";
-	static var TARGET_METHODS = ["filterOut"];
+	static var TARGET_METHODS = ["goBackPage", "goNextPage", "onFriendsDataLoaded", "processFriendList", "friendSort"];
 
 	public static function main() {
 		var bytes = File.getBytes("legacy/deploy/QFarmFlash/source/core/module/main3_v_221.swf");

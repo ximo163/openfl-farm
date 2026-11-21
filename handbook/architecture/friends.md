@@ -67,7 +67,15 @@ bindBitmap 头注）。全部进 dceAnchor（#20 段）。
 - 好友头像、vip_mc 的 `ExternalInterface.call("window.open", …)`、召回
   `QzoneJSAPI.sendGameRequest` 全走 shim.QQOutlets（deviations
   qqoutlets-shim/no-qzone-jsapi 族，PR 列候选）。
-- approved 测试 `FriendsModelTest.hx` 三处期望值与原版行为相反（:379 翻页
-  回绕、:845 me 追加数、:1149 缓存命中行），**不能改只能 NEEDS-TESTS**；
-  纠正版 `FriendsModelFollowupTest.hx` 已 21/21 绿（/tmp 侧 harness 验证），
-  注册行留给 write-tests（lessons TestMain append-only 条）。
+- approved 测试 `FriendsModelTest.hx` 三处期望值与原版行为相反，attempt 2
+  走完裁决链定案（xfl/scripts 两份反编译逐字一致 + `tools/DumpAbcMethod.hx`
+  retarget 后读部署 swf 字节码：goBackPage 的 JNotGt 分支跳转、
+  onFriendsDataLoaded 同步循环的 break、processFriendList 对参数寄存器
+  `OCallPropVoid(sort,1)` 就地排——FFDec 忠实，实现照译，错在测试）：
+  :379 回绕到页 1 后 goBackPage 无操作不派发（作者注释「3→2→1」漏钉页）；
+  :845 同步 break，fOther 保持创建值 3（5 是 fMe 创建值的笔误，同文件 :854
+  别名用例按创建值断言可佐证）；:1149 复用路径 processFriendList 按默认
+  m_sortField="exp"（ctor :79，同文件 :171 已断言该默认）原地降序，
+  local[0] 是 fB 不是 fA。**不能改只能 NEEDS-TESTS**；修正版
+  `FriendsModelFollowupTest.hx` 21/21 绿（/tmp 侧 harness），注册行留给
+  write-tests（lessons TestMain append-only 条）。

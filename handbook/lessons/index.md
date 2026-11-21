@@ -714,3 +714,17 @@
   （`var f:Float = c ? 0 : As3.floatOf(x); if (i > f)`）。防：`Int/Float 与
   「条件给值」直接比`的写法一律先落局部；编译红指进三元时先想期望类型
   传播，不是类型真错。
+- **NEEDS-TESTS 必须是最终回复的最后一行，路由只认这一行**：#20 attempt 1
+  把三处测试矛盾的完整分析写进了总结正文，但没有以 `NEEDS-TESTS: …` 单行
+  收尾——orchestrator 判「verification failed (test)」按普通失败原样重跑了
+  implement（attempt 2 重复得出同结论，白耗一轮）。正文分析再充分也不触发
+  回 write-tests 的路由。防：判明测试错，最后一行单独输出
+  `NEEDS-TESTS: <哪个测试错在哪里，legacy 的出处>`，其后不再有任何文字。
+- **implement 与 approved 测试期望冲突的裁决链**：先 diff 两份反编译
+  （`xfl/` vs `scripts/`，同源 FFDec 渲染一致可排除单份渲染错），再 retarget
+  `tools/DumpAbcMethod.hx`（改 TARGET_METHODS）读部署 swf 的 ABC——分支
+  跳转、break、就地 sort 这类控制流/引用事实字节码一锤定音，比反编译文本
+  互证强。#20 的 :379/:845/:1149 三处走完这条链才 NEEDS-TESTS；同测试文件
+  **自相矛盾**（:171 断言 m_sortField="exp"、:377 断言回绕页=1，而 :379/
+  :1149 的期望与之冲突）是测试笔误的强信号。防：别为让错测试变绿改实现
+  ——那是「针对测试写特判」，还会红掉同文件里对照 legacy 的其他断言。

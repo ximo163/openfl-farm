@@ -1,6 +1,7 @@
 package module.shop;
 
 import common.Consts;
+import framework.base.Controller;
 import framework.base.Module;
 import module.FarmApplication;
 
@@ -11,6 +12,10 @@ import module.FarmApplication;
  */
 @:keep
 class ModuleShop extends Module {
+	// ModuleShop.as:13（#29 write-tests：被测面字段声明——onModuleLoadSuccess
+	// 反射 null 分支的断言经它读取；初始化/赋值随 implement 阶段整类真身化）
+	private var _shopCtrl:Controller;
+
 	public function new(param1:FarmApplication) {
 		super(param1);
 	}

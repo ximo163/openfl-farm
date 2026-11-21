@@ -41,4 +41,10 @@ class Item {
 	public var _Ybuy_6:Int = 0;
 	// Item.as:14/:54
 	public var _Ybuy_12:Int = 0;
+	// ---- issue #29 write-tests 补的闭包成员（DogFoodWindow.addFood 落
+	// _effect/_saleOut 字段，声明照抄 Item.as）----
+	// Item.as:38（AS3 `*` → Dynamic）
+	public var _effect:Dynamic;
+	// Item.as:10（构造器 :51 置 false；addFood 置 false 后按 selfDogFood 覆盖）
+	public var _saleOut:Bool;
 }

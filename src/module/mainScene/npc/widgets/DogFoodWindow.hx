@@ -3,6 +3,7 @@ package module.mainScene.npc.widgets;
 import common.view.window.AddButtonWindow;
 import interfaces.IMsgCenter;
 import module.mainScene.npc.NPCView;
+import openfl.errors.Error;
 import openfl.text.TextField;
 
 /**
@@ -26,5 +27,12 @@ class DogFoodWindow extends AddButtonWindow {
 		super(Std.isOfType(param1.controller.module.app, IMsgCenter) ? cast(param1.controller.module.app, IMsgCenter) : null);
 		this.m_parent = param1;
 		this.m_leftime = null;
+	}
+
+	// DogFoodWindow.as:45-66（addFood：关窗 → 构造 9002 狗粮礼包 Item → 按
+	// selfDogFood["saleOut"] 覆盖 _saleOut → 派发 MSG_SHOW_BUY_DOG_FOOD；
+	// #29 write-tests stub，实现随 implement 阶段真身化）
+	private function addFood():Void {
+		throw new Error("not implemented");
 	}
 }

@@ -113,6 +113,19 @@ class TestMain {
 		// 推进（flag 固定 1/update 回显旧 id/末任务归零 0,0/奖励载荷
 		// 原样转发）、onNetError 门位复位
 		runner.addCase(new module.task.welcome.WelcomeModelTest());
+		// issue #29：农场模块桩清尾（write-tests 阶段，对 stub 失败）——
+		// PoolFish 鱼塘格位实体（导入/等级/喂食标记/产量/剩余时间/刷新，
+		// serverTime=0 纯分支 + 负 plantTime 合成鱼龄）、四模块壳语义
+		// （reportID/空 load 覆写/unload 不调 super/反射失败分支 ctrl 保持
+		// null，openfl 不执行外部 swf AS3）、ModuleWater.onZoom 三空防护、
+		// DogFoodWindow addFood 9002 礼包载荷 + saleOut 真值极性 +
+		// setData 天/小时 html 拼装（dog_feedmoney 载荷形状）
+		runner.addCase(new entities.PoolFishTest());
+		runner.addCase(new module.shop.ModuleShopTest());
+		runner.addCase(new module.warehouse.ModuleWarehouseTest());
+		runner.addCase(new module.water.ModuleWaterTest());
+		runner.addCase(new module.decorate.ModuleDecorateTest());
+		runner.addCase(new module.mainScene.npc.widgets.DogFoodWindowTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

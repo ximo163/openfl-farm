@@ -832,3 +832,30 @@
   不上。防：eval 测试里一切时间戳只用 `shim.As3.getTimer` 一个域种/读；
   `haxe test.hxml` 无预兆由绿转红且只红计时类用例时，先探针两钟值再查
   代码（修法在测试 import 行，write-tests 阶段的事）。
+
+## 2026-11 · #29（write-tests：模块桩清尾）
+
+- **throw stub 不能落在 web-smoke 启动路径上——失败杠杆选 smoke 不经过
+  的面**：FarmApplication.startup 在 web-smoke 里 500ms 派发
+  MSG_LOAD_WATER → `ModuleWater.onModuleLoadSuccess` 原地执行，哪怕类
+  还是 stub；write-tests 若顺手给 onModuleLoadSuccess 写 throw stub，
+  write-tests 与 implement 两个 commit 之间 CI web-smoke 必挂
+  pageerror。防：给「模块壳/启动链邻接」类扩被测面前先过一遍 smoke
+  启动序列（architecture/startup.md 的 loadLater/直接 load 清单），
+  smoke 会路过的方法保持基类 no-op 继承（Module.onModuleLoadSuccess
+  本来就是空实现），用 `_reportID` 未置、空 load 覆写/unload 不调
+  super 这些 smoke 不读的基类语义反转做 stub 阶段的失败点；要钉
+  onModuleLoadSuccess 的分支就让测试直调私有方法（utest 里失败可控，
+  smoke 里没人调它）。同轮 addFood/onZoom/PoolFish 全在交互或回包路径
+  上（smoke 点不到）才敢用 throw。
+- **openfl 不执行外部 swf 的 AS3 → 模块控制器的「反射失败分支」是可钉
+  的移植终态**：四个模块壳的 onModuleLoadSuccess 经
+  `Utils.getClass("module.shop.ShopController"…)` 从功能 swf 的
+  ApplicationDomain 找控制器类；openfl 把 swf 当纯资产、AS3 字节码不
+  执行，eval/html5 上 `hasDefinition` 恒 false → getClass 回 null
+  （probe 验证四个类名全 null）→ 照译的解析失败分支 `_shopCtrl` 等保持
+  null。这个 null 不是「还没实现」的过渡态，而是移植后的真实行为——
+  测试断言 isNull 恰好把后续「功能 swf 翻译」批次的接入点钉死：那批把
+  控制器类翻进主域并注册后，这组断言转红就是「接入完成、该改期望」的
+  信号，不会无声漂过。防：模块壳类照译 onModuleLoadSuccess 时别给
+  getClass null 加兜底/重试——失败分支照抄，配 isNull 钉板。

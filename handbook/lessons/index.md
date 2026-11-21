@@ -423,3 +423,16 @@
   （movieclip-enabled-side-table）。防：真机修闪退别只修报出来的那一个
   字段，grep 同函数/同路径的 Dynamic 裸写一次清完，否则每轮 APK 10 分钟
   换一个字段名。
+- **照译的 `stage.scaleMode = NO_SCALE` 在 Android 上是拆掉播放器盒子，
+  不是 no-op**：原版 Flash 播放器盒子被 nc.htm 钉死在 860×500，NO_SCALE
+  的「窗口变了不重缩放」从不发生、舞台读数恒 860×500；openfl 上 FarmLite
+  构造器把 NO_SCALE 照译上去后，Android 全屏 surface（2340×1080）成为
+  舞台尺寸——内容原尺寸锚左上，ToolBar/NavigationBar/FarmStage 等一切
+  按 stageWidth/stageHeight 定位的 UI 全散（真机第三轮实证）。openfl 对
+  resizable=false 窗口本来就给 SHOW_ALL+逻辑尺寸（9.5.2 Window 构造器
+  `__setLogicalSize` + scaleMode=SHOW_ALL），被 FarmLite 构造器覆盖。
+  修法在宿主：`shim.PlayerBox.install()` 于 super() 后装回盒子（等比
+  缩放+信箱，decisions.md 允许的唯一适配形态），读舞台尺寸的翻译代码
+  零改动、html5 缩放恒 1 行为不变。防：原版依赖播放器环境兜住的行为
+  （盒子尺寸/对齐/缩放），先想它在 openfl 各目标的等价物，缺的归
+  Main.hx 宿主或 src/shim/ 补，别让照译代码背锅。

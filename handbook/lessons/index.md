@@ -859,3 +859,24 @@
   控制器类翻进主域并注册后，这组断言转红就是「接入完成、该改期望」的
   信号，不会无声漂过。防：模块壳类照译 onModuleLoadSuccess 时别给
   getClass null 加兜底/重试——失败分支照抄，配 isNull 钉板。
+
+## 2026-11 · #29（implement：狗狗交互片 + 鱼实体 + 四模块壳）
+
+- **Int 对 UInt 常量的比较是无符号域，负值恒翻**：AS3 `int >= uint` 两侧先
+  升 Number（-1 >= 3 为假）；Haxe 的 UInt abstract 给 `>=`/`<` 等全部
+  @:op 了**无符号**实现（std/UInt.hx #else 分支：异号即比符号位，-1 当
+  0xFFFFFFFF），`level >= Consts.FISH_MAX_LEVEL` 在 level=-1（无配置/
+  时钟偏斜）时 eval 直接恒真——PoolFishTest 两条 canHarvest 断言连红。
+  修法：比较点把 uint 常量显式回 Int（`(Consts.FISH_MAX_LEVEL:Int)`，
+  probe 验证恢复有符号），等值比较两个域对涉及的值同果、可不处理。
+  防：uint 常量（原版 `:uint` 的那些）进比较表达式时查一眼操作数会不会
+  是负值 Int；原版 `int` 的常量照 Int 声明就没有这个坑（ORGANIC_FERTILIZER_
+  ID 先例）。
+- **cpp 全量 include 扫描的 exclude 表要写全限定模块名**：#18 记过
+  「小写模块名（mx_internal.hx）必须进 exclude 表」，4.3.6 的
+  `include(pack, rec, ignore, classPaths)` 里 ignore 匹配**模块全名**——
+  传 `['mx_internal']` 照样红（"Module mx.core.mx_internal does not
+  have a valid name" 且只此一行、直接退），传 `['mx.core.mx_internal']`
+  才放过。另：html5 debug.hxml 里的 `-D no-compilation` 也是 html5 专属
+  项，一并去掉才落到「只剩 `Error: Library hxcpp is not installed`」的
+  判据形态（留着则 0 错 0 输出退出 0，同样过 typer 但和文档判据对不上）。

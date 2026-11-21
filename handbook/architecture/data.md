@@ -38,6 +38,18 @@
   恒 null（原版行为如此，lessons 有条目，照抄别修）。类头逐字段显式落
   AS3 默认值是 eval/js 未赋值基元为 null 的补偿，别「顺手删」。
   测试 `test/entities/PlayerTest.hx`。
+- `PoolFish`（`src/entities/PoolFish.hx` ← `entities/PoolFish.as` 272 行，
+  #29 整类翻译）：鱼塘格位鱼实体。importObject 逐键映射 cgi_fish_index
+  状态（i/fid/l/o/p 数值走 `Utils.getIntAttribute`，`s as Array` 单调进
+  局部过类型门、同引用不拷贝），ctor 末尾清 _st/_cycles 复刻原版
+  「构造时懒查、留 null」的时序。等级/剩余时间按 fish_info 行的 `cycle`
+  逗号段推导：`level` = elapsed 落第几段（越界 = 段数 = FISH_MAX_LEVEL=3、
+  elapsed<0 = -1），`canHarvest = level >= FISH_MAX_LEVEL`——**uint 常量
+  比较 Haxe 是无符号域**（-1 恒真），比较点 `(Consts.FISH_MAX_LEVEL:Int)`
+  显式回 Int 复刻 AS3 Number 域（lessons #29 条目）。`min = ceil(output*0.6)`
+  （缺 output 回查配置行）。`leftTime` 返回 `[剩余, 段长]` 双元素数组
+  （首段段长取段原值、其余取相邻差）。测试
+  `test/entities/PoolFishTest.hx`（FakeConfigModel 注入 fish_info 行）。
 - 数据来源：启动时 PHP 下发（user_run / nc_main 等）。真后端载荷样例在
   `legacy/snapshot/`；`test/fixtures/uid1_user_run.json` 是抽出来的真实
   样例。

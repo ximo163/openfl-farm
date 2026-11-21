@@ -271,6 +271,8 @@ class Consts {
 	public static final FAIRY_GOD:Int = 92004;
 	// Consts.as:566（issue #9：水池容量角标分母）
 	public static final FISH_MAX_SIZE:UInt = 6;
+	// Consts.as:568（issue #29：PoolFish 满级/可收获判定）
+	public static final FISH_MAX_LEVEL:UInt = 3;
 	// Consts.as:580（issue #9：藏獒 id，启动链狗到期提示）
 	public static final DOG_TIBETAN_MASTIFF_ID:Int = 10;
 	public static final MY_FAIRY_OBJECT:String = "MyFairy";

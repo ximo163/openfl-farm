@@ -125,13 +125,26 @@ BackgroundModel 的五槽里（与 background 节的「DECOR_DOG 不是槽」互
   `RSLManager.getMaterial` 构造的 MovieClip（x=251、y=200）；300ms 未到位
   先摆 FarmLoading（x=260、y=240）。dogID > `DECOR_DOG_BASE_ID` 先减基址；
   换狗 = 移除旧件整件重 new（view 按 `id` 字符串不等判）。
-- **stub 边界（狗狗交互片 agent 注意）**：`DogBowl`（108 行）与
-  `DogFoodWindow`（149 行）是 >100 行闭包 stub，只保类形态让
-  NPCView 的调用链编译。用户可见后果：**狗粮盆无画面**（updateFood 正常
-  创建/挂层/收件，但 set food 空实现，DogFood/DogFoodNull 符号不摆）；
-  主人侧狗粮状态回包（onFoodLoaded，仅 `Session.me`）经 `winCtrl.open`
-  打开的是**空窗口**（无标题 chrome、无 m_leftime 剩余时间）。替换时整类
-  翻译（DogBowl.as 的 food setter 在 57-103 行），别在 stub 上只补符号。
+- `DogBowl`（← DogBowl.as 108 行，#29 整类翻译替换 stub）：狗粮盆。
+  `set food` 满盆 DogFood/空盆 DogFoodNull（farmui_full_v_40 符号，
+  shim 在 `src/DogFood*.hx`）——**参数 true 摆空盆 DogFoodNull**（饿狗
+  买粮的引导语义），x=400/y=200 缩放 0.5；主人侧（`Session.me`）挂
+  ROLL_OVER/ROLL_OUT/CLICK（useSystemCursor + 点盆
+  `loadDogFoodStatus` + HF_DOGBOWL_CLICKED 上报），非主人 buttonMode/
+  mouseEnabled 双 false。`dogHungry == 0` 照 NPCView 既有口径译
+  `== false`（Boolean 对 0 的 loose 等）。
+- `DogFoodWindow`（← DogFoodWindow.as 149 行，#29 整类翻译替换 stub）：
+  狗粮购买窗 400×250（AddButtonWindow 子类）。init 摆「购买狗粮」
+  ButtonOrange/「取消」ButtonBlue 两钮（**AddButtonWindow 还是 stub**：
+  addButton 回 null、按钮排布/居中/缓存子件上树未做，见 qui 窗口链节）、
+  dogHungry==0 摆 DogFood 否则 DogFoodNull 图（x=30/y=70）+ 两只
+  ItemBorder 120×120（x=20/y=45）其一当 mask；`super.init()` 在
+  stub 期直落 Container.init（基类 chrome 提前跑、_inited 仍只置一次；
+  原版是 AddButtonWindow.init 布完按钮再由 initalize 补基类，PORT-NOTE
+  在类内）。addFood 关窗后构造 9002 狗粮礼包 Item（_fb=20/_yfb=16 是
+  swf 硬编码，与 toolstype.php:19 YFBPrice 15 不一致——客户端 swf 为
+  行为权威，deviations 候选）派发 MSG_SHOW_BUY_DOG_FOOD。setData 按
+  hours 拼「天/小时」html（`<24` 文案分岔），m_leftime 未建早退。
 
 ## qui 窗口链（#18 已全真，窗口片 agent 续接时读这节）
 
@@ -147,7 +160,13 @@ _inited=true），和 Event.ADDED 的虚调 `this.init()`（走最派生覆写�
 LevelAndExperience.init 不调 super）是两条不同路径——Haxe 方法全虚，
 写成 this.init() 基类初始化整段丢失。
 `AddButtonWindow`/`AlertWindow` 等仍是 #7/#8 的形态 stub（不在 farm-basic
-spec 清单里，做窗口片时按其头注接真）。`Button` 也是真身（Button.as 逐句，
+spec 清单里，做窗口片时按其头注接真）；`AddButtonWindow` #29 起补了
+DogFoodWindow 用到的最小成员（addChildCache/buttonCache 字段、
+addWindowChild/removeAllButton，行号照原文），**init 的缓存子件上树 +
+按钮排布 + toCenterPositon 仍未做**——DogFoodWindow 等子类的
+`super.init()` 暂落 Container.init（基类 chrome 提前、按钮不摆），整类
+翻译时把 init 覆写补上即恢复原链（DogFoodWindow.init 的 PORT-NOTE 记了
+这段时序差）。`Button` 也是真身（Button.as 逐句，
 `selected/toggle` 是 get/set 属性，跨类互斥走 Reflect.setProperty，
 见 uitools.md 约定）。`BaseWindow.m_msgCenter` 是原版真成员
 （BaseWindow.as:15），不要当 stub 产物删掉。
@@ -169,7 +188,8 @@ retriveAppHelper 都真走 `_appHelpersMap`（register 写表、retrive 恒 null
 
 `test/module/mainScene/`：只测纯逻辑（OperationQueue 合批/合并、
 BackgroundModel 槽位、NPCModel 狗数据、FarmLandsView 的 m_items 排布计数、
-LandItemRender 字段态）；实体侧 `test/entities/PlayerTest.hx`（user 下发
+LandItemRender 字段态、DogFoodWindow 的 addFood 载荷/setData html 拼装——
+宿主链用空实例 + 私有字段钉入）；实体侧 `test/entities/PlayerTest.hx`（user 下发
 解析/level/clone）与 `test/common/GetCropIDTest.hx`（生长档推导）同口径。`FarmLandsViewTest.test_createLandTiles` 的 name/x/y 断言
 **强类型读**（`var item:LandItemRender = view.m_items[0]`）：openfl 自家
 的 get/set 属性无物理字段，经 `Dynamic` 反射在 eval/js 恒 null——机制坑

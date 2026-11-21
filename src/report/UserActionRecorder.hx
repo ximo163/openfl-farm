@@ -36,6 +36,8 @@ class UserActionRecorder {
 	public static final HF_TO_PASTURE_CLICKED:String = "10300";
 	public static final HF_BILLBOARD_CLICKED:String = "10301";
 	public static final HF_DOGBOWL_CLICKED:String = "10302";
+	// UserActionRecorder.as:98（issue #29：DogFoodWindow 购买狗粮上报）
+	public static final HF_DOGFOODWINDOW_BUY_CLICKED:String = "10303";
 	// UserActionRecorder.as:64/:72/:74/:76（issue #9：导航条按钮上报）
 	public static final HF_MYFARM_CLICKED:String = "42";
 	public static final HF_WAREHOUSE_CLICKED:String = "46";

@@ -23,7 +23,10 @@ suites:
   manifest: { cmd: "bash checks/manifest-valid.sh", timeout: 2m }
   compile: { cmd: "haxelib run openfl build html5", timeout: 10m }
   test: { cmd: "haxe test.hxml", timeout: 5m }
-preflight: [manifest, compile, test]
+  # JSON 解析只许走门面（对齐默认流水线，2026-11-21）：#10 这类 chore 要碰
+  # FlashVars/config 解析，#7 裸控制字符红两轮 CI 的坑对 chore 同样存在。
+  json-facade: { cmd: "bash checks/json-facade-only.sh", timeout: 2m }
+preflight: [manifest, compile, test, json-facade]
 budget: { max_runs: 15, max_time: 6h }   # ≥ 4 attempts × 120m 的最坏情况（2026-11-21 与 turn 上限配套调）
 stages:
   - id: implement
@@ -36,7 +39,7 @@ stages:
     # （远低于默认流水线 implement 的 1000，那个是 cheap 模型整模块翻译）。
     max_turns: 300
     timeout: 120m
-    verify: [compile, test]
+    verify: [compile, test, json-facade]
     ci: true
     attempts: 4
     escalate: { after: 2, models: [strong2] }

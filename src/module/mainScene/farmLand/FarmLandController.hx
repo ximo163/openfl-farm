@@ -37,6 +37,7 @@ import openfl.net.URLRequest;
 import openfl.system.LoaderContext;
 import report.EventRecorder;
 import shim.As3;
+import shim.ClipProps;
 import shim.LocalSwfLoader;
 
 /**
@@ -637,16 +638,23 @@ class FarmLandController extends Controller {
 		}
 		dogTip = Utils.getMaterial(tip);
 		if (dogTip != null) {
-			dogTip.effect = Move;
-			dogTip.mouseChildren = false;
-			dogTip.mouseEnabled = false;
-			dogTip.cacheAsBitmp = true;
-			// `["tipText"] != undefined` → hasField + field != null 双查
-			// （AS3 null == undefined；值 null 时原文跳过，不配会 NPE）
-			if (Reflect.hasField(dogTip, "tipText") && Reflect.field(dogTip, "tipText") != null) {
-				Reflect.field(dogTip, "tipText").htmlText = text;
-			} else if (Reflect.hasField(dogTip, "txt") && Reflect.field(dogTip, "txt") != null) {
-				Reflect.field(dogTip, "txt").htmlText = text;
+			// PORT-NOTE: effect/cacheAsBitmp（原版拼写错误，照抄）是动态属性——
+			// cpp 上剪辑类实例裸写不存在的字段抛 "Invalid field"（#10 真机
+			// 实证），走 ClipProps 侧表；mouseChildren/mouseEnabled 是真属性，
+			// 强类型化走 setter（#8 同款修法）
+			ClipProps.set(dogTip, "effect", Move);
+			(dogTip : DisplayObjectContainer).mouseChildren = false;
+			(dogTip : DisplayObject).mouseEnabled = false;
+			ClipProps.set(dogTip, "cacheAsBitmp", true);
+			// tipText/txt 是素材里具名子实例（TextField，AS3 剪辑点取按子名
+			// 解析）——hasField 在所有目标都只见物理字段（html5 也恒跳过），
+			// 走 childOf 查子（先反射后 getChildByName）
+			var tipField:Dynamic = As3.childOf(dogTip, "tipText");
+			var txtField:Dynamic = As3.childOf(dogTip, "txt");
+			if (tipField != null) {
+				tipField.htmlText = text;
+			} else if (txtField != null) {
+				txtField.htmlText = text;
 			}
 			PopUpManager.addPopUp(dogTip);
 			TweenLite.delayedCall(2, function():Void {

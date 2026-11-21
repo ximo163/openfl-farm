@@ -69,6 +69,8 @@ class TestMain {
 		// 请求序列/全绿判定/检查点状态）。执行器与 diff 算法演示按 issue
 		// 走 PR 说明 + CI 人工配套，utest 只钉纯数据契约（见测试类头）
 		runner.addCase(new ScenarioRunnerContractTest());
+		// issue #10：素材剪辑动态属性侧表（cpp 上裸写抛 Invalid field，真机闪退修复）
+		runner.addCase(new shim.ClipPropsTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

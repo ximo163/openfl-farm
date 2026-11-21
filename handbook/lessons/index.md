@@ -363,6 +363,7 @@
   类实测植入错误能被抓到），别留给 android CI 才现形；修 bug 引入的**新**
   代码同样过一遍 CLAUDE.md 的静态目标清单。
 
+<<<<<<< HEAD
 ## 2026-11 · #17（T1 场景运行器，write-tests 阶段）
 
 - **utest 的 Assert 是「记录后继续」，不是抛错中断**：Assert.fail/notNull
@@ -397,3 +398,20 @@
   只见 `/lite_ui_v_0?数字` 一条 404。防：跑 nodeboot/scenario 前确认
   assets/legacy/ 已同步（本地跑一遍 sync 脚本即可，不违规）。
 
+## 2026-11 · #10（V4 真机）
+
+- **素材剪辑上的动态属性，静态目标（cpp）不能裸写**：原版 AS3 在 swf 素材
+  剪辑上随手挂属性（`clip.tipText = ...`、`dogTip.effect = Move`）。翻译后
+  素材剪辑是编译类实例（swf.exporters.animate.*）——html5/JS 上 Dynamic
+  裸写落自有字段照常跑，android（cpp）上对不存在的字段写入报
+  `Invalid field:tipText`（真机 logcat 实证：3 次后进程死亡），写入丢弃后
+  读取 null 再崩。防：挂动态属性一律走 `src/shim/ClipProps.hx` 侧表
+  （读写同通道、所有目标同一语义，`ClipPropsTest` 在 eval 单测里兜着）；
+  事件处理器里读挂过的属性同样走 ClipProps.get。html5 绿≠真机绿，这类差异
+  只在设备上现形——真机 logcat 的 `trace` 标签带 Haxe 文件:行，直接指到
+  死点。
+- **dogTip.tipText 这类「剪辑.名字」其实是具名子实例**：AS3 剪辑点取按
+  子名解析到时间轴上的实例（`.htmlText` 是 TextField 证据），不是动态
+  字段——hasField 双查在**所有**目标恒跳过（html5 也一直没文字，隐性
+  退化没人发现）。防：剪辑点取 + 后续真属性操作（htmlText/text）的组合，
+  按「具名子实例」处理，走 `As3.childOf`（先反射后 getChildByName）。

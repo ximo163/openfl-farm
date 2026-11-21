@@ -20,6 +20,7 @@ import openfl.text.TextField;
 import report.ClickReportManager;
 import report.UserActionRecorder;
 import shim.As3;
+import shim.ClipProps;
 import EvtAPI;
 
 /**
@@ -100,7 +101,9 @@ class ToolBar extends HBox {
 		if (_loc2_ == null) {
 			return null;
 		}
-		_loc2_.tipText = this.TOOLS_TIP[param1];
+		// PORT-NOTE: 素材剪辑动态属性。静态目标（cpp）上 Dynamic 裸写不存在的
+		// 字段抛 "Invalid field"（#10 真机闪退实证），走 ClipProps 侧表。
+		ClipProps.set(_loc2_, "tipText", this.TOOLS_TIP[param1]);
 		_loc2_.addEventListener(MouseEvent.CLICK, this.onToolClick, false, 0, true);
 		_loc2_.addEventListener(MouseEvent.ROLL_OVER, this.onToolRollOver, false, 0, true);
 		_loc2_.addEventListener(MouseEvent.ROLL_OUT, this.onToolRollOut, false, 0, true);
@@ -246,7 +249,7 @@ class ToolBar extends HBox {
 
 	// ToolBar.as:262-265（currentTarget.tipText：素材剪辑动态属性，Object 点取）
 	private function onToolRollOver(param1:MouseEvent):Void {
-		this._controller.showTip(Consts.TIP_NAME_MOUSE, param1.currentTarget.tipText);
+		this._controller.showTip(Consts.TIP_NAME_MOUSE, ClipProps.get(param1.currentTarget, "tipText"));
 	}
 
 	// ToolBar.as:267-388

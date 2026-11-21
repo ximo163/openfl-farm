@@ -26,6 +26,7 @@ import report.ClickReportManager;
 import report.EventRecorder;
 import report.UserActionRecorder;
 import shim.As3;
+import shim.ClipProps;
 
 /**
  * module.uitools.widgets.NavigationBar —— NavigationBar.as 逐句对应（issue #9
@@ -107,9 +108,10 @@ class NavigationBar extends HBox {
 			// PORT-NOTE: btn 原文是 var btn:*，name/scaleX/scaleY 是 DisplayObject
 			// 真属性——AS3 点取走 setter/getter，Dynamic 裸写只落 JS 自有字段、
 			// openfl 内部（getChildByName/变换矩阵）看不见。经 (btn : MovieClip)
-			// 强类型化走真属性（#8 for-each 同款修法）；tipText 是动态属性照裸写。
+			// 强类型化走真属性（#8 for-each 同款修法）；tipText 是动态属性，
+			// 走 ClipProps 侧表（cpp 裸写抛 "Invalid field"，#10 真机实证）。
 			(btn : MovieClip).name = this.BUTTONS_NAME[i];
-			btn.tipText = this.BUTTONS_TIP[i];
+			ClipProps.set(btn, "tipText", this.BUTTONS_TIP[i]);
 			btn.addEventListener(MouseEvent.CLICK, this.buttonClickHandler);
 			btn.addEventListener(MouseEvent.ROLL_OVER, this.toolRollOver);
 			btn.addEventListener(MouseEvent.ROLL_OUT, this.toolRollOut);
@@ -349,8 +351,9 @@ class NavigationBar extends HBox {
 	private function toolRollOver(param1:MouseEvent):Void {
 		var _loc2_:Int = 0;
 		if (param1 != null && param1.target != null) {
-			if (Reflect.hasField(param1.currentTarget, "tipText") == true && Reflect.field(param1.currentTarget, "tipText") != "") {
-				this.m_controller.showTip(Consts.TIP_NAME_MOUSE, Reflect.field(param1.currentTarget, "tipText"));
+			// tipText 经 ClipProps（写点在本类 ctor，cpp 上 Reflect 只见物理字段）
+			if (ClipProps.has(param1.currentTarget, "tipText") && ClipProps.get(param1.currentTarget, "tipText") != "") {
+				this.m_controller.showTip(Consts.TIP_NAME_MOUSE, ClipProps.get(param1.currentTarget, "tipText"));
 			} else {
 				_loc2_ = 0;
 				while (_loc2_ < this.NAV_MAX) {

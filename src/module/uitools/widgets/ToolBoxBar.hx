@@ -18,6 +18,7 @@ import openfl.events.MouseEvent;
 import openfl.net.URLVariables;
 import report.EventRecorder;
 import shim.As3;
+import shim.ClipProps;
 
 /**
  * module.uitools.widgets.ToolBoxBar —— ToolBoxBar.as 逐句对应（issue #9）。
@@ -86,7 +87,9 @@ class ToolBoxBar extends HBox {
 		// 无物理字段，裸写只挂影子普通字段）——强类型写恢复 AS3 的 setter 语义
 		// （NavigationBar ctor 按钮具名同款），否则 onToolClick 的强类型读恒 ""
 		(_loc3_ : DisplayObject).name = param1;
-		Reflect.setField(_loc3_, "tipText", param2);
+		// PORT-NOTE: tipText 动态属性走 ClipProps 侧表——Reflect.setField 在
+		// cpp 上对剪辑类实例的不存在字段抛 "Invalid field"（#10 真机实证）
+		ClipProps.set(_loc3_, "tipText", param2);
 		_loc3_.addEventListener(MouseEvent.CLICK, this.onToolClick, false, 0, true);
 		_loc3_.addEventListener(MouseEvent.ROLL_OVER, this.onToolRollOver, false, 0, true);
 		_loc3_.addEventListener(MouseEvent.ROLL_OUT, this.onToolRollOut, false, 0, true);
@@ -157,10 +160,10 @@ class ToolBoxBar extends HBox {
 		return _loc3_;
 	}
 
-	// ToolBoxBar.as:164-172（`param1.target.tipText` 是属性读取——AS3 点取
-	// 走 getter，Reflect.field 只见物理字段恒 null，用 getProperty 对齐）
+	// ToolBoxBar.as:164-172（tipText 是 addToolBtn 挂的动态属性，读写同走
+	// ClipProps；cpp 上 Reflect 对剪辑类实例只见物理字段）
 	private function onToolRollOver(param1:MouseEvent):Void {
-		var _loc2_:String = Reflect.getProperty(param1.target, "tipText");
+		var _loc2_:String = ClipProps.get(param1.target, "tipText");
 		if (_loc2_ == null || _loc2_ == "") {
 			return;
 		}

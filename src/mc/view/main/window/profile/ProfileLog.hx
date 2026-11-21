@@ -181,7 +181,9 @@ class ProfileLog extends Sprite {
 					// 无匹配得 null、null[1] 抛 TypeError #1010，从 genMsg 一路
 					// 中断整页 dataList 渲染——照译崩溃语义，不加静默守卫
 					if (!_loc15_.match(_loc3_)) {
-						throw new TypeError("Error #1010: A term is undefined and has no properties.", 1010);
+						// openfl 的 TypeError 构造器只收 message（无 id 形参，
+					// flash.errors.TypeError 的第二个参数 1010 并进消息文本）
+					throw new TypeError("Error #1010: A term is undefined and has no properties.");
 					}
 					_loc16_ = _loc15_.matched(1);
 					_loc7_ += "\t<a href='event:" + Reflect.field(param1, "qq") + "," + _loc16_
@@ -197,8 +199,9 @@ class ProfileLog extends Sprite {
 		param1 = new Date(param1.getFullYear(), param1.getMonth(), param1.getDate(), 0, 0, 0);
 		param2 = new Date(param2.getFullYear(), param2.getMonth(), param2.getDate(), 0, 0, 0);
 		// 原文 `var _loc3_:int = Math.abs(...)`：|Δms| 过 2^31（≈24.9 天）
-		// 按 int32 回绕——约 49.7-74.6 天的流水回绕成 0/1/2、被错标成
-		// 今天/昨天/前天，原版 bug 照抄（js/eval 的 Int 不回绕，走 As3.int32）
+		// 按 int32 回绕——约 49.7-52.6 天的流水回绕成 0/1/2、被错标成
+		// 今天/昨天/前天（24.9-49.7 天回绕成负数、仍走真实日期支），原版
+		// bug 照抄（js/eval 的 Int 不回绕，走 As3.int32）
 		var _loc3_:Int = As3.int32(Math.abs(param2.getTime() - param1.getTime()));
 		return Std.int(_loc3_ / 3600 / 24 / 1000);
 	}

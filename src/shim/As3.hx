@@ -163,14 +163,18 @@ class As3 {
 	 * 再按 2^32 回绕到带符号区间）。Haxe 的 Int 在 js/eval 上是双精度数
 	 * **不回绕**（cpp 才隐式截断），裸 `Std.int` 会让两族 compareDate 把
 	 * 2^31ms（≈24.9 天）以上的 |Δms| 当正数——原版是回绕后再除，约
-	 * 49.7-74.6 天的流水回绕成 0/1/2 天、被错标成今天/昨天/前天。原版 bug，
-	 * 照抄（ProfileLog/ProfileCost/ProfileSystemMsg 两族共六处 int 形）。
+	 * 49.7-52.6 天的流水回绕成 0/1/2 天、被错标成今天/昨天/前天（24.9-49.7
+	 * 天回绕成负数、仍走真实日期支）。原版 bug，照抄（ProfileLog/
+	 * ProfileCost/ProfileSystemMsg 两族共六处 int 形）。
 	 */
 	public static function int32(v:Float):Int {
 		if (Math.isNaN(v) || Math.isFinite(v) == false) {
 			return 0;
 		}
-		var t:Float = v >= 0 ? Math.floor(v) : Math.ceil(v);
+		// 向零截断（ToInt32 第一步）。不用 Math.floor/ceil：eval 目标的
+		// floor/ceil 内部走 Int32 换算，≥2^31 的输入先坏（js/cpp 的 floor
+		// 无此问题，但 % 在所有目标都是 fmod 语义）
+		var t:Float = v - v % 1.0;
 		var m:Float = t % 4294967296.0;
 		if (m >= 2147483648.0) {
 			m -= 4294967296.0;

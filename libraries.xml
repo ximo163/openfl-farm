@@ -99,4 +99,11 @@
          src/UpdateLandPanel.hx 注。与 assets/legacy-assets.txt 同 commit 增删 -->
     <library path="assets/legacy/source/core/module/mc/levelup/levelUpUI_v_1.swf" id="levelUpUI_v_1" />
 
+    <!-- messages 两族（issue #19）：MsgIcon/PostIcon/HistoryTip/ProfileHead 的
+         素材宿主 swf（spec/modules/messages.json 各类 assets 清单，部署包路径
+         source/core/module/mc/main/farmui1_v_42.swf）。原版由 mcloader/Master2
+         加载链 push 进 MaterialLib 注册表，#pasture 接线前仅声明不加载
+         （不 preload）。与 assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/mc/main/farmui1_v_42.swf" id="farmui1_v_42" />
+
 </project>

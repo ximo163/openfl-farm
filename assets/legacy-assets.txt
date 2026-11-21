@@ -69,3 +69,10 @@ source/core/module/ui/allcrops/Crop_2_Seed.swf
 # （SymbolClass.bind "levelUpUI_v_1"）。Update.landPanel/nextLandPanel/landRender
 # 本库未导出（部署包全 swf 扫描），空壳 shim 见 src/UpdateLandPanel.hx 注：
 source/core/module/mc/levelup/levelUpUI_v_1.swf
+#
+# messages 两族（issue #19）：MsgIcon/PostIcon/HistoryTip/ProfileHead 的素材
+# 宿主 swf（spec/modules/messages.json 各类 assets 清单里的
+# module/mc/main/farmui1_v_42.swf → 部署包路径 source/core/…）。MaterialLib
+# 是运行期注册表，#pasture 接线 mcloader/Master2 加载链才 push 域——现仅
+# 入库声明，html5 运行期暂无人请求：
+source/core/module/mc/main/farmui1_v_42.swf

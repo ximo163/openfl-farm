@@ -25,7 +25,10 @@
 
 素材：ButtonGreen/TipBg/ItemBg/ButtonOrange 均在 farmui_full_v_40.swf
 （已声明库），无新增资产。时间戳格式化（今天/昨天/前天）各页自持一份
-compareDate——逐份照抄，别抽公共函数。
+compareDate——逐份照抄，别抽公共函数；**`var _loc3_:int = Math.abs(Δms)`
+的 int32 回绕是视觉语义**（约 49.7-52.6 天的流水回绕成 0/1/2 天、被错标成
+今天/昨天/前天，原版 bug 照抄，走 `As3.int32`；Master2 ProfileMsg 是
+Number 形、不回绕）。
 
 ## Master2 族（牧场）
 
@@ -43,10 +46,22 @@ compareDate——逐份照抄，别抽公共函数。
 
 Master2 依赖闭包随译/桩（原类 loc 与原因见各文件头注释）：mcloader
 同域类（Version/JSProxy/INI/LocalData/MaterialLib——见踩坑 mcloader 同域条）
-从 `mcloader_v_53/scripts/` 译；com.minutes LipiUI 族/JerryTabNavigation 等
-≤100 loc 顺手译；MainData/MainCommand/FBride 网栈等大块签名面 stub
-（#pasture 补真身）。stub 的方法签名逐字取自反编译原文，**行为差异只允许
-体现在体空**。
+从 `mcloader_v_53/scripts/` 译；com.minutes LipiUI 族/JerryTabNavigation
+（原类 174–585 loc）**全部签名面 stub**，LipiUtil/UIEvent/LipiListChild/
+ILipiTileChild 等 ≤100 loc 小类逐句译；MainData/MainCommand/FBride 网栈等
+大块签名面 stub（#pasture 补真身）。stub 的方法签名逐字取自反编译原文，
+**行为差异只允许体现在体空**——写出来的部分按原文镜像：构造器常量
+（ConfirmWindow 的 320/AlertWindowTitle/"ConfirmWindow"）、两三行的只读
+getter（MainData.me/currentUserUin/currentUserId/getHostId 原文无 setter，
+`(get, never)` 参照 MData.hx）。
+
+素材：MsgIcon/PostIcon/HistoryTip（TipBg）/ProfileHead（DefaultHead）的
+宿主 swf `module/mc/main/farmui1_v_42.swf` 已入库声明（libraries.xml id
+`farmui1_v_42`，#19 加）；MaterialLib 是运行期注册表，#pasture 接线
+mcloader/Master2 加载链才 push 域——现取素材恒 null、调用方各自行判空，
+别当「取了就有图」。genMsg 的 `RegExp("<b>(.*)</b>").exec[1]` 无匹配时
+原文抛 TypeError #1010 中断整页渲染（两族同病）——照译崩溃语义
+（openfl.errors.TypeError），别垫 match() 守卫渲染死链。
 
 ## 约定（动这块前必读）
 

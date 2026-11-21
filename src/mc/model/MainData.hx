@@ -7,7 +7,8 @@ import openfl.events.EventDispatcher;
  * 真身待译——#pasture；issue #19 只保 profile 窗族用到的成员）。
  * legacy/decompiled/Master2_v_142/scripts/mc/model/MainData.as。
  * 事件名/静态开关（MainData.as:78-80、158-164）与 gradeToExp 公式
- * （MainData.as:401-404）按原文字面。
+ * （MainData.as:401-404）按原文字面。只读 getter me/currentUserUin/
+ * currentUserId/getHostId 原文就无 setter，逐句译体（不长 (get, set)）。
  */
 @:keep
 class MainData extends EventDispatcher {
@@ -46,18 +47,14 @@ class MainData extends EventDispatcher {
 		return param1;
 	}
 
-	// MainData.as:738
-	public var currentUserUin(get, set):String;
+	// MainData.as:738（原文只读 getter：无 setter）
+	public var currentUserUin(get, never):String;
 
 	private function get_currentUserUin():String {
-		return this._currentUserUin;
-	}
-
-	private var _currentUserUin:String = "";
-
-	private function set_currentUserUin(param1:String):String {
-		this._currentUserUin = param1;
-		return param1;
+		if (this.currentUser != null) {
+			return Reflect.field(this.currentUser, "uin");
+		}
+		return "";
 	}
 
 	// MainData.as:763
@@ -84,18 +81,14 @@ class MainData extends EventDispatcher {
 		return param1;
 	}
 
-	// MainData.as:825
-	public var currentUserId(get, set):String;
-
-	private var _currentUserId:String = "";
+	// MainData.as:825（原文只读 getter：无 setter）
+	public var currentUserId(get, never):String;
 
 	private function get_currentUserId():String {
-		return this._currentUserId;
-	}
-
-	private function set_currentUserId(param1:String):String {
-		this._currentUserId = param1;
-		return param1;
+		if (this.currentUser != null) {
+			return Reflect.field(this.currentUser, "uId");
+		}
+		return "";
 	}
 
 	// MainData.as:935
@@ -110,18 +103,19 @@ class MainData extends EventDispatcher {
 		return param1;
 	}
 
-	// MainData.as:1140
-	public var me(get, set):Bool;
-
-	private var _me:Bool = false;
+	// MainData.as:1140（原文只读 getter：无 setter）
+	public var me(get, never):Bool;
 
 	private function get_me():Bool {
-		return this._me;
-	}
-
-	private function set_me(param1:Bool):Bool {
-		this._me = param1;
-		return param1;
+		var _loc1_:Bool = true;
+		if (this.currentUser != null && this.host != null) {
+			// 原文 `currentUser["uId"] != host["uId"]`：uId 同源同型（profile
+			// JSON 的字串），AS3 宽松 != 落严格比较等价（裸比形态，见 lessons #9）
+			if (Reflect.field(this.currentUser, "uId") != Reflect.field(this.host, "uId")) {
+				_loc1_ = false;
+			}
+		}
+		return _loc1_;
 	}
 
 	// MainData.as:1174
@@ -148,18 +142,14 @@ class MainData extends EventDispatcher {
 		return param1;
 	}
 
-	// MainData.as:1268
-	public var getHostId(get, set):String;
-
-	private var _getHostId:String = "";
+	// MainData.as:1268（原文只读 getter：无 setter）
+	public var getHostId(get, never):String;
 
 	private function get_getHostId():String {
-		return this._getHostId;
-	}
-
-	private function set_getHostId(param1:String):String {
-		this._getHostId = param1;
-		return param1;
+		if (this.host != null) {
+			return Reflect.field(this.host, "uId");
+		}
+		return "";
 	}
 
 	// MainData.as:401-404

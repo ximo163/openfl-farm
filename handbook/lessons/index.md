@@ -638,3 +638,52 @@
   Haxe Float→Int 编译红。防：赋值处 Std.int()，别改声明类型（原版就是
   int 收 Number）。同族：AS3 `int.toString()` 在 Haxe Int 上没有该字段
   （js 偶然可用、cpp typer 红）→ Std.string。
+
+## 2026-11 · #19（implement attempt 1 驳回复工：崩溃语义/int 回绕/undefined 强制）
+
+- **RegExp.exec 无匹配是崩溃路径，垫 match() 守卫=改行为**：原文
+  `_loc17_.exec(_loc3_)[1]` 无匹配时 exec 得 null、null[1] 抛 TypeError
+  #1010，从 genMsg 一路中断整页 dataList 渲染（两族 ProfileLog 同病）；
+  attempt 1 垫了 `match() ? matched(1) : null` 守卫，渲染出
+  `event:qq,null` 死链还不留痕。照译：match 失败抛
+  `openfl.errors.TypeError("Error #1010: …")` + PORT-NOTE（构造器只收
+  message，见下条）。防：译
+  `exec(...)[n]` 前先问无匹配分支原文是什么行为，崩溃也是行为。
+- **`int` 局部存 |Δms| 的 ToInt32 回绕是视觉语义，裸 Std.int 会把原版 bug
+  「修好」**：compareDate `var _loc3_:int = Math.abs(Δms)` 在 AS3 按 2^32
+  回绕——约 49.7-52.6 天的流水回绕成 0/1/2 天、被错标成今天/昨天/前天；
+  Haxe Int 在 js/eval 是双精度不回绕，`Std.int` 或 Float 声明都让老流水
+  显示真实日期。照抄走 `As3.int32`（两族六处 int 形；Master2 ProfileMsg
+  是 Number 形不回绕，别一刀切）。防：`var _locN_:int = <Number 表达式>`
+  一律过 int32，先看值的量级会不会越 2^31（毫秒差最会越）。
+- **`as String` 得 null，垫 "" 是吞崩溃**：main3 ProfileLog 的
+  `_loc3_ = param1["cn"] as String` 非 String 落 null——后续 `.indexOf`
+  在 null 上抛、拼串印 "null"；attempt 1 用 isOfType 门 + "" 兜底静默改宽。
+  照译：isOfType 门 + null（lessons #7 的 as 语义条在这又适用一次）。
+- **AS3 键缺位是 undefined、显式 null 是 null，TextField 印的是
+  "undefined"/"null" 两回事**：HistoryTip 的 null 数据路径（param1=""
+  后 `""["cName"]`）原文把 "undefined" 印进 TextField；Haxe
+  Reflect.field 都落 null，openfl set_text(null) 抛 #2007。复刻走
+  `As3.stringField`（hasField 区分两形态）。防：`text = obj["k"]` 通道
+  一律 stringField，别裸 Reflect.field。
+- **stub 写出来的常量/访问器逐字镜像，不发明值也不发明 setter**：
+  ConfirmWindow stub 把原文 `height=320`/`getClass("AlertWindowTitle")`/
+  `"ConfirmWindow"` 写成 `ConfirmWindowTitle`/缺 height/`"confirm"`；
+  MainData stub 给四个原文只读 getter（me/currentUserUin/currentUserId/
+  getHostId，MainData.as:1140/738/825/1268）长了 (get, set)。stub 只免
+  **方法体**，写了常量就照抄原文常量，getter-only 就 `(get, never)`
+  （参照 MData.hx）。防：stub 的每一行非空体都要能指到原文行号。
+- **同值局部照抄两份，别「优化」合并**：原文 `_loc4_/_loc5_` 两个 opuin
+  局部各司其职（好友表键 vs 链接 href），attempt 1 给 _loc5_ 垫 ""——
+  href 变 `event:,名字` 丢 QQ 号、parseInt("")=0 少 "(QQ:…)" 段。防：FFDec
+  的 _locN_ 是位置命名，同值不同局部必有其用途差异，逐行对号。
+- **`var x:uint = parseInt(...)` 按 Number 持有再比 `> 0`**：cpp 的 Int 会
+  把 ≥2^31 的 QQ 号回绕成负（uint 是 ToUint32 保持正值显示），NaN>0 恒假
+  同 uint(NaN)=0——`Float` 持有 + `> 0` 判 + 字符串拼接在各目标最接近。
+- **openfl 错误类构造器未必带 flash 的 id 形参**：`openfl.errors.TypeError`
+  只有 `new(message:String="")`，flash.errors.TypeError 的第二形参 id 在
+  openfl 没落点——两参形态 html5 全量编译当场红（"Too many arguments"，
+  eval/html5 容忍的语义坑不同，这是硬编译错）。id 并进消息文本即可
+  （"#1010" 本就在串里，errorID 无消费方）。防：`new openfl.errors.*` 前先
+  看本机 `openfl/<版本>/src/openfl/errors/` 的构造器签名，别按 flash
+  文档默写。

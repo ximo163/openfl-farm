@@ -225,6 +225,96 @@ class As3 {
 	}
 
 	/**
+	 * AS3 的 Array.sortOn(字段, Array.DESCENDING)（MessageModel.as:123、
+	 * mc ProfileCost.as:188）。AVM2 不带 Array.NUMERIC 选项时按字段值的
+	 * **字符串序**比较，DESCENDING 反转比较器；原地排序。真实数据源的 time
+	 * 是等宽 10 位时间戳（cgi_farm_exchange.php:26,28），字符串序与数值序一致。
+	 */
+	public static function sortOnDesc(arr:Array<Dynamic>, field:String):Void {
+		arr.sort(function(a:Dynamic, b:Dynamic):Int {
+			var va:String = Std.string(Reflect.field(a, field));
+			var vb:String = Std.string(Reflect.field(b, field));
+			if (va < vb) {
+				return 1;
+			}
+			if (va > vb) {
+				return -1;
+			}
+			return 0;
+		});
+	}
+
+	/**
+	 * AS3 全局 unescape（ProfileMsg.as genMsg 的留言正文解转义）：逐个解
+	 * %XX 与 %uXXXX，非法/截断的 % 序列原样保留。与 Haxe
+	 * StringTools.urlDecode 的差别在后者把 "+" 换成空格（AS3 不换，
+	 * `urlDecode("a+b")=="a b"` 而 `unescape("a+b")=="a+b"`，已 eval 实测）。
+	 */
+	public static function unescape(s:String):String {
+		if (s == null) {
+			return "null";
+		}
+		var buf:StringBuf = new StringBuf();
+		var i:Int = 0;
+		var len:Int = s.length;
+		while (i < len) {
+			var c:Int = StringTools.fastCodeAt(s, i);
+			if (c != "%".code) {
+				buf.addChar(c);
+				i++;
+				continue;
+			}
+			// %uXXXX
+			if (i + 6 <= len && StringTools.fastCodeAt(s, i + 1) == "u".code) {
+				var u:Int = hex4(s, i + 2);
+				if (u >= 0) {
+					buf.addChar(u);
+					i += 6;
+					continue;
+				}
+			}
+			// %XX
+			if (i + 3 <= len) {
+				var h:Int = hexVal(StringTools.fastCodeAt(s, i + 1));
+				var l:Int = hexVal(StringTools.fastCodeAt(s, i + 2));
+				if (h >= 0 && l >= 0) {
+					buf.addChar(h * 16 + l);
+					i += 3;
+					continue;
+				}
+			}
+			buf.addChar(c);
+			i++;
+		}
+		return buf.toString();
+	}
+
+	private static function hexVal(c:Int):Int {
+		if (c >= "0".code && c <= "9".code) {
+			return c - "0".code;
+		}
+		if (c >= "a".code && c <= "f".code) {
+			return c - "a".code + 10;
+		}
+		if (c >= "A".code && c <= "F".code) {
+			return c - "A".code + 10;
+		}
+		return -1;
+	}
+
+	private static function hex4(s:String, at:Int):Int {
+		var v:Int = 0;
+		for (j in 0...4) {
+			var d:Int = hexVal(StringTools.fastCodeAt(s, at + j));
+			if (d < 0) {
+				return -1;
+			}
+			v = v * 16 + d;
+		}
+		return v;
+	}
+
+	/**
 	 * flash.utils.setTimeout/clearTimeout（Haxe 没有返回可清除句柄的内建物，
 	 * 用 Map<UInt, Timer> 复刻 uint 句柄语义）。
 	 */

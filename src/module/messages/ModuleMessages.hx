@@ -1,22 +1,42 @@
 package module.messages;
 
 import common.Consts;
+import framework.base.BaseLayer;
 import framework.base.Module;
 import module.FarmApplication;
 
 /**
- * module.messages.ModuleMessages —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
- * 消息模块（ModuleMessages.as），V3b 片；FarmApplication.startup 里按触发事件 loadLater/直接 load。
- * 这里只保模块壳（Module 子类 + name），控制器/视图随对应片接入。
+ * module.messages.ModuleMessages —— ModuleMessages.as 逐句对应（issue #19，
+ * 替换 #7 的闭包 stub）。消息模块壳：load 建 MessageController 并挂
+ * MSG_SHOW_PROFILE 监听，unload 落地。
  */
 @:keep
 class ModuleMessages extends Module {
+	// ModuleMessages.as:11
+	private var m_msgSystem:MessageController;
+
 	public function new(param1:FarmApplication) {
 		super(param1);
+		this.m_msgSystem = null;
 	}
 
-	// 原版 override get name
+	// ModuleMessages.as:20-22
 	override private function get_name():String {
 		return Consts.MODULE_MESSAGES;
+	}
+
+	// ModuleMessages.as:24-29
+	override public function load(param1:BaseLayer):Void {
+		super.load(param1);
+		this.m_msgSystem = new MessageController(this);
+		this.m_msgSystem.initialze();
+	}
+
+	// ModuleMessages.as:31-37
+	override public function unload():Void {
+		if (this.m_msgSystem != null) {
+			this.m_msgSystem.finalize();
+			this.m_msgSystem = null;
+		}
 	}
 }

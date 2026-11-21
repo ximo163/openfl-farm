@@ -41,6 +41,8 @@ class UserActionRecorder {
 	public static final HF_SHORTCUTBAR_CARDS_CLICKED:String = "55";
 	// UserActionRecorder.as:60（issue #9：个人信息区头像点击上报）
 	public static final HF_PERSONINFO_OPEN:String = "30";
+	// UserActionRecorder.as:62（issue #19：个人信息窗「去 ta 的首页」点击上报）
+	public static final HF_HOMELINK_CLICKED:String = "41";
 
 	public function new() {}
 

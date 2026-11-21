@@ -588,3 +588,53 @@
   双字符串形状不一致时 AS3 松等命中、严格 miss 会把本该合并的条目
   当新条目追加），无测试钉住且在 #7 的合并中枢路径上，未动、列为
   deviations 候选待人裁决。
+
+## 2026-11 · #19（messages 两族：Master2 侧翻译 + cpp typer 全量扫描）
+
+- **cpp typer 上 Dynamic 的一切字符串键下标都编不过，不止中文键**：#8 只
+  见到 eval 对非标识符键报 "String should be Int"，本轮 cpp typer（lessons
+  #18 的 include 扫）对 `param1["code"]`、`mainData.host["uId"]`、
+  `this._products[param1]`（**变量**键也一样）全部红——Haxe 把 Dynamic 的
+  `[]` 当数组访问。防：`x["k"]` 一律 Reflect.field/setField，变量键
+  Std.string() 后同样走 Reflect；收工前对全改动跑一遍 include 扫，别等
+  android CI。
+- **批量 sed/python 重写后必须重读被改文件**：把 `x["k"]` 批量改 Reflect 时，
+  对象字面量的收尾 `});` 被改成 `};`、`var _loc6_` 声明两遍——typer 一下
+  现形，但更早靠肉眼重读也行。防：批量重写只做机械等价替换，改完先
+  `haxe --macro include` 扫或至少重读 diff 里每个表达式级改动。
+- **FFDec 的构造器叫 `public function ClassName()`，是合法方法不是 new**：
+  Haxe 里同名方法照编过，错误在**别处**才冒头（"Cannot call super
+  constructor outside class constructor"、`new X()` 不存在）。防：翻译新
+  文件时第一个动作就是把 ctor 改名 `new()`，全文件 grep
+  `function 类名(` 收尾。
+- **子类重声明继承字段直接红，改 override 访问器**：openfl 的
+  width/height、基类已声明的 `_data`——Haxe 不允许 Redefinition。防：子类
+  只 override `get_/set_` 访问器或直接用继承字段；stub 基类先想好哪些字段
+  子类要碰。
+- **接口的属性访问器实现必须 public，基类升可见性会传染给全部 override**：
+  `implements ITip`（接口里 `function get_tX():Int` 公开签名）配
+  `private function get_tX` 报 "Field … should be public as requested by …"；
+  把基类访问器改 public 后，MouseTip/HouseTip/HistoryTip/HistoryItem 的
+  `override private` 全部要跟改 `override public`（override 不许降可见性）。
+  防：凡 implements 的类，访问器直接写 public。
+- **单例 ctor 的 super() 必须全路径先调**：AS3 惯用
+  `if(instance==null){super();return;} throw new Error(...)` 的 throw 路径
+  不调 super，Haxe/cpp 编不过。MaterialLib 原文就是 super 前置可直接照抄；
+  ViewControl/MData 原文守卫内 super，重排成 `super(); if(instance==null)
+  return; throw` 加 PORT-NOTE（EventDispatcher ctor 无副作用，等价）。
+- **Haxe 包段首字母不能大写**：原版包 `mc.view.main.WindowControl` 照搬
+  编不过（"Unexpected WindowControl"）——目录/包改 `windowControl`，类名
+  不变，头注 PORT-NOTE(命名) + deviations 候选。
+- **注释文本里的 `*/` 会提前关掉 doc 注释**：写 "CHILD_*/dataList" 这种
+  含星-斜杠的说明，后面的内容被当代码。防：注释里用全角／或改写措辞。
+- **Master2 引用的类可能根本不在 Master2 反编译里——mcloader 同域共享**：
+  `mc.control.Version`、`common.{INI,LocalData,MaterialLib}`、
+  `com.qzone.corelib.js.JSProxy` 只在 `mcloader_v_53/scripts/`（预加载器
+  与主 swf 共享应用域）。防：Master2 缺类先 `rg` 整个 `legacy/decompiled/`
+  五棵树；注意既有 `src/common/CommonData.hx` 就是 mcloader 的那份，
+  直接复用别重译。
+- **AS3 把 Number 隐式截断进 int 的点要显式 Std.int**：
+  `var _loc3_:int = getStringWidth(...)`（返回 Number）在 AS3 截断，
+  Haxe Float→Int 编译红。防：赋值处 Std.int()，别改声明类型（原版就是
+  int 收 Number）。同族：AS3 `int.toString()` 在 Haxe Int 上没有该字段
+  （js 偶然可用、cpp typer 红）→ Std.string。

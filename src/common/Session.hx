@@ -228,6 +228,12 @@ class Session {
 	// Session.as:50（public var m_welcomeMode:Boolean = false）
 	public var m_welcomeMode:Bool = false;
 
+	// Session.as:32（issue #21（tasks）引用面补齐：WelcomeModel.setCurrentTask
+	// 按新旧 id 空间写 true/false（WelcomeModel.as:186/:191）、WelcomeView.
+	// acceptNewTask 读（WelcomeView.as:173）决定下一任务 id 是否走
+	// newIDToOldIDArray 反查；原版就是带 false 初值的普通 public 字段）
+	public var isNewGuideTask:Bool = false;
+
 	// Session.as:120-128（updateCurrentFriendsKeys：fkey 值按当前用户 uid 存键，
 	// FarmLandModel.buildCommonPostParams :321-324 按同键取回）
 	public function updateCurrentFriendsKeys(param1:Dynamic):Void {

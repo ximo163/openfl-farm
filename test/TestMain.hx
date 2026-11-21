@@ -105,6 +105,14 @@ class TestMain {
 		// no-op、同步只写 me 行别人保持创建值、复用路径 processFriendList
 		// 就地 exp 降序
 		runner.addCase(new module.friend.FriendsModelFollowupTest());
+		// issue #21：tasks 模块（write-tests 阶段，对 stub 失败）——
+		// WelcomeModel 纯逻辑：11 项任务表与新旧 id 映射（newIDToOldID
+		// 反查/防御性拷贝）、currentTask 装载派发（TaskChanged +
+		// isNewGuideTask 极性）、taskComp 完成判定三门（flag==1/名字+me
+		// 对表/code==1 → updateTask 门位）、task_accept/task_update 应答
+		// 推进（flag 固定 1/update 回显旧 id/末任务归零 0,0/奖励载荷
+		// 原样转发）、onNetError 门位复位
+		runner.addCase(new module.task.welcome.WelcomeModelTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

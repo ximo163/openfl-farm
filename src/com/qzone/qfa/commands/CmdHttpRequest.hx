@@ -4,6 +4,7 @@ import com.qzone.qfa.core.Command;
 import com.qzone.qfa.debug.Debugger;
 import com.qzone.qfa.events.QFAEvent;
 import com.qzone.qfa.net.HttpRequest;
+import shim.AndroidHttpRequest;
 
 // CmdHttpRequest.as 逐句对应。
 class CmdHttpRequest extends Command {
@@ -50,7 +51,12 @@ class CmdHttpRequest extends Command {
 			param1 = super.body;
 		}
 		Debugger.log("[QFA]request, url:" + param1.url);
-		this._req = new HttpRequest(param1.url, param1.method);
+		// PORT-NOTE(android-cgi)：原版 new HttpRequest 的 CGI URL 是相对路径
+		// （Flash 按 swf 所在 URL 解析到同站后端）；android 的网络栈是 lime/curl，
+		// 没有 SwfUrlBase 那种 XHR 边界可包，换成 shim.AndroidHttpRequest 包住
+		// 同名 send() 把相对 *.php 改写到局域网后端（LocalSwfLoader 同款手法：
+		// 只换构造点，调用形态不变），其余目标原样透传
+		this._req = new AndroidHttpRequest(param1.url, param1.method);
 		this._errorHandler = param1.error;
 		this._completeHandler = param1.complete;
 		this._req.addEventListener(QFAEvent.COMPLETE, this.handleEvents);

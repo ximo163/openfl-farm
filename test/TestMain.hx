@@ -60,6 +60,9 @@ class TestMain {
 		runner.addCase(new common.view.floating.FloatControlTest());
 		runner.addCase(new common.view.cursor.CursorControlTest());
 		runner.addCase(new common.view.MaterialProxyTest());
+		// issue #10：V4 预览准备——android 真机侧接线（局域网后端基址的
+		// flashvar 默认/覆盖解析、相对 *.php 改写契约）
+		runner.addCase(new shim.AndroidBackendTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

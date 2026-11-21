@@ -21,6 +21,10 @@ import openfl.display.LoaderInfo;
  *   宿主，取 "2"（xiaoyou 分支：startCGIUrl 不加 qzone.qq 前缀，走同源相对
  *   mync.php，正好匹配冒烟代理的同源语义）。
  * - pageDomain（nc.htm:93）：document.domain，即不带端口的页面 hostname。
+ * - android 分支（issue #10）：真机没有宿主页也没有同源站点，config_url/
+ *   config_data/config_addon 的相对 xml.php 在这里改写成局域网后端绝对地址
+ *   （shim.AndroidBackend；CGI 出口的同类改写在 shim.AndroidHttpRequest——
+ *   那边的 URL 是运行时拼的，flashvar 里改不到）。
  */
 class FlashVars {
 	public static function inject(loaderInfo:LoaderInfo):Void {
@@ -102,6 +106,17 @@ class FlashVars {
 		// nc.htm:92-93 的动态注入
 		Reflect.setField(vars, "mode", "2");
 		Reflect.setField(vars, "pageDomain", pageDomain());
+
+		// android 真机侧接线：基址先按「flashvar 覆盖优先」解析（parameters
+		// 已带 farm_backend 用它，否则 AndroidBackend 默认值），写回 vars 让
+		// Settings 成为基址的唯一来源（AndroidHttpRequest 从那里读）
+		#if android
+		var backend:String = AndroidBackend.resolveBase(loaderInfo.parameters);
+		Reflect.setField(vars, AndroidBackend.BACKEND_VAR, backend);
+		Reflect.setField(vars, "config_url", AndroidBackend.rebase(backend, Reflect.field(vars, "config_url")));
+		Reflect.setField(vars, "config_data", AndroidBackend.rebase(backend, Reflect.field(vars, "config_data")));
+		Reflect.setField(vars, "config_addon", AndroidBackend.rebase(backend, Reflect.field(vars, "config_addon")));
+		#end
 
 		var params = loaderInfo.parameters;
 		for (key in Reflect.fields(vars)) {

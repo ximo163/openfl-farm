@@ -1,6 +1,7 @@
 {
  "version": 1,
  "module": "activities",
+ "status": "cut",
  "description": "活动与小游戏：联合活动框架（com/qzone/allianceActivity，两份）、采集（app4/CollectingActivity + module/collect 外部 swf）、wild 野兽/丛林寻宝（framework/api/beast、wild/com/**、mc/api wild 部分、Cursor*/Tool_Wild、WildShell）、签到卡片（cardsgame）、快照/健康模式（quickshoot）、免费礼物（FreeGift + 礼物窗）、召回（recall）、月末/月初礼包、翻牌签到、二月礼包、神奇宝贝、任务活动、周末特卖、限时专区、Nokia 等营销活动入口。",
  "sources": [
   "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php（beastLoaderUrl=WildShellNc_v_5.swf、wildanimal/wildaction/wildaweapon、monthEnd、freegift 列表）",

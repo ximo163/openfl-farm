@@ -81,6 +81,14 @@
       "ported": "把系统 CJK 字体（NotoSansSC/DroidSansFallback 优先，NotoSansCJK ttc 兜底）以共享 face 别名注册进 openfl 字体表：请求名（Verdana/Times New Roman/Arial/SimSun/宋体/微软雅黑/Microsoft YaHei/Lucida Sans Unicode/embedFontA）直接命中；_sans/_serif/_typewriter 与未列名/null 字体经 getDefaultFont 兜底命中（__fontPath 挂 DroidSans/DroidSerif/DroidSansMono 路径串）。英文字形来自 CJK 字体 Latin 区（与 Verdana 有差），粗体落 regular face",
       "why": "openfl native 单字体整段渲染无逐字形回退（TextEngine getFontInstance 落 Android _serif=DroidSerif 无 CJK），真机汉字全空白（#10 真机第四轮实证）；html5 走浏览器字体栈不受影响",
       "date": "2026-11-21"
+    },
+    {
+      "id": "module-activities-cut",
+      "module": "activities（spec/modules/activities.json：157 条，unique 143——main3_v_221 53 条 + Master2_v_142 104 条，含 14 条跨 swf 重复；cards_v_1/gifts_v_11/quickshoot_v_0 外部 swf 控制器同砍）",
+      "original": "活动子系统：联合活动框架（allianceActivity 全套）、采集、wild 野兽/丛林寻宝外壳、签到卡片（cardsgame）、快拍（quickshoot）、免费礼物（FreeGift 及礼物窗）、召回（recall）、月末/月初礼包、翻牌签到等运营活动入口与数据链",
+      "ported": "整模块砍除：未翻译的 125 条不再移植，活动功能不可用；已存在的 32 个 .hx 保留现状不回删（entities.HealthMode、cursor.CursorWild*、common.view.window.GiftWindow 族、module.FreeGift/cardsgame/quickshoot/recall 壳、monthend.MonthEndWin stub 等——被 farm 侧引用或已顺手翻）。启动链对 cards/gifts/quickshoot/pool 模块 swf 的本地资产加载不变（StartupModuleLibrariesTest 门禁照旧；swf 作资产加载，其 AS3 控制器在 openfl 上本就不执行）",
+      "why": "所有者 2026-11-21 拍板整模块砍除（计划预留的决定点：活动小游戏视价值最后决定要不要移植）",
+      "date": "2026-11-21"
     }
   ]
 }

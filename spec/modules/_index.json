@@ -1,6 +1,6 @@
 {
  "version": 1,
- "description": "S4 模块清单索引：main3_v_221（339）+ Master2_v_142（466）= 805 个反编译类按功能拆分到 spec/modules/<模块>.json。对账公式：Σ 各模块 classes + ignored = 805。模块拆分依据 issue #5 模块表 + 实际包结构（FarmApplication.initModules 的模块注册、nc_main/mc_main moduleList、包语义）。",
+ "description": "S4 模块清单索引：main3_v_221（339）+ Master2_v_142（466）= 805 个反编译类按功能拆分到 spec/modules/<模块>.json。对账公式：Σ 各模块 classes + ignored（未翻砍除）+ activities 已译保留 = 805（activities 于 2026-11-21 整模块砍除，见 spec/deviations.json module-activities-cut）。模块拆分依据 issue #5 模块表 + 实际包结构（FarmApplication.initModules 的模块注册、nc_main/mc_main moduleList、包语义）。",
  "sources": [
   "legacy/decompiled/main3_v_221/scripts/（339 类）",
   "legacy/decompiled/Master2_v_142/scripts/（466 类）",
@@ -9,7 +9,6 @@
  ],
  "total": 805,
  "breakdown": {
-  "activities": 157,
   "dog": 3,
   "farm-basic": 235,
   "farm-decorate": 6,
@@ -21,10 +20,21 @@
   "tasks": 6,
   "water": 7
  },
- "ignored": [],
+ "ignored": [
+  {
+   "module": "activities",
+   "entries": 157,
+   "unique_classes": 143,
+   "swf_distribution": {"Master2_v_142": 104, "main3_v_221": 53},
+   "duplicate_entries": 14,
+   "reason": "整模块砍除（所有者 2026-11-21 决定）：未翻译的 125 条不再移植，活动功能不可用；已存在的 32 个 .hx（entities.HealthMode、cursor.CursorWild*、common.view.window.GiftWindow 族、module.FreeGift/cardsgame/quickshoot/recall 壳、monthend.MonthEndWin stub 等，被 farm 侧引用或已顺手翻）保留现状不回删。详见 spec/deviations.json module-activities-cut"
+  }
+ ],
  "counts_check": {
-  "modules_sum": 805,
-  "ignored": 0,
+  "modules_sum": 648,
+  "ignored_unported": 125,
+  "activities_already_ported_kept": 32,
+  "total": 805,
   "sum_equals_805": true
  }
 }

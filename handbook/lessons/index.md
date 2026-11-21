@@ -545,3 +545,20 @@
   踩过）——取一次进局部再 `Std.isOfType` 门 + 直取；`as T` 的失配落
   null 语义也在这一步保住（ContentWindow 的 `as String` 曾被丢，
   非 String 值原版落 null、端口裸透传）。
+
+## 2026-11 · #18（implement attempt 2：main 合并后受保护文件回基线）
+
+- **orchestrator 把 main 并进任务分支后，受保护/append-only 文件相对本
+  阶段基线会出现「不是我写的 diff」**：34166ac3（merge 2e0b4a1e ⊕ main
+  e43a669f）把 main 的 TestMain.hx 注册块（#10 ClipPropsTest 两行）带进
+  工作树，stage 门禁按「本阶段基线（write-tests commit）→ 工作树」判
+  append-only 违规，整轮 attempt 在任何检查前被拒——diff 来源是 merge
+  也照样拒。恢复：驳回信点名哪个文件就用信里给的基线 commit 精确恢复
+  （`git checkout <基线> -- <file>`），恢复完该文件的其余内容（来自
+  main 的 CLAUDE.md/spec 等）**不要顺手一起恢复**——信没点名的动了
+  反而是新违规。本轮恢复后 TestMain.hx 少了 main 的 ClipPropsTest 注册
+  行，`haxe test.hxml` 只编 TestMain 可达闭包、未注册的 ClipPropsTest.hx
+  不参编，全绿不受影响；回 main 的最终合并由 orchestrator/人解决。
+- **merge 轮开工先自查受保护文件对基线的 diff**（`git diff <基线> --
+  test/ Project.xml *.hxml`），在写任何代码前把点名文件恢复掉，别把
+  一整轮花在会被预检拒掉的树上。

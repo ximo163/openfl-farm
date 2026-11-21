@@ -69,8 +69,6 @@ class TestMain {
 		// 请求序列/全绿判定/检查点状态）。执行器与 diff 算法演示按 issue
 		// 走 PR 说明 + CI 人工配套，utest 只钉纯数据契约（见测试类头）
 		runner.addCase(new ScenarioRunnerContractTest());
-		// issue #10：素材剪辑动态属性侧表（cpp 上裸写抛 Invalid field，真机闪退修复）
-		runner.addCase(new shim.ClipPropsTest());
 		// issue #18：farm-basic 收尾（write-tests 阶段，对 stub 失败）——
 		// DateTimeUtils 时间格式化/同日/闰年、HtmlUtil 转义与双字节长度、
 		// ImageSizeUtil 适配矩形数学（含 param4→height 原版笔误）、Payment

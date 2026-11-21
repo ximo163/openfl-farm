@@ -375,6 +375,10 @@ class FriendsModelTest {
 		Assert.equals(3, Reflect.field(lastData(log, FriendsModel.EVENT_REFRESH_PAGE), "index"));
 		model.goNextPage(); // 3+1 > 3 → :580-582 回卷 1
 		Assert.equals(1, Reflect.field(lastData(log, FriendsModel.EVENT_REFRESH_PAGE), "index"));
+		// changed for #20: 回卷已把页置 1（:581），页 1 的无参回退走 :371
+		// 早退不派发——作者注释「3→2→1」漏了钉页，先钉回 3 再走原意序列
+		//（回卷后直接回退的 no-op 钉在 FriendsModelFollowupTest）
+		model._showFriendPage = 3;
 		model.goBackPage(); // :371-376 3→2→1
 		Assert.equals(2, Reflect.field(lastData(log, FriendsModel.EVENT_REFRESH_PAGE), "index"));
 		model.goBackPage();
@@ -842,7 +846,10 @@ class FriendsModelTest {
 		Assert.equals(2, again.m_friendListNet.length);
 		Assert.equals(100, fMe._exp); // :532
 		Assert.equals(50.0, fMe._money); // :533
-		Assert.equals(5, fOther._exp); // 别人不动
+		// changed for #20: 同步循环 :530-534 只对 _uId==host._uId 的行写
+		// host 的 exp/money 即 break（字节码 OJump 跳过自增），fOther 保持
+		// 创建值——原断言 5 是 fMe 创建值的笔误，按创建值 3 钉
+		Assert.equals(3, fOther._exp); // 别人不动
 
 		// userId 别名（Friend._userId == host._uId）也算有自己（:1208）→
 		// 不补行；但同步循环只对 _uId（:530）→ 别名行不被同步
@@ -1142,11 +1149,17 @@ class FriendsModelTest {
 		Assert.equals(1, countType(log2, FriendsModel.EVENT_REFRESH_PAGE));
 		Assert.isTrue(model.m_gotFriendStatus == true);
 
-		// 已有 local 后再传不同列表：保持首次引用（:599 null 门）
+		// 已有 local 后再传不同列表：保持首次引用（:599 null 门）；上面
+		// 状态表复用路径 :352-355 已把 local 传 processFriendList，:918 按
+		// 默认 m_sortField="exp"（:79）在 local 上原地降序排过
 		var fC = mkFriend(103, 103, 3, 3.0, "丙");
 		model.loadFriendStatus([fC]);
 		Assert.equals(2, model.friendListLocal.length);
-		Assert.equals(fA, model.friendListLocal[0]);
+		// changed for #20: 复用路径的 processFriendList :918 对参数数组就
+		// 地 sort（字节码 OCallPropVoid(sort,1) 打在参数寄存器上），按
+		// friendSort :1160 exp 降序 → [0] 是 fB（exp 2）；原断言 fA 与本段
+		// 已断言的 RefreshPage（processFriendList 已跑）矛盾
+		Assert.equals(fB, model.friendListLocal[0]);
 
 		// param2=true：跳过复用强制请求
 		var log3:Array<Dynamic> = [];

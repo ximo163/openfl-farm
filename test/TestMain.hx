@@ -99,6 +99,12 @@ class TestMain {
 		// 状态表（"1"-"7"）装载与本地推进、门位（serverDown/forbidden/
 		// useflag）、应答分派（列表补自己/过滤增删/状态装载）
 		runner.addCase(new module.friend.FriendsModelTest());
+		// issue #20：implement 阶段 NEEDS-TESTS 回流的修正钉板（FriendsModel
+		// :379/:845/:1149 三处期望与部署 swf 字节码相悖，本轮回 write-tests
+		// 已把原断言改对，本文件按裁决链记录钉死）：回卷后页 1 无参回退
+		// no-op、同步只写 me 行别人保持创建值、复用路径 processFriendList
+		// 就地 exp 降序
+		runner.addCase(new module.friend.FriendsModelFollowupTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

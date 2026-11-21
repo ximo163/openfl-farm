@@ -1,0 +1,115 @@
+{
+  "scenario": "plant",
+  "requests": [
+    {
+      "mod": "user",
+      "act": "run",
+      "params": {
+        "uIdx": "",
+        "uinY": ""
+      }
+    },
+    {
+      "mod": "user",
+      "act": "getNotice",
+      "params": {}
+    },
+    {
+      "mod": "farmlandstatus",
+      "act": "planting",
+      "params": {
+        "uIdx": "1",
+        "ownerId": "1",
+        "place": "4",
+        "tName": "admin",
+        "fName": "admin",
+        "cId": "2"
+      }
+    },
+    {
+      "mod": "farmlandstatus",
+      "act": "water",
+      "params": {
+        "uIdx": "1",
+        "ownerId": "1",
+        "place": "2",
+        "tName": "admin",
+        "fName": "admin"
+      }
+    },
+    {
+      "mod": "farmlandstatus",
+      "act": "harvest",
+      "params": {
+        "uIdx": "1",
+        "ownerId": "1",
+        "place": "0",
+        "tName": "admin",
+        "fName": "admin"
+      }
+    }
+  ],
+  "steps": [
+    {
+      "name": "enter",
+      "pass": true,
+      "failures": [],
+      "state": {
+        "lands": {
+          "0": {
+            "cId": 2,
+            "cropStatus": 6,
+            "humidity": 1
+          },
+          "2": {
+            "cId": 2,
+            "cropStatus": 1,
+            "humidity": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "plant",
+      "pass": true,
+      "failures": [],
+      "state": {
+        "lands": {
+          "4": {
+            "cId": 2,
+            "cropStatus": 0,
+            "humidity": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "water",
+      "pass": true,
+      "failures": [],
+      "state": {
+        "lands": {
+          "2": {
+            "cId": 2,
+            "cropStatus": 1,
+            "humidity": 1
+          }
+        }
+      }
+    },
+    {
+      "name": "harvest",
+      "pass": true,
+      "failures": [],
+      "state": {
+        "lands": {
+          "0": {
+            "cId": 2,
+            "cropStatus": 7,
+            "humidity": 1
+          }
+        }
+      }
+    }
+  ]
+}

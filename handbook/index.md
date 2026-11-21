@@ -15,6 +15,7 @@
 | 农田场景渲染（farmLand 视图/控件、背景装饰槽、NPC、qui 窗口 stub 链） | [architecture/farmscene.md](architecture/farmscene.md) | `decompiled main3 module/mainScene/` |
 | 工具区与通用视图（uitools 模块、qui 控件子集、飘字/光标） | [architecture/uitools.md](architecture/uitools.md) | `decompiled main3 module/uitools/`、`com/qzone/qui/`、`common/view/` |
 | 资产声明与本地化加载 | [architecture/assets.md](architecture/assets.md) | `assets/legacy-assets.txt`、根目录 `libraries.xml`、`src/shim/LocalSwfLoader.hx` |
+| 场景运行器与请求对拍（tools/scenario.mjs、场景/基线 JSON、nodeboot 应答分档） | [architecture/scenario-runner.md](architecture/scenario-runner.md) | 判定期望值的出处见 `test/ScenarioRunnerContractTest.hx` 断言消息 |
 | 环境、工具、反直觉的坑 | [lessons/index.md](lessons/index.md) | — |
 
 还没有页面的子系统：翻译完成时由实现 agent 建页并在表里加一行。

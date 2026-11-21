@@ -17,6 +17,7 @@ import framework.net.NetHelper;
 import module.uitools.UIController;
 import module.uitools.UIToolsModel;
 import module.uitools.vo.OfflineData;
+import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
 import openfl.events.Event;
@@ -79,7 +80,10 @@ class LeftSideToolBar extends VBox {
 	private function onMouseOver(param1:MouseEvent):Void {
 		var _loc2_:String = null;
 		if (param1 != null && param1.target != null) {
-			_loc2_ = param1.target.name;
+			// PORT-NOTE: e.target 静态是 openfl Object（=Dynamic），.name 裸读在
+			// js/eval 恒 undefined（openfl get/set 无物理字段，机制见 handbook/
+			// lessons）——(: DisplayObject) 强类型读恢复 AS3 getter 语义
+			_loc2_ = (param1.target : DisplayObject).name;
 			switch (_loc2_) {
 				case "__info__":
 					this.m_controller.showTip(Consts.TIP_NAME_MOUSE, "消息");
@@ -194,7 +198,8 @@ class LeftSideToolBar extends VBox {
 	private function onClick(param1:MouseEvent):Void {
 		var _loc2_:String = null;
 		if (param1 != null && param1.target != null) {
-			_loc2_ = param1.target.name;
+			// PORT-NOTE 同 onMouseOver：.name 强类型读
+			_loc2_ = (param1.target : DisplayObject).name;
 			switch (_loc2_) {
 				case "__info__":
 					this.m_controller.model.clearUnReadMsgFlag();

@@ -44,6 +44,7 @@ class UserActionRecorder {
 
 	public function new() {}
 
-	// UserActionRecorder.as（recordAction：行为上报，上报片翻译）
-	public static function recordAction(param1:String, param2:Dynamic = null):Void {}
+	// UserActionRecorder.as:132（recordAction(param1:String)：行为上报，签名
+	// 照原文单参；上报片翻译，出口按 deviations 不外发）
+	public static function recordAction(param1:String):Void {}
 }

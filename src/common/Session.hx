@@ -219,6 +219,9 @@ class Session {
 			var item:Dynamic = param1[_loc8_];
 			// AS3 `== undefined`：键缺位或值为 null 都算无
 			if (Reflect.field(item, "eType") == null && Reflect.field(item, "type") == null) {
+				// 原文是 C 风格 for(...; _loc8_++)，continue 仍走自增——while 形态
+				// 必须照抄自增防死循环（NavigationBar ctor 同款坑，lessons #9）
+				_loc8_++;
 				continue;
 			}
 			// AS3 `||` 的字符串真值（""/null 让位后者）

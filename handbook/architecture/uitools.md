@@ -13,9 +13,10 @@ legacy 出处：`decompiled main3 module/uitools/`。
   并 initialze，unload finalize，网络停摆（EVENT_NET_CLIENT_ERROR）时
   resetLoadingFlags 复位 model 的加载位。
 - `UIController`（← UIController.as 652 行）：全模块装配与路由。app 级
-  监听 17 条（MSG_STARTUP_DATA/RELOAD/HOST_CHANGED/CURRENT_USER_CHANGED/
-  HEALTH_MODE/ACCEPT_NEW_GIFT/TRUNK_SYSTEM_TOOLBAR/CHECK_LEVELUP/LEVELUP/
-  DELEVE_NEW_ICON/POOL_OPEN/REFRESH_POOLINFO/ADD_COLLECTING_ICON 等），model
+  监听 14 条（registerListeners 13 条：MSG_STARTUP_DATA/RELOAD/HOST_CHANGED/
+  CURRENT_USER_CHANGED/HEALTH_MODE/ACCEPT_NEW_GIFT/TRUNK_SYSTEM_TOOLBAR/
+  CHECK_LEVELUP/LEVELUP/DELEVE_NEW_ICON/POOL_OPEN/REFRESH_POOLINFO/
+  ADD_COLLECTING_ICON + ctor 的 GOLD_LAND_UPDATE_TIME_CHANGE），model
   级 2 条（EVERYDAY_GIFT_ACCEPTED/LEVELUP_GIFTS）。产出：m_toolbar、
   m_navbar、m_personInfo、m_leftSideToolBar、shortcutBar、m_poolInfo 角标
   （FISH_MAX_SIZE 分母）、飞机入口、狗粮到期提示（onGetDogValidTime 走

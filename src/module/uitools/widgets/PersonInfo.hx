@@ -16,6 +16,7 @@ import module.uitools.widgets.profile.Level;
 import module.uitools.widgets.profile.LevelAndExperience;
 import module.uitools.widgets.profile.NameText;
 import module.uitools.widgets.profile.PropertyText;
+import openfl.display.DisplayObject;
 import openfl.display.Loader;
 import openfl.display.MovieClip;
 import openfl.display.Sprite;
@@ -218,7 +219,11 @@ class PersonInfo extends Sprite {
 		if (param1 == null && param1.target == null) {
 			return;
 		}
-		if (param1.target.name == "__vip__" || param1.target.name == "__msg__") {
+		// PORT-NOTE: e.target 静态是 openfl Object（=Dynamic），.name 裸读在
+		// js/eval 恒 undefined（openfl get/set 无物理字段，机制见 handbook/
+		// lessons）——(: DisplayObject) 强类型读恢复 AS3 getter 语义，本类
+		// 三个鼠标处理器同款
+		if ((param1.target : DisplayObject).name == "__vip__" || (param1.target : DisplayObject).name == "__msg__") {
 			this.m_controller.hideTip();
 		}
 	}
@@ -330,7 +335,8 @@ class PersonInfo extends Sprite {
 		if (param1 == null && param1.target == null) {
 			return;
 		}
-		if (param1.target.name == "__experience__" || param1.target.name == "__level__") {
+		// PORT-NOTE 同 onRollOut：.name 经 ( : DisplayObject) 强类型读
+		if ((param1.target : DisplayObject).name == "__experience__" || (param1.target : DisplayObject).name == "__level__") {
 			if (this._isMe == false) {
 				return;
 			}
@@ -338,10 +344,10 @@ class PersonInfo extends Sprite {
 				this._levelAndExp = new LevelAndExperience();
 			}
 			this.m_controller.module.app.farmView.winCtrl.open(this._levelAndExp);
-		} else if (param1.target.name == "__vip__") {
+		} else if ((param1.target : DisplayObject).name == "__vip__") {
 			_loc2_ = Settings.getInstance().getUrlConfigByName("vipIntroduce");
 			NavigateToURL.navigateToURL(new URLRequest(_loc2_));
-		} else if (param1.target.name == "__msg__") {
+		} else if ((param1.target : DisplayObject).name == "__msg__") {
 			this.onLeftMessageClicked(null);
 		}
 	}
@@ -417,9 +423,10 @@ class PersonInfo extends Sprite {
 		if (param1 == null && param1.target == null) {
 			return;
 		}
-		if (param1.target.name == "__vip__") {
+		// PORT-NOTE 同 onRollOut：.name 经 ( : DisplayObject) 强类型读
+		if ((param1.target : DisplayObject).name == "__vip__") {
 			this.m_controller.showTip(Consts.TIP_NAME_MOUSE, "点击查看VIP特权详情");
-		} else if (param1.target.name == "__msg__") {
+		} else if ((param1.target : DisplayObject).name == "__msg__") {
 			this.m_controller.showTip(Consts.TIP_NAME_MOUSE, "给TA留言");
 		}
 	}

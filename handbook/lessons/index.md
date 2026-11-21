@@ -317,4 +317,32 @@
   **定位到具体请求**——浏览器日志不给 URL，交叉证据只有 nodeboot：把 fixture
   值换成 legacy/snapshot 真实载荷再看出网栈；`ERR_NETWORK_CHANGED` 本身
   只说明「请求挂死时被网络事件杀」，挂死的请求是谁才是要查的。
+- **AS3 C 风格 for 的 continue 仍走尾自增，直译 while 必须照抄自增**：
+  Session.addReward（Session.as:199）原文 `for(; _loc8_<len; _loc8_++)`，
+  体内 `continue` 照常推进；直译成 while + 尾部自增后，continue 跳过自增 →
+  任一元素缺 eType/type 键就**死循环**（ShortcutBar.onLevelUpGift/
+  setGiftData/onClicked、UIController.onLevelUpGiftAccepted 四条入口可达，
+  implement 驳回轮逮住）。NavigationBar ctor :97 同坑早有先例注释，Session
+  这处漏了。防：译 C 风格 for 要么写 `for (_loc8_ in 0...len)`，要么 continue
+  前补 `_loc8_++`；全局搜 `continue` 核对所在循环的自增形态。
+- **openfl get/set 属性的裸写和裸读一样落空**：ToolBoxBar.addToolBtn 的
+  `_loc3_.name = param1`（_loc3_ 为 Dynamic）在 js 上落不到 set_name、只挂
+  影子普通字段——onToolClick 的强类型读恒 ""，工具箱按钮全灭。修法
+  `(_loc3_ : DisplayObject).name = param1`（NavigationBar ctor 按钮具名
+  同款）。防：#8 的裸读条目只防了读侧；Dynamic 上的 openfl 属性**赋值**要
+  另全局搜一遍核对。
+- **e.target/currentTarget 的 `.name` 路由读是系统性雷区，别一处一处等
+  CI**：openfl Event 的 target/currentTarget 静态是 Object（=Dynamic），鼠标
+  处理器里 `param1.target.name` 裸读在 js 恒 undefined——#9 驳回轮 6 类十
+  余处一次现形（ShortcutBar/LeftSideToolBar/PersonInfo/NavigationBar 的点击/
+  悬停分发全灭；web-smoke 的驱动只点工具条与地块，这些 widget 点不到，所以
+  不红）。防：新译事件处理器凡按 target 名分发，一律
+  `(param1.target : DisplayObject).name` 起手（FarmLandsView 先例）；同因的
+  `supermarketMove` 裸读 `_loc3_.x/.y` 会 NaN 漂移，坐标读同规则。
+- **AS3 下标键的隐式数组强转走 toString()=join(",")**：
+  StringUtil.getChineseNum 的 `_loc3_[_loc4_]`（_loc4_ 是 Array）——AS3 键
+  强转成 "5"/"2,3"，Haxe `Std.string(Array)` 出 "[5]" 永远查不中数字表。
+  修法按 AS3 语义 `_loc4_.join(",")`。教训的教训：该函数 PORT-NOTE 原本就
+  写着「Array→String "5" 或 "2,3"」，实现却走了 Std.string——PORT-NOTE 与
+  实现对不上时以原文推演为准，别照抄既有实现。
 

@@ -256,7 +256,11 @@ class ShortcutBar extends Box {
 		if (param1 == null || param1.target == null) {
 			return;
 		}
-		var _loc2_:String = param1.target.name;
+		// PORT-NOTE: e.target/currentTarget 静态是 openfl Object（=Dynamic），
+		// `.name` 裸读在 js/eval 上恒 undefined（openfl 的 name 是 get/set、无
+		// 物理字段，机制见 handbook/lessons）——强类型读恢复 AS3 的 getter 语义，
+		// 本处理器按原版只从显示对象收事件（FarmLandsView 同款先例）
+		var _loc2_:String = (param1.target : DisplayObject).name;
 		if (_loc2_ == "__gift__") {
 			if (this._isNewUser == 2) {
 				_loc4_ = this.m_controller.model.loadEveryDayGift();
@@ -663,7 +667,8 @@ class ShortcutBar extends Box {
 		if (param1 == null || param1.target == null) {
 			return;
 		}
-		var _loc2_:String = param1.target.name;
+		// PORT-NOTE 同 onClicked：.name 经 ( : DisplayObject) 强类型读
+		var _loc2_:String = (param1.target : DisplayObject).name;
 		if (_loc2_ == "__gift__") {
 			this.m_controller.showTip(Consts.TIP_NAME_MOUSE, "礼包");
 		} else if (_loc2_ == "__flower__") {

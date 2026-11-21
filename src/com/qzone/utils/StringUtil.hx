@@ -95,7 +95,9 @@ class StringUtil {
 		var _loc3_:Array<Dynamic> = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
 		var _loc4_:Array<Dynamic> = Std.string(param1).split("");
 		for (_loc5_ in (_loc4_ : Array<Dynamic>)) {
-			var key:String = Std.string(_loc4_);
+			// AS3 下标键的数组强转走 toString()=join(",")（"5"/"2,3"）；Haxe
+			// Std.string(Array) 出 "[5]"，永远查不中数字表
+			var key:String = (_loc4_ : Array<Dynamic>).join(",");
 			var v:Dynamic = null;
 			var idx:Int = Std.parseInt(key);
 			if (idx != null && Std.string(idx) == key && idx >= 0 && idx < _loc3_.length) {

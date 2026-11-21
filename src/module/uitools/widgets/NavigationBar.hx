@@ -231,9 +231,13 @@ class NavigationBar extends HBox {
 	// _loc3_ 越过 SHOW_MAX 后固定插到 NAV_APP_TOTAL 位）
 	private function onScrollBar(param1:MouseEvent):Void {
 		var _loc2_:Int = this.showBtnIndex;
-		if (param1.currentTarget.name == "leftArrow") {
+		// PORT-NOTE: e.target/currentTarget 静态是 openfl Object（=Dynamic），
+		// .name 裸读在 js/eval 恒 undefined（openfl get/set 无物理字段，机制见
+		// handbook/lessons）——(: DisplayObject) 强类型读恢复 AS3 getter 语义，
+		// 本类四处分发同款（FarmLandsView 先例）
+		if ((param1.currentTarget : DisplayObject).name == "leftArrow") {
 			--this.showBtnIndex;
-		} else if (param1.currentTarget.name == "rightArrow") {
+		} else if ((param1.currentTarget : DisplayObject).name == "rightArrow") {
 			++this.showBtnIndex;
 		}
 		if (this.showBtnIndex >= NAV_APP_TOTAL || this.showBtnIndex <= -NAV_APP_TOTAL) {
@@ -269,8 +273,10 @@ class NavigationBar extends HBox {
 		var _loc2_:MovieClip = cast(this.getChildByName("__supermarketarrow__"), MovieClip);
 		var _loc3_:Dynamic = this.content.getChildByName("supermarket");
 		if (_loc3_ != null) {
-			_loc2_.x = _loc3_.x + 35;
-			_loc2_.y = _loc3_.y + 30;
+			// PORT-NOTE 同 onScrollBar：x/y 裸读在 js/eval 恒 undefined
+			// （NaN 漂移）——(: DisplayObject) 强类型读
+			_loc2_.x = (_loc3_ : DisplayObject).x + 35;
+			_loc2_.y = (_loc3_ : DisplayObject).y + 30;
 		} else {
 			this.removeSupermarketTip();
 		}
@@ -291,7 +297,9 @@ class NavigationBar extends HBox {
 		var _loc3_:String = null;
 		var _loc4_:String = null;
 		var _loc5_:ViewEvent = null;
-		var _loc2_:String = param1.currentTarget.name;
+		// PORT-NOTE 同 onScrollBar：.name 强类型读（裸读恒 undefined，所有导航
+		// 按钮会落进 default CHILD_CLICK 分支）
+		var _loc2_:String = (param1.currentTarget : DisplayObject).name;
 		if (_loc2_ == "mc") {
 			this.m_controller.module.app.dispatchEvent(new CommonEvent(Consts.MSG_ENTER_MC, 0));
 			UserActionRecorder.recordAction(UserActionRecorder.HF_MYPASTURE_CLICKED);
@@ -346,7 +354,8 @@ class NavigationBar extends HBox {
 			} else {
 				_loc2_ = 0;
 				while (_loc2_ < this.NAV_MAX) {
-					if (param1.target.name == this.BUTTONS_NAME[_loc2_]) {
+					// PORT-NOTE 同 onScrollBar：.name 强类型读
+					if ((param1.target : DisplayObject).name == this.BUTTONS_NAME[_loc2_]) {
 						this.m_controller.showTip(Consts.TIP_NAME_MOUSE, cast(this.BUTTONS_TIP[_loc2_], String));
 						break;
 					}

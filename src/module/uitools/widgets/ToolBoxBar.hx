@@ -82,7 +82,10 @@ class ToolBoxBar extends HBox {
 		if (_loc3_ == null) {
 			return null;
 		}
-		_loc3_.name = param1;
+		// PORT-NOTE: .name 裸写在 js/eval 落不到 openfl 的 set_name（get/set
+		// 无物理字段，裸写只挂影子普通字段）——强类型写恢复 AS3 的 setter 语义
+		// （NavigationBar ctor 按钮具名同款），否则 onToolClick 的强类型读恒 ""
+		(_loc3_ : DisplayObject).name = param1;
 		Reflect.setField(_loc3_, "tipText", param2);
 		_loc3_.addEventListener(MouseEvent.CLICK, this.onToolClick, false, 0, true);
 		_loc3_.addEventListener(MouseEvent.ROLL_OVER, this.onToolRollOver, false, 0, true);

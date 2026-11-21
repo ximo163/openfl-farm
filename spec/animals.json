@@ -69,7 +69,7 @@
                 ],
                 "XML独有属性": "cost/desc/elapse/house/houseLv/iscoinexp/isvip/qdprice/researchable/sf/sound/u/v 在 animaltype 无同名字段（houseLv 与 cLevel 语义不同，未对拍）"
             },
-            "wildinf": "xml.php 不下发。静态资源 module/mc/farm/wild/wild_v_37.xml（mc_main.php:106 <wild url> 引用）内嵌 <beast><info> 镜像：id/name/blood/buyNeedExp/raiseTimes/handleSuccRate/handleBlood/price/saleMoney/raiseExp/stayExp/attackExp/finalAttackExp/isDisplay 与 wildinf 逐字段一致，仅 id=19 恐爪龙 handleSuccRate xml=100 vs config=71（不裁决）；height 为 XML 独有显示参数",
+            "wildinf": "xml.php 不下发。静态资源 module/mc/farm/wild/wild_v_37.xml（mc_main.php:106 <wild url> 引用）内嵌 <beast><info> 镜像：id/name/blood/buyNeedExp/raiseTimes/handleSuccRate/handleBlood/price/saleMoney/raiseExp/stayExp/attackExp/finalAttackExp/isDisplay 与 wildinf 逐字段一致，仅 id=19 恐爪龙两处不同：handleSuccRate xml=100 vs config=71、isDisplay xml=1 vs config=0（不裁决）；height 为 XML 独有显示参数",
             "crystalinf": "xml.php 不下发。module/mc/farm/wild/wild_v_37.xml <crystal><info> 10 条 id/name/sale 与 crystalinf 全部一致（crystalinf 的 type=9 不在 XML；mc_main.php flopCards 的 Drop_9_5/8/1/2 与 crystalinf 5=红水晶/8=橙水晶/1=蓝水晶/2=绿水晶 对应一致）"
         },
         "一致性观察": {

@@ -127,7 +127,7 @@ class ShopController extends Controller {
 
 	// ShopController.as:118-144
 	private function onUnlockFishSuccess(param1:CommonEvent):Void {
-		var xml:Dynamic = null;
+		var xml:Xml = null;
 		var msg:String = null;
 		var data:Dynamic = null;
 		var crystalName:String = null;
@@ -137,16 +137,31 @@ class ShopController extends Controller {
 		}
 		data = e.data;
 		Session.getInstance().updateHostAccount(Std.int(As3.parseInt(Reflect.field(data, "money"))), 0, 0);
-		xml = BeastAPI.getInstance().iniData;
+		xml = cast BeastAPI.getInstance().iniData;
 		msg = "鱼苗解锁成功，共花费金币<font color='#FF6600'>" + Math.abs(As3.floatOf(Reflect.field(data, "money"))) + "</font>";
 		if (As3.hasProp(data, "crystal_num") && As3.hasProp(data, "crystal_id")) {
-			// PORT-NOTE: 原版此分支做 E4X 滤取
-			// `crystalName = xml.crystal.info.(@id == data["crystal_id"].toString()).@name;
-			//  msg += "，" + crystalName + "<font color='#FF6600'>" + data["crystal_num"] + "</font>个";`
-			// E4X 在 Haxe 无对应物；且本部署不可达——cgi_fish_unlock.php 回包只含
-			// code/money/n/fid（无水晶字段），BeastAPI.iniData 保持 null（见
-			// BeastAPI.hx iniData 注）。守卫照译，分支体不追加水晶段；若未来
-			// 牧场片接入需补 XML 取名逻辑（列 spec/deviations.json 人工裁决）。
+			// PORT-NOTE: 原版 E4X `xml.crystal.info.(@id == data["crystal_id"].toString()).@name`
+			// 按 UnlockFishWindow 同一查询的先例等价遍历（haxe.xml，首个 id
+			// 匹配的 name）。本部署该分支**每次解锁成功都进**（cgi_fish_unlock.php:35
+			// 成功回包恒含 crystal_id/crystal_num），而 BeastAPI.iniData 在
+			// main3 全部脚本无赋值点（仅 IGameAPI 声明 + 自身 setter）恒 null——
+			// 原版 `xml.crystal` 在此抛 TypeError 中断：飘字、showStep(
+			// WATER_FISH_ITEM_AGAIN)/autoHide 与 ShopModel.as:135 派发后的
+			// loadFishInfo(true) 全不执行。移植照对应：不加 null 守卫，null 上
+			// 的 elementsNamed 同点抛错中断本监听。唯一残余差异在 html5：
+			// openfl EventDispatcher 把监听器异常引到 uncaught-error 处理
+			// （日志吞掉、不再上抛），ShopModel 派发后的 loadFishInfo 会照跑，
+			// Flash 则沿用户栈解退跳过它——属 openfl 派发器的平台级差异，
+			// 不在本类补偿。
+			for (crystal in xml.elementsNamed("crystal")) {
+				for (info in crystal.elementsNamed("info")) {
+					if (info.get("id") == Std.string(Reflect.field(data, "crystal_id"))) {
+						crystalName = info.get("name");
+						break;
+					}
+				}
+			}
+			msg += "，" + crystalName + "<font color='#FF6600'>" + Std.string(Reflect.field(data, "crystal_num")) + "</font>个";
 		}
 		this.openFloat(Consts.FLOAT_TYPE_TEXTTIP, {
 			"text": msg,

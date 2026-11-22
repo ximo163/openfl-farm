@@ -25,14 +25,15 @@ import shim.As3;
  * 子件（fishName/fishDetail/unlockBtn/crystalBg/goldBg/lvlBg …）经
  * As3.childOf 取出再读写（swf 动态子件规则）。
  *
- * PORT-NOTE: onMaterialCrystalOver/onUnlockFishSuccess 的水晶分支读
- * BeastAPI.iniData 上的 E4X（xml.crystal.info.(@id==…).@name）。本部署该
- * 数据不可达：beast 配置随牧场片翻译（BeastAPI.hx 仍是闭包 stub，
- * iniData 保持 Dynamic 存取），且 unlock 回包（cgi_fish_unlock.php）只含
- * code/n/n/fid/money、无水晶字段。E4X 无 Haxe 对应物，按首个匹配
- * crystal/info 的 id 属性等价遍历（haxe.xml）；iniData 未装载时守卫为
- * 空跳过（原版此处会 NPE，但原版部署里 beast 配置必然已装载——差异仅在
- * 移植版未装载这一不可达状态）。
+ * PORT-NOTE: onMaterialCrystalOver 的水晶名查询读 BeastAPI.iniData 上的
+ * E4X（xml.crystal.info.(@id==…).@name），按仓库先例（FarmLite/
+ * FarmApplication/Settings/ConfigMerger）等价遍历 haxe.Xml（首个 id 匹配
+ * 的 name）。BeastAPI.iniData 在 main3 全部脚本无赋值点（仅 IGameAPI 声明
+ * + 自身 setter）恒 null——原版此处 `xml.crystal` 直接 TypeError，showTip
+ * 不发（fishtype.php 有 10 条 show=1 且水晶需求为正的鱼苗，悬停即触发，
+ * 任何部署都如此）；移植照对应：不加 null 守卫，null 上的 elementsNamed
+ * 同点抛错（ShopController.onUnlockFishSuccess 的水晶分支同此，见该处
+ * PORT-NOTE）。
  */
 class UnlockFishWindow extends BaseWindow {
 	// UnlockFishWindow.as:9
@@ -156,13 +157,11 @@ class UnlockFishWindow extends BaseWindow {
 		var unlockCrystal:Array<Dynamic> = fish._lock_crystal.split(",");
 		if (unlockCrystal.length > 0 && As3.intOf(unlockCrystal[1]) > 0) {
 			var xml:Xml = cast BeastAPI.getInstance().iniData;
-			if (xml != null) {
-				for (crystal in xml.elementsNamed("crystal")) {
-					for (info in crystal.elementsNamed("info")) {
-						if (info.get("id") == unlockCrystal[0]) {
-							crystalName = info.get("name");
-							break;
-						}
+			for (crystal in xml.elementsNamed("crystal")) {
+				for (info in crystal.elementsNamed("info")) {
+					if (info.get("id") == unlockCrystal[0]) {
+						crystalName = info.get("name");
+						break;
 					}
 				}
 			}

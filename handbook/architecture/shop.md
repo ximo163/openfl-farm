@@ -71,13 +71,33 @@ getMaterial 反射）——两者都已锚。
 - **`cropTime(id)` 是 stub 返回 ""**（GetCropID）：split 后越界下标必须
   `As3.arrAt` + `As3.intSub`（null→NaN→0，等于 AS3 undefined 语义），
   别裸读 `_loc4_[4]`。
-- E4X 无对应物：ShopController.onUnlockFishSuccess 的水晶分支（`xml.crystal.
-  info.(@id==…).@name`）在本部署不可达（cgi_fish_unlock.php 回包无水晶
-  字段，BeastAPI.iniData 恒 null），守卫照译、分支体留注——见两侧类头
-  PORT-NOTE。
+- **原版的 null 解引用路径也是行为**：ShopController.onUnlockFishSuccess
+  的水晶分支（`xml.crystal.info.(@id==…).@name`）与 UnlockFishWindow.
+  onMaterialCrystalOver 的同一查询——E4X 按仓库先例（FarmLite/
+  FarmApplication/Settings/ConfigMerger）等价遍历 haxe.Xml。两处**不是
+  死代码**：cgi_fish_unlock.php:35 成功回包恒含 crystal_id/crystal_num
+  （分支每次解锁成功都进），fishtype.php 有 10 条 show=1 且水晶需求为正
+  的鱼苗（悬停即进查询），而 BeastAPI.iniData 全 main3 无赋值点（仅
+  IGameAPI 声明 + 自身 setter）恒 null——原版两处都在 `xml.crystal`
+  抛 TypeError：悬停水晶无提示、解锁成功无飘字/引导/刷新。移植不加
+  null 守卫、在 null 上同点抛错（ShopController/UnlockFishWindow 类头
+  + BeastAPI.hx 三处 PORT-NOTE）。
+- **openfl 派发器对监听器异常的路由与 Flash 不同（平台级）**：Flash 里
+  监听器抛错沿用户栈解退，ShopModel.as:135 派发后的 loadFishInfo(true)
+  被跳过；openfl html5（uncaught-error 默认开）在 EventDispatcher 内
+  catch → `stage.__handleError`（日志）后正常返回，loadFishInfo 照跑。
+  影响一切监听器异常，不属本片可补偿的翻译差异（编译 define 在
+  Project.xml，受保护）——已列 deviations 候选待人工裁决。
 
 ## 已知偏差/待裁决
 
+- **[deviations 候选] openfl 派发器吞监听器异常**（ShopController.
+  onUnlockFishSuccess 水晶分支触发）：原版 Flash 里监听器抛错沿用户栈
+  解退，ShopModel.as:135 派发后的 `loadFishInfo(true)` 被跳过；openfl
+  html5 在 EventDispatcher 内 catch → `stage.__handleError`（仅日志），
+  loadFishInfo 照跑、鱼苗页会刷新。监听器内部行为（抛错点、飘字/引导
+  不执行）已照译一致；差异仅在派发器边界，编译 define 在受保护的
+  Project.xml，本片无法消除——待人工裁决是否入 deviations.json。
 - `AddButtonWindow.init/toCenterPositon` 是 #35 补译段（BuyDiyWindow 的
   `super.init()` 直落）；`addButton`（winButton）本体仍属 qui 窗口片 stub
   恒返 null——BuyDiyWindow 的 `_btnConfirm.enabled` 是**休眠 NPE**

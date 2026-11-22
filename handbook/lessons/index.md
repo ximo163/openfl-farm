@@ -919,3 +919,15 @@
   （ModuleShopTest:41 钉板，接入完成后该断言是「该改期望」的信号——
   本批只在 html5 接入，eval 前提不翻）。防：模块控制器类译完必须查
   反射入口有没有真实编译期引用，没有就进锚表。
+- **「分支不可达」的断言要拿服务端回包逐字段核过**：#35 implement
+  round 1 曾断言 cgi_fish_unlock.php 回包只含 code/money/n/fid、水晶
+  分支不可达而留空——实际 :35 成功回包**恒含** crystal_id/crystal_num，
+  hasOwnProperty 守卫每次解锁成功都真（review 驳回）。防：判定「不可达」
+  前必须打开对应 PHP 看回包字符串，不能凭客户端守卫反推；「E4X 无对应物」
+  也不是留空理由——仓库先例全是等价 Xml 遍历。
+- **原版的 null 解引用/抛错路径也是行为，不许顺手加守卫**：BeastAPI.
+  iniData 全 main3 无赋值点恒 null，原版 ShopController/UnlockFishWindow
+  的水晶查询在 null 上抛 TypeError（悬停无提示、解锁无飘字/引导）——
+  照译成「同点抛错」，加 `xml != null` 守卫或留空分支都是行为偏离，且
+  属未登记 deviations 的私改。防：见到原版会在运行时抛错的点，先查该
+  数据在本部署是否真为 null（grep 赋值点），是就照抛。

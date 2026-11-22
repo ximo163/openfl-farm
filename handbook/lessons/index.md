@@ -965,3 +965,38 @@
   main3 的 Consts.as:586 有、本仓 Consts.hx 此前没译到（#35 用的是
   FAIRY_LADY/FAIRY_GOD）——补行时注释钉 `Consts.as:586`，防后人当
   发明值审掉。
+
+## 2026-11 · #37（pool_v_13 功能 swf：鱼塘整片）
+
+- **`for (x in Array<Dynamic>)` 的循环变量是全新的 Dynamic 绑定，外层
+  `var x:T` 被遮蔽**：AS3 for-each 的 `_loc2_:PoolFish` 译成 Haxe 后，
+  元素上的**属性 getter**（poolSize/animationUrl/fish 这类 `(get,…)`）
+  经动态接收者取值——eval 返 null（`0 + null` 当场崩）、js 落
+  undefined 再进算术变 NaN（**静默错值，比崩险**）；plain 字段和方法
+  动态取没这事。防：`var typed:Array<T> = cast arr; for (x in typed)`
+  （ShopModel「typed 收窄」先例），或循环内 `cast(x, T)`；翻 for-each
+  时看循环体碰的是不是 getter。
+- **写-tests 的「getClass 恒 null」前提会被后续 implement 阶段翻掉，
+  且翻点可能在别的类**：ModuleWaterTest 断言 `_waterCtrl` 反射装配后仍
+  null（#29 存根期前提）；#37 一旦把 FishMover 译出（其 `_waterPool:
+  WaterPool` 签名是原文），FishMoverTest→FishMover→WaterPool→
+  WaterController 的引用链就把控制器带进 eval 类型表，反射变真、构造
+  链在无 Session 的测试环境 NPE。shop/warehouse 同款测试当时绿只是
+  它们的测试集不引用够得着控制器的类。防：写模块壳反射测试时别把
+  「恒 null」当永久断言；implement 阶段撞上就按测试前提过时报
+  NEEDS-TESTS，别为救断言去改 1:1 签名。
+- **openfl `Dictionary` 构造必须显式类型参**：@:multiType 抽象的
+  `new Dictionary()` infer 不出底层 map——赋值目标的 `Dictionary<A,B>`
+  也救不了（「Type parameters of multi type abstracts must be known」）。
+  键值实型写全；键是函数/对象类型才能落 ObjectMap（UIComponent:24 的
+  Dynamic 键陷阱是同一件事的反面）。
+- **CommonData.applicationDomain 原来从没人赋过值**：原版在**外层文档
+  类**（FarmWorld.as:81/FarmLite.as:424）赋 currentDomain，移植以 Main
+  为根后这行缺位——此前无解引用点所以没炸。#37 的 WaterPool 是第一个
+  读它建池的。防：翻译里出现 `CommonData.applicationDomain` 时先确认
+  Main.init 的 boot 胶水（PORT-NOTE(boot)）在。
+- **AS3 VM 的字段零值默认（int 0/Number NaN/Boolean false）在 Haxe 里
+  要显式落**：eval 未赋值字段是 null（`++counter` 直接 "Invalid
+  operation: null + 1"）、js 是 undefined。HealthMode:11 先例；#37 的
+  ObjectPool 计数器三件、FishMover 七个 int 全靠这个起绿。防：类字段
+  表逐个对原文，数值/布尔缺初始化就补 `= 0`/`= Math.NaN`/`= false`。

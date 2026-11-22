@@ -227,6 +227,14 @@ class Main extends MovieClip {
 		Security.allowDomain("imgcache.qq.com");
 		Security.allowDomain("acfs.tencent.com");
 		Security.allowDomain("*");
+		// PORT-NOTE(boot): CommonData.applicationDomain 在原版启动链里由外层
+		// 文档类赋值（mcloader FarmWorld.as:81 / 预加载器 FarmLite.as:424，
+		// 值均为 currentDomain；main3 的 Main.as 只是读）。该外层片尚未翻
+		// 译、移植直接以 Main 为根，这两行缺位；#37 的 WaterPool 是第一个
+		// 解引用点（onCheckLoaded/createPool 的 hasDefinition/getDefinition），
+		// 在此按原值补上（同 FarmWorld.as:81-84）
+		CommonData.applicationDomain = ApplicationDomain.currentDomain;
+		CommonData.APP_DOMAIN = CommonData.applicationDomain;
 		CommonData.getKey = function():String {
 			var _loc1_:String = "OPdfqwn^&*w(281flebnd1##roplaq";
 			var _loc2_:String = Std.string(CommonData.serverTime);

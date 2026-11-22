@@ -16,6 +16,10 @@ class PostWindow extends AddButtonWindow {
 	// PostWindow.as:24
 	private var _text:String;
 
+	// PostWindow.as:34（issue #37：WaterGrayOpen `_tutorial.fixSize = false`；
+	// ctor :71 置 true，:101/:183 定尺寸分支随 messages 片）
+	private var _fixSize:Bool = true;
+
 	// PostWindow.as:38-72（ctor 默认参形态照抄；PostWindowBG 皮肤、边距、
 	// windowName 装配随 messages 片）
 	public function new(param1:IMsgCenter = null, param2:String = "", param3:Dynamic = null, param4:Bool = false) {
@@ -45,6 +49,14 @@ class PostWindow extends AddButtonWindow {
 		if (param1 == null || param1 == "") {
 			return param1;
 		}
+		return param1;
+	}
+
+	// PostWindow.as:237-240（issue #37：WaterGrayOpen 教程窗关尺寸自适应）
+	public var fixSize(never, set):Bool;
+
+	private function set_fixSize(param1:Bool):Bool {
+		this._fixSize = param1;
 		return param1;
 	}
 }

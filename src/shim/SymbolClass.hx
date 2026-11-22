@@ -176,7 +176,21 @@ class SymbolClass {
 				// 经 Utils.getClass 反射构造（编译期零引用），锚住后装配链走通；
 				// 视图/模型/部件经控制器可达，不入表。eval 无锚（本表
 				// #if !eval）：单测以 getClass 恒 null 为前提。
-				module.warehouse.bag.MyBagController, module.warehouse.house.WarehouseController
+				module.warehouse.bag.MyBagController, module.warehouse.house.WarehouseController,
+				// #37 water 片符号：水池底图/石框（WaterPool.createPool 经
+				// CommonData.applicationDomain.getDefinition 反射构造）、
+				// 水池图 PoolMap、鱼详窗 MCFishTip、可捞旗 HarvestFishFlag、
+				// 开池板 WaterOpenBoard、详情窗版面 PoolInfoContent、浪花
+				// FishWave_0-3（showWaterFlower 反射构造）——零外部引用，
+				// 必须锚进来。WaterLand3/StoneFrame1 宿主是 water_v_5。
+				PoolMap, MCFishTip, HarvestFishFlag, WaterOpenBoard, PoolInfoContent,
+				FishWave_0, FishWave_1, FishWave_2, FishWave_3, WaterLand3, StoneFrame1,
+				// #37 water 片控制器：ModuleWater.onModuleLoadSuccess 经 Utils.
+				// getClass("module.water.WaterController") 反射构造（编译期零
+				// 引用），锚住后装配链走通；视图/模型/部件经控制器可达，不入
+				// 表。eval 无锚（本表 #if !eval）：单测以 getClass 恒 null 为
+				// 前提（ModuleWaterTest）。
+				module.water.WaterController
 			];
 		}
 #end

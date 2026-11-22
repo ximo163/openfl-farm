@@ -16,6 +16,10 @@ source/core/module/main3_v_221.swf
 source/core/module/ui/main/farmui_full_v_40.swf
 source/core/module/ui/main/farmui2_v_58.swf
 source/core/module/ui/water_ui_v_0.swf
+# 水池素材库（issue #37）：WaterPool.loadRes 经 getSecondUrl("water") 拉
+# module/ui/water_v_5.swf，SymbolClass 导出 WaterLand3（池水底图，26 帧）/
+# StoneFrame1（池边石框），WaterPool.createPool 反射构造。
+source/core/module/ui/water_v_5.swf
 # FarmLiteView 背景（FarmLiteModel.get_background 默认值；快照 uid=1 同此）：
 source/core/module/ui/farm/diy/1.swf
 #

@@ -64,6 +64,10 @@ class Consts {
 	public static final PLUGIN_AMOUNT_SHORTCUT:Int = 5;
 	// Consts.as:40（FarmLandController 收获倒计时秒数）
 	public static final FARM_LAND_COUNTDOWN:Int = 10;
+	// Consts.as:42（issue #37：WaterPool 切换倒计时秒数）
+	public static final WATER_POOL_COUNTDOWN:Int = 12;
+	// Consts.as:46（issue #37：FishAnimationMgr 鱼池 GC 倒计时秒数）
+	public static final FISH_POOL_GC_COUNTDOWN:Int = 300;
 
 	// 消息名
 	public static final MSG_SESSION_TIMEOUT:String = "SessionTimeout";

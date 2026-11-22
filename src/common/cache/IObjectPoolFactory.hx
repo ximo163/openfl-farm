@@ -1,9 +1,8 @@
 package common.cache;
 
 /**
- * common.cache.IObjectPoolFactory —— issue #37 write-tests 签名 stub
- * （IObjectPoolFactory.as 9 loc，pool_v_13 特有的 common.cache 包）。
- * 字段与方法签名照抄 AS3，体 throw not implemented。
+ * common.cache.IObjectPoolFactory —— IObjectPoolFactory.as 逐句对应（issue
+ * #37 功能 swf 翻译：鱼塘 pool_v_13；pool_v_13 特有的 common.cache 包）。
  */
 interface IObjectPoolFactory {
 	// IObjectPoolFactory.as:8

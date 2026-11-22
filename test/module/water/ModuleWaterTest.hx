@@ -1,13 +1,14 @@
 package module.water;
 
 import common.Consts;
+import common.misc.Utils;
 import events.CommonEvent;
 import module.FarmApplication;
 import utest.Assert;
 
 /**
- * ModuleWater 模块壳纯逻辑（issue #29）：壳语义 + onModuleLoadSuccess 反射
- * 失败分支 + onZoom 空事件/空 data/空控制器三防护。
+ * ModuleWater 模块壳纯逻辑（issue #29）：壳语义 + 反射接入点 + onZoom
+ * 空事件/空 data/空控制器三防护。
  *
  * 出处：
  * - legacy/decompiled/main3_v_221/scripts/module/water/ModuleWater.as
@@ -19,29 +20,40 @@ import utest.Assert;
  *   只在控制器非空分支内、name "Water Pool Module"）
  * - name 与 nc_main.php:17-23 moduleList 的键一致
  *   （Water Pool Module→pool_v_13）。
+ * - issue #37：pool_v_13 真身化后 "module.water.WaterController" 反射
+ *   解析到真身类（onModuleLoadSuccess 的装配串）。
  *
  * onZoom 防护分支用直调收听器的方式钉（ctor 的 addEventListener 是显示
- * 事件面，由 web-smoke 覆盖；本测试不依赖 ctor 挂线）。反射失败分支同
- * ModuleShopTest：openfl 下 getClass 恒 null（probe 验证）。
- * stub 阶段失败点：_reportID 未置；onZoom 为 throw stub（任一调用即失败）。
+ * 事件面，由 web-smoke 覆盖；本测试不依赖 ctor 挂线）。
+ * changed for #37: 原第三测断言「onModuleLoadSuccess 后 _waterCtrl 仍
+ * null」，前提是 #29 时外部 swf 的 AS3 在 openfl 不执行、getClass 恒
+ * null（ModuleShopTest 的前提）。#37 真身化后 getClass 解析成功，
+ * onModuleLoadSuccess 会真装配（createInstance → initialze →
+ * onInitialized(null)（WaterController.as:396 原文如此）→ loadFishes），
+ * 那条链要 Session/网络/farmView 运行环境，纯逻辑单测承载不了；legacy
+ * 真行为是装配成功（onModuleLoadSuccess 以 RSL 加载成功为前提），由
+ * web-smoke 覆盖。这里改为钉反射串一字不差地解析到真身类。
  */
 @:access(framework.base.Module)
 @:access(module.water.ModuleWater)
 class ModuleWaterTest {
 	public function new() {}
 
-	public function test_shell_name_report_id_and_reflection_null_branch() {
+	// changed for #37: 原名 …_reflection_null_branch，断言 onModuleLoadSuccess
+	// 后 _waterCtrl 仍 null（前提已死，见文件头）。现钉 #37 接入点：
+	// ModuleWater.as:83 的反射串一字不差地解析到真身类。直接引用类型作
+	// 编译锚：eval 上 dceAnchor 是 #if !eval，类经 FishMover→WaterPool 链
+	// 才进类型表，锚在测试里本断言才不依赖其它测试文件的存在
+	public function test_shell_name_report_id_and_reflection_resolves_controller() {
 		var app = new FarmApplication();
 		var water = new ModuleWater(app);
 		// ModuleWater.as name override（= Consts.hx:58 "Water Pool Module"）
 		Assert.equals(Consts.MODULE_WATER, water.name);
 		// ModuleWater.as:24（ctor :20-26 落 "160619"）
 		Assert.equals("160619", water._reportID);
-		// onModuleLoadSuccess：getClass("module.water.WaterController")
-		// 在 openfl 下必 null → 失败分支 ctrl 保持 null；
-		// `Cookies.Get("bigmode")=="1"` 在 ctrl 非空分支内 → 失败分支不触
-		water.onModuleLoadSuccess();
-		Assert.isNull(water._waterCtrl);
+		// ModuleWater.as:83 反射串 ↔ 真身类（#37 翻译的 pool_v_13）
+		var expected:Class<Dynamic> = module.water.WaterController;
+		Assert.equals(expected, Utils.getClass("module.water.WaterController"));
 	}
 
 	public function test_load_is_empty_override_and_unload_keeps_loaded() {

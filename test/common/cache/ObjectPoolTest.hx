@@ -167,6 +167,46 @@ class ObjectPoolTest {
 		Assert.equals(2, pool.usageCount);
 	}
 
+	// purge 有借出分支的收集判据：`if(!_loc2_.data)`（:70）收集 data 为
+	// null 的节点——borrow 取走对象时把槽位 data 置 null（:179），所以
+	// null-data 恰是「借出中」的槽位，purge 保留它们并按其数量重定计数
+	// （:80-81 _currSize=_usageCount=len）。非对称形态（借出 1/3）可区分
+	// 「保留借出」与「保留可用」两种读法：前者计数仍 1，后者会洗成 2
+	public function test_purge_keeps_outstanding_borrows_and_recounts_usage() {
+		var pool = new ObjectPool(false);
+		pool.allocate(3, PoolToy);
+		var a = pool.borrow();
+		Assert.equals(1, pool.usageCount);
+
+		pool.purge();
+		Assert.equals(3, pool.size); // :93-95 补足回 initSize
+		Assert.equals(1, pool.usageCount); // :81 = 借出节点数
+		Assert.equals(2, pool.wasteCount);
+
+		var fresh = pool.borrow(); // :110 allocNode 指向补足的新节点
+		Assert.isFalse(fresh == a);
+		Assert.equals(2, pool.usageCount);
+	}
+
+	// 全借出（2/2）后 purge：所有槽位都是借出中的 null-data 节点，原版
+	// 全部保留重链（_loc3_ 非空、_currSize=_usageCount=2、:93 的 2<2 不
+	// 补足），池即刻借尽——grow=false 下再借抛「object pool exhausted.」
+	// （:157-159）。若误把判据反成 data != null，收集表为空，:82 的
+	// _loc3_[0] 取出 null，:92 `_tail.next` 直接空引用
+	public function test_purge_on_fully_borrowed_pool_keeps_all_nodes() {
+		var pool = new ObjectPool(false);
+		pool.allocate(2, PoolToy);
+		var a = pool.borrow();
+		var b = pool.borrow();
+		Assert.equals(2, pool.usageCount);
+
+		pool.purge();
+		Assert.equals(2, pool.size); // :80 全保留、:93 不补足
+		Assert.equals(2, pool.usageCount); // :81
+		Assert.equals(0, pool.wasteCount);
+		Assert.raises(function() pool.borrow(), Error); // :159 借尽
+	}
+
 	// initialze（原版拼写）对全池对象按名反射调方法（:185-197）
 	public function test_initialze_invokes_method_on_all_pooled_objects() {
 		var pool = new ObjectPool(false);
@@ -182,8 +222,12 @@ class ObjectPoolTest {
 		Assert.equals(3, seen);
 	}
 
-	// destroy 清链（:199-211），随后 allocate 重建为全新池（:213-216 先
-	// destroy）：size/usageCount 归零起步，对象为新实例
+	// destroy 清链（:199-211），随后 allocate 重建为全新环（:213-216 先
+	// destroy）：对象为新实例。destroy/allocate 均不复位 _usageCount——
+	// 借出后重建，计数保持 1、wasteCount=2-1，再借一次才 ++ 到 2；计数
+	// 只被 purge（:81）与 borrow（:181）/restore（:124）改写
+	// changed for #37: 原断言期望重建后 usageCount==0，implement 对账指出
+	// 这是臆断——destroy(:199-211)/allocate(:213-239) 无任何复位语句
 	public function test_destroy_then_allocate_rebuilds() {
 		var pool = new ObjectPool(false);
 		pool.allocate(2, PoolToy);
@@ -191,9 +235,11 @@ class ObjectPoolTest {
 		pool.destroy();
 		pool.allocate(2, PoolToy);
 		Assert.equals(2, pool.size);
-		Assert.equals(0, pool.usageCount);
+		Assert.equals(1, pool.usageCount); // 计数保留
+		Assert.equals(1, pool.wasteCount); // :130-133 currSize-usageCount
 		var b = pool.borrow();
 		Assert.isFalse(b == a); // 重建后的新对象
+		Assert.equals(2, pool.usageCount); // :181 ++ 后
 	}
 }
 

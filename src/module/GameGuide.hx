@@ -28,6 +28,13 @@ class GameGuide {
 	// GameGuide.as:32
 	public static final WATER_BAG_ICON_FISH:Int = 6;
 
+	// GameGuide.as:34（issue #36：MyBagController.showFishGuide 的背包鱼苗
+	// 引导步骤号）
+	public static final WATER_BAG_FISH_ITEM:Int = 7;
+
+	// GameGuide.as:36（issue #36：MyBagView.onChildClick 的鱼苗引导派发步）
+	public static final WATER_POOL_CENTER:Int = 8;
+
 	private static var _instance:GameGuide;
 
 	public function new() {}
@@ -60,6 +67,16 @@ class GameGuide {
 
 	// GameGuide.as:127-（引导片翻译；sec<=0 分支的 hide 同片）
 	public function autoHide(param1:Int):Void {}
+
+	// GameGuide.as:143-146（issue #36：currentStep 读 `_step`；引导状态机
+	// 随引导片翻译，stub 保 `_step` 缺位下 MyBagController 的比较可运行）
+	public var currentStep(get, never):Int;
+
+	private function get_currentStep():Int {
+		return this._step;
+	}
+
+	private var _step:Int = 0;
 
 	// GameGuide.as:148-（引导片翻译）
 	public function hide():Void {}

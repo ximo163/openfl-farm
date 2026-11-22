@@ -55,6 +55,9 @@ class UserActionRecorder {
 	public static final HF_PERSONINFO_OPEN:String = "30";
 	// UserActionRecorder.as:62（issue #19：个人信息窗「去 ta 的首页」点击上报）
 	public static final HF_HOMELINK_CLICKED:String = "41";
+	// UserActionRecorder.as:88/:90（issue #36：背包普通/道具页签点击上报）
+	public static final HF_BAG_NORAML_CLICKED:String = "57";
+	public static final HF_BAG_TOOL_CLICKED:String = "58";
 
 	public function new() {}
 

@@ -165,7 +165,18 @@ class SymbolClass {
 				// 装配链走通。ShopView/ShopModel/widgets 经本类可达，不入表。
 				// eval 无锚（本表 #if !eval）：单测以 getClass 恒 null 为前提
 				// （ModuleShopTest:41），锚不能把这个前提翻掉。
-				module.shop.ShopController
+				module.shop.ShopController,
+				// #36 warehouse 片：仓库窗口表单板/卖出锁图标/绿色按钮皮肤/
+				// 背包页签/背包关闭钮/鲜花卡片版式与列表条目两皮肤（全反射构
+				// 造，零外部引用，必须锚进来）；PackClose 宿主是 farmui2_v_58。
+				WarehouseForm, SellLockIcon, ButtonGreen, PackageTab, PackClose,
+				FlowerCardUI,
+				com.qzone.qui.skins.ListItemOverSkin, com.qzone.qui.skins.ListItemSelectedSkin,
+				// #36 warehouse 片控制器：ModuleWarehouse.onModuleLoadSuccess
+				// 经 Utils.getClass 反射构造（编译期零引用），锚住后装配链走通；
+				// 视图/模型/部件经控制器可达，不入表。eval 无锚（本表
+				// #if !eval）：单测以 getClass 恒 null 为前提。
+				module.warehouse.bag.MyBagController, module.warehouse.house.WarehouseController
 			];
 		}
 #end

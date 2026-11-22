@@ -931,3 +931,37 @@
   照译成「同点抛错」，加 `xml != null` 守卫或留空分支都是行为偏离，且
   属未登记 deviations 的私改。防：见到原版会在运行时抛错的点，先查该
   数据在本部署是否真为 null（grep 赋值点），是就照抛。
+
+## 2026-11 · #36（warehouse_v_23 功能 swf：仓库/背包整片）
+
+- **连锁赋值 `a.p = a.q = v` 在本仓工具链上可用，#8 的「拆两行」不是
+  普适硬规则**：haxe 4.3.6 + openfl 9.5.2 下，普通字段与 openfl get/set
+  属性（set_ 返回值类型）的链式赋值都编过、语义同 AS3（`--interp` 探针
+  5,5 + #36 全量 html5 编译绿，MaterialProxyBig.scaleX/scaleY、Loader
+  width/height、TextField multiline/wordWrap 等十余处）。#8 记的
+  BackgroundController.switchMode 拆行可能另有成因（当时未隔离变量）。
+  拆开永不出错、照抄链式也编得过——两边都不是错译，别为合哪条规则
+  去改写另一形态。
+- **scan_dyn_writes 的污染是文件级的：写点分诊先看接收者的声明行**：
+  同文件**别处**的 `var _locN_:Dynamic`（或 producer 赋值）会把该名字
+  整文件染黑——`createSendFlower` 里 `var _loc2_:TextField = new
+  TextField()` 之后的 `.selectable = false` 也被报。#36 全片 42 处命中
+  逐点核对全属此类（接收者实为 TextField/Button/实体类真类型）。防：
+  命中行往上找 `var 同名:` 的**本函数**声明；声明是真类型就是误报，
+  是 Dynamic/无声明才走 CLAUDE.md 三分流。
+- **窗口类覆写 init 还是 addedToLayer 跟原文走，且原文不调 super 就
+  不调**：warehouse 片的 SellFish/SellToolWindow 覆写 `init()`、
+  SellPlant/SendFlower/FlowerCard 覆写 `addedToLayer()`（同片两种形态
+  并存），五者原文都不调 super——BaseWindow 的基类初始化段（底板/
+  closeButton）本来就不为这些窗跑。防：翻窗口先看原文覆写的是哪个
+  钩子、有没有 super 调用，「补全初始化」是行为偏离（#18 super.init
+  条的反向面：super 调用照抄，没有的也照抄）。
+- **`super.data` 属性取值在 Haxe 编得过（编译探针证实），只有普通
+  变量形态被禁**：基类 `(get,set)` 属性经 `super.data` 读走基类 getter
+  （虚派发无歧义）；报错的是 `super.普通字段`。AS3 源里成片的
+  `super.data["k"]` 照写 `Reflect.field(super.data, "k")` 即可，不必
+  拆 this 局部。
+- **Consts 常量按需补进时要带原文件行号**：FAIRY_MONEY=92003 在
+  main3 的 Consts.as:586 有、本仓 Consts.hx 此前没译到（#35 用的是
+  FAIRY_LADY/FAIRY_GOD）——补行时注释钉 `Consts.as:586`，防后人当
+  发明值审掉。

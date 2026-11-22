@@ -101,7 +101,8 @@ class WarehouseController extends Controller {
 		} else {
 			openFloat(Consts.FLOAT_TYPE_TEXTTIP, {
 				"text": Reflect.field(e.data, "direction"),
-				"parent": As3.truthy(this.view.currentPage) ? this.view.currentPage : cast(this.view, Dynamic)
+				// 原文 `currentPage || view`：页面缺位时以窗本体为浮字父级
+				"parent": As3.truthy(this.view.currentPage) ? this.view.currentPage : this.view
 			});
 		}
 		module.app.dispatchEvent(new CommonEvent(Consts.DATA_CROP_RELOAD_FLAG, null));
@@ -121,7 +122,9 @@ class WarehouseController extends Controller {
 		}
 	}
 
-	// WarehouseController.as:117-158
+	// WarehouseController.as:117-158。WarehouseModel 的 EVENT_* 原文
+	// private → @:access 跨类读
+	@:access(module.warehouse.house.WarehouseModel)
 	private function showWarehouseSellEx(param1:Int):Void {
 		var wc:WarehouseCrop = null;
 		var wcIn:Dynamic = null;
@@ -334,7 +337,7 @@ class WarehouseController extends Controller {
 	private function onShowWarehouse(param1:CommonEvent):Void {
 		var _loc2_:BasePage = null;
 		if (param1.data == null) {
-			m_module.app.farmView.winCtrl.open(cast(this.m_view, framework.base.BaseWindow));
+			m_module.app.farmView.winCtrl.open(m_view);
 			this.model.cropDirty = true;
 			this.model.loadCrops();
 			_loc2_ = this.view.currentPage;
@@ -345,15 +348,15 @@ class WarehouseController extends Controller {
 				this.model.loadCrystal();
 			}
 		} else if (As3.truthy(Reflect.field(param1.data, "openWithSeeds"))) {
-			m_module.app.farmView.winCtrl.open(cast(this.m_view, framework.base.BaseWindow));
+			m_module.app.farmView.winCtrl.open(m_view);
 			this.view.switchTab(4);
 			this.model.loadSeeds();
 		} else if (As3.truthy(Reflect.field(param1.data, "openWithFlower"))) {
-			m_module.app.farmView.winCtrl.open(cast(this.m_view, framework.base.BaseWindow));
+			m_module.app.farmView.winCtrl.open(m_view);
 			this.view.switchTab(3);
 			this.model.loadMyFlowers();
 		} else if (As3.truthy(Reflect.field(param1.data, "openWithCrystal"))) {
-			m_module.app.farmView.winCtrl.open(cast(this.m_view, framework.base.BaseWindow));
+			m_module.app.farmView.winCtrl.open(m_view);
 			this.view.switchTab(5);
 			this.model.loadCrystal();
 		}

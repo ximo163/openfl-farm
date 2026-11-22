@@ -85,3 +85,9 @@ source/core/module/mc/main/farmui1_v_42.swf
 # showNewGuide 经 LocalSwfLoader 装载（URL → 库 "help"）：
 source/core/module/ui/main/task_v_2.swf
 source/core/module/ui/main/outswf/help.swf
+#
+# warehouse 模块（issue #36）：功能 UI 代码 swf（nc_data.php secondList →
+# module/ui/warehouse_v_23.swf，文档类 module.warehouse.WarehouseWrapper）。
+# SymbolClass 只有 frame0 文档类（swf-inventory），视觉符号全在 farmui_full_v_40
+# ——本库为原 swf 随包保留 + WarehouseWrapper 加载链对账入库：
+source/core/module/ui/warehouse_v_23.swf

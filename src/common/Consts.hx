@@ -305,6 +305,8 @@ class Consts {
 	public static final ITEM_TYPE_DIY:String = "808080";
 	public static final ORGANIC_FERTILIZER_ID:Int = 30;
 	public static final FAIRY_LADY:Int = 92001;
+	// Consts.as:586（issue #36：PlantsPage 卖出合计的财神爷加成判定）
+	public static final FAIRY_MONEY:Int = 92003;
 	// Consts.as:588（issue #9：AddExpFloating 的花神加成判定）
 	public static final FAIRY_GOD:Int = 92004;
 	// Consts.as:566（issue #9：水池容量角标分母）

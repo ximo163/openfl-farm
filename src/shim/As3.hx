@@ -316,6 +316,26 @@ class As3 {
 	}
 
 	/**
+	 * AS3 的 Array.sortOn(字段, Array.NUMERIC | Array.DESCENDING)（MyBagModel
+	 * .as:143 种子桶 _cId 降序）。NUMERIC 按字段值的数值序比较（与 sortOnDesc
+	 * 的字符串序区分：9 与 10 数值序 10 大，字符串序 "9" 大），DESCENDING 反转
+	 * 比较器；原地排序。
+	 */
+	public static function sortOnNumericDesc(arr:Array<Dynamic>, field:String):Void {
+		arr.sort(function(a:Dynamic, b:Dynamic):Int {
+			var va:Float = floatOf(Reflect.field(a, field));
+			var vb:Float = floatOf(Reflect.field(b, field));
+			if (va > vb) {
+				return -1;
+			}
+			if (va < vb) {
+				return 1;
+			}
+			return 0;
+		});
+	}
+
+	/**
 	 * AS3 全局 unescape（ProfileMsg.as genMsg 的留言正文解转义）：逐个解
 	 * %XX 与 %uXXXX，非法/截断的 % 序列原样保留。与 Haxe
 	 * StringTools.urlDecode 的差别在后者把 "+" 换成空格（AS3 不换，

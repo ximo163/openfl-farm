@@ -100,6 +100,13 @@ class Consts {
 	// Consts.as:296
 	public static final MSG_SHOW_WAREHOUSE:String = "ShowWarehouse";
 	public static final MSG_SHOW_WAREHOUSE_SELL:String = "ShowWarehouseSell";
+	// Consts.as:298（issue #36：WarehouseView 的关闭消息）
+	public static final MSG_HIDE_WAREHOUSE:String = "HideWarehouse";
+	// Consts.as:286/:288/:290（issue #36：PackageTab 页签帧按钮派发，MyBagView
+	// 挂到 m_switchBtn 上）
+	public static final MSG_SWITCH_TO_SEED:String = "seed";
+	public static final MSG_SWITCH_TO_TOOL:String = "tool";
+	public static final MSG_SWITCH_TO_FISH:String = "fish";
 	public static final MSG_SHOW_FREEGIFT:String = "ShowFreegift";
 	public static final MSG_SHOW_DIY:String = "ShowDIY";
 	public static final MSG_SHOW_HEALTHMODE:String = "ShowHealthModeWindow";
@@ -133,6 +140,13 @@ class Consts {
 	public static final MSG_LEVELUP:String = "LevelUp";
 	// Consts.as:362（issue #9：UIController 监听升级检查）
 	public static final MSG_CHECK_LEVELUP:String = "CheckLevelup";
+	// Consts.as:350/:352（issue #36：送花/删花消息，WarehouseController 监听）
+	public static final MSG_FLOWER_SEND:String = "SendFlower";
+	public static final MSG_FLOWER_DELETED:String = "FlowerDeleted";
+	// Consts.as:370（issue #36：鱼苗引导步派发，UIController 引导片消费）
+	public static final MSG_FISH_GUIDE:String = "ShowWaterOpenGuide";
+	// Consts.as:400（issue #36：按 id 卖出时仓库无此作物的兜底消息）
+	public static final MSG_NO_CROP_WAREHOUSE:String = "NoCropInWarehouse";
 	// Consts.as:378（FarmLandsView 鼠标移入显示光标）
 	public static final MSG_SHOW_LAND_CURSOR:String = "ShowLandCursor";
 
@@ -180,7 +194,11 @@ class Consts {
 	public static final DATA_CROP_RELOAD_FLAG:String = "CropsReload";
 	public static final DATA_BAG_RELOAD_FLAG:String = "BagReload";
 	public static final DATA_BAG_DATA_REMOVE:String = "BagDataRemove";
+	// Consts.as:242（issue #36：MyBagController 监听背包条目入列）
+	public static final DATA_BAG_DATA_ADD:String = "BagDataAdd";
 	public static final DATA_DOG_CHANGED:String = "DogDataChanged";
+	// Consts.as:236（issue #36：WarehouseController 监听成鱼数据重装标志）
+	public static final DATA_FISH_RELOAD_FLAG:String = "FishReload";
 	// Consts.as:238（issue #35：买入成功后背包条目入列的 ShopController 派发）
 	public static final DATA_BUY_ITEM_ADD:String = "AddBuyItem";
 	// Consts.as:245（issue #9：ShortcutBar 监听我的鲜花装载）
@@ -215,6 +233,16 @@ class Consts {
 	public static final WINDOW_NAME_BUYDIY:String = "BuyDiyWindow";
 	// Consts.as:200（issue #35：BuyFishWindow 注册名）
 	public static final WINDOW_NAME_BUYFISH:String = "BuyFishWindow";
+	// Consts.as:194（issue #36：送花窗注册名，WarehouseController 注册）
+	public static final WINDOW_NAME_SENDFLOWER:String = "SendFlowerWindow";
+	// Consts.as:196（issue #36：鲜花卡片窗注册名）
+	public static final WINDOW_NAME_FLOWER_CARD:String = "FlowerCard";
+	// Consts.as:204（issue #36：卖出作物/材料窗注册名）
+	public static final WINDOW_NAME_SELLPLANT:String = "SellCropWindow";
+	// Consts.as:206（issue #36：种子管理（卖出种子）窗注册名）
+	public static final WINDOW_NAME_SELLSEED:String = "SellSeedWindow";
+	// Consts.as:208（issue #36：卖出成鱼窗注册名）
+	public static final WINDOW_NAME_SELLFISH:String = "SellFishWindow";
 	// Consts.as:202（issue #35：UnlockFishWindow 注册名）
 	public static final WINDOW_NAME_UNLOCKFISH:String = "UnlockFishWindow";
 	public static final TIP_NAME_MOUSE:String = "MouseTip";
@@ -277,6 +305,8 @@ class Consts {
 	public static final ITEM_TYPE_DIY:String = "808080";
 	public static final ORGANIC_FERTILIZER_ID:Int = 30;
 	public static final FAIRY_LADY:Int = 92001;
+	// Consts.as:586（issue #36：PlantsPage 卖出合计的财神爷加成判定）
+	public static final FAIRY_MONEY:Int = 92003;
 	// Consts.as:588（issue #9：AddExpFloating 的花神加成判定）
 	public static final FAIRY_GOD:Int = 92004;
 	// Consts.as:566（issue #9：水池容量角标分母）
@@ -298,6 +328,12 @@ class Consts {
 	public static final DECOR_BILLBOARD:UInt = 9;
 	public static final GOLD_LAND_UPDATE_TIME_CHANGE:String = "GOLD_LAND_UPDATE_TIME_CHANGE";
 	public static final APP_ID:Int = 353;
+	// Consts.as:532-538（issue #36：仓库四仓位——collectNotLockedIDs 四路、
+	// isEmpty 槽表、WarehouseView 页签位）
+	public static final WAREHOUSE_CROP:Int = 1;
+	public static final WAREHOUSE_FLOWER:Int = 2;
+	public static final WAREHOUSE_CARD:Int = 3;
+	public static final WAREHOUSE_FISH:Int = 4;
 	// Consts.as:546（issue #9：餐厅跳转 appid）
 	public static final RESTAURANT_APPID:Int = 372;
 	public static final PAY_QD:Int = 1;

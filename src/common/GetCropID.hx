@@ -9,11 +9,13 @@ import shim.As3;
  * common.GetCropID —— 闭包成员补齐（issue #8，V3b 场景渲染片）。
  * 原版 legacy/decompiled/main3_v_221/scripts/common/GetCropID.as（772 loc > 100，
  * issue 闭包规则整类不翻）；本片用到的成员按行号逐句照抄：
- * - SG_*（:12-18）、_toolList（:20-43）、idToDiyUrl2（:81-107）、
+ * - SG_*（:12-18）、_toolList（:20-43）、_toolNameMap/_weaponNameMap/
+ *   _fishToolNameMap（:44-75）、idToDiyUrl2（:81-107）、
  *   getSeedUrl（:109-140）、getCropUrl（:142-178）、getHarvrstUrl（:180-199）、
  *   timeToMature（:201-228）、idToDiyUrl（:230-265）、getCropByID（:267-287）、
  *   idToToolName（:289-297）、getAssetUrl（:299-341）、fishTip（:342-354）、
- *   getInsectPosition（:356-373）、cropTip（:461-473）、getFishByID（:537-557）、
+ *   getInsectPosition（:356-373）、cropTip（:461-473）、
+ *   getNameByIDType（:475-535）、getFishByID（:537-557）、
  *   specialGrow（:559-587）、idState
  *   （:589-664）、idToDogUrl（:666-701）、getFishUrl（:703-723）、
  *   idToBoardUrl（:739-772）。
@@ -52,6 +54,41 @@ class GetCropID {
 		"9104": "OrganicFertilizer2Ex",
 		"9105": "OrganicFertilizer3Ex",
 		"9106": "OrganicFertilizer4Ex"
+	};
+
+	// GetCropID.as:44-58（issue #36：getNameByIDType 的道具 id → 名称表）
+	private static final _toolNameMap:Dynamic = {
+		"1": "化肥",
+		"2": "高速化肥",
+		"3": "极速化肥",
+		"7": "飞速化肥",
+		"30": "普通有机肥",
+		"31": "高级有机肥",
+		"32": "极速有机肥",
+		"33": "飞速有机肥",
+		"34": "翻倍卡",
+		"9001": "狗粮",
+		"9104": "高级有机肥(特惠)",
+		"9105": "极速有机肥(特惠)",
+		"9106": "飞速有机肥(特惠)"
+	};
+
+	// GetCropID.as:60-68
+	private static final _weaponNameMap:Dynamic = {
+		"1": "青铜箭矢",
+		"2": "银羽箭矢",
+		"3": "黄金箭矢",
+		"4": "水拔子",
+		"5": "青铜飞刀",
+		"6": "白银飞刀",
+		"7": "黄金飞刀"
+	};
+
+	// GetCropID.as:70-75
+	private static final _fishToolNameMap:Dynamic = {
+		"1": "普通鱼食",
+		"2": "高级鱼食",
+		"3": "超级鱼食"
 	};
 
 	public function new() {}
@@ -305,6 +342,57 @@ class GetCropID {
 			return "";
 		}
 		return Reflect.field(_loc2_, "tip");
+	}
+
+	// GetCropID.as:475-535（issue #36：getNameByIDType：按类型串 + id 查物品
+	// 名称——warehouse 花束 need 行的 cName 走此入口。控制流照原版字面：
+	// TOOL/WEAPON/FISHFEED 三表查在 FISH 分支的 else 里，FISH 命中失败时
+	// 落「未知物品」；三表查无键 AS3 得 undefined、经 String 返回类型强转
+	// 为 null，Reflect.field 同形）
+	public static function getNameByIDType(param1:String, param2:String):String {
+		var _loc3_:Dynamic = null;
+		var _loc4_:Dynamic = null;
+		if (param1 == Consts.ITEM_TYPE_DOG) {
+			return "农场狗";
+		}
+		if (param1 == Consts.ITEM_TYPE_DECORATE) {
+			return "装饰";
+		}
+		if (param1 == Consts.ITEM_TYPE_EXP) {
+			return "经验";
+		}
+		if (param1 == Consts.ITEM_TYPE_MONEY) {
+			return "金币";
+		}
+		if (param2 == null || param2 == "") {
+			return "未知物品";
+		}
+		if (param2 == "9001") {
+			return "狗粮";
+		}
+		if (param1 == Consts.ITEM_TYPE_SEED) {
+			_loc3_ = getCropByID(param2);
+			if (_loc3_ != null) {
+				return Reflect.field(_loc3_, "name");
+			}
+		}
+		if (param1 == Consts.ITEM_TYPE_FISH) {
+			_loc4_ = getFishByID(param2);
+			if (_loc4_ != null) {
+				return Reflect.field(_loc4_, "crop_name");
+			}
+		} else {
+			if (param1 == Consts.ITEM_TYPE_TOOL) {
+				return Reflect.field(_toolNameMap, param2);
+			}
+			if (param1 == Consts.ITEM_TYPE_WEAPON) {
+				return Reflect.field(_weaponNameMap, param2);
+			}
+			if (param1 == Consts.ITEM_TYPE_FISHFEED) {
+				return Reflect.field(_fishToolNameMap, param2);
+			}
+		}
+		return "未知物品";
 	}
 
 	// GetCropID.as:559-587（specialGrow：按 m0/m4 有无素材判定特殊种子/特殊枯苗档）

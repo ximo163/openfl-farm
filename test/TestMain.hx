@@ -136,6 +136,23 @@ class TestMain {
 		runner.addCase(new module.shop.ShopModelTest());
 		runner.addCase(new com.qzone.qui.makers.StepperMakerTest());
 		runner.addCase(new entities.AdItemTest());
+		// issue #36：warehouse 功能 swf 翻译（write-tests 阶段，对 stub 失败）——
+		// WarehouseModel 纯逻辑：六页签装载门位与 LOADING/DATA_CHANGED 派发
+		// （index 表 0 蔬果/1 种子/2 花束/3 材料/5 成鱼）、作物应答单表拆三仓
+		// （isFlower==1 → flowers、type==11 → cards、其余 → crops，crystals 后拼
+		// 进 cards）、(lvl,id) 排序与 crops_sort _sort 表、配置补丁（isFlower/
+		// isLock/isFood/isVIP 守卫 + isLock 2→0 归一）、allFlower 缺料计算
+		// （lack/canMake/pic/swf/cName）、collectNotLockedIDs 四路过滤、isEmpty
+		// 槽表、removeSeed 递减/移除、上锁应答三仓/鱼仓回写（未命中派发残留
+		// 尾元素）、出售应答分支（sale/saleAll/saleSeed/sellAllSeeds/saleFish/
+		// saleAllFish 的 code/errorType/direction 派发与 num 回填）、送花扣料与
+		// m_sendFlowerID、onTransactionFailed 文案、onLoadDataError 恒不派发
+		// FAILED（:318 恒真门）；MyBagModel 纯逻辑：分栏（种子 sortOn _cId 数值
+		// 降序前置，其余 crops_sort 升序、未列 -1 最前、_cId 0 → 99 垫尾）、
+		// 鱼苗 fish_info 合并（lifecycle 独占来源）、fillterType 三栏（鱼食插
+		// 首个武器下标，无武器垫尾）、reload 门位、deleteItem 首命中
+		runner.addCase(new module.warehouse.house.WarehouseModelTest());
+		runner.addCase(new module.warehouse.bag.MyBagModelTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

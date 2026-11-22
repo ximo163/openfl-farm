@@ -117,4 +117,13 @@
     <library path="assets/legacy/source/core/module/ui/main/task_v_2.swf" id="task_v_2" />
     <library path="assets/legacy/source/core/module/ui/main/outswf/help.swf" id="help" />
 
+    <!-- warehouse 模块（issue #36）：功能 UI 代码 swf（nc_data.php secondList →
+         module/ui/warehouse_v_23.swf，文档类 module.warehouse.WarehouseWrapper，
+         swf-inventory：SymbolClass 仅 frame0 文档类、29 类全是 scripts）。控制器
+         层已译进本工程（ModuleWarehouse 反射装配，见 SymbolClass.dceAnchor #36 段），
+         视觉符号宿主是 farmui_full_v_40——本库为原 swf 随包保留 + 加载链对账
+         入库，不 preload：原版为运行期网络加载。与 assets/legacy-assets.txt
+         同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/warehouse_v_23.swf" id="warehouse_v_23" />
+
 </project>

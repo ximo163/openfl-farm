@@ -176,7 +176,63 @@ class SymbolClass {
 				// 经 Utils.getClass 反射构造（编译期零引用），锚住后装配链走通；
 				// 视图/模型/部件经控制器可达，不入表。eval 无锚（本表
 				// #if !eval）：单测以 getClass 恒 null 为前提。
-				module.warehouse.bag.MyBagController, module.warehouse.house.WarehouseController
+				module.warehouse.bag.MyBagController, module.warehouse.house.WarehouseController,
+				// #37 water 片符号：水池底图/石框（WaterPool.createPool 经
+				// CommonData.applicationDomain.getDefinition 反射构造）、
+				// 水池图 PoolMap、鱼详窗 MCFishTip、可捞旗 HarvestFishFlag、
+				// 开池板 WaterOpenBoard、详情窗版面 PoolInfoContent、浪花
+				// FishWave_0-3（showWaterFlower 反射构造）——零外部引用，
+				// 必须锚进来。WaterLand3/StoneFrame1 宿主是 water_v_5。
+				PoolMap, MCFishTip, HarvestFishFlag, WaterOpenBoard, PoolInfoContent,
+				FishWave_0, FishWave_1, FishWave_2, FishWave_3, WaterLand3, StoneFrame1,
+				// #37 water 片控制器：ModuleWater.onModuleLoadSuccess 经 Utils.
+				// getClass("module.water.WaterController") 反射构造（编译期零
+				// 引用），锚住后装配链走通；视图/模型/部件经控制器可达，不入
+				// 表。eval 无锚（本表 #if !eval）：单测以 getClass 恒 null 为
+				// 前提（ModuleWaterTest）。
+				module.water.WaterController,
+				// #37 鱼动画符号族：17 个鱼动画库（fish_01..17，nc_data.php:7564
+				// fish_info asset_id.m）导出的 FS_<型两位>_<档0-2>_<向0|2>（游动/
+				// 待机，102 枚）与 FJ_<型>_<档>_<向>（跳跃：全型 _2_2，仅型 1/2/3
+				// 另有 _2_0）。FishMover.checkResource/spawn 经
+				// ApplicationDomain.hasDefinition/getDefinition（openfl 即
+				// Type.resolveClass，只看编译期类表）查名——shim 不注册则鱼永
+				// 不生成、捞/喂/偷 hitTest 全打不中；FishMCPoolObjectMgr 按
+				// Class 键入池。attempt 1 review 驳回点即此链断裂。鱼型 10 的
+				// fish_10.swf 把跳跃符号误导出为 FJ_01_2_2（与 fish_01 撞名，
+				// dump_swf.php 可证），同名 shim 只能绑一库，按符号名归
+				// fish_01（deviations 候选）。
+				FS_01_2_0, FS_01_1_0, FS_01_0_0, FS_01_2_2, FS_01_1_2, FS_01_0_2, FJ_01_2_0, FJ_01_2_2,
+				FS_02_2_0, FS_02_1_0, FS_02_0_0, FS_02_2_2, FS_02_1_2, FS_02_0_2, FJ_02_2_0, FJ_02_2_2,
+				FS_03_2_0, FS_03_1_0, FS_03_0_0, FS_03_2_2, FS_03_1_2, FS_03_0_2, FJ_03_2_0, FJ_03_2_2,
+				FS_04_2_0, FS_04_1_0, FS_04_0_0, FS_04_2_2, FS_04_1_2, FS_04_0_2, FJ_04_2_2,
+				FS_05_2_0, FS_05_1_0, FS_05_0_0, FS_05_2_2, FS_05_1_2, FS_05_0_2, FJ_05_2_2,
+				FS_06_2_0, FS_06_1_0, FS_06_0_0, FS_06_2_2, FS_06_1_2, FS_06_0_2, FJ_06_2_2,
+				FS_07_2_0, FS_07_1_0, FS_07_0_0, FS_07_2_2, FS_07_1_2, FS_07_0_2, FJ_07_2_2,
+				FS_08_2_0, FS_08_1_0, FS_08_0_0, FS_08_2_2, FS_08_1_2, FS_08_0_2, FJ_08_2_2,
+				FS_09_2_0, FS_09_1_0, FS_09_0_0, FS_09_2_2, FS_09_1_2, FS_09_0_2, FJ_09_2_2,
+				FS_10_2_0, FS_10_1_0, FS_10_0_0, FS_10_2_2, FS_10_1_2, FS_10_0_2,
+				FS_11_2_0, FS_11_1_0, FS_11_0_0, FS_11_2_2, FS_11_1_2, FS_11_0_2, FJ_11_2_2,
+				FS_12_2_0, FS_12_1_0, FS_12_0_0, FS_12_2_2, FS_12_1_2, FS_12_0_2, FJ_12_2_2,
+				FS_13_2_0, FS_13_1_0, FS_13_0_0, FS_13_2_2, FS_13_1_2, FS_13_0_2, FJ_13_2_2,
+				FS_14_2_0, FS_14_1_0, FS_14_0_0, FS_14_2_2, FS_14_1_2, FS_14_0_2, FJ_14_2_2,
+				FS_15_2_0, FS_15_1_0, FS_15_0_0, FS_15_2_2, FS_15_1_2, FS_15_0_2, FJ_15_2_2,
+				FS_16_2_0, FS_16_1_0, FS_16_0_0, FS_16_2_2, FS_16_1_2, FS_16_0_2, FJ_16_2_2,
+				FS_17_2_0, FS_17_1_0, FS_17_0_0, FS_17_2_2, FS_17_1_2, FS_17_0_2, FJ_17_2_2,
+				// #37 鱼苗图标：fish_seed_01..17（fish_info asset_id.s）各导出
+				// 单符号 Fish_<型>。PoolInfoWindow.onLoaded 经 Utils.getMaterial、
+				// MaterialProxy ITEM_TYPE_FISH 经 requestClass（getFishName）
+				// 反射构造。
+				Fish_1, Fish_2, Fish_3, Fish_4, Fish_5, Fish_6, Fish_7, Fish_8, Fish_9,
+				Fish_10, Fish_11, Fish_12, Fish_13, Fish_14, Fish_15, Fish_16, Fish_17,
+				// #37 喂鱼食族（宿主 Fertilizer_v_7，secondList id="Fertilizer"）：
+				// FishFoodEffect 喂食特效（FishMover.playFeedEffect 的
+				// Utils.getMaterial）、FishFood_1-4 鱼食道具图（MaterialProxy
+				// requestClass——shim 缺席时 requestClass 的 COMPLETE 重试会
+				// 打转，见 RSLManager.requestClass）、Cursor_FishFood_1-4 光标
+				// （CursorTool）。库内其余符号属 tools/dogs 模块，后续 issue。
+				FishFoodEffect, FishFood_1, FishFood_2, FishFood_3, FishFood_4,
+				Cursor_FishFood_1, Cursor_FishFood_2, Cursor_FishFood_3, Cursor_FishFood_4
 			];
 		}
 #end

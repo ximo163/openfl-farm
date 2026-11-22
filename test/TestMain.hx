@@ -153,6 +153,24 @@ class TestMain {
 		// 首个武器下标，无武器垫尾）、reload 门位、deleteItem 首命中
 		runner.addCase(new module.warehouse.house.WarehouseModelTest());
 		runner.addCase(new module.warehouse.bag.MyBagModelTest());
+		// issue #37：pool 功能 swf 翻译（write-tests 阶段，对 stub 失败）——
+		// WaterModel 纯逻辑：装载门位（loadFishes pending 闸 + reset/
+		// checkWhiteList）、cgi_fish_index 应答（null 关塘/数组装载 + 逐鱼
+		// calcNextStepTime）、canSteal 判定表（checkAll 短路/thief 名单/
+		// left>min）、harvestAll 返回码（-3/-2/-1/0，主人侧不看 min 与
+		// thief）、单捞/放/喂副作用位、cgi_fish_harvest 应答（单对象 exp
+		// 升级 + 出队 + FISH_HARVESTED、数组起批 BATCH_FISH(2)）、
+		// cgi_fish_steal 应答（thief 补记 + status 回写 + remove 判定）、
+		// processBatchFish 队列推进、growLoop 成熟结算单飞与两连发封顶、
+		// onGetOutput 匹配回写、onNetError 七 cmdID 派发表（open 关塘/
+		// output 记账/「服务器错误.」缺省文案/steal 双路）；FishMover 纯面：
+		// formatFishName 符号命名（FS/FJ + 补零 + level 钳 2）、
+		// equalZeroSpeed 0.05 阈值、stop 冻结语义、ctor 初始态；ObjectPool
+		// 对象池：借尽抛错/grow 翻档/restore 同实例复用/purge 两分支/
+		// initialze 反射调用/SimpleFactory null 类
+		runner.addCase(new module.water.WaterModelTest());
+		runner.addCase(new module.water.FishMoverTest());
+		runner.addCase(new common.cache.ObjectPoolTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

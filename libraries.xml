@@ -24,6 +24,13 @@
     <library path="assets/legacy/source/core/module/ui/main/farmui_full_v_40.swf" id="farmui_full_v_40" />
     <library path="assets/legacy/source/core/module/ui/main/farmui2_v_58.swf" id="farmui2_v_58" />
     <library path="assets/legacy/source/core/module/ui/water_ui_v_0.swf" id="water_ui_v_0" />
+    <!-- 水池素材库（issue #37）：WaterPool.loadRes 经 Settings.getSecondUrl
+         ("water") 拉 module/ui/water_v_5.swf（LocalSwfLoader 按文件名映射库名），
+         SymbolClass 导出 WaterLand3（池水底图）/StoneFrame1（池边石框），
+         WaterPool.createPool 经 CommonData.applicationDomain 反射构造同名
+         shim 类。不 preload：原版为运行期网络加载。与
+         assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/water_v_5.swf" id="water_v_5" />
     <!-- FarmLiteView 背景图（FarmLiteModel.get_background：默认
          module/ui/farm/diy/1.swf；快照 uid=1 的 decorative items["1"].itemId
          也是 1，user_run.php 输出同一 URL） -->
@@ -125,5 +132,63 @@
          入库，不 preload：原版为运行期网络加载。与 assets/legacy-assets.txt
          同 commit 增删 -->
     <library path="assets/legacy/source/core/module/ui/warehouse_v_23.swf" id="warehouse_v_23" />
+
+    <!-- water 模块鱼动画族（issue #37）：17 种鱼各一个动画库（fish_info
+         asset_id.m，nc_data.php:7564）。FishAnimationMgr.loadFishes 经
+         LoadManager 按 PoolFish.animationUrl（GetCropID.getFishUrl(type,false)）
+         预载，LocalSwfLoader 按 URL 尾段映射库名；SymbolClass 导出
+         FS_<型>_<档>_<向>/FJ_…（游动/跳跃），同名 shim 类（src/FS_*.hx 等）
+         经 FishMCPoolObjectMgr 反射构造。鱼型 11 的 m 档 URL 是
+         fish_11.swf（asset 9694）、部署包文件名大写 Fish_11.swf——path 按
+         磁盘大小写、id 取 URL 尾段。fish_10_v_3.swf 无配置引用（死资产），
+         不入库。不 preload：原版为运行期网络加载。与
+         assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_01.swf" id="fish_01" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_02.swf" id="fish_02" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_03.swf" id="fish_03" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_04.swf" id="fish_04" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_05.swf" id="fish_05" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_06.swf" id="fish_06" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_07.swf" id="fish_07" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_08.swf" id="fish_08" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_09.swf" id="fish_09" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_10.swf" id="fish_10" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/Fish_11.swf" id="fish_11" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_12.swf" id="fish_12" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_13.swf" id="fish_13" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_14.swf" id="fish_14" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_15.swf" id="fish_15" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_16.swf" id="fish_16" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_17.swf" id="fish_17" />
+    <!-- 鱼苗图标库（fish_info asset_id.s）：导出 Fish_<型> 单符号，
+         PoolInfoWindow 信息窗与 MaterialProxy ITEM_TYPE_FISH 经
+         requestClass("Fish_<型>", …, getFishUrl(type,true)) 构造同名 shim
+         （src/Fish_<型>.hx）。与 assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_01.swf" id="fish_seed_01" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_02.swf" id="fish_seed_02" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_03.swf" id="fish_seed_03" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_04.swf" id="fish_seed_04" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_05.swf" id="fish_seed_05" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_06.swf" id="fish_seed_06" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_07.swf" id="fish_seed_07" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_08.swf" id="fish_seed_08" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_09.swf" id="fish_seed_09" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_10.swf" id="fish_seed_10" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_11.swf" id="fish_seed_11" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_12.swf" id="fish_seed_12" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_13.swf" id="fish_seed_13" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_14.swf" id="fish_seed_14" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_15.swf" id="fish_seed_15" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_16.swf" id="fish_seed_16" />
+    <library path="assets/legacy/source/core/module/ui/farm/fish/fish_seed_17.swf" id="fish_seed_17" />
+    <!-- 喂鱼食族宿主（issue #37）：secondList id="Fertilizer"（nc_addon.php
+         :271）。本次只接喂鱼链路用到的符号——FishFoodEffect（喂食特效，
+         FishMover.playFeedEffect）、FishFood_1-4（MaterialProxy）、
+         Cursor_FishFood_1-4（CursorTool），同名 shim 见 src/；库内其余
+         （化肥/狗粮/狗/工具光标）属 tools/dogs 模块后续 issue。原版由装备
+         鱼食的 requestClass 拉起；MaterialProxy 命中 shim 后短路，库由
+         SymbolClass.bind 按需拉起。不 preload。与
+         assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/tools/Fertilizer_v_7.swf" id="Fertilizer_v_7" />
 
 </project>

@@ -965,3 +965,64 @@
   main3 的 Consts.as:586 有、本仓 Consts.hx 此前没译到（#35 用的是
   FAIRY_LADY/FAIRY_GOD）——补行时注释钉 `Consts.as:586`，防后人当
   发明值审掉。
+
+## 2026-11 · #37（pool_v_13 功能 swf：鱼塘整片）
+
+- **`for (x in Array<Dynamic>)` 的循环变量是全新的 Dynamic 绑定，外层
+  `var x:T` 被遮蔽**：AS3 for-each 的 `_loc2_:PoolFish` 译成 Haxe 后，
+  元素上的**属性 getter**（poolSize/animationUrl/fish 这类 `(get,…)`）
+  经动态接收者取值——eval 返 null（`0 + null` 当场崩）、js 落
+  undefined 再进算术变 NaN（**静默错值，比崩险**）；plain 字段和方法
+  动态取没这事。防：`var typed:Array<T> = cast arr; for (x in typed)`
+  （ShopModel「typed 收窄」先例），或循环内 `cast(x, T)`；翻 for-each
+  时看循环体碰的是不是 getter。
+- **写-tests 的「getClass 恒 null」前提会被后续 implement 阶段翻掉，
+  且翻点可能在别的类**：ModuleWaterTest 断言 `_waterCtrl` 反射装配后仍
+  null（#29 存根期前提）；#37 一旦把 FishMover 译出（其 `_waterPool:
+  WaterPool` 签名是原文），FishMoverTest→FishMover→WaterPool→
+  WaterController 的引用链就把控制器带进 eval 类型表，反射变真、构造
+  链在无 Session 的测试环境 NPE。shop/warehouse 同款测试当时绿只是
+  它们的测试集不引用够得着控制器的类。防：写模块壳反射测试时别把
+  「恒 null」当永久断言；implement 阶段撞上就按测试前提过时报
+  NEEDS-TESTS，别为救断言去改 1:1 签名。
+- **openfl `Dictionary` 构造必须显式类型参**：@:multiType 抽象的
+  `new Dictionary()` infer 不出底层 map——赋值目标的 `Dictionary<A,B>`
+  也救不了（「Type parameters of multi type abstracts must be known」）。
+  键值实型写全；键是函数/对象类型才能落 ObjectMap（UIComponent:24 的
+  Dynamic 键陷阱是同一件事的反面）。
+- **CommonData.applicationDomain 原来从没人赋过值**：原版在**外层文档
+  类**（FarmWorld.as:81/FarmLite.as:424）赋 currentDomain，移植以 Main
+  为根后这行缺位——此前无解引用点所以没炸。#37 的 WaterPool 是第一个
+  读它建池的。防：翻译里出现 `CommonData.applicationDomain` 时先确认
+  Main.init 的 boot 胶水（PORT-NOTE(boot)）在。
+- **AS3 VM 的字段零值默认（int 0/Number NaN/Boolean false）在 Haxe 里
+  要显式落**：eval 未赋值字段是 null（`++counter` 直接 "Invalid
+  operation: null + 1"）、js 是 undefined。HealthMode:11 先例；#37 的
+  ObjectPool 计数器三件、FishMover 七个 int 全靠这个起绿。防：类字段
+  表逐个对原文，数值/布尔缺初始化就补 `= 0`/`= Math.NaN`/`= false`。
+- **ObjectPool.purge 的 `if(!_loc2_.data)` 收集的是「借出中」的槽位，方向
+  极易读反**：borrow(:179) 取走对象时把节点 data 置 null，所以 falsy（=
+  null）恰是借出槽——purge 保留它们、按数量重定 `_usageCount`，再补足
+  initSize。#37 implement 曾译成收集 data 非空节点（直觉上是「留有货的」），
+  write-tests 阶段才对出：全借出池 purge 时反向判据让收集表为空、
+  `_loc3_[0]` 取 null、`_tail.next` 空引用。防：环形池这类「槽位置 null
+  表示在用」的约定先追 borrow/restore 的写点再定判据方向；判据配非对称
+  用例（借出 1/N）测，别只测全空闲。
+- **功能 swf 的「运行期装载符号族」要整族入库+建 shim，光译类不接资产链
+  等于永久砍功能**：pool_v_13 #37 attempt 1 把 14 类全译对，但鱼动画
+  fish_01..17.swf 族没进 libraries.xml/legacy-assets.txt、FS_*/FJ_* 没建
+  同名 shim——openfl 的 ApplicationDomain.hasDefinition/getDefinition 就是
+  Type.resolveClass（只看编译期类表，不看已载库符号），checkResource 恒
+  false、鱼永不生成、捞/喂/偷 hitTest 全打不中；handbook 里写「= 原版
+  swf 未加载时的状态」是自我开脱——原版那是加载窗口的暂态，移植版是
+  永久态，review 驳回即此。防：spec/modules/<模块>.json 每个类的
+  assets 段（pattern/via/evidence）逐条落到「库声明 + 符号 shim +
+  dceAnchor」三件套；swf 的导出符号名以 tools/dump_swf.php 实测为准，
+  别按命名约定脑补（fish_10 的跳跃符号就导出成了 FJ_01_2_2）。
+- **往工程加一个被 requestClass 查询的库时，该库被查的名字要一次建全
+  shim**：RSLManager.requestClass 的类未命中路径是「载完库 → COMPLETE
+  回调重查 → 仍 null → 再载」——库不存在时 LocalSwfLoader onError 走
+  IOErrorEvent 结束，库存在而符号 shim 缺席则无限重载。#37 接
+  Fertilizer_v_7 时把 MaterialProxy 会查的 FishFood_1-4、CursorTool 会查
+  的 Cursor_FishFood_1-4、playFeedEffect 会查的 FishFoodEffect 一并建齐
+  才算接完（库内其余符号归 tools/dogs 模块，那两个 issue 接手时同理）。

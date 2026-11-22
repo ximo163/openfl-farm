@@ -9,6 +9,14 @@ import openfl.display.DisplayObjectContainer;
  */
 @:keep
 class GameGuide {
+	// GameGuide.as:18（issue #37：WaterGrayOpen.onTutorialClosed 置位，引导片
+	// 消费；AS3 public static var）
+	public static var toggle_water:Bool = false;
+
+	// GameGuide.as:20（issue #37：WaterGrayOpen 教程关闭后亮起的商店鱼 tab
+	// 引导步骤号）
+	public static final WATER_SHOP_ICON:Int = 0;
+
 	// GameGuide.as:22-32（issue #35 闭包成员补齐：ShopView/ShopController/
 	// 买入窗口的鱼苗引导步骤号；其余常量随引导片翻译）
 	public static final WATER_FISH_TAB:Int = 1;

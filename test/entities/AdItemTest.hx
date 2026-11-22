@@ -21,7 +21,7 @@ import utest.Assert;
  * - legacy/deploy/QFarmFlash/source/core/source/nc/mod/view_fcg.php:6-10
  *   （部署桩只回 {} / ret0+data[...].ret1，不下发条目——键名取自
  *   ShopModel.onGetAdvertisementInfo 读的 list 行，调用方传原行引用）
- * - legacy/decompiled/happyfarm3_v_149/scripts/common/misc/Utils.as:192-201
+ * - legacy/decompiled/happyfarm3_v_149/scripts/common/misc/Utils.as:192-207
  *   （getStrAttribute：null 对象/空键名/缺键 → ""，其余原样返回；
  *   Haxe 在 Utils.hx:173-185）
  */
@@ -37,7 +37,7 @@ class AdItemTest {
 
 		var partial = new AdItem({img: "http://i/x.png"});
 		Assert.equals("http://i/x.png", partial._img);
-		Assert.equals("", partial._rl); // 缺键 → getStrAttribute ""（Utils.as:198-199）
+		Assert.equals("", partial._rl); // 缺键 → getStrAttribute ""（Utils.as:202-204）
 		Assert.equals("", partial._acurl);
 
 		// 空对象：三键全缺 → 全 ""（与 null 入参的「保持 null」形成对照）

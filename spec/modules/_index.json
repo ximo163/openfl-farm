@@ -30,6 +30,117 @@
    "reason": "整模块砍除（所有者 2026-11-21 决定）：未翻译的 125 条不再移植，活动功能不可用；已存在的 32 个 .hx（entities.HealthMode、cursor.CursorWild*、common.view.window.GiftWindow 族、module.FreeGift/cardsgame/quickshoot/recall 壳、monthend.MonthEndWin stub 等，被 farm 侧引用或已顺手翻）保留现状不回删。详见 spec/deviations.json module-activities-cut"
   }
  ],
+ "external": {
+  "description": "功能 UI swf 分组（issue #30）：nc_main.php moduleList 中 main3 之外异步加载的界面 swf，控制器由 main3 侧桩经 Utils.getClass 解析（加载进 main3 子 ApplicationDomain）。这些类不计入 breakdown 与 counts_check——对账口径不变：805 只覆盖 main3+Master2，功能 swf 另计（external.total_classes = 77 = Σ 各清单 counts.classes）。",
+  "sources": [
+   "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php:9-24（moduleList）",
+   "legacy/decompiled/shop_v_7/scripts/（25 类，symbolclass 仅 frame0=module.shop.ShopWrapper）",
+   "legacy/decompiled/warehouse_v_23/scripts/（29 类，symbolclass 仅 frame0=module.warehouse.WarehouseWrapper）",
+   "legacy/decompiled/pool_v_13/scripts/（14 类，symbolclass 仅 frame0=module.water.WaterWrapper）",
+   "legacy/decompiled/decorate_v_0/scripts/（9 类，symbolclass 仅 frame0=module.decorate.DecorateWrapper）"
+  ],
+  "swfs": {
+   "shop_v_7": {
+    "module_spec": "spec/modules/farm-shop-ui.json",
+    "classes": 25,
+    "document_class": "module.shop.ShopWrapper",
+    "pull": "main3 module/shop/ModuleShop.as:47 Utils.getClass(\"module.shop.ShopController\")"
+   },
+   "warehouse_v_23": {
+    "module_spec": "spec/modules/inventory-ui.json",
+    "classes": 29,
+    "document_class": "module.warehouse.WarehouseWrapper",
+    "pull": "main3 module/warehouse/ModuleWarehouse.as:43,50 Utils.getClass(\"module.warehouse.bag.MyBagController\") / (\"module.warehouse.house.WarehouseController\")"
+   },
+   "pool_v_13": {
+    "module_spec": "spec/modules/water-ui.json",
+    "classes": 14,
+    "document_class": "module.water.WaterWrapper",
+    "pull": "main3 module/water/ModuleWater.as:77 Utils.getClass(\"module.water.WaterController\")"
+   },
+   "decorate_v_0": {
+    "module_spec": "spec/modules/farm-decorate-ui.json",
+    "classes": 9,
+    "document_class": "module.decorate.DecorateWrapper",
+    "pull": "main3 module/decorate/ModuleDecorate.as:47 Utils.getClass(\"module.decorate.DecorateController\")"
+   }
+  },
+  "total_classes": 77,
+  "moduleList_reconciliation": [
+   {
+    "module": "(moduleList 外) <loading>",
+    "url": "module/loading2_v_3.swf",
+    "disposition": "不在 moduleList 内（nc_main.php:7 <loading> 预加载器）：5 个主代码 swf 之一，本 issue 四清单不涉及",
+    "source": "nc_main.php:7"
+   },
+   {
+    "module": "main",
+    "url": "module/main3_v_221.swf",
+    "disposition": "805 内（breakdown 各模块）",
+    "source": "nc_main.php:10"
+   },
+   {
+    "module": "main/material",
+    "url": "module/ui/main/farmui_full_v_40.swf",
+    "disposition": "资产型，不入类清单：moduleList 语义为 main 的 <material> 素材预载（statusText=\"加载UI素材...\"），非代码 swf、无反编译产物",
+    "source": "nc_main.php:11"
+   },
+   {
+    "module": "main/material",
+    "url": "module/ui/main/farmui2_v_58.swf",
+    "disposition": "资产型，不入类清单：同 farmui_full_v_40（main 的 material 素材预载）",
+    "source": "nc_main.php:12"
+   },
+   {
+    "module": "main/material",
+    "url": "module/ui/water_ui_v_0.swf",
+    "disposition": "资产型，不入类清单：main 的 material 素材预载，鱼塘/商店鱼苗页共用符号（shop_v_7 ShopView.loadFishUIRes 的 secondList 查询在本部署无 id=\"water_ui\" 条目、返回空）",
+    "source": "nc_main.php:13；legacy/decompiled/shop_v_7/scripts/module/shop/ShopView.as:598-606"
+   },
+   {
+    "module": "Shop Module",
+    "url": "module/ui/shop_v_7.swf",
+    "disposition": "farm-shop-ui（25 类）",
+    "source": "nc_main.php:16"
+   },
+   {
+    "module": "Decorate Module",
+    "url": "module/ui/decorate_v_0.swf",
+    "disposition": "farm-decorate-ui（9 类）；module/ui/main/decorate_v_0.swf 为同 md5 副本、无配置引用",
+    "source": "nc_main.php:17"
+   },
+   {
+    "module": "Warehouse Module",
+    "url": "module/ui/warehouse_v_23.swf",
+    "disposition": "inventory-ui（29 类）",
+    "source": "nc_main.php:18"
+   },
+   {
+    "module": "Quick Shoot Module",
+    "url": "module/ui/quickshoot_v_0.swf",
+    "disposition": "不入类清单：activities 砍除模块的 UI（main3 壳 module.quickshoot 已随保留批译为 stub，UI swf 未反编译、整模块不移植）",
+    "source": "nc_main.php:20；本文件 ignored.activities；spec/deviations.json module-activities-cut"
+   },
+   {
+    "module": "Cards Module",
+    "url": "module/ui/cards_v_1.swf",
+    "disposition": "不入类清单：activities 砍除模块的 UI（module.cardsgame 壳已随保留批译为 stub，UI swf 未反编译、不移植）",
+    "source": "nc_main.php:21；本文件 ignored.activities；spec/deviations.json module-activities-cut"
+   },
+   {
+    "module": "FreeGift Module",
+    "url": "module/ui/gifts_v_11.swf",
+    "disposition": "不入类清单：activities 砍除模块的 UI（module.FreeGift 壳已随保留批译为 stub，UI swf 未反编译、不移植）",
+    "source": "nc_main.php:22；本文件 ignored.activities；spec/deviations.json module-activities-cut"
+   },
+   {
+    "module": "Water Pool Module",
+    "url": "module/ui/pool_v_13.swf",
+    "disposition": "water-ui（14 类）",
+    "source": "nc_main.php:23"
+   }
+  ]
+ },
  "counts_check": {
   "modules_sum": 648,
   "ignored_unported": 125,

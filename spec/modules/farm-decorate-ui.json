@@ -1,0 +1,178 @@
+{
+ "version": 1,
+ "module": "farm-decorate-ui",
+ "swf": "decorate_v_0",
+ "description": "DIY 装饰界面本体：module/ui/decorate_v_0.swf（module.decorate 一族 9 类；main3 侧桩在 farm-decorate 模块）。窗口两页签：装饰/告示牌，另经 PluginManager.amountPlugins(PLUGIN_AMOUNT_DECORATE) 在 index=2 加插件扩展页签；装饰启用/停用走 item.activeItem/deactiveItem，告示牌列表来自 Settings.getBillBoardData()（XML 配置下发，非 mod 请求）。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php:17（Decorate Module → module/ui/decorate_v_0.swf）",
+  "legacy/decompiled/decorate_v_0/scripts/（9 类；symbolclass/symbols.csv 仅 frame0=module.decorate.DecorateWrapper）",
+  "legacy/decompiled/main3_v_221/scripts/framework/net/ServerServices.as m_cmdMap（CMD 常量→mod 串）",
+  "spec/protocol.json entries.nc（mod 参数/返回权威，S1）"
+ ],
+ "notes": [
+  "拉起链同 farm-shop-ui：main3 侧桩经 Utils.getClass(\"module.decorate.DecorateController\") 取控制器（MSG_SHOW_DIY 打开；openBillBoard=true 直开告示牌页，plugin_tab 按名切页）。",
+  "decorate_v_0 自身不带 qui 副本，com.qzone.qui.*/com.qzone.qfa.*/com.qzone.utils.* 全部引用 main3（farm-basic）的共享库——加载域同 main3 份。",
+  "DecorateModel.selectDecorate/selectBoard 先 deactive 旧项再 active 新项（CMD_DEACTIVE_DECORATE→CMD_ACTIVE_DECORATE 两次请求），setMyDecorate 从启动数据回填 myDogID/myBoardID/defaultBackground。",
+  "module/ui/main/decorate_v_0.swf 与 module/ui/decorate_v_0.swf 为同文件两份拷贝（md5 4d27022909c45bf3584d57d3ef8cbcdc），moduleList 引用的是后者，main/ 下副本无配置引用。"
+ ],
+ "counts": {
+  "classes": 9
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/DecorateController.as",
+   "class": "module.decorate.DecorateController",
+   "swf": "decorate_v_0",
+   "subsystem": "控制器",
+   "loc": 104,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/DecorateModel.as",
+   "class": "module.decorate.DecorateModel",
+   "swf": "decorate_v_0",
+   "subsystem": "模型",
+   "loc": 634,
+   "mods": [
+    {
+     "mod": "item",
+     "act": "activeItem",
+     "via": "DecorateModel.as selectBoard/selectDecorate() → CommandDefs.CMD_ACTIVE_DECORATE → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "item",
+     "act": "deactiveItem",
+     "via": "DecorateModel.as selectBoard/selectDecorate() → CommandDefs.CMD_DEACTIVE_DECORATE → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "item",
+     "act": "getUserItems",
+     "via": "DecorateModel.as loadItems() → CommandDefs.CMD_GET_DIY_ITEMS → main3 framework/net/ServerServices.as m_cmdMap"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "farm-decorate"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/DecorateView.as",
+   "class": "module.decorate.DecorateView",
+   "swf": "decorate_v_0",
+   "subsystem": "视图（窗口+两页签+插件扩展位）",
+   "loc": 400,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "farm-decorate"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/DecorateWrapper.as",
+   "class": "module.decorate.DecorateWrapper",
+   "swf": "decorate_v_0",
+   "subsystem": "入口壳",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/widgets/BoardRenderItem.as",
+   "class": "module.decorate.widgets.BoardRenderItem",
+   "swf": "decorate_v_0",
+   "subsystem": "条目渲染：告示牌",
+   "loc": 84,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "告示牌 swf（GetCropID.idToBoardUrl：model \"boards\" 表 asset_id → getAssetUrl）",
+     "via": "MaterialProxyBig.loadBillBoard(GetCropID.idToBoardUrl(id))（缩略图 setContent(Consts.DECOR_BILLBOARD, id)）",
+     "evidence": "decorate_v_0/scripts/module/decorate/widgets/BoardRenderItem.as:48-76"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/widgets/BoardsPage.as",
+   "class": "module.decorate.widgets.BoardsPage",
+   "swf": "decorate_v_0",
+   "subsystem": "页签：告示牌",
+   "loc": 77,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/widgets/DecorHeadRenderItem.as",
+   "class": "module.decorate.widgets.DecorHeadRenderItem",
+   "swf": "decorate_v_0",
+   "subsystem": "条目渲染：头部装饰",
+   "loc": 95,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "装饰/狗图标 swf（同 DecorRenderItem）",
+     "via": "MaterialProxyBig.setContent(ITEM_TYPE_DOG(_itemId-80000) / ITEM_TYPE_DECORATE, id, big)",
+     "evidence": "decorate_v_0/scripts/module/decorate/widgets/DecorHeadRenderItem.as:49-68"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "farm-decorate"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/widgets/DecorRenderItem.as",
+   "class": "module.decorate.widgets.DecorRenderItem",
+   "swf": "decorate_v_0",
+   "subsystem": "条目渲染：装饰（含狗舍 DOG=itemId-80000 分支）",
+   "loc": 97,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "装饰/狗图标 swf（main3 MaterialProxy ITEM_TYPE_DECORATE / ITEM_TYPE_DOG 分支）",
+     "via": "MaterialProxyBig.setContent(Consts.ITEM_TYPE_DECORATE 或 ITEM_TYPE_DOG(_itemId-80000), id, big)",
+     "evidence": "decorate_v_0/scripts/module/decorate/widgets/DecorRenderItem.as:71-90"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "farm-decorate"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/decorate_v_0/scripts/module/decorate/widgets/DecorsPage.as",
+   "class": "module.decorate.widgets.DecorsPage",
+   "swf": "decorate_v_0",
+   "subsystem": "页签：装饰",
+   "loc": 396,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "farm-decorate"
+   ]
+  }
+ ]
+}

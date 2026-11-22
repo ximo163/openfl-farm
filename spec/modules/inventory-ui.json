@@ -1,0 +1,601 @@
+{
+ "version": 1,
+ "module": "inventory-ui",
+ "swf": "warehouse_v_23",
+ "description": "仓库+背包界面本体：module/ui/warehouse_v_23.swf（module.warehouse 一族 29 类；main3 侧实体/解析器在 inventory/water 模块）。仓库窗口（BaseWindow）六页签：蔬果/鲜花（PlantsPage isFlower 两用）/成鱼/收到的花束（QzoneJSAPI.QPLUS||WB 平台不建）/种子/材料（卡片/水晶）；背包（MyBag，Sprite 浮层）道具/种子两栏。出售（单品/全部/成鱼）、上锁（作物/鱼）、送花、花束 swf 全屏播放。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php:18（Warehouse Module → module/ui/warehouse_v_23.swf）",
+  "legacy/decompiled/warehouse_v_23/scripts/（29 类；symbolclass/symbols.csv 仅 frame0=module.warehouse.WarehouseWrapper）",
+  "legacy/decompiled/main3_v_221/scripts/framework/net/ServerServices.as m_cmdMap（CMD 常量→mod 串）",
+  "spec/protocol.json entries.nc（mod 参数/返回权威，S1）"
+ ],
+ "notes": [
+  "拉起链同 farm-shop-ui：main3 桩 module.warehouse.ModuleWarehouse 经 Utils.getClass(\"module.warehouse.bag.MyBagController\")（背包）与 Utils.getClass(\"module.warehouse.house.WarehouseController\")（仓库）各取控制器（ModuleWarehouse.as:43,50；打开消息 MSG_SHOW_WAREHOUSE=\"ShowWarehouse\"、MSG_SHOW_PACK=\"ShowMyPackage\"，main3 Consts.as:278,296）。",
+  "本 swf 由 main3 加载进其子 ApplicationDomain：qui/greensock 共享库绑定 main3 份（farm-basic），cross_module_imports 不记 pasture。",
+  "默认包（无 import）引用 main3 顶层 EvtAPI/IBeastAPI/IGameAPI（MyBagView/WarehouseModel/WarehouseView）：这三个类登记在已砍除的 activities 清单里，其中 EvtAPI 已随保留批译为 src/EvtAPI.hx；IBeastAPI/IGameAPI 未移植，翻译本模块时如需请按 deviations 流程提请裁决。",
+  "cgi_farm_flower_del_msg（FlowerCard 删除花语留言）为 dead mod：$mod_list 命中但 PHP 文件缺失（protocol.json dead_mods），调用无输出——客户端按钮行为照译。",
+  "花束资源路径 <flowerPath>/<fId>.swf 与 .gif 由 cgi_farm_flower_received 响应的 flowerPath 字段下发（服务端数据，不在 swf-inventory 固定清单）；FlowerPlayer 加载后 2 秒自动关闭（setTimeout 2000，含 IOError 即关分支）。",
+  "本地 qui 副本 HList/ListBase/ListItemRenderer/ListItemDefaultSkin/StepperMaker 为本 swf 自带编译版（main3 无 listClasses 包；Master2 有但绑定不经过它）；StepperMaker 与 shop_v_7 逐字一致。"
+ ],
+ "counts": {
+  "classes": 29
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/com/qzone/qui/controls/HList.as",
+   "class": "com.qzone.qui.controls.HList",
+   "swf": "warehouse_v_23",
+   "subsystem": "qui 库本地副本：横向列表",
+   "loc": 67,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/com/qzone/qui/controls/listClasses/ListBase.as",
+   "class": "com.qzone.qui.controls.listClasses.ListBase",
+   "swf": "warehouse_v_23",
+   "subsystem": "qui 库本地副本：列表基类",
+   "loc": 533,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/com/qzone/qui/controls/listClasses/ListItemRenderer.as",
+   "class": "com.qzone.qui.controls.listClasses.ListItemRenderer",
+   "swf": "warehouse_v_23",
+   "subsystem": "qui 库本地副本：列表条目渲染器",
+   "loc": 180,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/com/qzone/qui/makers/StepperMaker.as",
+   "class": "com.qzone.qui.makers.StepperMaker",
+   "swf": "warehouse_v_23",
+   "subsystem": "qui 库本地副本：数量步进器（与 shop_v_7 同文件逐字一致）",
+   "loc": 249,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "FocusEvent.FOCUS_OUT",
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.ROLL_OUT",
+    "TimerEvent.TIMER"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/com/qzone/qui/skins/ListItemDefaultSkin.as",
+   "class": "com.qzone.qui.skins.ListItemDefaultSkin",
+   "swf": "warehouse_v_23",
+   "subsystem": "qui 库本地副本：列表条目默认皮肤",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/common/view/Line.as",
+   "class": "common.view.Line",
+   "swf": "warehouse_v_23",
+   "subsystem": "公共视图本地副本：分隔线",
+   "loc": 19,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/common/view/MaterialProxyBig.as",
+   "class": "common.view.MaterialProxyBig",
+   "swf": "warehouse_v_23",
+   "subsystem": "公共视图本地副本：物品图标代理（同包引用 main3 common.view.MaterialProxy，未 import；ResourceManager 在 happyfarm3 预加载器）",
+   "loc": 35,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/WarehouseWrapper.as",
+   "class": "module.warehouse.WarehouseWrapper",
+   "swf": "warehouse_v_23",
+   "subsystem": "入口壳",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/bag/MyBagController.as",
+   "class": "module.warehouse.bag.MyBagController",
+   "swf": "warehouse_v_23",
+   "subsystem": "背包控制器",
+   "loc": 202,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/bag/MyBagModel.as",
+   "class": "module.warehouse.bag.MyBagModel",
+   "swf": "warehouse_v_23",
+   "subsystem": "背包模型",
+   "loc": 268,
+   "mods": [
+    {
+     "mod": "repertory",
+     "act": "getUserSeed",
+     "via": "MyBagModel.as reload() → CommandDefs.CMD_GET_BAG_DATA → main3 framework/net/ServerServices.as m_cmdMap"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/bag/MyBagView.as",
+   "class": "module.warehouse.bag.MyBagView",
+   "swf": "warehouse_v_23",
+   "subsystem": "背包视图（Sprite，道具/种子两栏）",
+   "loc": 614,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.ADDED_TO_STAGE",
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "cross_module_imports": [
+    "activities",
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/bag/PackItem.as",
+   "class": "module.warehouse.bag.PackItem",
+   "swf": "warehouse_v_23",
+   "subsystem": "条目渲染：背包",
+   "loc": 142,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "道具/种子图标 swf（main3 MaterialProxy 按 _type 分发）",
+     "via": "MaterialProxyBig.setContent(_type.toString(), _cId)",
+     "evidence": "warehouse_v_23/scripts/module/warehouse/bag/PackItem.as:85,105"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/WarehouseController.as",
+   "class": "module.warehouse.house.WarehouseController",
+   "swf": "warehouse_v_23",
+   "subsystem": "仓库控制器",
+   "loc": 427,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/WarehouseModel.as",
+   "class": "module.warehouse.house.WarehouseModel",
+   "swf": "warehouse_v_23",
+   "subsystem": "仓库模型",
+   "loc": 1169,
+   "mods": [
+    {
+     "mod": "cgi_farm_getusercrop",
+     "via": "WarehouseModel.as loadCrops() → CommandDefs.CMD_GET_WAREHOUSE_CROPS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "raw": "cgi_farm_get_usercrystal&phpye=phpye",
+     "note": "特殊分发：不带 mod=，mync.php 按 $_REQUEST[phpye]==\"phpye\" 强制 cgi_farm_get_usercrystal（protocol.json nc.dispatch.special）",
+     "via": "WarehouseModel.as loadCrystal() → CommandDefs.CMD_GET_WAREHOUSE_CRYSTAL → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_user_rep",
+     "via": "WarehouseModel.as loadFishs() → CommandDefs.CMD_GET_WAREHOUSE_FISH → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_flower_received",
+     "via": "WarehouseModel.as loadMyFlowers() → CommandDefs.CMD_GET_WAREHOUSE_MYFLOWERS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_seed_list",
+     "via": "WarehouseModel.as loadSeeds() → CommandDefs.CMD_GET_WAREHOUSE_SEEDS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "repertory",
+     "act": "saleAll",
+     "via": "WarehouseModel.as sellAll() → CommandDefs.CMD_SELL_ALL_PLANTS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_seed_sell",
+     "via": "WarehouseModel.as sellAllSeeds() → CommandDefs.CMD_SELL_ALL_SEEDS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "raw": "cgi_farm_sell_crystal",
+     "via": "WarehouseModel.as sellCrystal() → CommandDefs.CMD_SELL_CRYSTAL → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "repertory",
+     "act": "sale",
+     "via": "WarehouseModel.as sellPlant() → CommandDefs.CMD_SELL_PLANT → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_seed_sell",
+     "via": "WarehouseModel.as sellSeed() → CommandDefs.CMD_SELL_SEED → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_sale",
+     "via": "WarehouseModel.as sellAllFish/sellFish() → CommandDefs.CMD_SELL_WAREHOUSE_FISH → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_flower_send",
+     "via": "WarehouseModel.as sendFlower() → CommandDefs.CMD_SEND_FLOWER → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_rep_lock",
+     "via": "WarehouseModel.as storeUserFishLockInfo() → CommandDefs.CMD_UPDATE_FISH_LOCK → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_set_lock",
+     "via": "WarehouseModel.as storeUserCropLockInfo() → CommandDefs.CMD_UPDATE_LOCK → main3 framework/net/ServerServices.as m_cmdMap"
+    }
+   ],
+   "assets": [
+    {
+     "pattern": "花束资源 <flowerPath>/<fId>.swf 与 .gif（flowerPath 由 cgi_farm_flower_received 响应下发）",
+     "via": "WarehouseModel.processAllFlowers() 组 url（加载在 FlowerPlayer）",
+     "evidence": "warehouse_v_23/scripts/module/warehouse/house/WarehouseModel.as:1017-1018"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "activities",
+    "farm-basic",
+    "inventory",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/WarehouseView.as",
+   "class": "module.warehouse.house.WarehouseView",
+   "swf": "warehouse_v_23",
+   "subsystem": "仓库视图（窗口+六页签）",
+   "loc": 651,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/CardsPage.as",
+   "class": "module.warehouse.house.widgets.CardsPage",
+   "swf": "warehouse_v_23",
+   "subsystem": "页签：材料（卡片/水晶）",
+   "loc": 164,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/FishRenderItem.as",
+   "class": "module.warehouse.house.widgets.FishRenderItem",
+   "swf": "warehouse_v_23",
+   "subsystem": "条目渲染：成鱼",
+   "loc": 159,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "成鱼图标 swf（GetCropID.getFishUrl）",
+     "via": "MaterialProxyBig.setContent(Consts.ITEM_TYPE_FISH, id)",
+     "evidence": "warehouse_v_23/scripts/module/warehouse/house/widgets/FishRenderItem.as:75"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/FlowerCard.as",
+   "class": "module.warehouse.house.widgets.FlowerCard",
+   "swf": "warehouse_v_23",
+   "subsystem": "部件：花束卡片（花语/删除）",
+   "loc": 256,
+   "mods": [
+    {
+     "mod": "cgi_farm_flower_del_msg",
+     "note": "dead mod：$mod_list 命中但 source/nc/mod/cgi_farm_flower_del_msg.php 不存在（protocol.json dead_mods），调用无输出",
+     "via": "FlowerCard.as deleteFlower() → CommandDefs.CMD_DEL_MYFLOWER → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_flower_get_card",
+     "via": "FlowerCard.as setData() → CommandDefs.CMD_GET_FLOWER_WORDS → main3 framework/net/ServerServices.as m_cmdMap"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/FlowerPlayer.as",
+   "class": "module.warehouse.house.widgets.FlowerPlayer",
+   "swf": "warehouse_v_23",
+   "subsystem": "部件：花束 swf 全屏播放",
+   "loc": 116,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "<flowerPath>/<fId>.swf（服务端下发路径；2 秒后自动关闭，含 IOError 关闭分支）",
+     "via": "FlowerPlayer.play() → Loader.load(new URLRequest(Utils.addPrefix(swfUrl)))",
+     "evidence": "warehouse_v_23/scripts/module/warehouse/house/widgets/FlowerPlayer.as:57-87"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/FlowerRenderItem.as",
+   "class": "module.warehouse.house.widgets.FlowerRenderItem",
+   "swf": "warehouse_v_23",
+   "subsystem": "条目渲染：收花",
+   "loc": 200,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/PlantRenderItem.as",
+   "class": "module.warehouse.house.widgets.PlantRenderItem",
+   "swf": "warehouse_v_23",
+   "subsystem": "条目渲染：蔬果/鲜花/材料",
+   "loc": 212,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "卡片/水晶/种子图标 swf（GetCropID.getSeedUrl 的 CARD/CRYSTAL 分支 → asset_id.m，module/ui/allcards 系）",
+     "via": "MaterialProxyBig.setContent(Consts.ITEM_TYPE_CARD/CRYSTAL/SEED, id)",
+     "evidence": "warehouse_v_23/scripts/module/warehouse/house/widgets/PlantRenderItem.as:88-103"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/PlantsPage.as",
+   "class": "module.warehouse.house.widgets.PlantsPage",
+   "swf": "warehouse_v_23",
+   "subsystem": "页签：蔬果/鲜花（isFlower 两用）",
+   "loc": 645,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/RecvFlowersPage.as",
+   "class": "module.warehouse.house.widgets.RecvFlowersPage",
+   "swf": "warehouse_v_23",
+   "subsystem": "页签：收到的花束（QPLUS/WB 平台不建）",
+   "loc": 138,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/SellFishWindow.as",
+   "class": "module.warehouse.house.widgets.SellFishWindow",
+   "swf": "warehouse_v_23",
+   "subsystem": "出售窗口：成鱼",
+   "loc": 297,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "成鱼图标 swf",
+     "via": "MaterialProxyBig.setContent(_type, id)",
+     "evidence": "warehouse_v_23/scripts/module/warehouse/house/widgets/SellFishWindow.as:212"
+    }
+   ],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/SellPlantWindow.as",
+   "class": "module.warehouse.house.widgets.SellPlantWindow",
+   "swf": "warehouse_v_23",
+   "subsystem": "出售窗口：蔬果/鲜花",
+   "loc": 414,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "种子/道具图标 swf",
+     "via": "MaterialProxyBig.setContent(Consts.ITEM_TYPE_SEED / _type, id)",
+     "evidence": "warehouse_v_23/scripts/module/warehouse/house/widgets/SellPlantWindow.as:196-200"
+    }
+   ],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/SellToolWindow.as",
+   "class": "module.warehouse.house.widgets.SellToolWindow",
+   "swf": "warehouse_v_23",
+   "subsystem": "出售窗口：道具",
+   "loc": 256,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "道具图标 swf",
+     "via": "MaterialProxyBig.setContent(_type, id)",
+     "evidence": "warehouse_v_23/scripts/module/warehouse/house/widgets/SellToolWindow.as:210"
+    }
+   ],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/SendFlowerWindow.as",
+   "class": "module.warehouse.house.widgets.SendFlowerWindow",
+   "swf": "warehouse_v_23",
+   "subsystem": "窗口：送花",
+   "loc": 315,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "Event.COMPLETE",
+    "FocusEvent.FOCUS_IN",
+    "FocusEvent.FOCUS_OUT",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/WarehouseFishPage.as",
+   "class": "module.warehouse.house.widgets.WarehouseFishPage",
+   "swf": "warehouse_v_23",
+   "subsystem": "页签：成鱼",
+   "loc": 244,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/warehouse_v_23/scripts/module/warehouse/house/widgets/WarehouseSeedsPage.as",
+   "class": "module.warehouse.house.widgets.WarehouseSeedsPage",
+   "swf": "warehouse_v_23",
+   "subsystem": "页签：种子",
+   "loc": 182,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "inventory"
+   ]
+  }
+ ]
+}

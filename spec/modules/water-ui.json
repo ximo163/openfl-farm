@@ -1,0 +1,265 @@
+{
+ "version": 1,
+ "module": "water-ui",
+ "swf": "pool_v_13",
+ "description": "鱼塘界面本体：module/ui/pool_v_13.swf（module.water 一族 14 类；main3 侧实体/解析器在 water 模块）。鱼塘场景 WaterPool（extends PoolMap）：加载 secondList id=\"water\" 的 module/ui/water_v_5.swf 素材，Event.ENTER_FRAME 帧驱动 FishMover 鱼群游动（idle/fast/brake 状态机、FAST_SPEED=1.2 等常量），点击捞鱼/偷鱼/喂鱼/放鱼、成熟标志一键捞；未开通时 WaterGrayOpen 灰化引导（fishNPC1.swf + navigateToURL 开通页）；PoolInfoWindow 鱼塘信息窗口。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php:23（Water Pool Module → module/ui/pool_v_13.swf）",
+  "legacy/decompiled/pool_v_13/scripts/（14 类；symbolclass/symbols.csv 仅 frame0=module.water.WaterWrapper）",
+  "legacy/decompiled/main3_v_221/scripts/framework/net/ServerServices.as m_cmdMap（CMD 常量→mod 串）",
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php:283,287（secondList：water→water_v_5.swf、fishNPC→fishNPC1.swf）",
+  "spec/protocol.json entries.nc（mod 参数/返回权威，S1）"
+ ],
+ "notes": [
+  "拉起链同 farm-shop-ui：main3 侧 module.water.ModuleWater 经 Utils.getClass(\"module.water.WaterController\") 取控制器（water 模块桩已登记）。",
+  "7 个 cgi_fish_* mod 全部经 main3 ServerServices m_cmdMap 以 _loc2_(平台前缀) 拼网关；WaterModel 是唯一发起者（main3 的 ModuleWater 桩不发请求）。",
+  "common.cache.ObjectPool/SimpleFactory/IObjectPoolFactory 为本 swf 特有（main3/Master2 均无 common.cache 包），供 FishMCPoolObjectMgr 回收鱼 MovieClip；FishAnimationMgr 单例经 LoadManager（maxThreadCount=3）按 entities.PoolFish.animationUrl=GetCropID.getFishUrl(type,false) 预载鱼动画，Consts.FISH_POOL_GC_COUNTDOWN 周期 gc()。",
+  "WaterPool.onEnterFrame/FishMover 每帧位移为帧驱动动画（CLAUDE.md 画面保真：帧驱动不许改时间驱动），加载素材 LoaderContext(false, CommonData.applicationDomain) 共域。",
+  "WaterController 监听 MSG_RELOAD_GAME_RESULT/MSG_FISH_GUIDE/MSG_SHOW_WATER_CURSOR/MSG_SHOW_POOLINFO，可偷鱼时设 Consts.CURSOR_STYLE_FISHNET_ALL 光标、好友侧写 Cookies f_<uId> 记录时间。"
+ ],
+ "counts": {
+  "classes": 14
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/common/cache/IObjectPoolFactory.as",
+   "class": "common.cache.IObjectPoolFactory",
+   "swf": "pool_v_13",
+   "subsystem": "公共库本地副本：对象池工厂接口",
+   "loc": 10,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/common/cache/ObjectPool.as",
+   "class": "common.cache.ObjectPool",
+   "swf": "pool_v_13",
+   "subsystem": "公共库本地副本：通用对象池",
+   "loc": 255,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/common/cache/SimpleFactory.as",
+   "class": "common.cache.SimpleFactory",
+   "swf": "pool_v_13",
+   "subsystem": "公共库本地副本：简单工厂",
+   "loc": 25,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/FishAnimationMgr.as",
+   "class": "module.water.FishAnimationMgr",
+   "swf": "pool_v_13",
+   "subsystem": "部件：鱼动画单例管理（加载/回收）",
+   "loc": 108,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "鱼动画 swf（entities.PoolFish.animationUrl = GetCropID.getFishUrl(type,false) → asset_id.m，module/ui/farm/fish/fish_<id>.swf 系）",
+     "via": "FishAnimationMgr.loadFishes() → LoadManager（maxThreadCount=3）",
+     "evidence": "pool_v_13/scripts/module/water/FishAnimationMgr.as:25-26,79-104；main3 entities/PoolFish.as animationUrl getter"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/FishInfoTip.as",
+   "class": "module.water.FishInfoTip",
+   "swf": "pool_v_13",
+   "subsystem": "部件：鱼信息悬浮提示（Timer 防抖）",
+   "loc": 254,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "TimerEvent.TIMER"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/FishMCPoolObjectMgr.as",
+   "class": "module.water.FishMCPoolObjectMgr",
+   "swf": "pool_v_13",
+   "subsystem": "部件：鱼 MovieClip 对象池（POOL_GROW_SIZE=2）",
+   "loc": 176,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/FishMover.as",
+   "class": "module.water.FishMover",
+   "swf": "pool_v_13",
+   "subsystem": "鱼游动状态机（每帧位移）",
+   "loc": 835,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/PoolInfoWindow.as",
+   "class": "module.water.PoolInfoWindow",
+   "swf": "pool_v_13",
+   "subsystem": "窗口：鱼塘信息",
+   "loc": 216,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "鱼图标 swf（GetCropID.getFishUrl(type,true) → asset_id.s）",
+     "via": "PoolInfoWindow 组 icon 字段",
+     "evidence": "pool_v_13/scripts/module/water/PoolInfoWindow.as:89"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/PoolMap.as",
+   "class": "module.water.PoolMap",
+   "swf": "pool_v_13",
+   "subsystem": "池底图与鱼容器（生成圆 SPAWN_CIRCLE_NUM=24）",
+   "loc": 232,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/WaterController.as",
+   "class": "module.water.WaterController",
+   "swf": "pool_v_13",
+   "subsystem": "控制器",
+   "loc": 480,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/WaterGrayOpen.as",
+   "class": "module.water.WaterGrayOpen",
+   "swf": "pool_v_13",
+   "subsystem": "窗口：未开通鱼塘灰化引导",
+   "loc": 184,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/fishNPC1.swf（NPC 图标，经 Settings.getSecondUrl(\"fishNPC\") 查 secondList）",
+     "via": "WaterGrayOpen → Loader.load(new URLRequest(img))",
+     "evidence": "nc_addon.php secondList {\"id\":\"fishNPC\",\"src\":\"module/ui/fishNPC1.swf\"}；water_v_13/scripts/module/water/WaterGrayOpen.as:150-168"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE",
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "messages"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/WaterModel.as",
+   "class": "module.water.WaterModel",
+   "swf": "pool_v_13",
+   "subsystem": "模型",
+   "loc": 683,
+   "mods": [
+    {
+     "mod": "cgi_fish_fertilize",
+     "via": "WaterModel.as feed() → CommandDefs.CMD_FEED_FISH → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_output",
+     "via": "WaterModel.as growLoop() → CommandDefs.CMD_FISH_OUTPUT → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_index",
+     "via": "WaterModel.as loadFishes() → CommandDefs.CMD_GET_FISHES → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_plant",
+     "via": "WaterModel.as grow() → CommandDefs.CMD_GROW_FISH → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_harvest",
+     "via": "WaterModel.as harvest/harvestAll() → CommandDefs.CMD_HARVEST_FISH → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_steal",
+     "via": "WaterModel.as harvest/harvestAll() → CommandDefs.CMD_STEAL_FISH → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_register",
+     "via": "WaterModel.as openWater() → CommandDefs.CMD_WATER_OPEN → main3 framework/net/ServerServices.as m_cmdMap"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/WaterPool.as",
+   "class": "module.water.WaterPool",
+   "swf": "pool_v_13",
+   "subsystem": "鱼塘场景（交互主视图）",
+   "loc": 1098,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/water_v_5.swf（池水/石头/成熟标志/加载动画素材，经 Settings.getSecondUrl(\"water\") 查 secondList）",
+     "via": "WaterPool.loadRes() → Loader.load(url, LoaderContext(false, CommonData.applicationDomain))",
+     "evidence": "nc_addon.php secondList {\"id\":\"water\",\"src\":\"module/ui/water_v_5.swf\"}；water_v_13/scripts/module/water/WaterPool.as:709-720"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE",
+    "Event.ENTER_FRAME",
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_MOVE",
+    "MouseEvent.MOUSE_OUT",
+    "MouseEvent.MOUSE_OVER",
+    "TimerEvent.TIMER"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/pool_v_13/scripts/module/water/WaterWrapper.as",
+   "class": "module.water.WaterWrapper",
+   "swf": "pool_v_13",
+   "subsystem": "入口壳",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  }
+ ]
+}

@@ -86,5 +86,7 @@ getMaterial 反射）——两者都已锚。
 - ExternalInterface/sendToURL → shim.QQOutlets（available 恒 false，
   deviations qqoutlets-shim 族）。
 - approved 测试 `ShopModelTest.test_onTransactionError_dispatch_table`
-  :1169/:1170 期望 1 与 :1128-1147 循环断言（同一单调 countType 日志先钉
-  2）自相矛盾，需人工改期望为 2（NEEDS-TESTS 报告里列）。
+  曾自相矛盾（:1169/:1170 期望 1，:1128-1147 循环又钉 2）——已按 NEEDS-TESTS
+  报告在 write-tests 轮把期望改为 2（ShopModel.as:905/:910 对
+  CMD_BUY_FISHS||CMD_UNLOCK_SHOP_FISH、CMD_BUY_TOOLS||CMD_BUY_TOOLS_VIP
+  各两分支派发同一事件，未知 cmdID 不派发），现已一致。

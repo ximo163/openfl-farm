@@ -1,0 +1,548 @@
+{
+ "version": 1,
+ "module": "farm-shop-ui",
+ "swf": "shop_v_7",
+ "description": "商店界面本体：module/ui/shop_v_7.swf（module.shop.ShopController 一族 25 类；main3 侧桩与数据解析在 farm-shop 模块）。窗口六页签：种子（shopTagSell）/鱼苗/道具（shopTagFertilizer）/装饰（shopTagDecorate）/广告（shopTagAdvertisement，host.level≥Settings.snsAdAllowLvl 才建）/合作专区（配置 adSeedTabOpen==\"1\" 才建）。道具/装饰购买窗口确认时先 cgi_farm_shop_verify 预检（金币/财付通/元宝分支）再买入，种子/鱼苗窗口直接调 ShopModel 买入；物品图标统一经本地副本 MaterialProxyBig → main3 common.view.MaterialProxy。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php:16（Shop Module → module/ui/shop_v_7.swf）",
+  "legacy/decompiled/shop_v_7/scripts/（25 类；symbolclass/symbols.csv 仅 frame0=module.shop.ShopWrapper，无其他导出符号）",
+  "legacy/decompiled/main3_v_221/scripts/framework/net/ServerServices.as m_cmdMap（CMD 常量→mod 串，网关拼接在 main3 侧）",
+  "spec/protocol.json entries.nc（mod 参数/返回权威，S1）"
+ ],
+ "notes": [
+  "拉起链：main3 Module.onLoadModuleFile 按 moduleList url 下载本 swf 后，farm-shop 模块 ModuleShop.load()（空实现）处经 Utils.getClass(\"module.shop.ShopController\") 取控制器（nc_main.php:16-18 与 spec/modules/farm-shop.json notes 已登记）。",
+  "本 swf 由 main3 加载进其子 ApplicationDomain：qui/greensock 等共享库类在 main3（farm-basic）与 Master2（pasture）各有一份，此处绑定 main3 份，cross_module_imports 一律记 farm-basic。",
+  "预加载器公共库依赖（happyfarm3_v_149 的 Settings/CommonData/Utils/QzoneJSAPI/CommandEvent/ResourceManager/EventRecorder）不在 modules 清单内，此前批次已译入 src/common、src/report 等处。",
+  "广告链路有两处 view_fcg（均 getRequest GET，参数各不相同）：广告页签（ShopView.as:488）经 loadAdvertisementInfo 发 posid=72339074132595919&adposcount=1&count=6&siteset=1&datatype=2（ShopModel.as:115 内联）；合作专区页签数据到达后（ShopModel.as:454）经 loadAdvertisementSeedsInfo 发 posid=144396668170523855&adposcount=1&count=15&callback=_gdttxtbc&datatype=2（ShopModel.as:1098 内联）。买合作专区种子前另发 http://c.gdt.qq.com/gdt_cookie.fcg（外部广告域，非 mync.php 网关）；广告图 entities.AdItem._img 为服务端下发外链，经 ExtLoader 加载。",
+  "ShopView.loadFishUIRes 经 Settings.getSecondUrl(\"water_ui\") 取鱼苗页素材：本部署 secondList（nc_addon.php）无 id=\"water_ui\" 条目 → 返回空串、请求跳过；water_ui_v_0.swf 实际经 nc_main.php moduleList 的 main material 预载（farm-basic sources 已登记）。",
+  "cgi_farm_tool_vip（CMD_BUY_TOOLS_VIP）不在 mync.php $mod_list 白名单、protocol.json 亦无条目：本部署 VIP 道具购买链路服务端不可达（见 ShopModel mods 条目 unknown 说明），翻译时保持客户端行为原样。",
+  "com.qzone.qui.makers.StepperMaker 与 warehouse_v_23 的同名文件逐字一致（各 swf 各带一份本地编译副本，diff 校验）；MaterialProxyBig 两 swf 各有一份、内容略有差异。"
+ ],
+ "counts": {
+  "classes": 25
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/com/qzone/qui/makers/StepperMaker.as",
+   "class": "com.qzone.qui.makers.StepperMaker",
+   "swf": "shop_v_7",
+   "subsystem": "qui 库本地副本：数量步进器",
+   "loc": 249,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "FocusEvent.FOCUS_OUT",
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.ROLL_OUT",
+    "TimerEvent.TIMER"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/common/view/MaterialProxyBig.as",
+   "class": "common.view.MaterialProxyBig",
+   "swf": "shop_v_7",
+   "subsystem": "公共视图本地副本：物品图标代理（同包引用 main3 common.view.MaterialProxy，未 import；ResourceManager 在 happyfarm3 预加载器）",
+   "loc": 36,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/entities/AdItem.as",
+   "class": "entities.AdItem",
+   "swf": "shop_v_7",
+   "subsystem": "实体：广告条目",
+   "loc": 44,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/ShopController.as",
+   "class": "module.shop.ShopController",
+   "swf": "shop_v_7",
+   "subsystem": "控制器",
+   "loc": 457,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "activities",
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/ShopModel.as",
+   "class": "module.shop.ShopModel",
+   "swf": "shop_v_7",
+   "subsystem": "模型",
+   "loc": 1143,
+   "mods": [
+    {
+     "mod": "cgi_farm_buyitem",
+     "via": "ShopModel.as buyDiy() → CommandDefs.CMD_BUY_DIY → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_buy",
+     "via": "ShopModel.as buyFishs() → CommandDefs.CMD_BUY_FISHS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_shop_pay",
+     "via": "ShopModel.as buyInGame() → CommandDefs.CMD_BUY_INGAME_BUY → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "repertory",
+     "act": "buySeed",
+     "via": "ShopModel.as buySeeds()（直购路径，ShopModel.as:604）与 onSetCookie()（广告种子路径 isAdSeed:true，gdt_cookie.fcg 回调后，ShopModel.as:735）→ CommandDefs.CMD_BUY_SEEDS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "usertool",
+     "act": "buyTool",
+     "via": "ShopModel.as buyTool() → CommandDefs.CMD_BUY_TOOLS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_tool_vip",
+     "note": "unknown：cgi_farm_tool_vip 不在 mync.php $mod_list 白名单（dispatch 未命中→无输出），spec/protocol.json 亦无该 mod 条目；本部署此购买链路不可达",
+     "via": "ShopModel.as buyToolVIP() → CommandDefs.CMD_BUY_TOOLS_VIP → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_buyweapon",
+     "via": "ShopModel.as buyWeapon() → CommandDefs.CMD_BUY_WEAPONS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "item",
+     "act": "getUserItems",
+     "via": "ShopModel.as loadDecorsItemOwnInfo() → CommandDefs.CMD_GET_DIY_ITEMS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "view_fcg",
+     "note": "广告网关 view_fcg（getRequest GET）；参数 posid=144396668170523855&adposcount=1&count=15&callback=_gdttxtbc&datatype=2（ShopModel.loadAdvertisementSeedsInfo 内联，ShopModel.as:1098）",
+     "via": "ShopModel.as loadAdvertisementSeedsInfo() → CommandDefs.CMD_GET_SHOP_ADVERTISEMENT_SEED → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "item",
+     "act": "shop",
+     "via": "ShopModel.as loadDecorsInfo() → CommandDefs.CMD_GET_SHOP_DIY → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_list",
+     "via": "ShopModel.as loadFishInfo() → CommandDefs.CMD_GET_SHOP_FISH → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "usertool",
+     "act": "getTools",
+     "via": "ShopModel.as loadItemsInfo() → CommandDefs.CMD_GET_SHOP_ITEMS → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "usertool",
+     "act": "getSeedInfo",
+     "via": "ShopModel.as loadAdvertisementSeedsList/loadSeedsInfo() → CommandDefs.CMD_GET_SHOP_SEED → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "view_fcg",
+     "note": "广告网关 view_fcg（getRequest GET）；参数 posid=72339074132595919&adposcount=1&count=6&siteset=1&datatype=2（ShopModel.loadAdvertisementInfo 内联，ShopModel.as:115）",
+     "via": "ShopModel.as loadAdvertisementInfo() → CommandDefs.CMD_GET_SNS_AD → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "raw": "http://c.gdt.qq.com/gdt_cookie.fcg",
+     "note": "腾讯广点通外部域（gdt_cookie.fcg），非 mync.php 网关；getRequest GET",
+     "via": "ShopModel.as buySeeds() → CommandDefs.CMD_SET_ADSEED_COOKIE → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_fish_unlock",
+     "via": "ShopModel.as unlockFish() → CommandDefs.CMD_UNLOCK_SHOP_FISH → main3 framework/net/ServerServices.as m_cmdMap"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/ShopView.as",
+   "class": "module.shop.ShopView",
+   "swf": "shop_v_7",
+   "subsystem": "视图（窗口+页签）",
+   "loc": 881,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/water_ui_v_0.swf（鱼苗页素材，经 Settings.getSecondUrl(\"water_ui\") 查 secondList）",
+     "via": "ShopView.loadFishUIRes() → CommonData.rslManager.requestFile",
+     "evidence": "本部署 secondList（nc_addon.php）无 id=\"water_ui\" 条目 → getSecondUrl 返回空串、请求跳过；water_ui_v_0.swf 实际经 nc_main.php moduleList 的 main material 预载"
+    }
+   ],
+   "interactions": [
+    "Event.CHANGE",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "farm-decorate",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/ShopWrapper.as",
+   "class": "module.shop.ShopWrapper",
+   "swf": "shop_v_7",
+   "subsystem": "入口壳",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/AdSeedsPage.as",
+   "class": "module.shop.widgets.AdSeedsPage",
+   "swf": "shop_v_7",
+   "subsystem": "页签：合作专区",
+   "loc": 48,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/AdvertisementItem.as",
+   "class": "module.shop.widgets.AdvertisementItem",
+   "swf": "shop_v_7",
+   "subsystem": "条目渲染：广告位",
+   "loc": 57,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "广告图片 URL（服务端 view_fcg 下发 entities.AdItem._img，运行时外部地址）",
+     "via": "com.qzone.corelib.controls.ExtLoader.load(_img)",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/AdvertisementItem.as:38-42"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/AdvertisementPage.as",
+   "class": "module.shop.widgets.AdvertisementPage",
+   "swf": "shop_v_7",
+   "subsystem": "页签：广告",
+   "loc": 45,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/BuyAdSeedWindow.as",
+   "class": "module.shop.widgets.BuyAdSeedWindow",
+   "swf": "shop_v_7",
+   "subsystem": "购买窗口：合作专区种子",
+   "loc": 379,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "种子图标 swf（同 CropItem）",
+     "via": "MaterialProxyBig.setContent(\"1\", id)",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/BuyAdSeedWindow.as:233"
+    }
+   ],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/BuyDiyWindow.as",
+   "class": "module.shop.widgets.BuyDiyWindow",
+   "swf": "shop_v_7",
+   "subsystem": "购买窗口：装饰",
+   "loc": 571,
+   "mods": [
+    {
+     "mod": "cgi_farm_shop_verify",
+     "via": "BuyDiyWindow.as useCFTBuy/useQDBuy() → CommandDefs.CMD_BUY_PRECHECK → main3 framework/net/ServerServices.as m_cmdMap"
+    },
+    {
+     "mod": "cgi_farm_item_vip",
+     "via": "BuyDiyWindow.as diyByYellowLvl() → CommandDefs.CMD_ITEM_VIP → main3 framework/net/ServerServices.as m_cmdMap"
+    }
+   ],
+   "assets": [
+    {
+     "pattern": "装饰图标 swf（同 DiyItem）",
+     "via": "MaterialProxyBig.setContent(\"2\", id, true)",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/BuyDiyWindow.as:459"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "farm-decorate"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/BuyFishWindow.as",
+   "class": "module.shop.widgets.BuyFishWindow",
+   "swf": "shop_v_7",
+   "subsystem": "购买窗口：鱼苗",
+   "loc": 320,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "鱼苗图标 swf（同 FishItem）",
+     "via": "MaterialProxyBig.setContent(Consts.ITEM_TYPE_FISH, id)",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/BuyFishWindow.as:124"
+    }
+   ],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/BuyItemWindow.as",
+   "class": "module.shop.widgets.BuyItemWindow",
+   "swf": "shop_v_7",
+   "subsystem": "购买窗口：道具",
+   "loc": 883,
+   "mods": [
+    {
+     "mod": "cgi_farm_shop_verify",
+     "via": "BuyItemWindow.as onOKCFT/onOKGold() → CommandDefs.CMD_BUY_PRECHECK → main3 framework/net/ServerServices.as m_cmdMap"
+    }
+   ],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/BuySeedWindow.as",
+   "class": "module.shop.widgets.BuySeedWindow",
+   "swf": "shop_v_7",
+   "subsystem": "购买窗口：种子",
+   "loc": 520,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "种子图标 swf（同 CropItem）",
+     "via": "MaterialProxyBig.setContent(\"1\", id)",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/BuySeedWindow.as:260"
+    }
+   ],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK",
+    "TextEvent.LINK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/CropItem.as",
+   "class": "module.shop.widgets.CropItem",
+   "swf": "shop_v_7",
+   "subsystem": "条目渲染：种子",
+   "loc": 183,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "种子图标 swf（GetCropID.getSeedUrl：asset_id.s → module/ui/allcrops/Crop_<id>_Seed.swf 系）",
+     "via": "MaterialProxyBig.setContent(Consts.ITEM_TYPE_SEED, id)",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/CropItem.as:150"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/CropItemVip.as",
+   "class": "module.shop.widgets.CropItemVip",
+   "swf": "shop_v_7",
+   "subsystem": "条目渲染：VIP 种子",
+   "loc": 141,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "种子图标 swf（同 CropItem，经 main3 GetCropID.getSeedUrl）",
+     "via": "MaterialProxyBig.setContent(\"1\", id)（\"1\"=Consts.ITEM_TYPE_SEED）",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/CropItemVip.as:126"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/DiyItem.as",
+   "class": "module.shop.widgets.DiyItem",
+   "swf": "shop_v_7",
+   "subsystem": "条目渲染：装饰",
+   "loc": 73,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "装饰图标 swf（main3 MaterialProxy ITEM_TYPE_DECORATE 分支 → asset_id.m）",
+     "via": "MaterialProxyBig.setContent(\"2\", id, true)（\"2\"=Consts.ITEM_TYPE_DECORATE）",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/DiyItem.as:46"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "farm-decorate"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/DiyPage.as",
+   "class": "module.shop.widgets.DiyPage",
+   "swf": "shop_v_7",
+   "subsystem": "页签：装饰",
+   "loc": 98,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/FishItem.as",
+   "class": "module.shop.widgets.FishItem",
+   "swf": "shop_v_7",
+   "subsystem": "条目渲染：鱼苗",
+   "loc": 100,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "鱼苗图标 swf（GetCropID.getFishUrl：asset_id.s → module/ui/farm/fish/fish_seed_<id>.swf 系）",
+     "via": "MaterialProxyBig.setContent(Consts.ITEM_TYPE_FISH, id)",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/FishItem.as:44"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic",
+    "water"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/FishPage.as",
+   "class": "module.shop.widgets.FishPage",
+   "swf": "shop_v_7",
+   "subsystem": "页签：鱼苗",
+   "loc": 44,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/ItemsPage.as",
+   "class": "module.shop.widgets.ItemsPage",
+   "swf": "shop_v_7",
+   "subsystem": "页签：道具",
+   "loc": 220,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/ShopSeedsPage.as",
+   "class": "module.shop.widgets.ShopSeedsPage",
+   "swf": "shop_v_7",
+   "subsystem": "页签：种子",
+   "loc": 407,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/ToolItem.as",
+   "class": "module.shop.widgets.ToolItem",
+   "swf": "shop_v_7",
+   "subsystem": "条目渲染：道具",
+   "loc": 91,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "道具图标 swf（main3 MaterialProxy 按 _type 分发 GetCropID 各 helper）",
+     "via": "MaterialProxyBig.setContent(_type.toString(), id)",
+     "evidence": "shop_v_7/scripts/module/shop/widgets/ToolItem.as:67"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/shop_v_7/scripts/module/shop/widgets/UnlockFishWindow.as",
+   "class": "module.shop.widgets.UnlockFishWindow",
+   "swf": "shop_v_7",
+   "subsystem": "解锁窗口：鱼苗",
+   "loc": 192,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "cross_module_imports": [
+    "activities",
+    "farm-basic",
+    "water"
+   ]
+  }
+ ]
+}

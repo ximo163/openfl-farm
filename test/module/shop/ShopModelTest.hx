@@ -513,7 +513,7 @@ class ShopModelTest {
 	//   命中）→ _isBlack（:560-564）
 	// - isYouji 1 → _isGreen 无守卫恒写（:565）；行无 isFood → 保持 -1
 	public function test_onGetSeedsInfo_flag_patch_table() {
-		Settings.getInstance().setConfigDataModel(new FakeConfigModel({crops: [
+		var rows:Array<Dynamic> = [
 			{id: 27, isRestaurant: 1}, // nc_data.php:6045 菠萝（数值形）
 			{id: 933, isRestaurant: 2, isYouji: 1}, // :6699 有机白萝卜（数值形）
 			{id: 101, isMill: "0"}, // :6119 薰衣草（"0" 字符串形）
@@ -522,7 +522,8 @@ class ShopModelTest {
 			{id: 126, isRed: "1"}, // :6144 曼珠沙华（"1" 字符串形）
 			{id: 460, isRed: 2}, // :6416 园艺熊猫（isRed=2 → 黑土）
 			{id: 3, isFood: "1"} // :6022 胡萝卜（"1" 字符串形）
-		]}));
+		];
+		Settings.getInstance().setConfigDataModel(new FakeConfigModel({crops: rows}));
 		var pineapple = new Seed({cId: 27});
 		var organic = new Seed({cId: 933});
 		var lavender = new Seed({cId: 101});
@@ -801,11 +802,12 @@ class ShopModelTest {
 	public function test_onGetAdvertisementSeedsList_config_gates_contrast() {
 		var log:Array<Dynamic> = [];
 		listenModel(model, log);
-		Settings.getInstance().setConfigDataModel(new FakeConfigModel({crops: [
+		var rows:Array<Dynamic> = [
 			{id: 3, isFood: "1"}, // nc_data.php:6022 胡萝卜
 			{id: 126, isRed: "1"}, // :6144 曼珠沙华
 			{id: 933, isRestaurant: 2, isYouji: 1} // :6699 有机白萝卜
-		]}));
+		];
+		Settings.getInstance().setConfigDataModel(new FakeConfigModel({crops: rows}));
 		var carrot = new Seed({cId: 3});
 		var redSpider = new Seed({cId: 126});
 		var organic = new Seed({cId: 933});

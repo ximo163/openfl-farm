@@ -76,7 +76,7 @@ import utest.Assert;
  * - legacy/deploy/QFarmFlash/source/core/source/nc/mod/cgi_farm_getusercrop.php
  *   （:15-36 crop 行字段、:38 allFlower/flowerPath 恒 "module/ui/flower"）
  * - legacy/deploy/QFarmFlash/source/core/config/nc/allflower.php
- *   （:24 fId12 完美恋人 need 3×cId41、:14 fId2 星语心愿 need 10×cId103
+ *   （:15 fId12 完美恋人 need 3×cId41、:5 fId2 星语心愿 need 10×cId103
  *   +50×cId105）
  * - legacy/deploy/QFarmFlash/source/core/config/nc/cropstype.php:4-7
  *   （cId1 草莓 cLevel10、cId2 白萝卜 cLevel0、cId3 胡萝卜 cLevel0、
@@ -99,7 +99,7 @@ import utest.Assert;
  *   cgi_farm_set_lock.php:32（crop [{cId,isLock:回显 type}]）、
  *   cgi_fish_rep_lock.php:35（fid/lock 1|0）、
  *   cgi_farm_flower_send.php:31（code/direction）
- * - src/common/Language.hx:53（saleAllFnText2 模板）、:63（请求超时，稍后再试）
+ * - src/common/Language.hx:53（saleAllFnText2 模板）、:44（请求超时，稍后再试）
  * - spec/protocol.json entries.nc.mods（repertory_sale/repertory_saleall/
  *   repertory_getuserseed/cgi_farm_getusercrop/cgi_farm_get_usercrystal/
  *   cgi_fish_user_rep/cgi_farm_flower_received/cgi_farm_seed_list/
@@ -333,8 +333,8 @@ class WarehouseModelTest {
 		Settings.getInstance().setConfigDataModel(new FakeConfigModel({crops: [
 			{id: 41, isFlower: "1"}]})); // :6059 红玫瑰 → flowers 仓
 		var rose = new WarehouseCrop({cId: 41, level: 7, amount: 5, type: 1, isLock: 0});
-		// allflower.php:14（fId2 星语心愿：10×cId103 + 50×cId105，均无库存）
-		// 与 :24（fId12 完美恋人：3×cId41，库存 5 够）
+		// allflower.php:5（fId2 星语心愿：10×cId103 + 50×cId105，均无库存）
+		// 与 :15（fId12 完美恋人：3×cId41，库存 5 够）
 		var wish:Dynamic = {fId: 2, fName: "星语心愿", need: [{cId: 103, amount: 10}, {cId: 105, amount: 50}]};
 		var lover:Dynamic = {fId: 12, fName: "完美恋人", need: [{cId: 41, amount: 3}]};
 
@@ -451,9 +451,11 @@ class WarehouseModelTest {
 		Settings.getInstance().setConfigDataModel(new FakeConfigModel({fish_info: [
 			{id: 2, crop_name: "小丑鱼", mature: 23, sale: 90}, // nc_data.php:7565
 			{id: 4, crop_name: "蝶鱼", mature: 30, sale: 85}]}));
-		// cgi_fish_user_rep.php:10-16 行形状（lock 是字符串数字）
-		var clown = new WarehouseFish({fid: 2, num: 5, lock: "0", type: 23});
-		var unknown = new WarehouseFish({fid: 999, num: 1, lock: "1", type: 23});
+		// cgi_fish_user_rep.php:13-16 行形状：lock 拼进 JSON 是裸数值
+		// （'{"lock":'.$lock 无引号）；夹具照抄裸数值，字符串形
+		// Utils.getIntAttribute 同样可解（WarehouseFish.hx:31-32）
+		var clown = new WarehouseFish({fid: 2, num: 5, lock: 0, type: 23});
+		var unknown = new WarehouseFish({fid: 999, num: 1, lock: 1, type: 23});
 		var log:Array<Dynamic> = [];
 		listenModel(model, log);
 
@@ -833,7 +835,7 @@ class WarehouseModelTest {
 	public function test_onFlowerSentSuccess_decrement_and_removal() {
 		var log:Array<Dynamic> = [];
 		listenModel(model, log);
-		// allflower.php:24（fId12 完美恋人 need 3×cId41）
+		// allflower.php:15（fId12 完美恋人 need 3×cId41）
 		model.m_allFlower = [{fId: 12, fName: "完美恋人", need: [{cId: 41, amount: 3}]}];
 
 		var rose = new WarehouseCrop({cId: 41, amount: 5});

@@ -329,7 +329,9 @@ class MyBagModelTest {
 		Assert.equals(1, model.fishFoodSort(ff9, ff5)); // 9 不小于 5
 		Assert.equals(1, model.fishFoodSort(tool, ff5)); // 首参非鱼食恒 1（:176）
 		Assert.equals(1, model.fishFoodSort(ff5, tool)); // 首参鱼食 → 5 < 1 不成立 → 1
-		Assert.equals(-1, model.fishFoodSort(ff2, tool)); // 首参鱼食 → 2 < 1 成立
+		// 对称用例：首参 _cId 小 → -1。第二参 _cId 须大于 2（tId 3 → _cId 3）
+		var tool3 = new BagItem({tId: 3, type: 3, amount: 1});
+		Assert.equals(-1, model.fishFoodSort(ff2, tool3)); // 首参鱼食 → 2 < 3 成立 → -1
 	}
 
 	static function listenModel(m:MyBagModel, log:Array<Dynamic>):Void {

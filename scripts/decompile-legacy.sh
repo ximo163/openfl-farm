@@ -24,19 +24,25 @@ set -euo pipefail
 : "${FFDEC_CMD:?请设置 FFDEC_CMD=<FFDec 的 ffdec.sh 路径或 java -cp 前缀>}"
 ffdec() { $FFDEC_CMD "$@"; }
 src=legacy/deploy/QFarmFlash/source/core/module
-# 主代码 swf（翻译依据）。新增活动主程序时往这里加。
+# 主代码 swf（翻译依据）。新增活动主程序时往这里加。ui/ 下的四个功能 UI swf
+# （#30）带控制器 AS3 代码，一并反编译；条目可带目录前缀，输出按 basename
+# 扁平化到 legacy/decompiled/<名>/。
 main_swfs=(
   happyfarm3_v_149.swf
   main3_v_221.swf
   mcloader_v_53.swf
   Master2_v_142.swf
   loading2_v_3.swf
+  ui/shop_v_7.swf
+  ui/warehouse_v_23.swf
+  ui/pool_v_13.swf
+  ui/decorate_v_0.swf
 )
 count=0
 for name in "${main_swfs[@]}"; do
   swf="$src/$name"
   [ -f "$swf" ] || { echo "提示：$swf 不存在，跳过"; continue; }
-  out="legacy/decompiled/${name%.*}"
+  out="legacy/decompiled/$(basename "${name%.*}")"
   rm -rf "$out"
   mkdir -p "$out"
   ffdec -format sprite:png,frame:png -export script,image,shape,morphshape,sound,text,binarydata,frame,sprite "$out" "$swf"

@@ -3,4 +3,6 @@
 # 改 scripts/decompile-legacy.sh 或 scripts/swf-inventory.sh 之后要重建基线时。
 # 原版包是冻结的，swf 不会自己变；别的工作（H3 后端等）碰 legacy/deploy/ 不应触发。
 #
-# 当前基线：ffdec version26.5.0 / 2026-11-17（第 2 次重建：补抹 lastModified）
+# 当前基线：ffdec version26.5.0 / 2026-11-22（第 3 次重建：+4 功能 UI swf——
+# ui/shop_v_7、ui/warehouse_v_23、ui/pool_v_13、ui/decorate_v_0，issue #30 前置）
+# 历史：2026-11-17（第 2 次重建：补抹 lastModified）

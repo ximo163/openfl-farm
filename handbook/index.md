@@ -18,6 +18,7 @@
 | 站内信/留言/日志/公告（main3 module/messages + Master2 mc/view/main/window/profile 两族） | [architecture/messages.md](architecture/messages.md) | `decompiled main3 module/messages/`、`decompiled Master2 mc/view/main/` |
 | 好友列表栏（module.friend：列表/状态角标/召回/过滤/跳转好友农场） | [architecture/friends.md](architecture/friends.md) | `decompiled main3 module/friend/` |
 | 新手任务/欢迎引导（module.task：11 任务表、taskComp 三门、help 引导、task_v_2 符号垫片） | [architecture/tasks.md](architecture/tasks.md) | `decompiled main3 module/task/`、`nc_data.php` secondList |
+| 商店（shop_v_7 功能 swf：module.shop 主窗/六买入窗/ShopModel 购买协议、ModuleShop 反射接入） | [architecture/shop.md](architecture/shop.md) | `decompiled shop_v_7 scripts/module/shop/`、`spec/modules/farm-shop-ui.json` |
 | 资产声明与本地化加载 | [architecture/assets.md](architecture/assets.md) | `assets/legacy-assets.txt`、根目录 `libraries.xml`、`src/shim/LocalSwfLoader.hx` |
 | 场景运行器与请求对拍（tools/scenario.mjs、场景/基线 JSON、nodeboot 应答分档） | [architecture/scenario-runner.md](architecture/scenario-runner.md) | 判定期望值的出处见 `test/ScenarioRunnerContractTest.hx` 断言消息 |
 | 环境、工具、反直觉的坑 | [lessons/index.md](lessons/index.md) | — |

@@ -880,3 +880,42 @@
   才放过。另：html5 debug.hxml 里的 `-D no-compilation` 也是 html5 专属
   项，一并去掉才落到「只剩 `Error: Library hxcpp is not installed`」的
   判据形态（留着则 0 错 0 输出退出 0，同样过 typer 但和文档判据对不上）。
+
+## 2026-11 · #35（shop_v_7 功能 swf：商店整片）
+
+- **Dynamic 回包字段上的 `== n`/`> 0` 是松等/关系比较，As3.floatOf 一族
+  而不是裸 ==**：`__buyType` 在原版 ShopModel 里就是 "0" 字串与 Int 混写
+  （同字段两种形态，#8 的 isRed 一族同病）；AS3 `"0" == 0` 为真，Haxe 裸
+  `==` 在 cpp/eval 因类型先行判不等、js 偶然同——跨目标漂移。修法：
+  `As3.floatOf(x) == n`（toNumber 强转后比），`> 0` 同理。防：Dynamic 与
+  数字字面量的比较一律 floatOf 起手，grep 不到 `== "字面量"` 不代表松等
+  清干净了——数字侧的字面量 grep 不出来。
+- **Int 字段判 `== true`/`!= true` 的真值语义是 `== 1`/`!= 1`**：AS3
+  `x == true`（x 为 int）先升 Number：-1≠1 为假、1==1 为真；`As3.truthy`
+  对 -1 返真——直接套会把 `== true` 的门开反。防：见 `== true`/`!= true`
+  且操作数是 Int 字段（_isFood/_isMill 默认 -1）就按 1 比。
+- **`super.方法` 当回调值传（Haxe 编不过）的两种处理**：本类没有覆写时
+  `this.` 等价替换（#21 先例）；已覆写时抽具名私有包装方法（BuyDiyWindow
+  的 onSuperCloseClick、BuyItemWindow 的 onCancelClick）+ PORT-NOTE。
+- **`setTimeout(f, ms, rest…)` 的 rest 参 + 处理器读 `arguments[0]`**：
+  As3.setTimeout 无 rest——闭包在调用点捕获实参、转发进具名参量方法
+  （ShopView.onSendToURLTimeout）；`arguments.callee` 自摘除监听同理用
+  具名局部闭包自引用（ShopController.showBuySeedEx）。
+- **stub 基类的「被 in-scope 子类真用的成员」要补到能跑**：BuyDiyWindow
+  setData 的 `super.init()` 直落 AddButtonWindow——原 stub 没有这个覆写
+  时 addWindowChild 缓存的子件永不上树、窗体空白（编译绿、行为黑）。
+  补译按原版逐句（init/toCenterPositon），** addButton（winButton）本体
+  留给 qui 窗口片**：恒 null 的后果（BuyDiyWindow._btnConfirm 休眠 NPE）
+  列进后续模块依赖，别为消 NPE 顺手实现半截按钮。
+- **split 出的数组越界下标必须 As3.arrAt**：`cropTime(id)` 在本仓是 stub
+  返回 ""，BuyAdSeedWindow/BuySeedWindow 的 buildContent 对 `_loc4_[4]`、
+  `_loc4_[4]-_loc4_[2]` 裸读在 cpp 上是越界崩；AS3 undefined→NaN→0 的
+  语义用 `As3.arrAt`（越界 null）+ `As3.intSub`（null→0）复刻。防：凡
+  依赖 GetCropID.cropTime 的 split 段，先看它是不是 stub。
+- **模块控制器的 DCE 锚（零引用 + eval 测试前提）**：ShopController 只被
+  ModuleShop 的反射字符串引用——按 LandTile 先例锚进 SymbolClass.dceAnchor
+  （#35 段）+ 类上 @:keep；锚后 html5 的 hasDefinition 即真、装配链按
+  spec 拉起链走通，eval 侧因锚整体 #if !eval 保持 getClass null 前提
+  （ModuleShopTest:41 钉板，接入完成后该断言是「该改期望」的信号——
+  本批只在 html5 接入，eval 前提不翻）。防：模块控制器类译完必须查
+  反射入口有没有真实编译期引用，没有就进锚表。

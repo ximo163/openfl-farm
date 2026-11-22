@@ -147,7 +147,25 @@ class SymbolClass {
 				Task1, Task2, Task3, Task4, Task5, Task6, Task7, Task8, Task9, Task10, Task11,
 				// #29 dog 片：狗粮盆双态图与道具边框（DogBowl/DogFoodWindow 经
 				// getMaterial/getClass 反射构造，编译期零引用）
-				DogFood, DogFoodNull, ItemBorder
+				DogFood, DogFoodNull, ItemBorder,
+				// #35 shop 片：商店瓦片/买入窗素材符号（ItemBg 系底板、按钮
+				// 皮肤、说明面板、种子类型按钮选中皮肤、鱼苗角标与解锁底板、
+				// 页签角标——除 ShopFoodMarkIcon/RestaurantMarkIcon/
+				// ShopSuperMarketIcon/ActivityMarkIcon/SteperSkin 五枚由
+				// CropItem/BuyItemWindow 直接 new（编译期可达）外，其余全反射
+				// 构造，零外部引用，必须锚进来）
+				ItemBg, ItemBgRed, ItemBgBlack, VipSeedIcon, ShopNewMarkIcon,
+				ButtonOrange, ButtonBlue, ShopSeedForm, ShopToolForm, ShopDiyForm,
+				SeedTypeBtnSelectedSkin, SeedTypeVipBtnSelectedSkin,
+				ShopFoodMarkIcon, RestaurantMarkIcon, ShopSuperMarketIcon, ActivityMarkIcon,
+				SteperSkin, ShopTabNewIcon, FishUnlockBg, FishLocked, FishUnlock,
+				// #35 shop 片控制器：ModuleShop.onModuleLoadSuccess 经 Utils.
+				// getClass("module.shop.ShopController") 反射构造（编译期零引
+				// 用）；锚住后 html5 的 ApplicationDomain.hasDefinition 即真，
+				// 装配链走通。ShopView/ShopModel/widgets 经本类可达，不入表。
+				// eval 无锚（本表 #if !eval）：单测以 getClass 恒 null 为前提
+				// （ModuleShopTest:41），锚不能把这个前提翻掉。
+				module.shop.ShopController
 			];
 		}
 #end

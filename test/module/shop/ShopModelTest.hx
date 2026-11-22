@@ -48,14 +48,16 @@ import utest.Assert;
  *   getCropByID/getFishByID 的 `row["id"]==param1` 松等由 As3.eqString 实现
  *   （Settings.hx:372/:112），数字形状的 id 键可直配。
  * - 本部署快照 crops_sort 恒未配（部署 XML/flashvar 全无此键，全文只在
- *   ShopModel/WarehouseModel 读）→ 「无 crops_sort」用例钉的是部署现实，
- *   「有 crops_sort」用例钉的是 :510-513/:568-571 指令语义本身。
+ *   ShopModel/WarehouseModel/MyBagModel 读）→ 「无 crops_sort」用例钉的
+ *   是部署现实，「有 crops_sort」用例钉的是 :510-513/:568-571 指令语义
+ *   本身。
  * - 排序方向（勿按直觉改）：fishSort :165/:168 与 seedSort :480/:483 的
  *   `param1.x > param2.x ? 1 : -1` 在 AS3 Array.sort 约定下「正数 → param1
  *   排后」→ 升序（产出最小在前、平级 id 最小在前）。字面如此。
- * - onGetDecorsInfo :980-989 的 while 对非 4 倍数长度的表会越界写
- *   undefined 自增 length 成死循环（原版缺陷，无法也无需单测复现）；装饰
- *   fixture 一律取 4 的倍数。
+ * - onGetDecorsInfo :980-989 的 while 对非 4 倍数长度的表末块越界：读
+ *   _loc4_+3 得 undefined、写 _loc4_+3 把 length 垫到下一个 4 的倍数，
+ *   垫完 _loc4_ 恰好追平 → 循环照常退出（原版缺陷是尾部留 undefined 槽，
+ *   不是死循环；无需单测复现）；装饰 fixture 一律取 4 的倍数。
  * - Consts.ITEM_TYPE_DIY 尚未入 src（实现阶段补），字面 "808080" 按
  *   Consts.as:478 引用；ITEM_TYPE_SEED "1"/ITEM_TYPE_FISH "23" 已译
  *   （Consts.hx:247/:255）。
@@ -85,7 +87,7 @@ import utest.Assert;
  *   圣诞树 id311 isActivity:1 数值形、:6416 园艺熊猫 id460 isRed:2 数值形、
  *   :6699 有机白萝卜 id933 isRestaurant:2+isYouji:1 数值形）；fish_info 行
  *   全在 :7565（小丑鱼 id2、蝶鱼 id4、蝠鲼 id13、海豚 id14，字段值逐字）
- * - legacy/deploy/QFarmFlash/source/core/config/nc/cropstype.php:5-7
+ * - legacy/deploy/QFarmFlash/source/core/config/nc/cropstype.php:4-6
  *   （cId1 草莓 cLevel10、cId2 白萝卜 cLevel0、cId3 胡萝卜 cLevel0）
  * - legacy/deploy/QFarmFlash/source/core/source/nc/mod/view_fcg.php:6-10
  *   （count==6 → '{}'；count==15 → ret0 + data["144396668170523855"].ret==1，
@@ -171,7 +173,7 @@ class ShopModelTest {
 		Assert.isTrue(model.isEmpty(2));
 		Assert.isTrue(model.isEmpty(4));
 		// 装入种子 → 0 号槽翻假
-		var berry = new Seed({cId: 1, cLevel: 10, cName: "草莓"}); // cropstype.php:5
+		var berry = new Seed({cId: 1, cLevel: 10, cName: "草莓"}); // cropstype.php:4
 		model.onGetSeedsInfo(voEvent(CommandDefs.CMD_GET_SHOP_SEED, null, [berry]));
 		Assert.isFalse(model.isEmpty(0));
 		Assert.isTrue(model.isEmpty(4)); // 鱼苗槽仍空
@@ -436,9 +438,9 @@ class ShopModelTest {
 		// 白萝卜 :6021 两行无 isFood/isYouji/isRed 键
 		Settings.getInstance().setConfigDataModel(new FakeConfigModel({crops: [
 			{id: 3, isFood: "1"}]}));
-		var radish = new Seed({cId: 2, cLevel: 0, cName: "白萝卜"}); // cropstype.php:6
-		var carrot = new Seed({cId: 3, cLevel: 0, cName: "胡萝卜"}); // cropstype.php:7
-		var berry = new Seed({cId: 1, cLevel: 10, cName: "草莓"}); // cropstype.php:5
+		var radish = new Seed({cId: 2, cLevel: 0, cName: "白萝卜"}); // cropstype.php:5
+		var carrot = new Seed({cId: 3, cLevel: 0, cName: "胡萝卜"}); // cropstype.php:6
+		var berry = new Seed({cId: 1, cLevel: 10, cName: "草莓"}); // cropstype.php:4
 		var log:Array<Dynamic> = [];
 		listenModel(model, log);
 
@@ -474,8 +476,8 @@ class ShopModelTest {
 		Assert.isFalse(carrot._isBlack);
 		Assert.isFalse(model.isEmpty(0));
 
-		// 二次应答整体替换（:504-507 splice + concat）
-		var sole = new Seed({cId: 4, cLevel: 3, cName: "玉米"}); // cropstype.php:8
+		// 二次应答整体替换（:504-508 splice + concat）
+		var sole = new Seed({cId: 4, cLevel: 3, cName: "玉米"}); // cropstype.php:7
 		model.onGetSeedsInfo(voEvent(CommandDefs.CMD_GET_SHOP_SEED, null, [sole]));
 		Assert.equals(1, model.m_seeds.length);
 		Assert.isTrue(model.m_seeds[0] == sole);
@@ -686,8 +688,9 @@ class ShopModelTest {
 
 	// :957-995 onGetDecorsInfo：整表 reverse（:977）后按 4 元块换位
 	// （:980-989：块内 0↔3、1↔2）——8 元净效果是后 4 元整体前置；元素本体
-	// 不被读取（比较的是位置）。非 4 倍数长度该 while 越界写 undefined 会
-	// 自增 length 成死循环（原版缺陷），fixture 取 4 的倍数
+	// 不被读取（比较的是位置）。非 4 倍数长度该 while 末块越界写会把
+	// length 垫到下一个 4 的倍数、尾部留 undefined 槽（原版缺陷；垫完
+	// _loc4_ 追平即退出，非死循环），fixture 取 4 的倍数
 	public function test_onGetDecorsInfo_reverse_and_block_swap() {
 		var d1 = new DIYDecor({itemId: 1});
 		var d2 = new DIYDecor({itemId: 2});
@@ -827,7 +830,7 @@ class ShopModelTest {
 		// 种子页的 isYouji==1 → true）
 		Assert.equals(0, log.length); // 全程零派发
 
-		// 二次应答整体替换（:400-402 splice + concat）
+		// 二次应答整体替换（:400-403 splice + concat）
 		var sole = new Seed({cId: 101});
 		model.onGetAdvertisementSeedsList(voEvent(CommandDefs.CMD_GET_SHOP_SEED, null, [sole]));
 		Assert.equals(1, model.m_adSeeds.length);
@@ -897,9 +900,9 @@ class ShopModelTest {
 		// apurl 截取（:1050-1053）经 URLVariables 解析后只进 postUrl 载荷，
 		// 不可观测——分支全程跑通不抛即钉（URLLoader 空址 eval 静默）
 
-		// VO null
+		// VO null（:1011-1014 早退）→ 无派发，log 停在 2 条
 		m3.onGetAdvertisementSeedsInfo(voEvent(CommandDefs.CMD_GET_SHOP_ADVERTISEMENT_SEED, null, null));
-		Assert.equals(3, log3.length);
+		Assert.equals(2, log3.length);
 	}
 
 	// :173-224 onLoadDataError：cmdID → 页签 index 表（33→0、34→2、35→3、

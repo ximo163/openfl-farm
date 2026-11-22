@@ -1000,3 +1000,11 @@
   operation: null + 1"）、js 是 undefined。HealthMode:11 先例；#37 的
   ObjectPool 计数器三件、FishMover 七个 int 全靠这个起绿。防：类字段
   表逐个对原文，数值/布尔缺初始化就补 `= 0`/`= Math.NaN`/`= false`。
+- **ObjectPool.purge 的 `if(!_loc2_.data)` 收集的是「借出中」的槽位，方向
+  极易读反**：borrow(:179) 取走对象时把节点 data 置 null，所以 falsy（=
+  null）恰是借出槽——purge 保留它们、按数量重定 `_usageCount`，再补足
+  initSize。#37 implement 曾译成收集 data 非空节点（直觉上是「留有货的」），
+  write-tests 阶段才对出：全借出池 purge 时反向判据让收集表为空、
+  `_loc3_[0]` 取 null、`_tail.next` 空引用。防：环形池这类「槽位置 null
+  表示在用」的约定先追 borrow/restore 的写点再定判据方向；判据配非对称
+  用例（借出 1/N）测，别只测全空闲。

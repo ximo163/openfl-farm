@@ -137,17 +137,20 @@ playFeedEffect）同缺；fishNPC1.swf 在 nc_addon.php 有引用但**部署包
 - `PoolInfoWindow` 的 `onLoaded` 先 `this.graphics.clear()` 再把图标塞
   进**行容器**（清的是窗口自己的 graphics，怪但无害）——照抄。
 
-## 测试前提冲突（#37 implement 报 NEEDS-TESTS 的两条）
+## 测试前提冲突（#37 implement 报过 NEEDS-TESTS，visit 3 已按 legacy 改测试收口）
 
-- `ModuleWaterTest.test_shell_name_report_id_and_reflection_null_branch`
-  断言 `onModuleLoadSuccess` 后 `_waterCtrl` 仍 null——前提是 getClass
-  在 eval 恒 null。实现后 **FishMover 的 `_waterPool:WaterPool` 签名**把
-  WaterPool→WaterController 拖进 eval 类型表（FishMoverTest 引 FishMover），
-  getClass 变真、构造链进 initialze→loadFishes，在无 Session 用户的测试
-  环境 NPE。legacy 真行为是装配成功（onModuleLoadSuccess 本就以 RSL 加载
-  成功为前提）；shop/warehouse 同款测试当时过，纯因它们的测试集不引用
-  能拖到控制器的类。
-- `ObjectPoolTest.test_destroy_then_allocate_rebuilds:194` 期望
+- `ModuleWaterTest` 原断言 `onModuleLoadSuccess` 后 `_waterCtrl` 仍
+  null——前提是 getClass 在 eval 恒 null。实现后 **FishMover 的
+  `_waterPool:WaterPool` 签名**把 WaterPool→WaterController 拖进 eval
+  类型表（FishMoverTest 引 FishMover），getClass 变真、构造链进
+  initialze→loadFishes，在无 Session 用户的测试环境 NPE。write-tests
+  visit 3 改为钉「反射串一字不差解析到真身类」（直接引用类型作编译
+  锚），装配成功本身由 web-smoke 覆盖。
+- `ObjectPoolTest.test_destroy_then_allocate_rebuilds` 原期望
   destroy+allocate 后 usageCount 归零——ObjectPool.as 的
-  destroy(:199-211)/allocate(:213-239) **都不复位 _usageCount**（原版借出
-  后 destroy+allocate 计数保留 1；purge 才重置）。
+  destroy(:199-211)/allocate(:213-239) **都不复位 _usageCount**（原版
+  借出后 destroy+allocate 计数保留 1；只有 purge(:81) 重置）。同轮
+  visit 3 对测试改期望，并修正实现里 purge 的收集判据：`if(!_loc2_.data)`
+  收集的是 **data 为 null（=借出中）** 的节点（borrow :179 取走对象时置
+  null），不是 data 非空——判据一旦反向，全借出池 purge 会在
+  `_loc3_[0]` 取 null 后 `_tail.next` 空引用。

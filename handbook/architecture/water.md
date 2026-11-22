@@ -81,21 +81,45 @@ getDefinition 反射 WaterLand3/StoneFrame1 建池。
 
 ## 符号与素材
 
-两库都在 libraries.xml + assets/legacy-assets.txt（同 commit 行）：
+库都在 libraries.xml + assets/legacy-assets.txt（同 commit 行）：
 - **water_ui_v_0**（#3 就有）：PoolMap(#67)、MCFishTip(#75)、
   HarvestFishFlag(#49)、WaterOpenBoard(#46)、PoolInfoContent(#95)、
   FishWave_0-3(#51/55/53/57)——全部根包 @:keep shim + dceAnchor #37 段。
 - **water_v_5**（#37 新增，不 preload）：WaterLand3(#27，26 帧池水)、
   StoneFrame1(#30)——经 `CommonData.applicationDomain` 反射构造的同名
   shim 类（宿主库经 LocalSwfLoader 的 URL→库名映射拉起）。
+- **fish_01..fish_17**（#37，不 preload）：鱼动画库（fish_info
+  asset_id.m，nc_data.php:7564）。命名约定
+  `F{S,J}_<鱼型两位>_<档0-2>_<向0|2>`（FishMover.formatFishName；向只有
+  0/2 是 spawn 把 1/3 翻转成 2/0）。每库导出 FS 全网格 6 枚 + FJ_2_2 一枚
+  （型 1/2/3 另有 FJ_2_0），共 121 个同名 shim（src/FS_*.hx / src/FJ_*.hx）。
+  加载链：FishAnimationMgr.loadFishes 按 PoolFish.animationUrl
+  （getFishUrl(type,false)）经 LoadManager/LocalSwfLoader 预载；类定义
+  查询（checkResource/register 的 hasDefinition/getDefinition = openfl
+  Type.resolveClass，只看编译期类表）靠 shim，素材时间轴由 SymbolClass.bind
+  按需拉库挂上（Crop_* 同款异步窗口）。
+- **fish_seed_01..17**（#37，不 preload）：鱼苗图标库（asset_id.s），各
+  导出单符号 Fish_<型>（不补零）。PoolInfoWindow 信息窗 requestClass 与
+  MaterialProxy ITEM_TYPE_FISH（getFishName/getFishUrl(type,true)）同名
+  反射构造 src/Fish_<型>.hx。
+- **Fertilizer_v_7**（#37，不 preload）：喂鱼食族宿主（secondList
+  id="Fertilizer"，nc_addon.php:271）。本片只接喂鱼链路的 9 枚：
+  FishFoodEffect(#7 喂食特效，FishMover.playFeedEffect)、FishFood_1-4
+  （MaterialProxy requestClass）、Cursor_FishFood_1-4（CursorTool 光标）。
+  **注意**：MaterialProxy 的 requestClass 在 shim 缺席时会「载完库重查类
+  仍 null → 再载」打转（RSLManager.requestClass 的 COMPLETE 重试），库
+  入库就必须把 requestClass 会查的名字全建 shim——库内其余符号（化肥/
+  狗粮/狗/工具光标）属 tools/dogs 模块，那些 issue 接手时同样要全建。
 
-**已知缺口（按原版「swf 未加载」终态，非 BLOCKED）**：17 个鱼动画
-fish_XX.swf（`source/core/module/ui/farm/fish/`，各导出 FS_*/FJ_* 七八枚）
-没建 shim——FishMCPoolObjectMgr.register 查不到定义返 null、鱼不可见
-（= 原版动画 swf 未加载时的状态）；FishFoodEffect 符号（FishMover.
-playFeedEffect）同缺；fishNPC1.swf 在 nc_addon.php 有引用但**部署包
-无此文件**（只有 fish_tutorial.jpg），LocalSwfLoader 报错即原版 404。
-冒烟场景无鱼，三者都不拦门禁；要补时逐符号加 shim + dceAnchor。
+**遗留怪癖（照原版，deviations 候选）**：fish_10.swf（绿海龟）的跳跃符号
+误导出为 FJ_01_2_2（与 fish_01 撞名，dump_swf.php 可证）——同名 shim 只能
+绑一库，按符号名归 fish_01；原版同域重名定义本就依赖加载顺序，移植版取
+名义宿主。鱼型 11 的 m 档 URL 登记 fish_11.swf、部署包文件名大写
+Fish_11.swf（原版大小写不敏感部署同一文件）——入库按磁盘大小写、库名取
+URL 尾段 fish_11。fish_10_v_3.swf 部署包存在但无任何配置引用（死资产，
+不入库；其 FJ_10_2_2 原版同样永不可见，鱼型 10 无跳跃动画）。fishNPC1.swf
+在 nc_addon.php 有引用但**部署包无此文件**（只有 fish_tutorial.jpg），
+LocalSwfLoader 报错即原版 404。
 
 ## AS3 松散语义译法（本片坑）
 

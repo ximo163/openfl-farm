@@ -95,3 +95,55 @@ source/core/module/ui/main/outswf/help.swf
 # SymbolClass 只有 frame0 文档类（swf-inventory），视觉符号全在 farmui_full_v_40
 # ——本库为原 swf 随包保留 + WarehouseWrapper 加载链对账入库：
 source/core/module/ui/warehouse_v_23.swf
+#
+# water 模块鱼动画族（issue #37）：17 种鱼各一个动画库 + 一个鱼苗图标库
+# （nc_data.php:7564 fish_info 的 asset_id.m/.s → :5960 起资产表）。动画库
+# SymbolClass 导出 FS_<鱼型>_<档>_<向>/FJ_…（游动/跳跃），FishAnimationMgr
+# .loadFishes 经 LoadManager（LocalSwfLoader 按 URL 尾段映射库名）预载；
+# 图标库导出 Fish_<型>，PoolInfoWindow/MaterialProxy requestClass 构造。
+# 鱼型 11 的 m 档登记是 fish_11.swf（asset 9694），部署包文件名大写
+# Fish_11.swf（原版大小写不敏感部署下同一文件）——按磁盘实际大小写入库，
+# 库名仍取 URL 尾段 fish_11。fish_10_v_3.swf 部署包存在但无任何配置引用
+# （死资产），不入库；其导出的 FJ_10_2_2 因此在原版同样永不可见（鱼型 10
+# 的 fish_10.swf 把跳跃符号误导出为 FJ_01_2_2，与 fish_01 撞名——同名 shim
+# 只能绑一库，按符号名归 nominal 鱼型 fish_01，deviations 候选）：
+source/core/module/ui/farm/fish/fish_01.swf
+source/core/module/ui/farm/fish/fish_02.swf
+source/core/module/ui/farm/fish/fish_03.swf
+source/core/module/ui/farm/fish/fish_04.swf
+source/core/module/ui/farm/fish/fish_05.swf
+source/core/module/ui/farm/fish/fish_06.swf
+source/core/module/ui/farm/fish/fish_07.swf
+source/core/module/ui/farm/fish/fish_08.swf
+source/core/module/ui/farm/fish/fish_09.swf
+source/core/module/ui/farm/fish/fish_10.swf
+source/core/module/ui/farm/fish/Fish_11.swf
+source/core/module/ui/farm/fish/fish_12.swf
+source/core/module/ui/farm/fish/fish_13.swf
+source/core/module/ui/farm/fish/fish_14.swf
+source/core/module/ui/farm/fish/fish_15.swf
+source/core/module/ui/farm/fish/fish_16.swf
+source/core/module/ui/farm/fish/fish_17.swf
+source/core/module/ui/farm/fish/fish_seed_01.swf
+source/core/module/ui/farm/fish/fish_seed_02.swf
+source/core/module/ui/farm/fish/fish_seed_03.swf
+source/core/module/ui/farm/fish/fish_seed_04.swf
+source/core/module/ui/farm/fish/fish_seed_05.swf
+source/core/module/ui/farm/fish/fish_seed_06.swf
+source/core/module/ui/farm/fish/fish_seed_07.swf
+source/core/module/ui/farm/fish/fish_seed_08.swf
+source/core/module/ui/farm/fish/fish_seed_09.swf
+source/core/module/ui/farm/fish/fish_seed_10.swf
+source/core/module/ui/farm/fish/fish_seed_11.swf
+source/core/module/ui/farm/fish/fish_seed_12.swf
+source/core/module/ui/farm/fish/fish_seed_13.swf
+source/core/module/ui/farm/fish/fish_seed_14.swf
+source/core/module/ui/farm/fish/fish_seed_15.swf
+source/core/module/ui/farm/fish/fish_seed_16.swf
+source/core/module/ui/farm/fish/fish_seed_17.swf
+# 喂鱼食族宿主（issue #37）：Fertilizer_v_7.swf（secondList id="Fertilizer"，
+# nc_addon.php:271）。导出 FishFoodEffect（喂食特效，FishMover.playFeedEffect）、
+# FishFood_1-4（鱼食道具图，MaterialProxy）、Cursor_FishFood_1-4（鱼食光标，
+# CursorTool）——喂鱼链路这次接入；库内其余符号（化肥/狗粮/狗/工具光标）
+# 属 tools/dogs 模块，后续 issue 再接：
+source/core/module/ui/tools/Fertilizer_v_7.swf

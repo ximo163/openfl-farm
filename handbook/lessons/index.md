@@ -1008,3 +1008,21 @@
   `_loc3_[0]` 取 null、`_tail.next` 空引用。防：环形池这类「槽位置 null
   表示在用」的约定先追 borrow/restore 的写点再定判据方向；判据配非对称
   用例（借出 1/N）测，别只测全空闲。
+- **功能 swf 的「运行期装载符号族」要整族入库+建 shim，光译类不接资产链
+  等于永久砍功能**：pool_v_13 #37 attempt 1 把 14 类全译对，但鱼动画
+  fish_01..17.swf 族没进 libraries.xml/legacy-assets.txt、FS_*/FJ_* 没建
+  同名 shim——openfl 的 ApplicationDomain.hasDefinition/getDefinition 就是
+  Type.resolveClass（只看编译期类表，不看已载库符号），checkResource 恒
+  false、鱼永不生成、捞/喂/偷 hitTest 全打不中；handbook 里写「= 原版
+  swf 未加载时的状态」是自我开脱——原版那是加载窗口的暂态，移植版是
+  永久态，review 驳回即此。防：spec/modules/<模块>.json 每个类的
+  assets 段（pattern/via/evidence）逐条落到「库声明 + 符号 shim +
+  dceAnchor」三件套；swf 的导出符号名以 tools/dump_swf.php 实测为准，
+  别按命名约定脑补（fish_10 的跳跃符号就导出成了 FJ_01_2_2）。
+- **往工程加一个被 requestClass 查询的库时，该库被查的名字要一次建全
+  shim**：RSLManager.requestClass 的类未命中路径是「载完库 → COMPLETE
+  回调重查 → 仍 null → 再载」——库不存在时 LocalSwfLoader onError 走
+  IOErrorEvent 结束，库存在而符号 shim 缺席则无限重载。#37 接
+  Fertilizer_v_7 时把 MaterialProxy 会查的 FishFood_1-4、CursorTool 会查
+  的 Cursor_FishFood_1-4、playFeedEffect 会查的 FishFoodEffect 一并建齐
+  才算接完（库内其余符号归 tools/dogs 模块，那两个 issue 接手时同理）。

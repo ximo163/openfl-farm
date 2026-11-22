@@ -10,8 +10,8 @@ import openfl.utils.Dictionary;
  * 记「符号名→Class」，_map 记「Class→ObjectPool(可增长)」；getObject 首借
  * allocate(2)，returnObject 按运行时类型（`is Class`）找池归还，gc 全池
  * purge。ApplicationDomain.hasDefinition/getDefinition 在 openfl 是
- * Type.resolveClass——鱼符号（FS_xx_x_x 等）需先以同名 Haxe 类注册才会命中
- * （见 FishAnimationMgr 头注释的已知缺口说明）。
+ * Type.resolveClass——鱼符号（FS_xx_x_x 等）以同名根包 shim 注册进编译期
+ * 类表（命名约定与各库清单见 FishAnimationMgr 头注释）。
  */
 class FishMCPoolObjectMgr {
 	// FishMCPoolObjectMgr.as:10

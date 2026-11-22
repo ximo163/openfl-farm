@@ -382,13 +382,15 @@ class WaterModelTest {
 
 	// ---------- :163-225 harvestAll 返回码 ----------
 
-	// -3 pending；-2 无可捞（空/未成熟/成熟但 left=0）；-1 访客被 thief/min
+	// -3 pending；-2 无可捞（空数组/未成熟/成熟但 left=0）；-1 访客被 thief/min
 	// 挡；0 发出且 pending 置位。主人侧（me=true）不看 min 与 thief（:181-184
-	// 直接 push），访客侧 :185-196
+	// 直接 push），访客侧 :185-196。null _fishes 不设用例：:172 直接读
+	// _fishes.length 无守卫，原版是 null 解引用抛错路径（lessons #35：
+	// 不为它加守卫），canSteal 的 :401 才有显式 null 检查
 	public function test_harvestAll_return_codes() {
 		becomeHost();
 		var hostCases:Array<{fishes:Array<Dynamic>, expected:Int, why:String}> = [
-			{fishes: null, expected: -2, why: "无鱼"},
+			{fishes: [], expected: -2, why: "空塘"},
 			{fishes: [youngClown(6)], expected: -2, why: "未成熟"},
 			{fishes: [matureClown(5, 0, 15)], expected: -2, why: "成熟但 left=0"},
 			{fishes: [matureClown(5, 5, 15, [])], expected: 0, why: "主人不看 min：left5<min9 照捞"},
@@ -627,10 +629,13 @@ class WaterModelTest {
 
 	// ---------- :627-658 processBatchFish ----------
 
-	// 逐条 shift 处理（_batchFlag=2 → processStealFish）：每条后
-	// EVENT_BATCH_FISH(1)；还有剩余且下一条 harvest>0 时
-	// EVENT_UPDATE_MATURE_FLAG(下一条 index) 并返回 true；排空后
-	// EVENT_BATCH_FISH(0) 返回 false（:629-658）
+	// 起批即派发：onStealFish 收到数组时同步发 EVENT_BATCH_FISH(2)（:443），
+	// 之后才是 processBatchFish 的队列。逐条 shift 处理（_batchFlag=2 →
+	// processStealFish）：每条后 EVENT_BATCH_FISH(1)；还有剩余且下一条
+	// harvest>0 时 EVENT_UPDATE_MATURE_FLAG(下一条 index) 并返回 true；排空后
+	// EVENT_BATCH_FISH(0) 返回 false（:629-658）。完整序列：
+	// [BATCH_FISH(2), FISH_HARVESTED(5), BATCH_FISH(1), UPDATE_MATURE_FLAG(6),
+	//  FISH_HARVESTED(6), BATCH_FISH(1), BATCH_FISH(0)]
 	public function test_processBatchFish_steal_queue() {
 		var log:Array<Dynamic> = [];
 		listenModel(model, log);
@@ -640,21 +645,23 @@ class WaterModelTest {
 			{code: 1, index: 6, harvest: 3, status: {l: 8, o: 15, p: -82800}}
 		];
 		model.onStealFish(voEvent(CommandDefs.CMD_STEAL_FISH, {index: "5,6", flag: 1, ownerId: 1}, batch));
+		Assert.equals(WaterModel.EVENT_BATCH_FISH, Reflect.field(log[0], "type"));
+		Assert.equals(2, Reflect.field(log[0], "data")); // :443 起批派发在前
 
 		Assert.isTrue(model.processBatchFish());
-		Assert.equals(WaterModel.EVENT_FISH_HARVESTED, Reflect.field(log[0], "type"));
-		Assert.equals(5, Reflect.field(Reflect.field(log[0], "data"), "id"));
-		Assert.equals(WaterModel.EVENT_BATCH_FISH, Reflect.field(log[1], "type"));
-		Assert.equals(1, Reflect.field(log[1], "data"));
-		Assert.equals(WaterModel.EVENT_UPDATE_MATURE_FLAG, Reflect.field(log[2], "type"));
-		Assert.equals(6, Reflect.field(log[2], "data")); // 下一条 index、harvest 3>0
+		Assert.equals(WaterModel.EVENT_FISH_HARVESTED, Reflect.field(log[1], "type"));
+		Assert.equals(5, Reflect.field(Reflect.field(log[1], "data"), "id"));
+		Assert.equals(WaterModel.EVENT_BATCH_FISH, Reflect.field(log[2], "type"));
+		Assert.equals(1, Reflect.field(log[2], "data"));
+		Assert.equals(WaterModel.EVENT_UPDATE_MATURE_FLAG, Reflect.field(log[3], "type"));
+		Assert.equals(6, Reflect.field(log[3], "data")); // 下一条 index、harvest 3>0
 
 		Assert.isFalse(model.processBatchFish()); // 排空
-		Assert.equals(WaterModel.EVENT_FISH_HARVESTED, Reflect.field(log[3], "type"));
-		Assert.equals(6, Reflect.field(Reflect.field(log[3], "data"), "id"));
-		Assert.equals(1, Reflect.field(log[4], "data")); // BATCH_FISH(1)
-		Assert.equals(0, Reflect.field(log[5], "data")); // BATCH_FISH(0)
-		Assert.equals(6, log.length);
+		Assert.equals(WaterModel.EVENT_FISH_HARVESTED, Reflect.field(log[4], "type"));
+		Assert.equals(6, Reflect.field(Reflect.field(log[4], "data"), "id"));
+		Assert.equals(1, Reflect.field(log[5], "data")); // BATCH_FISH(1)
+		Assert.equals(0, Reflect.field(log[6], "data")); // BATCH_FISH(0)
+		Assert.equals(7, log.length);
 
 		// 无批与空批：false（:629-632）
 		Assert.isFalse(freshModel().processBatchFish());

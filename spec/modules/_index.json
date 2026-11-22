@@ -1,6 +1,6 @@
 {
  "version": 1,
- "description": "S4 模块清单索引：main3_v_221（339）+ Master2_v_142（466）= 805 个反编译类按功能拆分到 spec/modules/<模块>.json。对账公式：Σ 各模块 classes + ignored（未翻砍除）+ activities 已译保留 = 805（activities 于 2026-11-21 整模块砍除，见 spec/deviations.json module-activities-cut）。模块拆分依据 issue #5 模块表 + 实际包结构（FarmApplication.initModules 的模块注册、nc_main/mc_main moduleList、包语义）。",
+ "description": "S4 模块清单索引：main3_v_221（339）+ Master2_v_142（466）= 805 个反编译类按功能拆分到 spec/modules/<模块>.json。对账公式：Σ 各模块 classes + ignored（未翻砍除）+ activities 已译保留 + 插件 API 砍除保留 = 805（activities 于 2026-11-21 整模块砍除、插件 API 片 2026-11-22 砍除，见 spec/deviations.json module-activities-cut / no-qq-plugin-api）。模块拆分依据 issue #5 模块表 + 实际包结构（FarmApplication.initModules 的模块注册、nc_main/mc_main moduleList、包语义）。",
  "sources": [
   "legacy/decompiled/main3_v_221/scripts/（339 类）",
   "legacy/decompiled/Master2_v_142/scripts/（466 类）",
@@ -10,7 +10,7 @@
  "total": 805,
  "breakdown": {
   "dog": 3,
-  "farm-basic": 235,
+  "farm-basic": 233,
   "farm-decorate": 6,
   "farm-shop": 3,
   "friends": 6,
@@ -25,9 +25,18 @@
    "module": "activities",
    "entries": 157,
    "unique_classes": 143,
-   "swf_distribution": {"Master2_v_142": 104, "main3_v_221": 53},
+   "swf_distribution": {
+    "Master2_v_142": 104,
+    "main3_v_221": 53
+   },
    "duplicate_entries": 14,
    "reason": "整模块砍除（所有者 2026-11-21 决定）：未翻译的 125 条不再移植，活动功能不可用；已存在的 32 个 .hx（entities.HealthMode、cursor.CursorWild*、common.view.window.GiftWindow 族、module.FreeGift/cardsgame/quickshoot/recall 壳、monthend.MonthEndWin stub 等，被 farm 侧引用或已顺手翻）保留现状不回删。详见 spec/deviations.json module-activities-cut"
+  },
+  {
+   "module": "plugin-api-cut（原 farm-basic 的 framework.api.FarmAPI 420 loc + framework.api.PluginManager 281 loc）",
+   "entries": 2,
+   "unique_classes": 2,
+   "reason": "所有者 2026-11-22 拍板砍除：QQ 空间插件生态门面（活动/支付/外挂插件拿宿主能力入口），独立部署 + no-qzone deviations 下出口全死路，不值得 1:1 翻译。两个 stub .hx 保留作编译占位（FarmApplication.startup 的 new FarmAPI/PluginManager 调用点不空挂），行为永久缺位由 spec/deviations.json no-qq-plugin-api 登记。spec/modules/farm-basic.json 已同步移出该 2 条。"
   }
  ],
  "external": {
@@ -142,9 +151,10 @@
   ]
  },
  "counts_check": {
-  "modules_sum": 648,
+  "modules_sum": 646,
   "ignored_unported": 125,
   "activities_already_ported_kept": 32,
+  "plugin_api_stubs_kept": 2,
   "total": 805,
   "sum_equals_805": true
  }

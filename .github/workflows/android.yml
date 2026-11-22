@@ -11,10 +11,24 @@ on:
     # 注意只在这里加：web.yml 挡着流水线的 required_checks，加了 ignore 后
     # 「sync 合并只带来 handbook/.orchestrator」这类推送会触发 NoCIStarted
     # 停人工（编排器 #199）。
+    # 2026-11-22 扩充：spec/（规格 JSON）、scripts/（注意 sync-legacy-assets.sh
+    # 也在此目录——改它时若无 src/asset 同动，本 CI 跳过、由 web.yml 的构建
+    # 兜底验证）、legacy/decompiled + recompile-trigger（反编译基线，非构建
+    # 输入）、harness/checks（流水线与 web 冒烟基建）、tools（独立 haxelib
+    # 工具，不进 APK——Project.xml 的 source 只有 src/）。构建输入白名单：
+    # src/、Project.xml、libraries.xml、assets/legacy-assets.txt、
+    # legacy/deploy/（sync 的资产源）。
     paths-ignore:
       - ".orchestrator/**"
       - "handbook/**"
       - "**.md"
+      - "spec/**"
+      - "scripts/**"
+      - "legacy/decompiled/**"
+      - "legacy/deploy/recompile-trigger"
+      - "harness/**"
+      - "checks/**"
+      - "tools/**"
   workflow_dispatch:
 
 permissions:

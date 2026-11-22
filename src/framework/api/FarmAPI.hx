@@ -6,7 +6,8 @@ import module.FarmApplication;
  * framework.api.FarmAPI —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
  * 农场对外插件 API（FarmAPI.as 419 loc，插件/活动/支付拿宿主能力的门面）；
  * 启动链只 new FarmAPI(this) 后转交 PluginManager/QQPay/FarmAppHelper。
- * 行为随插件片接入。
+ * 【永久 stub】所有者 2026-11-22 拍板插件/API 片砍除，行为不再移植——
+ * 见 spec/deviations.json no-qq-plugin-api。本文件只保编译占位。
  */
 @:keep
 class FarmAPI {

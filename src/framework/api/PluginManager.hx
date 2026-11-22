@@ -8,7 +8,8 @@ import shim.As3;
  * framework.api.PluginManager —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
  * 插件管理器（PluginManager.as 280 loc：解析 plugins 配置、装载插件代理）；
  * 启动链只调 loadPlugins(api, plugins) 和 amountPlugins(PLUGIN_AMOUNT_BG,
- * container, null)。行为随插件片接入。
+ * container, null)。【永久 stub】所有者 2026-11-22 拍板插件/API 片砍除，
+ * 行为不再移植——见 spec/deviations.json no-qq-plugin-api。
  */
 @:keep
 class PluginManager {

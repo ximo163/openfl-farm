@@ -10,7 +10,7 @@
   "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php（addon 配置：Fertilizer 等素材 url、beastLoaderUrl、cropUrl）"
  ],
  "counts": {
-  "classes": 235
+  "classes": 233
  },
  "classes": [
   {
@@ -1845,29 +1845,6 @@
    "mods": [],
    "assets": [],
    "interactions": []
-  },
-  {
-   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/FarmAPI.as",
-   "class": "framework.api.FarmAPI",
-   "swf": "main3_v_221",
-   "subsystem": "框架/API",
-   "loc": 420,
-   "mods": [],
-   "assets": [],
-   "interactions": [
-    "TimerEvent.TIMER"
-   ]
-  },
-  {
-   "path": "legacy/decompiled/main3_v_221/scripts/framework/api/PluginManager.as",
-   "class": "framework.api.PluginManager",
-   "swf": "main3_v_221",
-   "subsystem": "框架/API",
-   "loc": 281,
-   "mods": [],
-   "assets": [],
-   "interactions": [],
-   "notes": "插件装载：按 addon config plugins[].proxy 经 applicationDomain.getDefinition 取代理类（plugins/ 下 5 个代理在 activities 模块）。"
   },
   {
    "path": "legacy/decompiled/main3_v_221/scripts/framework/api/PluginProxy.as",

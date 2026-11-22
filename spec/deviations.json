@@ -89,6 +89,14 @@
       "ported": "整模块砍除：未翻译的 125 条不再移植，活动功能不可用；已存在的 32 个 .hx 保留现状不回删（entities.HealthMode、cursor.CursorWild*、common.view.window.GiftWindow 族、module.FreeGift/cardsgame/quickshoot/recall 壳、monthend.MonthEndWin stub 等——被 farm 侧引用或已顺手翻）。启动链对 cards/gifts/quickshoot/pool 模块 swf 的本地资产加载不变（StartupModuleLibrariesTest 门禁照旧；swf 作资产加载，其 AS3 控制器在 openfl 上本就不执行）",
       "why": "所有者 2026-11-21 拍板整模块砍除（计划预留的决定点：活动小游戏视价值最后决定要不要移植）",
       "date": "2026-11-21"
+    },
+    {
+      "id": "no-qq-plugin-api",
+      "module": "farm-basic 的 framework.api 2 类（FarmAPI 420 loc / PluginManager 281 loc）",
+      "original": "农场对外插件 API 门面：插件/活动/支付经 PluginManager 注册后经 FarmAPI 拿宿主能力（金币/经验/弹窗/跳转等），QQ 空间宿主生态的扩展入口",
+      "ported": "不移植（所有者 2026-11-22 拍板）。src/framework/api/ 两个 stub 保留作编译占位（启动链 new 调用点不空挂），行为永久缺位；spec/modules/farm-basic.json 与 _index.json 已同步移出并对账（805 公式加 plugin_api_stubs_kept: 2 桶）",
+      "why": "QQ 插件生态在独立部署下无宿主可接，且 no-qzone-jsapi / no-qq-telemetry deviations 已切断其出口——701 行死管道，照 activities 砍除先例处理",
+      "date": "2026-11-22"
     }
   ]
 }

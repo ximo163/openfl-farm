@@ -1166,8 +1166,11 @@ class ShopModelTest {
 		model.m_requestPending = true;
 		model.onTransactionError(voEvent(CommandDefs.CMD_GET_SHOP_SEED, null, {}));
 		Assert.equals(1, countType(log, ShopModel.EVENT_BUY_SEED_FAIL));
-		Assert.equals(1, countType(log, ShopModel.EVENT_BUY_FISH_FAIL));
-		Assert.equals(1, countType(log, ShopModel.EVENT_BUY_TOOL_FAIL));
+		// changed for #35: BUY_FISH_FAIL/BUY_TOOL_FAIL 期望 1→2——同一 log 上
+		// 1129-1147 循环已按 ShopModel.as:905/:910 各派发两次并钉累计 2，
+		// 原值 1 与循环自身断言矛盾（未知 cmdID 不派发，计数不动）
+		Assert.equals(2, countType(log, ShopModel.EVENT_BUY_FISH_FAIL));
+		Assert.equals(2, countType(log, ShopModel.EVENT_BUY_TOOL_FAIL));
 		Assert.equals(1, countType(log, ShopModel.EVENT_BUY_DIY_FAIL));
 		Assert.equals(1, countType(log, ShopModel.EVENT_NORMAL_ERROR));
 		Assert.isFalse(model.m_requestPending);

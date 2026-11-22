@@ -10,7 +10,7 @@
   "spec/protocol.json entries.nc（mod 参数/返回权威，S1）"
  ],
  "notes": [
-  "拉起链同 farm-shop-ui：main3 桩 module.warehouse.ModuleWarehouse 经 Utils.getClass(\"module.warehouse.bag.MyBagController\")（背包）与 Utils.getClass(\"module.warehouse.house.WarehouseController\")（仓库）各取控制器（ModuleWarehouse.as:43,50；打开消息 MSG_SHOW_WAREHOUSE=\"ShowWarehouse\"、MSG_SHOW_PACK=\"ShowMyPackage\"，main3 Consts.as:278,296）。",
+  "拉起链同 farm-shop-ui：main3 桩 module.warehouse.ModuleWarehouse 经 Utils.getClass(\"module.warehouse.bag.MyBagController\")（背包）与 Utils.getClass(\"module.warehouse.house.WarehouseController\")（仓库）各取控制器（ModuleWarehouse.as:43,50；打开消息 MSG_SHOW_PACK=\"ShowMyPackage\"（main3 Consts.as:278）、MSG_SHOW_WAREHOUSE=\"ShowWarehouse\"（main3 Consts.as:296））。",
   "本 swf 由 main3 加载进其子 ApplicationDomain：qui/greensock 共享库绑定 main3 份（farm-basic），cross_module_imports 不记 pasture。",
   "默认包（无 import）引用 main3 顶层 EvtAPI/IBeastAPI/IGameAPI（MyBagView/WarehouseModel/WarehouseView）：这三个类登记在已砍除的 activities 清单里，其中 EvtAPI 已随保留批译为 src/EvtAPI.hx；IBeastAPI/IGameAPI 未移植，翻译本模块时如需请按 deviations 流程提请裁决。",
   "cgi_farm_flower_del_msg（FlowerCard 删除花语留言）为 dead mod：$mod_list 命中但 PHP 文件缺失（protocol.json dead_mods），调用无输出——客户端按钮行为照译。",

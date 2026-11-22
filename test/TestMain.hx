@@ -126,6 +126,16 @@ class TestMain {
 		runner.addCase(new module.water.ModuleWaterTest());
 		runner.addCase(new module.decorate.ModuleDecorateTest());
 		runner.addCase(new module.mainScene.npc.widgets.DogFoodWindowTest());
+		// issue #35：shop 功能 swf 翻译（write-tests 阶段，对 stub 失败）——
+		// ShopModel 纯逻辑：六页签装载门位与 LOADING/LOADED/FAILED 派发、
+		// 买入交易位（beginTransaction/endTransaction 与各买入守卫）、应答
+		// 回调（种子/鱼苗 Settings 配置合并与升序排序、装饰倒序+四元块换位、
+		// 广告双网关三分支、合作专区 targetid 过滤、onTransactionError 派发
+		// 表）；StepperMaker 夹取数学（高夹先行、floor 收尾）；AdItem 双导入
+		// 通道（服务端键 "" 缺省 / 缓存下划线键 null 缺省）
+		runner.addCase(new module.shop.ShopModelTest());
+		runner.addCase(new com.qzone.qui.makers.StepperMakerTest());
+		runner.addCase(new entities.AdItemTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

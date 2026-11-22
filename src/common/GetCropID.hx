@@ -12,8 +12,9 @@ import shim.As3;
  * - SG_*（:12-18）、_toolList（:20-43）、idToDiyUrl2（:81-107）、
  *   getSeedUrl（:109-140）、getCropUrl（:142-178）、getHarvrstUrl（:180-199）、
  *   timeToMature（:201-228）、idToDiyUrl（:230-265）、getCropByID（:267-287）、
- *   idToToolName（:289-297）、getAssetUrl（:299-341）、getInsectPosition
- *   （:356-373）、getFishByID（:537-557）、specialGrow（:559-587）、idState
+ *   idToToolName（:289-297）、getAssetUrl（:299-341）、fishTip（:342-354）、
+ *   getInsectPosition（:356-373）、cropTip（:461-473）、getFishByID（:537-557）、
+ *   specialGrow（:559-587）、idState
  *   （:589-664）、idToDogUrl（:666-701）、getFishUrl（:703-723）、
  *   idToBoardUrl（:739-772）。
  * 其余成员保持 stub 返回值（见各方法头）。
@@ -263,6 +264,19 @@ class GetCropID {
 		return _loc3_;
 	}
 
+	// GetCropID.as:342-354（issue #35：fishTip：鱼苗买入窗口的说明文案，
+	// fish_info 配置的 tip 字段）
+	public static function fishTip(param1:String):String {
+		if (param1 == "0") {
+			return "";
+		}
+		var _loc2_:Dynamic = getFishByID(param1);
+		if (_loc2_ == null) {
+			return "";
+		}
+		return Reflect.field(_loc2_, "tip");
+	}
+
 	// GetCropID.as:356-373（getInsectPosition：crops.insect 的 "x1,y1,x2,y2,x3,y3|…"
 	// 按虫序取位；返回的坐标仍是字符串，调用方（Byproduct.updateInsect）当数用）
 	public static function getInsectPosition(param1:String, param2:Int = 1):Array<Dynamic> {
@@ -278,6 +292,19 @@ class GetCropID {
 		}
 		_loc5_ = (_loc4_.split("|")[param2] : String).split(",");
 		return [[_loc5_[0], _loc5_[1]], [_loc5_[2], _loc5_[3]], [_loc5_[4], _loc5_[5]]];
+	}
+
+	// GetCropID.as:461-473（issue #35：cropTip：种子买入窗口的说明文案，
+	// crops 配置的 tip 字段）
+	public static function cropTip(param1:String):String {
+		if (param1 == "0") {
+			return "";
+		}
+		var _loc2_:Dynamic = getCropByID(param1);
+		if (_loc2_ == null) {
+			return "";
+		}
+		return Reflect.field(_loc2_, "tip");
 	}
 
 	// GetCropID.as:559-587（specialGrow：按 m0/m4 有无素材判定特殊种子/特殊枯苗档）

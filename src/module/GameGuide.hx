@@ -9,6 +9,25 @@ import openfl.display.DisplayObjectContainer;
  */
 @:keep
 class GameGuide {
+	// GameGuide.as:22-32（issue #35 闭包成员补齐：ShopView/ShopController/
+	// 买入窗口的鱼苗引导步骤号；其余常量随引导片翻译）
+	public static final WATER_FISH_TAB:Int = 1;
+
+	// GameGuide.as:24
+	public static final WATER_FISH_ITEM:Int = 2;
+
+	// GameGuide.as:26
+	public static final WATER_UNLOCK_FISH:Int = 3;
+
+	// GameGuide.as:28
+	public static final WATER_FISH_ITEM_AGAIN:Int = 4;
+
+	// GameGuide.as:30
+	public static final WATER_BUY_FISH:Int = 5;
+
+	// GameGuide.as:32
+	public static final WATER_BAG_ICON_FISH:Int = 6;
+
 	private static var _instance:GameGuide;
 
 	public function new() {}
@@ -34,4 +53,14 @@ class GameGuide {
 		this._container = param1;
 		return param1;
 	}
+
+	// GameGuide.as:163-（issue #35 闭包成员补齐：引导遮罩/箭头随引导片翻译，
+	// 商店调用点先保可调不抛）
+	public function showStep(param1:Int, param2:Int = 0, param3:Int = 0, param4:String = ""):Void {}
+
+	// GameGuide.as:127-（引导片翻译；sec<=0 分支的 hide 同片）
+	public function autoHide(param1:Int):Void {}
+
+	// GameGuide.as:148-（引导片翻译）
+	public function hide():Void {}
 }

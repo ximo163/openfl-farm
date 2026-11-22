@@ -130,6 +130,30 @@ class As3 {
 	}
 
 	/**
+	 * AS3 的数组下标读（越界语义）：越界读得 undefined→null。js 越界读返回
+	 * undefined（恰好同 AS3），eval/cpp 行为未定义（cpp 直接崩）——静态目标
+	 * 规则要求判下标范围。ShopModel.onGetDecorsInfo 的四元块换位在非 4 倍数
+	 * 长度时读 _loc4_+1..+3 越界（原版缺陷照留），依赖此语义。
+	 */
+	public static function arrAt(arr:Array<Dynamic>, i:Int):Dynamic {
+		if (i < 0 || i >= arr.length) {
+			return null;
+		}
+		return arr[i];
+	}
+
+	/**
+	 * AS3 的数组下标写（越界语义）：写越界把 length 垫到下标+1、中间补
+	 * undefined→null 槽。与 arrAt 配对（同上出处）。
+	 */
+	public static function arrPut(arr:Array<Dynamic>, i:Int, v:Dynamic):Void {
+		while (arr.length <= i) {
+			arr.push(null);
+		}
+		arr[i] = v;
+	}
+
+	/**
 	 * AS3 的 int 减法 `a - b`（a/b 为 int 形参或属性时）：操作数按 Number 参与
 	 * 运算——未设值的字段是 undefined，Number 减法得 NaN，赋回 int 得 0。
 	 * Haxe 在 eval 目标上对 null 操作数直接抛 "Invalid operation"，js 又把

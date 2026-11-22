@@ -120,6 +120,26 @@ class BeastAPI extends EventDispatcher {
 		return param1;
 	}
 
+	// BeastAPI.as:49/:342/:472（issue #35 闭包成员补齐：ShopController.
+	// onUnlockFishSuccess 与 UnlockFishWindow.onMaterialCrystalOver 的
+	// 水晶名查询读 iniData。原版字段类型是 XML；E4X 取值由消费方按仓库
+	// 先例等价遍历 haxe.Xml。原版 main3 全部脚本无 iniData 赋值点（仅
+	// IGameAPI 声明 + 自身 setter）——getter 恒 null，消费方照原版在 null
+	// 上抛错（见两处 PORT-NOTE）；存取保持 Dynamic（stub，牧场片接入时
+	// 照实翻）。
+	public var iniData(get, set):Dynamic;
+
+	private var _iniData:Dynamic;
+
+	private function get_iniData():Dynamic {
+		return this._iniData;
+	}
+
+	private function set_iniData(param1:Dynamic):Dynamic {
+		this._iniData = param1;
+		return param1;
+	}
+
 	// BeastAPI.as:137（hideBeastPack：收起野兽背包 UI，牧场片接入时翻译）
 	public function hideBeastPack():Void {}
 

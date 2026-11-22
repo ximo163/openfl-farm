@@ -95,6 +95,8 @@ class Consts {
 	public static final MSG_SHOW_SHOP:String = "ShowShop";
 	public static final MSG_SHOW_BUY_DOG_FOOD:String = "ShowBuyDogFood";
 	public static final MSG_SHOW_BUY_SEED:String = "ShowBuySeed";
+	// Consts.as:332（issue #35：ShopView.showBuyItemWindow 的狗粮刷新派发）
+	public static final MSG_REFRSH_MY_DOG_FOOD:String = "RefreshMyDogFood";
 	// Consts.as:296
 	public static final MSG_SHOW_WAREHOUSE:String = "ShowWarehouse";
 	public static final MSG_SHOW_WAREHOUSE_SELL:String = "ShowWarehouseSell";
@@ -179,6 +181,8 @@ class Consts {
 	public static final DATA_BAG_RELOAD_FLAG:String = "BagReload";
 	public static final DATA_BAG_DATA_REMOVE:String = "BagDataRemove";
 	public static final DATA_DOG_CHANGED:String = "DogDataChanged";
+	// Consts.as:238（issue #35：买入成功后背包条目入列的 ShopController 派发）
+	public static final DATA_BUY_ITEM_ADD:String = "AddBuyItem";
 	// Consts.as:245（issue #9：ShortcutBar 监听我的鲜花装载）
 	public static final MY_FLOWER_LOADED:String = "MyFlowerLoaded";
 	// Consts.as:232（issue #9：Session.addReward 的装饰重装派发）
@@ -209,6 +213,10 @@ class Consts {
 	public static final WINDOW_NAME_WAREHOUSE:String = "warehouse";
 	public static final WINDOW_NAME_PROFILE:String = "profile";
 	public static final WINDOW_NAME_BUYDIY:String = "BuyDiyWindow";
+	// Consts.as:200（issue #35：BuyFishWindow 注册名）
+	public static final WINDOW_NAME_BUYFISH:String = "BuyFishWindow";
+	// Consts.as:202（issue #35：UnlockFishWindow 注册名）
+	public static final WINDOW_NAME_UNLOCKFISH:String = "UnlockFishWindow";
 	public static final TIP_NAME_MOUSE:String = "MouseTip";
 	public static final TIP_NAME_LAND_INFOR:String = "LandInfoTip";
 	public static final TIP_NAME_CROPINFO_MOUSE:String = "CropInfoTip";
@@ -265,6 +273,8 @@ class Consts {
 	public static final ITEM_TYPE_STICK:String = "21";
 	public static final ITEM_TYPE_PESTICIDE:String = "22";
 	public static final ITEM_TYPE_DOGFOOD:String = "909090";
+	// Consts.as:478（issue #35：ShopModel.buyDiy 交易位 parseInt("808080")）
+	public static final ITEM_TYPE_DIY:String = "808080";
 	public static final ORGANIC_FERTILIZER_ID:Int = 30;
 	public static final FAIRY_LADY:Int = 92001;
 	// Consts.as:588（issue #9：AddExpFloating 的花神加成判定）

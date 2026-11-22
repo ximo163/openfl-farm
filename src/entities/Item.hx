@@ -47,4 +47,11 @@ class Item {
 	public var _effect:Dynamic;
 	// Item.as:10（构造器 :51 置 false；addFood 置 false 后按 selfDogFood 覆盖）
 	public var _saleOut:Bool;
+	// ---- issue #35 补的闭包成员（BuyItemWindow.as:410/:593 读 `_vip == 1`、
+	// :445 读 `_shortage == true` 切元宝/VIP/缺货按钮排布；写入方是 main3 侧
+	// 道具数据解析，随其模块片接入，声明照抄 Item.as）----
+	// Item.as:20
+	public var _vip:Int;
+	// Item.as:22
+	public var _shortage:Bool;
 }

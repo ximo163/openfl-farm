@@ -75,13 +75,15 @@ class ObjectPool {
 				return;
 			}
 		} else {
-			// 有借出：沿环收集 data 非空的（=借出）节点，重链成环后补足到
-			// initSize。`!_loc2_.data` 是 AS3 真值转换 → != null
+			// 有借出：沿环收集 data 为 null 的（=借出中：borrow :179 取走
+			// 对象时把槽位置 null）节点，重链成环后补足到 initSize。
+			// `!_loc2_.data` 为真即 data 是假值 → == null（池化对象非 null，
+			// 假值只可能 null），不是 != null
 			_loc3_ = [];
 			_loc1_ = 0;
 			_loc2_ = this._head;
 			while (_loc2_ != null) {
-				if (_loc2_.data != null) {
+				if (_loc2_.data == null) {
 					_loc3_[_loc1_++] = _loc2_;
 				}
 				if (_loc2_ == this._tail) {

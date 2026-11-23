@@ -183,6 +183,13 @@ class TestMain {
 		// 重标 + 组 0 换槽/原位/push 三路、背景停用补默认件、失败文案字面量）、
 		// onNetError 文案与 dirty 保留
 		runner.addCase(new module.decorate.DecorateModelTest());
+		// issue #39：TweenLite 本体翻译（write-tests 阶段，对 stub 失败）——
+		// 默认 easeOut 插值采样（t/d 各档 + 非零起点）、自定义 ease、from 的
+		// runBackwards/immediateRender 即时倒放起点、overwrite 语义（缺省
+		// mode=1 杀同目标旧补间/显式 0 并行/异目标身份键分桶）、delayedCall
+		// 越延迟单次派发、killTweensOf 两分支（禁用/补渲染收尾）、killVars
+		// 摘链冻结、propTweenLookup 起止登记、构造链 initClass 四静态
+		runner.addCase(new com.greensock.TweenLiteTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

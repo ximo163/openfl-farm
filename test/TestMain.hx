@@ -171,6 +171,18 @@ class TestMain {
 		runner.addCase(new module.water.WaterModelTest());
 		runner.addCase(new module.water.FishMoverTest());
 		runner.addCase(new common.cache.ObjectPoolTest());
+		// issue #38：decorate 功能 swf 翻译（write-tests 阶段，对 stub 失败）——
+		// DecorateModel 纯逻辑：装载门位（loadItems dirty/loading 双闸 +
+		// resetLoadingFlags 复位）、getUserItems 应答（current→组 0/items→组 1
+		// 装载、空应答清表置 null、空子表落 null 组、在用狗回填 myDogID——
+		// 二次装载旧组 splice 清空 + 狗 setter 先于 LOADED 沿旧字典键逐组派
+		// DataChanged）、槽位 setter（myBoardID 全表重标/-1 只清旧行 break/
+		// 未装载不派发、myDogID 逐组重标/逐组派发）、boards 配置倒序装载与
+		// status 标记、selectBoard/selectDecorate 门位与请求锁存、
+		// active/deactive 应答（board 回填与清除/失配仍通知、装饰组 1 同型
+		// 重标 + 组 0 换槽/原位/push 三路、背景停用补默认件、失败文案字面量）、
+		// onNetError 文案与 dirty 保留
+		runner.addCase(new module.decorate.DecorateModelTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

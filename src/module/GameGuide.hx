@@ -1,14 +1,23 @@
 package module;
 
 import openfl.display.DisplayObjectContainer;
+import openfl.display.MovieClip;
+import openfl.text.TextField;
 
 /**
  * module.GameGuide —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
  * 新手引导（GameGuide.as 282 loc）；FarmApplication.startup 只写
  * instance().container = LAYER_TOPMOST 层。引导步骤/遮罩随引导片接入。
+ * issue #43（引导与启动杂尾）真身化；write-tests 阶段先落测试要钉的
+ * 状态字段与 fishGuideStep 表声明（表体留 null，测试期可断言「未实现」）。
+ * showStep/autoHide/hide 保持 #35 的可调不抛空体（ShopView/MyBagController
+ * 等运行期调用方在）。
  */
 @:keep
 class GameGuide {
+	// GameGuide.as:42-87（fishGuideStep：九步鱼塘引导坐标表；id 8 的
+	// x/y == -1 是动态锚（showStep 参数位）。引导片翻译时填表）
+	private static final fishGuideStep:Array<Dynamic> = null;
 	// GameGuide.as:18（issue #37：WaterGrayOpen.onTutorialClosed 置位，引导片
 	// 消费；AS3 public static var）
 	public static var toggle_water:Bool = false;
@@ -85,6 +94,24 @@ class GameGuide {
 	}
 
 	private var _step:Int = 0;
+
+	// GameGuide.as:89（_stop：教程关闭后封死 showStep）
+	private var _stop:Bool;
+
+	// GameGuide.as:93（_tip：引导文案 TextField，showStep 懒建）
+	private var _tip:TextField;
+
+	// GameGuide.as:95（_timeout：autoHide 的可清除句柄）
+	private var _timeout:UInt;
+
+	// GameGuide.as:97（_arrow：Utils.getMaterial("Arrow") 的箭头剪辑）
+	private var _arrow:MovieClip;
+
+	// GameGuide.as:101（_normalView：stageWidth < 720 的小视图偏移档）
+	private var _normalView:Bool;
+
+	// GameGuide.as:103（_bigMode：stageWidth > 820 的大视图偏移档）
+	private var _bigMode:Bool;
 
 	// GameGuide.as:148-（引导片翻译）
 	public function hide():Void {}

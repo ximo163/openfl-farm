@@ -37,4 +37,15 @@ class CursorLayer extends BaseLayer {
 	override private function init():Void {
 		super.init();
 	}
+
+	// CursorLayer.as:49-56（remove：摘除当前光标并置空，issue #43 光标片翻译）
+	private function remove():Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// CursorLayer.as:123-139（setPosition：CROPSEED 光标按自身宽高居中，
+	// 其余光标直接落位，issue #43 光标片翻译）
+	private function setPosition(param1:Int, param2:Int):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
 }

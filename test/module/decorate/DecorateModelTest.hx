@@ -84,6 +84,9 @@ class DecorateModelTest {
 	// 事件捕获：(type, data) 序列，listen 按需挂类型
 	var events:Array<Dynamic>;
 
+	// listen 挂上的监听（type + 闭包本体）
+	var hooks:Array<{type:String, fn:Dynamic->Void}>;
+
 	public function setup() {
 		savedApp = Session.getInstance().app;
 		var app = new FarmApplication();
@@ -134,10 +137,24 @@ class DecorateModelTest {
 		return o;
 	}
 
+	// listen 语义是「替换监听集」：openfl EventDispatcher.addEventListener 只对
+	// 相同函数引用去重（match 比较），两次 listen 产生的是不同闭包、不去重，
+	// 一次派发会被记两遍、计数断言对忠实实现误红（review 探针实证）——所以
+	// 挂新监听前先把上一次挂的从 model 摘掉。中途换过 model 的用例摘的是新
+	// 实例（no-op），旧实例随之弃用、不再派发，无碍
 	function listen(types:Array<String>) {
+		if (hooks == null) {
+			hooks = [];
+		}
+		for (h in hooks) {
+			model.removeEventListener(h.type, h.fn);
+		}
+		hooks = [];
 		events = [];
 		for (t in types) {
-			model.addEventListener(t, function(e:Dynamic) events.push({type: e.type, data: e.data}));
+			var fn = function(e:Dynamic) events.push({type: e.type, data: e.data});
+			hooks.push({type: t, fn: fn});
+			model.addEventListener(t, fn);
 		}
 	}
 
@@ -602,6 +619,9 @@ class DecorateModelTest {
 		Assert.equals(1, cur301._status); // :595-596 原位抄
 		Assert.equals(cur301, groups.get(0)[0]); // 槽位不换实例
 		Assert.equals(1, cur305._status); // :603 break——同型后续行不动
+		// 钉住 break 的引用断言：漏写 break 时该槽会被换成 _loc7_（own301，
+		// 此时 _status 也已置 1），上面的状态哨兵照过、只有槽位引用能区分
+		Assert.equals(cur305, groups.get(0)[1]);
 		Assert.equals(0, countType("DataChanged"));
 		Assert.equals(1, countType("DataStatusChanged")); // :620-623
 		Assert.equals(3, Reflect.field(events[0].data, "type"));

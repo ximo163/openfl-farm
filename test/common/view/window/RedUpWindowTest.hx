@@ -148,7 +148,11 @@ class RedUpWindowTest {
 	// :396-430：confirmButtonClick 的回调参数表（经 keyEnter :214-217 触发）
 	public function test_confirmButtonClick_argument_assembly() {
 		// 页签 0：红土地路，第 3 参取 data["place"] :414-417
+		// 装配：真窗首个 addTab 置 0（TabBar.as:116-119 _currentIndex = 0）；
+		// FakeTabBar 经 Type.createEmptyInstance 跳过 TabBar.hx:41 初始器，
+		// selectedIndex 落 null 须显式钉 0（用例 2-5 同款显式装配）
 		var win = buildWindow();
+		win._tabNav.selectedIndex = 0;
 		win._data = {place: 7};
 		var got = captureConfirm(win);
 		Assert.same([0, 0, 7, false], got);

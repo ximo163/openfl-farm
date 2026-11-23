@@ -9,6 +9,10 @@
 // onFriendsDataLoaded/processFriendList/friendSort，核对 approved 测试三处存疑
 // 期望（FriendsModelTest :379/:845/:1149）是否 FFDec 忠实——分支结构、break、
 // sort 就地重排。filterOut 一轮的结论不变，仍见 test 头注。
+// issue #42 三次复用：retarget 到 farmui_full_v_40.swf 的 FarmInfoPlus（地块
+// 信息提示素材符号的关联类，setStep7/setOutput/setInfo/setInfoIcon/
+// setOutputIcon + frame1——该 swf 不在 CI 反编译的五代码 swf 内，FFDec 产物
+// 不存在，字节码是唯一依据；TARGET_METHODS=null 打全部方法体 + 字段表）。
 // 依赖 format 3.7.0（CLAUDE.md：只供 tools/ 下的一次性工具用，不进工程）。
 // 用法（容器内，仓库根目录）：haxe -cp tools -lib format -main DumpAbcMethod --interp
 
@@ -17,12 +21,12 @@ import haxe.io.BytesInput;
 import sys.io.File;
 
 class DumpAbcMethod {
-	// issue #20 implement 阶段：五方法核对（filterOut 一轮已毕，见头注）
-	static var TARGET_CLASS = "FriendsModel";
-	static var TARGET_METHODS = ["goBackPage", "goNextPage", "onFriendsDataLoaded", "processFriendList", "friendSort"];
+	// issue #42：FarmInfoPlus 全量（字段表 + 所有方法体）
+	static var TARGET_CLASS = "FarmInfoPlus";
+	static var TARGET_METHODS:Array<String> = null;
 
 	public static function main() {
-		var bytes = File.getBytes("legacy/deploy/QFarmFlash/source/core/module/main3_v_221.swf");
+		var bytes = File.getBytes("legacy/deploy/QFarmFlash/source/core/module/ui/main/farmui_full_v_40.swf");
 		var swf = new format.swf.Reader(new BytesInput(bytes)).read();
 		for (tag in swf.tags) {
 			switch (tag) {
@@ -44,6 +48,18 @@ class DumpAbcMethod {
 				continue;
 			}
 			Sys.println("== class " + nameStr(abc, c.name));
+			// issue #42：构造器一并核对（自动类的 addFrameScript 形态）
+			var ctorIdx = c.constructor.asInt();
+			var ctorBody = bodies.get(ctorIdx);
+			if (ctorBody != null) {
+				dumpOps(abc, decode(abc, ctorBody), "constructor");
+			}
+			// 类字段表：槽位（实例属性）与方法都列名——素材符号关联类的
+			// 具名子件（stepText 等）就是 FVar 槽位
+			for (f in c.fields) {
+				var fname0 = nameStr(abc, f.name);
+				Sys.println("   field " + fname0 + " : " + fieldKindStr(f.kind));
+			}
 			for (f in c.fields) {
 				var mIdx = switch (f.kind) {
 					case FMethod(m, _, _, _): m.asInt();
@@ -53,7 +69,7 @@ class DumpAbcMethod {
 					continue;
 				}
 				var fname = nameStr(abc, f.name);
-				if (TARGET_METHODS.indexOf(fname) < 0) {
+				if (TARGET_METHODS != null && TARGET_METHODS.indexOf(fname) < 0) {
 					continue;
 				}
 				var body = bodies.get(mIdx);
@@ -106,6 +122,15 @@ class DumpAbcMethod {
 			case NMulti(s, _): abc.get(abc.strings, s);
 			case NParams(inner, _): nameStr(abc, inner);
 			default: "?" + Std.string(n);
+		}
+	}
+
+	static function fieldKindStr(k:FieldKind):String {
+		return switch (k) {
+			case FVar(_, _, _): "FVar";
+			case FMethod(_, _, _, _): "FMethod";
+			case FClass(_): "FClass";
+			case FFunction(_): "FFunction";
 		}
 	}
 

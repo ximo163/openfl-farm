@@ -238,7 +238,13 @@ class SymbolClass {
 				// 打转，见 RSLManager.requestClass）、Cursor_FishFood_1-4 光标
 				// （CursorTool）。库内其余符号属 tools/dogs 模块，后续 issue。
 				FishFoodEffect, FishFood_1, FishFood_2, FishFood_3, FishFood_4,
-				Cursor_FishFood_1, Cursor_FishFood_2, Cursor_FishFood_3, Cursor_FishFood_4
+				Cursor_FishFood_1, Cursor_FishFood_2, Cursor_FishFood_3, Cursor_FishFood_4,
+				// #42 提示片：TipBg 提示底板（MouseTip/CropInfoTip/DiyMouseTip/
+				// HistoryItemTip 经 Utils.getMaterial 反射构造）与 FarmInfoPlus
+				// 地块信息提示版面（LandInfoTip 同款；原版类体长在该 swf 的
+				// DoABC2，方法按 ABC 字节码复原，见类头）——宿主都是
+				// farmui_full_v_40，零外部引用，必须锚进来。
+				TipBg, FarmInfoPlus
 			];
 		}
 #end

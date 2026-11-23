@@ -363,6 +363,10 @@ class Session {
 	// FarmLandController 跨用户切换时复位
 	public var healthModeValid:Bool = false;
 
+	// Session.as:26（public var healthModeTimeOut:Boolean = false）——
+	// LandInfoTip 成熟分支的「第 N 季可收获」文案分岔（issue #42）
+	public var healthModeTimeOut:Bool = false;
+
 	// Session.as:52（public var currentFarmHealthModeValid:Boolean = false）
 	public var currentFarmHealthModeValid:Bool = false;
 

@@ -1080,3 +1080,31 @@
   set_data），write-tests 阶段给 stub 补「签名正确 + throw 体」即可让
   `tip.data = null` 这类属性写法编译并失败——无需等实现（MouseTip 四类
   的 stub 形态见对应 .hx；HistoryItemTip 是已译同款先例）。
+
+## 2026-11 · #42（提示片 implement：非反编译 swf 的符号类体按 ABC 字节码复原）
+
+- **类体长在部署 swf 的 DoABC2、CI 反编译产物没有它时，ABC 字节码就是
+  翻译依据**：farmui_full_v_40 不在 CI 反编译的五代码 swf 内，它的
+  SymbolClass 关联类（TipBg/FarmInfoPlus）在 legacy/decompiled 无 FFDec
+  产物——但这不是 BLOCKED：`tools/DumpAbcMethod.hx` retarget（改
+  TARGET_CLASS/TARGET_METHODS + swf 路径，头注写明复用约定）能导出字段表、
+  构造器与全部方法体字节码，部署 swf 里的 ABC 就是原版代码。复原要点：
+  字段表分得清具名子件槽（FVar，时间轴 PlaceObject 填）与代码字段
+  （seedSprite）；构造器 `super() + addFrameScript(0, frame1)`、frame1 空体
+  属时间轴胶水，AnimateLibrary 承担，按符号 shim 惯例不译（ToolBarBg
+  先例）；链式 `a.p = b.p = c.p = new X()` 字节码是 ODup/OSetReg 链——
+  同一实例三落，别译成三枚新实例（setOutput 里 growText 随后又单独
+  OConstructProperty 一枚新实例，那是原文如此，照抄）。防：先
+  `tools/dump_swf.php` 确认符号/导出名，再 retarget DumpAbcMethod 取方法
+  体，别对这类类自造行为。
+- **符号 shim 上按名取时间轴具名子件，别落同名字段**：As3.childOf 先
+  Reflect.field 再 getChildByName——FarmInfoPlus 若声明 `healthText` 实例
+  字段，childOf 会先取到 null 字段而永远走不到 getChildByName。方法内用
+  同名**局部变量**（`var healthText:TextField = cast(As3.childOf(this,
+  "healthText"), TextField);`）既保 1:1 可读又不挡查找。
+- **MovieClip 类型的动态面调用走 Reflect.callMethod**：LandInfoTip 的
+  `_farmInfo:MovieClip`（保持原类型）上调 setStep7/setOutput/setInfo/
+  setInfoIcon/setOutputIcon——openfl MovieClip 没有这些方法，直写
+  `_farmInfo.setStep7(...)` 编译都不过；`Reflect.callMethod(this._farmInfo,
+  Reflect.field(this._farmInfo, "setStep7"), [args])`（ModuleWater 先例）。
+  尾参缺省（AS3 undefined）由 shim 侧 `= null` 默认参 + `!= null` 门同形。

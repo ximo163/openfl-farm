@@ -22,8 +22,9 @@ import utest.Assert;
  * 本类私有静态表 fishGuideStep（服务端只给 toggle_water 开关，
  * WaterGrayOpen.onTutorialClosed 置位——见 #37 片），无网络步骤下发。
  * stub 阶段失败点：showStep/autoHide/hide 是 #35 可调不抛空体、
- * fishGuideStep 为 null——落位/抛错/tip 用例红，四道门用例靠空体通过
- * （实现期回归钉）。
+ * fishGuideStep 为 null——落位/抛错/tip/表长门用例红（表长门断言 _step
+ * 先记后判），toggle_water/_stop/前进向三门的早退用例靠空体通过（实现期
+ * 回归钉）。
  */
 @:access(module.GameGuide)
 class GameGuideTest {

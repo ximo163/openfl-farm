@@ -31,6 +31,12 @@ class PluginManager {
 	// param3:Object)：向容器铺某类插件位，插件片翻译）
 	public function amountPlugins(param1:Int, param2:DisplayObjectContainer, param3:Dynamic = null):Void {}
 
+	// PluginManager.as:189-206（issue #38 闭包成员：DecorateView 页签 3 切换
+	// 通知。原文遍历 m_pluginStubs 按 amount 配置的 type 匹配后发
+	// PLUGIN_PROXY_SHOW_MAIN；m_pluginStubs 随插件片装载，当前恒空表 →
+	// 零圈等价 no-op）
+	public function onTabSwitched(param1:Int, param2:Int):Void {}
+
 	// PluginManager.as:209-213（issue #9 闭包成员：ShortcutBar teBu 位查询 api。
 	// 原文 `get api() : IFarmAPI` 回 `this.m_api as IFarmAPI`；IFarmAPI 属
 	// farm-basic 插件接口片（farm-basic.json:101，插件片翻译），m_api 装载随

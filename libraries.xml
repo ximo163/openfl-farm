@@ -191,4 +191,15 @@
          assets/legacy-assets.txt 同 commit 增删 -->
     <library path="assets/legacy/source/core/module/ui/tools/Fertilizer_v_7.swf" id="Fertilizer_v_7" />
 
+    <!-- decorate 模块（issue #38）：功能 UI 代码 swf（nc_main.php:17 moduleList
+         "Decorate Module" → module/ui/decorate_v_0.swf，文档类
+         module.decorate.DecorateWrapper，swf-inventory：SymbolClass 仅 frame0
+         文档类、9 类全是 scripts、无视觉符号）。控制器层已译进本工程
+         （ModuleDecorate 反射装配，见 SymbolClass.dceAnchor #38 段）——本库为
+         原 swf 随包保留 + 加载链对账入库（MSG_SHOW_DIY →
+         Module.onLoadModuleFile → RSLManager.requestFile 按 moduleList URL 拉起，
+         LocalSwfLoader 按文件名映射库名），不 preload：原版为运行期网络加载。
+         与 assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/decorate_v_0.swf" id="decorate_v_0" />
+
 </project>

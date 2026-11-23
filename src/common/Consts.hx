@@ -62,6 +62,8 @@ class Consts {
 	public static final PLUGIN_AMOUNT_BG:Int = 0;
 	// Consts.as:516（issue #9：ShortcutBar 插件位数量）
 	public static final PLUGIN_AMOUNT_SHORTCUT:Int = 5;
+	// Consts.as:512（issue #38：装饰窗插件位数量，DecorateView 页签 3）
+	public static final PLUGIN_AMOUNT_DECORATE:Int = 3;
 	// Consts.as:40（FarmLandController 收获倒计时秒数）
 	public static final FARM_LAND_COUNTDOWN:Int = 10;
 	// Consts.as:42（issue #37：WaterPool 切换倒计时秒数）
@@ -233,6 +235,8 @@ class Consts {
 	public static final WINDOW_NAME_ABUTTON:String = "AddButtonWindow";
 	public static final WINDOW_NAME_SHOP:String = "shop";
 	public static final WINDOW_NAME_WAREHOUSE:String = "warehouse";
+	// Consts.as:166（issue #38：DIY 装饰窗注册名）
+	public static final WINDOW_NAME_DIY:String = "DiyWindow";
 	public static final WINDOW_NAME_PROFILE:String = "profile";
 	public static final WINDOW_NAME_BUYDIY:String = "BuyDiyWindow";
 	// Consts.as:200（issue #35：BuyFishWindow 注册名）

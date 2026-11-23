@@ -21,6 +21,7 @@
 | 商店（shop_v_7 功能 swf：module.shop 主窗/六买入窗/ShopModel 购买协议、ModuleShop 反射接入） | [architecture/shop.md](architecture/shop.md) | `decompiled shop_v_7 scripts/module/shop/`、`spec/modules/farm-shop-ui.json` |
 | 仓库/背包（warehouse_v_23 功能 swf：module.warehouse 六页签主窗/三卖出窗/花束赠送、ModuleWarehouse 反射接入） | [architecture/warehouse.md](architecture/warehouse.md) | `decompiled warehouse_v_23 scripts/module/warehouse/`、`spec/modules/inventory-ui.json` |
 | 鱼塘（pool_v_13 功能 swf：module.water 捞/放/喂/偷/卖鱼 + common.cache 对象池、ModuleWater 反射接入、water_v_5 池素材） | [architecture/water.md](architecture/water.md) | `decompiled pool_v_13 scripts/module/water/`、`scripts/common/cache/`、`spec/modules/water-ui.json` |
+| 装饰/DIY（decorate_v_0 功能 swf：module.decorate 装饰/告示牌两页签主窗与条目瓦件、ModuleDecorate 反射接入） | [architecture/decorate.md](architecture/decorate.md) | `decompiled decorate_v_0 scripts/module/decorate/`、`spec/modules/farm-decorate-ui.json` |
 | 资产声明与本地化加载 | [architecture/assets.md](architecture/assets.md) | `assets/legacy-assets.txt`、根目录 `libraries.xml`、`src/shim/LocalSwfLoader.hx` |
 | 场景运行器与请求对拍（tools/scenario.mjs、场景/基线 JSON、nodeboot 应答分档） | [architecture/scenario-runner.md](architecture/scenario-runner.md) | 判定期望值的出处见 `test/ScenarioRunnerContractTest.hx` 断言消息 |
 | 环境、工具、反直觉的坑 | [lessons/index.md](lessons/index.md) | — |

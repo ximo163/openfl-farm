@@ -191,6 +191,12 @@ class SymbolClass {
 				// 表。eval 无锚（本表 #if !eval）：单测以 getClass 恒 null 为
 				// 前提（ModuleWaterTest）。
 				module.water.WaterController,
+				// #38 decorate 片控制器：ModuleDecorate.onModuleLoadSuccess 经
+				// Utils.getClass("module.decorate.DecorateController") 反射构造
+				// （编译期零引用），锚住后装配链走通；视图/模型/部件经控制器可
+				// 达，不入表。eval 无锚（本表 #if !eval）：单测以 getClass 恒
+				// null 为前提（ModuleDecorateTest）。
+				module.decorate.DecorateController,
 				// #37 鱼动画符号族：17 个鱼动画库（fish_01..17，nc_data.php:7564
 				// fish_info asset_id.m）导出的 FS_<型两位>_<档0-2>_<向0|2>（游动/
 				// 待机，102 枚）与 FJ_<型>_<档>_<向>（跳跃：全型 _2_2，仅型 1/2/3

@@ -51,9 +51,10 @@ class ModuleDecorate extends Module {
 	override private function onModuleLoadSuccess():Void {
 		var _loc1_:Class<Dynamic> = Utils.getClass("module.decorate.DecorateController");
 		if (_loc1_ != null) {
-			// PORT-NOTE: 同 ModuleShop——外部 swf（decorate_v_0）的 AS3 在
-			// openfl 下不执行，getClass 恒 null → _diyCtrl 保持 null（反射
-			// 失败即移植终态），「功能 swf 翻译」批次的接入点
+			// PORT-NOTE: 原版经反射装配外部 swf（decorate_v_0）里的控制器。
+			// #38 翻译后控制器已编进本工程（SymbolClass.dceAnchor 锚住防
+			// 裁剪），非 eval 目标 resolve 成功、装配链走通；eval（test.hxml
+			// 无 -lib swf）保持恒 null——单测以 getClass 失败为前提。
 			this._diyCtrl = Type.createInstance(_loc1_, []);
 			this._diyCtrl.module = this;
 			this._diyCtrl.initialze();

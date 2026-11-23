@@ -48,6 +48,33 @@ class ConfirmWindow extends BaseWindow {
 		super(param1);
 	}
 
+	// ConfirmWindow.as:93-103 + :209-211（issue #41 write-tests 补签名；
+	// setter 的按钮四连写体留给 implement，_confirmButton null 门原文就有）
+	private function set_confirmEnable(param1:Bool):Bool {
+		this._confirmEnable = param1;
+		return param1;
+	}
+
+	private function get_confirmEnable():Bool {
+		return this._confirmEnable;
+	}
+
+	// ConfirmWindow.as:159-162 + :204-206（issue #41 write-tests 补签名，体照原文）
+	private function set_confirmFn(param1:Dynamic):Dynamic {
+		this._confirmFn = param1;
+		return param1;
+	}
+
+	private function get_confirmFn():Dynamic {
+		return this._confirmFn;
+	}
+
+	public var confirmEnable(get, set):Bool;
+	public var confirmFn(get, set):Dynamic;
+
+	// ConfirmWindow.as:214-217（issue #41 write-tests 补签名；体留给 implement）
+	override public function keyEnter(param1:openfl.events.KeyboardEvent):Void {}
+
 	// ConfirmWindow.as:184-190（子类按钮 CLICK 监听挂它；体留给窗口片）
 	private function confirmButtonClick(param1:MouseEvent = null):Void {}
 

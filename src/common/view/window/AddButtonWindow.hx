@@ -80,6 +80,27 @@ class AddButtonWindow extends BaseWindow {
 		}
 	}
 
+	// AddButtonWindow.as:29-32（issue #41 write-tests 补签名，体照原文一行）
+	private function set_betweenSpace(param1:Int):Int {
+		this._buttonSpace = param1;
+		return param1;
+	}
+
+	// AddButtonWindow.as:34-37（issue #41 write-tests 补签名，体照原文一行）
+	private function set_bottomSpace(param1:Int):Int {
+		this._bottomSpace = param1;
+		return param1;
+	}
+
+	public var betweenSpace(never, set):Int;
+	public var bottomSpace(never, set):Int;
+
+	// AddButtonWindow.as:39-43（issue #41 write-tests 补签名，体照原文两行）
+	public function addSpecialButton(param1:DisplayObject):DisplayObject {
+		this.buttonCache.push(param1);
+		return param1;
+	}
+
 	// AddButtonWindow.as:56-62（addButton：建 qui Button + 排布 + 挂点按回调，
 	// qui 按钮片翻译；本片 PreviewDiyWindow 只调不用返回值。Function → Dynamic）
 	public function addButton(param1:String = "Button", param2:String = null, param3:Int = 100, param4:Int = 25,
@@ -97,5 +118,10 @@ class AddButtonWindow extends BaseWindow {
 	// AddButtonWindow.as:70-73
 	public function removeAllButton():Void {
 		this.buttonCache = [];
+	}
+
+	// AddButtonWindow.as:63-66（issue #41 write-tests 补签名，体照原文一行）
+	public function removeAllWindowChild():Void {
+		this.addChildCache = [];
 	}
 }

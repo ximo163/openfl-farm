@@ -12,4 +12,10 @@ class UpgradeBlackWindow extends BaseWindow {
 	public function new(param1:interfaces.IMsgCenter = null) {
 		super(param1);
 	}
+
+	// UpgradeBlackWindow.as:68-86（issue #41 write-tests 补签名；万/亿位逗号
+	// 分组格式化，待本片 implement）
+	private function formatNumber(param1:UInt):String {
+		throw new openfl.errors.Error("not implemented");
+	}
 }

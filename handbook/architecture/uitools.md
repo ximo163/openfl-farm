@@ -139,7 +139,13 @@ EffectManager 同为签名 stub（PopUpLayer/ToolTipLayer 调它们空体）。
   （m_cusrsorLib——**原版拼写如此，别修**）+ setCursor/useSystem 经
   msgCenter 派发 CursorEvent；`CursorTool`/`CursorCropSeed` 携带工具态。
   光标视觉类是 farmui_full_v_40 的 SymbolClass 符号（符号 shim 规则见
-  [assets.md](assets.md)）。
+  [assets.md](assets.md)）。宿主层 `CursorLayer`（framework/layers，
+  #7 闭包 stub → #43 真身）：SET_CURSOR 按注册表反射构造光标剪辑（带参
+  写 `cursorArgument` 走 Reflect.setProperty——光标类的 (never,set) 属性；
+  name/mouse* cast MovieClip 后写真属性）、SWITCH_CURSOR 系统鼠标
+  （Mouse.show/hide）与剪辑对偶、stage 鼠标四事件驱动 ARROW 按下/弹起帧
+  与跟随（CROPSEED 按自身宽高居中）。触屏下该层可见性归 shim 适配层按
+  spec/interaction-map.json 决定，不进翻译类。
 - tip/（← common/view/tip/）：#42 提示片全量翻译（基类 `Tip` #19 已译，
   `HistoryItemTip` #19）。`TipControl` 是注册表（m_lib **null 起手**，
   register 才建——getClass 的 null 门）+ show/update/hide 派发 TipEvent

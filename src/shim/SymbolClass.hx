@@ -244,7 +244,10 @@ class SymbolClass {
 				// 地块信息提示版面（LandInfoTip 同款；原版类体长在该 swf 的
 				// DoABC2，方法按 ABC 字节码复原，见类头）——宿主都是
 				// farmui_full_v_40，零外部引用，必须锚进来。
-				TipBg, FarmInfoPlus
+				TipBg, FarmInfoPlus,
+				// #43 引导片：GameGuide ctor 经 Utils.getMaterial("Arrow") 反射
+				// 构造的引导箭头（farmui2_v_58，零外部引用）
+				Arrow
 			];
 		}
 #end

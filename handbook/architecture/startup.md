@@ -59,6 +59,26 @@ deviations 候选）；其 `_loading:MovieClip` 与基类 Module
 `_loading:Boolean` 同名异型，改名 `m_loading` 拆槽（lessons #21
 同名异型条）。
 
+## 引导与切换遮罩（#43 真身）
+
+- `module.GameGuide`（#7 闭包 stub → #43 真身，2026-11-21 真机「引导不弹」
+  的正主就是空体）：鱼塘新手引导箭头。**步骤数据是本类私有静态表
+  fishGuideStep（GameGuide.as:42-87 硬编码九步坐标/朝向），没有服务端/xml
+  下发**；唯一开关 `toggle_water` 由 WaterGrayOpen.onTutorialClosed
+  （#37）置位后同处起步，链路经 ShopView/ShopController/BuyFishWindow/
+  MyBagController/WaterPool 推进（#35/#36/#37 调用点）。箭头素材 `Arrow`
+  是 farmui2_v_58 的导出符号（char#240，20 帧；spec farm-basic.json 本条
+  assets 列了牧场 farmui2_v_44 同名符号，那是 Master2 侧宿主，本仓绑农场
+  宿主）——shim `src/Arrow.hx` + dceAnchor（assets.md 三登记义务照走）。
+  showStep 四道门（toggle/_stop、箭头在、前进向、表长）+ 大小视图 x 偏移
+  档（>820/+60、<720/-50，icon 步特加 ±68/-50）+ (-1,-1) 动态锚 + tip 只在
+  WATER_FISH_ITEM 步挂载；autoHide 到点 hide 并 `_stop=true` 封死。
+- `module.load.UserChangingBar`（#7 闭包 stub → #43 真身）：切用户遮罩条。
+  ADDED_TO_STAGE 建三件（60% 白全屏遮罩、居中 DataLoading、中心左偏 50px
+  文案条）听 `MSG_USER_SWITCH_FLAG`：error 缺位/空串按 showLoading 驱动
+  遮罩+转圈，非空亮错误文案；`event:` 链接点击重派发 `__reload__` 载荷
+  再切一次。FarmStage.initTopLayer 建进 LAYER_TOPMOST。
+
 ## 本地无浏览器验证启动链（nodeboot）
 
 `node tools/nodeboot/nodeboot.mjs [--timeout 45] [--settle 3]`：node 里垫

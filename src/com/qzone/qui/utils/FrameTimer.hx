@@ -1,5 +1,6 @@
 package com.qzone.qui.utils;
 
+import openfl.errors.Error;
 import openfl.events.EventDispatcher;
 
 /**
@@ -9,6 +10,9 @@ import openfl.events.EventDispatcher;
  * issue #35 闭包成员补齐：StepperMaker（shop_v_7 本地副本）按下箭头长按
  * 连发需要实例侧 new/start/stop/delay——_delay 照存（:22/:33），帧推进
  * （start 的 addTimer/onEnterFrame）仍归 qui 片，start/stop 只记 _running。
+ * issue #44 write-tests 补缺失签名（repeatCount/_currentCount/_id/
+ * currentCount/reset/running，体 throw not implemented）：静态侧
+ * （handles/count/index/_stage）的类型选择随本体翻译，不在 stub 期落。
  */
 @:keep
 class FrameTimer extends EventDispatcher {
@@ -17,6 +21,15 @@ class FrameTimer extends EventDispatcher {
 
 	// FrameTimer.as:22（issue #35 补）
 	private var _delay:Float;
+
+	// FrameTimer.as:24（issue #44 write-tests 补签名，赋值随本体翻译）
+	private var _currentCount:Int;
+
+	// FrameTimer.as:26（issue #44 write-tests 补签名）
+	private var _id:UInt;
+
+	// FrameTimer.as:28（issue #44 write-tests 补签名；ctor 的赋值 :34 随本体翻译）
+	public var repeatCount:Int;
 
 	public function new(param1:Float, param2:Int = 0) {
 		super();
@@ -70,5 +83,24 @@ class FrameTimer extends EventDispatcher {
 		if (this._running == true) {
 			this._running = false;
 		}
+	}
+
+	// FrameTimer.as:164-166（issue #44 write-tests 补签名，体随本体翻译）
+	public var currentCount(get, never):Int;
+
+	private function get_currentCount():Int {
+		throw new Error("not implemented");
+	}
+
+	// FrameTimer.as:180-184（issue #44 write-tests 补签名）
+	public function reset():Void {
+		throw new Error("not implemented");
+	}
+
+	// FrameTimer.as:186-188（issue #44 write-tests 补签名）
+	public var running(get, never):Bool;
+
+	private function get_running():Bool {
+		throw new Error("not implemented");
 	}
 }

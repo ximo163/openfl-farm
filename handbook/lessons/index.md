@@ -1131,3 +1131,27 @@
   Mouse 路径（onSetCursor/onSwitchCursor/setCurrentCursor），只测 setPosition/
   remove 这类纯几何面——CursorLayerTest 头注已写，后续给光标类补测试
   照此口径，CI 时间轴/场景比对兜 Mouse 面。
+
+## 2026-11 · #44（qui 管理器/工具 write-tests：无窗 Stage 垫子与滤镜比对）
+
+- **eval 单测要「有 frameRate 的舞台 + ENTER_FRAME 推进」时用
+  Type.createEmptyInstance(Stage) 补钉四字段，别等真窗口**：
+  `new Stage(null)` 在 ctor 的 `window.application` 上抛 "field access on
+  null"（eval 无 lime 窗口）；空实例 + Reflect 补钉 `stage`（指自身，等价
+  ctor 的 `this.stage = this`）、`window`（空 Window + NativeWindow 后端钉
+  `frameRate`，Stage 本体在 window==null 时 frameRate 恒 0 且 set 不落）、
+  `__uncaughtErrorEvents`（Stage.__dispatchEvent 进门就读，null 即炸派发链）
+  后，frameRate 可读可写、addEventListener/dispatchEvent 照常——测试手动
+  `stage.dispatchEvent(new Event(Event.ENTER_FRAME))` 就是确定性帧推进
+  （`test/support/FakeStage.hx`，openfl 9.5.2 + lime 8.3.2 容器内实证；
+  MouseTipTest 补 `__transform` 的姊妹手法）。防：帧驱动类（FrameTimer 这类
+  「ms→帧换算 + frameCount%delay 门」）的数值面别因「eval 没舞台」放弃钉板
+  或改 sleep；同理 MouseEvent 直接 dispatchEvent 在无舞台 Sprite 上可用，
+  startDrag/stopDrag 也不炸——按钮状态机/拖拽事件流都能纯驱动。
+- **openfl 的 `DisplayObject.filters` 是克隆语义，断言要比结构不是比引用
+  **：set_filters 把数组元素逐个 clone 进新数组、get_filters 再 copy 一份
+  （openfl 源码核实）——`sprite.filters == Style.getXxxFilter()` 恒假。期望
+  侧取 Style 缓存单例的 `[0]` matrix、实际侧同名取，`Std.string(matrix)`
+  相等比对（Style 三张按钮滤镜表都是单元素 ColorMatrixFilter）；空表
+  （rollOut）断言 `length == 0`。防：filters 相关断言先想克隆链，引用比对
+  是假红。

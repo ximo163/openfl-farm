@@ -220,6 +220,20 @@ class TestMain {
 		runner.addCase(new module.GameGuideTest());
 		runner.addCase(new framework.layers.CursorLayerTest());
 		runner.addCase(new module.load.UserChangingBarTest());
+		// issue #44：qui 组件库管理器/工具（write-tests 阶段，对 stub 失败）——
+		// FrameTimer 帧驱动语义（ms→帧换算表、frameCount%delay 触发门、
+		// setTimeout 单发自清/setInterval 周发/clear 摘表/init 只装一次门、
+		// 实例 start/stop/delay/currentCount/repeatCount/reset，FakeStage 钉
+		// 30fps 无窗舞台手动派 ENTER_FRAME）；ButtonMaker 状态表（setEnabled
+		// 的 mouseEnabled!=门、enable/disable 分支监听与滤镜、ROLL_OVER/
+		// ROLL_OUT/MOUSE_DOWN/MOUSE_UP 滤镜轮换、addTarget/removeTarget
+		// 标志位）；DragManager 注册表与拖拽事件流（hitArea 名键、父容器
+		// MOUSE_MOVE/UP 装拆、LOCATION_CHANGE 的 _draging 门）；
+		// EffectManager 无 effect 分支（完成回调透传、登记实例 complete 前置）
+		runner.addCase(new com.qzone.qui.utils.FrameTimerTest());
+		runner.addCase(new com.qzone.qui.makers.ButtonMakerTest());
+		runner.addCase(new com.qzone.qui.managers.DragManagerTest());
+		runner.addCase(new com.qzone.qui.managers.EffectManagerTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

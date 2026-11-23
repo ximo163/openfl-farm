@@ -1028,3 +1028,28 @@
   Fertilizer_v_7 时把 MaterialProxy 会查的 FishFood_1-4、CursorTool 会查
   的 Cursor_FishFood_1-4、playFeedEffect 会查的 FishFoodEffect 一并建齐
   才算接完（库内其余符号归 tools/dogs 模块，那两个 issue 接手时同理）。
+
+## 2026-11 · #39（farm-basic：TweenLite 本体）
+
+- **openfl 9 的 ENTER_FRAME 对脱显示列表的 DisplayObject 照发（广播事件
+  注册表）**：GreenSock 的心跳 `_shape = new Shape()`（不 addChild）纯靠
+  AVM2 对一切 DisplayObject 广播 ENTER_FRAME——openfl 里照译 addEventListener
+  居然等价：`DisplayObject.addEventListener` 对 ENTER_FRAME 等六种事件注册进
+  `DisplayObject.__broadcastEvents`，`Stage.__broadcastEvent` 对 `stage == null`
+  的派发器也派发（openfl 9.5.2 源码核实，eval 实测监听可挂）。防：翻译
+  「无 stage 对象上的 enterFrame 驱动」时别急着搬 shim 定时器，先读
+  DisplayObject/Stage 的广播路径；反向也成立——别因为「不在显示列表」就
+  以为监听没用而删。
+- **eval 未赋值 Bool 不止毁断言，还毁 `param1 == field` 型守卫**：#37 的
+  零值默认教训（读 null）之外，TweenCore/TweenLite 的
+  `if (param1 == this.gc)` 在 eval 上是 `false == null` 恒假——setEnabled
+  的禁用路径整段被跳过、gc 永不置位，js/cpp（静态零值 false）却正常。
+  防：跨类 Bool 守卫字段无赋值点时，在子类可改的入口先归一（读经
+  Dynamic 判 null 再置 false）；更根本的修法是给字段显式 `= false`。
+- **scan_dyn_writes 对「同文件多作用域同名 `_locN_`」跨作用域误报**：
+  easeProxy 的 `_loc6_:Dynamic` 会把 init() 里 `_loc6_:PropTween` 的
+  `.change =` 写也标进清单（扫描是文件级集合、无作用域）；killVars 的
+  `_loc4_ = Reflect.field(propTweenLookup, ...)` 同理——声明类型是自有类
+  PropTween、写的是物理字段，属工具自述的误报类。防：triage 清单时先看
+  被标变量的**声明处**类型与所写字段是不是自有类物理字段，别一见清单就
+  加 cast。

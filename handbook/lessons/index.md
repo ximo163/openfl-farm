@@ -627,6 +627,8 @@
   不变，头注 PORT-NOTE(命名) + deviations 候选。
 - **注释文本里的 `*/` 会提前关掉 doc 注释**：写 "CHILD_*/dataList" 这种
   含星-斜杠的说明，后面的内容被当代码。防：注释里用全角／或改写措辞。
+  #38 在 "EVENT_*/NOTIFY_*" 再犯且 **test.hxml 全绿**——dceAnchor 锚住的
+  反射类 eval 不编译，单测过 ≠ 注释合法，只有 openfl build html5 逮得住。
 - **Master2 引用的类可能根本不在 Master2 反编译里——mcloader 同域共享**：
   `mc.control.Version`、`common.{INI,LocalData,MaterialLib}`、
   `com.qzone.corelib.js.JSProxy` 只在 `mcloader_v_53/scripts/`（预加载器

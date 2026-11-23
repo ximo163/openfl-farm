@@ -147,3 +147,13 @@ source/core/module/ui/farm/fish/fish_seed_17.swf
 # CursorTool）——喂鱼链路这次接入；库内其余符号（化肥/狗粮/狗/工具光标）
 # 属 tools/dogs 模块，后续 issue 再接：
 source/core/module/ui/tools/Fertilizer_v_7.swf
+#
+# decorate 模块（issue #38）：功能 UI 代码 swf（nc_main.php:17 moduleList
+# "Decorate Module" → module/ui/decorate_v_0.swf，文档类
+# module.decorate.DecorateWrapper，swf-inventory：SymbolClass 仅 frame0 文档
+# 类、9 类全是 scripts、无视觉符号）。控制器层已译进本工程（ModuleDecorate
+# 反射装配，见 SymbolClass.dceAnchor #38 段）——本库为原 swf 随包保留 +
+# 加载链对账入库（MSG_SHOW_DIY → Module.onLoadModuleFile →
+# RSLManager.requestFile 按 moduleList URL 拉起，LocalSwfLoader 按文件名映射
+# 库名 decorate_v_0）：
+source/core/module/ui/decorate_v_0.swf

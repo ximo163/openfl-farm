@@ -1053,3 +1053,22 @@
   PropTween、写的是物理字段，属工具自述的误报类。防：triage 清单时先看
   被标变量的**声明处**类型与所写字段是不是自有类物理字段，别一见清单就
   加 cast。
+
+## 2026-11 · #41（窗口框架片）
+
+- **AS3 的 `this.静态常量` 照抄编不过**：AS3 允许实例写法访问类常量
+  （RedUpWindow.as `this.HEIGHT`、ValidateCodeWindow.as `this.INPUT_TIP`
+  等多处），Haxe 直接红 "Cannot access static field … from a class
+  instance"。防：翻译 `this.<全大写常量>` 时去掉 `this.` 裸用；静态常量
+  本来就该类名或裸访问（`HEIGHT`，本类内）。
+- **反编译 HTML 文案里的「坏标记」是行为**：RequestErrorWindow.as 五路
+  限流文案里 harvest/planting/cgi_farm_index 的 `<font>` 有 `</font>`
+  闭合、scrounge/scarify 没有——Flash TextField 的未闭合 font 会把余文
+  全染色，原版显示就这样。write-tests 期望串照 AS3 逐字抽，别顺手补
+  闭合标签（本轮 2 个断言因此与原版不符，见 issue 报告的 NEEDS-TESTS）。
+- **`Type.createEmptyInstance` 在 eval 上 Int 字段是 null**：字段初始化器
+  不跑（这是文档行为），但 eval 的 Int 是装箱值——未初始化就是 null 而
+  不是 0/-1，且 `null == 0` 为 **false**（probe 实测：读值 null、eq0
+  false）。测试替身想模拟「默认态 0」不能用 createEmptyInstance 裸读，
+  要显式写一次（RedUpWindowTest 的 FakeTabBar 页签 0 案例因此打不进
+  `selectedIndex == 0` 分支，见 issue 报告的 NEEDS-TESTS）。

@@ -35,7 +35,8 @@ import swf.exporters.animate.AnimateLibrary;
  * 原版时序补回来：库不在就按需 Assets.loadLibrary（html5 的非 preload 库在
  * libraryPaths 里，文件已随构建入库，无网络），同一个库的并发 bind 合并成
  * 一次加载。绑上的时刻晚于构造器返回，与原版「远程加载后 new」的时序差
- * 一个本就是异步的加载窗口。
+ * 一个本就是异步的加载窗口（bindBitmap 的位图路径同款，见 pendingBitmaps
+ * 与 ensureLibraryLoaded）。
  *
  * 这个异步窗口还吞写：原版 SymbolClass 类定义即绑定，new 完构造器返回时
  * 时间轴必然已在实例上，紧随其后的子件显隐写立即生效；移植版首次拉库时
@@ -51,6 +52,15 @@ class SymbolClass {
 	// SimpleButton（bindButton）；after 只有 MovieClip 路径（afterAttach）
 	// 会登记，SimpleButton 目标恒为空数组
 	private static var pending:Array<{libraryId:String, symbolName:String, target:DisplayObject, after:Array<MovieClip->Void>}> = [];
+
+	// 位图路径的待拷队列（bindBitmap 的按需拉起窗口）：目标不是
+	// DisplayObject，进不了 pending，单列一队，加载完成一并冲刷
+	private static var pendingBitmaps:Array<{libraryId:String, symbolName:String, target:BitmapData}> = [];
+
+	// 按需拉起在途的库。lime 的 loadLibrary 不去重并发请求（8.3,2 源可证，
+	// 每次调用独立 Promise 重复拉同一文件），pending/pendingBitmaps 两队列
+	// 对同一库都可能先后来，显式在途表合并成一次加载
+	private static var loadingLibraries:Array<String> = [];
 
 	// DCE 引用锚。Haxe 只编译从 main 可达（被引用/import）的类型；符号 shim
 	// 只经反射字符串取用（getMaterial/getClass → ApplicationDomain →
@@ -238,7 +248,17 @@ class SymbolClass {
 				// 打转，见 RSLManager.requestClass）、Cursor_FishFood_1-4 光标
 				// （CursorTool）。库内其余符号属 tools/dogs 模块，后续 issue。
 				FishFoodEffect, FishFood_1, FishFood_2, FishFood_3, FishFood_4,
-				Cursor_FishFood_1, Cursor_FishFood_2, Cursor_FishFood_3, Cursor_FishFood_4
+				Cursor_FishFood_1, Cursor_FishFood_2, Cursor_FishFood_3, Cursor_FishFood_4,
+				// #41 窗口框架片符号：确认窗图标（ConfirmWindow.customizeIcon
+				// getMaterial）、验证码窗体版面（ValidateCodeWindow.init
+				// getMaterial）、黑土升级分享板（UpgradeBlackWindow 构造器
+				// getMaterial）——宿主 farmui 系、全反射构造，零外部引用；
+				// redUpBanner（@:native 小写原名）宿主 redUpBanner_v_2、
+				// RequestError 四图（BitmapData 路径）宿主 RequestError_2，
+				// 均经 requestClass/getMaterial 反射构造。两库非预载，
+				// bind/bindBitmap 按需拉起（见 ensureLibraryLoaded）
+				ConfirmIcon, ValidateCodeContent, BlackUpgradeShare, RedUpBanner,
+				RequestErrorBG, RequestErrorZZ, RequestErrorHP, RequestErrorFZ
 			];
 		}
 #end
@@ -263,18 +283,24 @@ class SymbolClass {
 			attach(library, libraryId, symbolName, target);
 			return;
 		}
-		var alreadyLoading:Bool = false;
-		for (entry in pending) {
-			if (entry.libraryId == libraryId) {
-				alreadyLoading = true;
-				break;
+		pending.push({libraryId: libraryId, symbolName: symbolName, target: target, after: []});
+		ensureLibraryLoaded(libraryId);
+#end
+	}
+
+	// 按需拉起（bind/bindBitmap 共用）：完成回调里按注册名重取库实例、
+	// 冲刷两队列——剪辑队列 attach + after 重放，位图队列拷像素；失败按
+	// 原版「类不存在」处理留痕丢弃。onComplete 后该库已在 Assets 里，迟来
+	// 的 bind 走同步路径
+	private static function ensureLibraryLoaded(libraryId:String):Void {
+		for (id in loadingLibraries) {
+			if (id == libraryId) {
+				return;
 			}
 		}
-		pending.push({libraryId: libraryId, symbolName: symbolName, target: target, after: []});
-		if (alreadyLoading) {
-			return;
-		}
+		loadingLibraries.push(libraryId);
 		Assets.loadLibrary(libraryId).onComplete(function(lib:AssetLibrary):Void {
+			loadingLibraries = [for (id in loadingLibraries) if (id != libraryId) id];
 			// 该库这一批等绑的目标全部挂上；再进来的 bind 走上面的同步路径
 			var stillQueued:Array<{libraryId:String, symbolName:String, target:DisplayObject, after:Array<MovieClip->Void>}> = [];
 			for (entry in pending) {
@@ -290,13 +316,23 @@ class SymbolClass {
 				}
 			}
 			pending = stillQueued;
+			var stillBitmaps:Array<{libraryId:String, symbolName:String, target:BitmapData}> = [];
+			for (entry in pendingBitmaps) {
+				if (entry.libraryId == libraryId) {
+					copyBitmapSymbol(libraryId, entry.symbolName, entry.target);
+				} else {
+					stillBitmaps.push(entry);
+				}
+			}
+			pendingBitmaps = stillBitmaps;
 		}).onError(function(err:Dynamic):Void {
 			// 库拉不起来（未声明/文件缺失）：按原版「类不存在」处理，留痕不抛；
 			// 空剪辑上登记的写无对象可作用，随条目一并丢弃
 			trace("SymbolClass: 库加载失败 " + libraryId + " (" + Std.string(err) + ")");
+			loadingLibraries = [for (id in loadingLibraries) if (id != libraryId) id];
 			pending = [for (entry in pending) if (entry.libraryId != libraryId) entry];
+			pendingBitmaps = [for (entry in pendingBitmaps) if (entry.libraryId != libraryId) entry];
 		});
-#end
 	}
 
 	private static function attach(library:AssetLibrary, libraryId:String, symbolName:String, target:DisplayObject):Void {
@@ -352,25 +388,35 @@ class SymbolClass {
 	 *
 	 * Flash 对链接位图的 new 无视传入宽高、以图像天然像素为准（0,0 惯用法）；
 	 * copyPixels 直拷含 alpha 通道，构造时底也不落 AS3 BitmapData 默认的
-	 * 0xFFFFFFFF 白（shim 侧 super 传 0 全透明）。本仓库调用点 (16,13)/(24,24)
-	 * 恰为天然尺寸，直拷即逐像素一致。
+	 * 0xFFFFFFFF 白（shim 侧 super 传 0 全透明）。本仓库调用点 (16,13)/(24,24)/
+	 * (270,125) 恰为（或不小于）天然尺寸，直拷即逐像素一致；RequestErrorBG
+	 * 天然 270×124，末行保持构造底透明，与原版按天然尺寸显示等价。库不在
+	 * 时走 pendingBitmaps 按需拉起（ensureLibraryLoaded），完成后原实例补像素。
 	 */
 	public static function bindBitmap(target:BitmapData, libraryId:String, symbolName:String):Void {
 #if eval
 		// eval 单测（bind 同款留痕）：无库可查，保持全透明空位图，不抛
 		trace("SymbolClass: eval 目标无库 " + libraryId + ":" + symbolName);
 #else
-		if (Assets.getLibrary(libraryId) == null) {
-			trace("SymbolClass: 库未加载 " + libraryId);
+		if (Assets.getLibrary(libraryId) != null) {
+			copyBitmapSymbol(libraryId, symbolName, target);
 			return;
 		}
+		// 库不在（首见位图符号，如 RequestError_2）：入位图待拷队列按需拉起
+		//（bind 同款时序），完成后原实例上补像素——Bitmap 已上树的场景图
+		// 内容就位，与原版「远程加载后 new」等价
+		pendingBitmaps.push({libraryId: libraryId, symbolName: symbolName, target: target});
+		ensureLibraryLoaded(libraryId);
+#end
+	}
+
+	private static function copyBitmapSymbol(libraryId:String, symbolName:String, target:BitmapData):Void {
 		var src:BitmapData = Assets.getBitmapData(libraryId + ":" + symbolName);
 		if (src == null) {
 			trace("SymbolClass: 位图符号不存在 " + libraryId + ":" + symbolName);
 			return;
 		}
 		target.copyPixels(src, src.rect, new Point(0, 0));
-#end
 	}
 
 	/**

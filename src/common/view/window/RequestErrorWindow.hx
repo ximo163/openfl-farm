@@ -164,7 +164,7 @@ class RequestErrorWindow extends BaseWindow {
 				} else if (param1.indexOf("scrounge") != -1) {
 					if (Reflect.field(_loc2_, "showed") == false) {
 						this.m_info = "抱歉，您的准摘证已过期。村委会需要花<font color='#ff9900'>"
-							+ Reflect.field(_loc2_, "limitMinute") + "分钟为您重<br>新办理，办理完毕之前您没有权限摘取好友的果实。";
+							+ Reflect.field(_loc2_, "limitMinute") + "分钟为您重<br/>新办理，办理完毕之前您没有权限摘取好友的果实。";
 						this.m_imgName = "RequestErrorZZ";
 					} else {
 						this.m_info = "您还不可以进行摘取操作，可以等一会儿再试。";
@@ -182,7 +182,7 @@ class RequestErrorWindow extends BaseWindow {
 				} else if (param1.indexOf("scarify") != -1) {
 					if (Reflect.field(_loc2_, "showed") == false) {
 						this.m_info = "和平天使降临，农场一片祥和宁静。大使感召您花<font color='#ff9900'>"
-							+ Reflect.field(_loc2_, "limitMinute") + "分<br>钟和她一起祈祷世界和平，此期间需要您停止翻地。";
+							+ Reflect.field(_loc2_, "limitMinute") + "分<br/>钟和她一起祈祷世界和平，此期间需要您停止翻地。";
 						this.m_imgName = "RequestErrorHP";
 					} else {
 						this.m_info = "您还不可以进行翻地操作，可以等一会儿再试。";
@@ -190,7 +190,7 @@ class RequestErrorWindow extends BaseWindow {
 					}
 				} else if (param1.indexOf("cgi_farm_index") != -1) {
 					if (Reflect.field(_loc2_, "showed") == false) {
-						this.m_info = "2012即将到来，黎明前的黑暗总是恐怖的，您被限制访问<br>该好友的农场<font color='#ff9900'>"
+						this.m_info = "2012即将到来，黎明前的黑暗总是恐怖的，您被限制访问<br/>该好友的农场<font color='#ff9900'>"
 							+ Reflect.field(_loc2_, "limitMinute") + "</font>分钟。诺亚方舟即将建成，等待希望的出现吧！";
 						this.m_imgName = "RequestErrorFZ";
 					} else {

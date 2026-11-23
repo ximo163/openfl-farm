@@ -157,3 +157,14 @@ source/core/module/ui/tools/Fertilizer_v_7.swf
 # RSLManager.requestFile 按 moduleList URL 拉起，LocalSwfLoader 按文件名映射
 # 库名 decorate_v_0）：
 source/core/module/ui/decorate_v_0.swf
+#
+# 窗口框架素材（issue #41）：redUpBanner_v_2.swf（secondList id=
+# "redUpBanner"，nc_data.php:36）导出 redUpBanner（char#18，3 帧
+# DefineSprite：红/黑/金牌升级窗顶横幅，RedUpWindow 经 requestClass/
+# getMaterial 反射构造同名 shim src/RedUpBanner.hx）：
+source/core/module/ui/main/redUpBanner_v_2.swf
+# RequestError_2.swf（secondList id="RequestErrorBG"，nc_data.php:35）导出
+# RequestErrorBG/ZZ/HP/FZ 四张 270x125 JPEG 位图（限流/封禁错误窗配图，
+# RequestErrorWindow.onImageLoaded `new _loc1_(270,125)` 构造 BitmapData
+# shim src/RequestError*.hx）：
+source/core/module/ui/main/RequestError_2.swf

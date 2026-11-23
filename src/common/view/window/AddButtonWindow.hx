@@ -37,13 +37,17 @@ class AddButtonWindow extends BaseWindow {
 		windowName = Consts.WINDOW_NAME_ABUTTON;
 	}
 
-	// AddButtonWindow.as:29-32
+	// AddButtonWindow.as:29-32（AS3 public set，无 get → 只写属性）
+	public var betweenSpace(never, set):Int;
+
 	private function set_betweenSpace(param1:Int):Int {
 		this._buttonSpace = param1;
 		return param1;
 	}
 
 	// AddButtonWindow.as:34-37
+	public var bottomSpace(never, set):Int;
+
 	private function set_bottomSpace(param1:Int):Int {
 		this._bottomSpace = param1;
 		return param1;

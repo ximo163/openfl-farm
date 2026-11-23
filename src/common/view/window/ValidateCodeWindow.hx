@@ -57,7 +57,7 @@ class ValidateCodeWindow extends AddButtonWindow {
 		width = 320;
 		height = 250;
 		mode = true;
-		title = this.INPUT_TIP;
+		title = INPUT_TIP;
 		windowName = Consts.WINDOW_NAME_VALIDATE;
 		this.img_loader = null;
 		this.imgrequest = new URLRequest();
@@ -126,11 +126,11 @@ class ValidateCodeWindow extends AddButtonWindow {
 		content = Std.isOfType(Utils.getMaterial("ValidateCodeContent"),
 			Sprite) ? cast(Utils.getMaterial("ValidateCodeContent"), Sprite) : null;
 		if (content != null) {
-			content.y = this.HEADHEIGTH + this.PADDING;
-			content.x = this.PADDING;
+			content.y = HEADHEIGTH + PADDING;
+			content.x = PADDING;
 			content.name = "__content__";
 			addChild(content);
-			addButton(Language.L["确定"], "ButtonOrange", 65, 25, this.onOK);
+			addButton(Reflect.field(Language.L, "确定"), "ButtonOrange", 65, 25, this.onOK);
 			this.addEventListener(KeyboardEvent.KEY_UP, this.onKeyUp);
 			super.init();
 			this.postText = Std.isOfType(content.getChildByName("postText"),
@@ -139,7 +139,7 @@ class ValidateCodeWindow extends AddButtonWindow {
 				TextField) ? cast(content.getChildByName("input_txt"), TextField) : null;
 			this.lipiT.defaultTextFormat = new TextFormat("Verdana", 12, 10855845, null, null, null, null, null,
 				TextFormatAlign.LEFT);
-			this.lipiT.text = this.INPUT_TIP;
+			this.lipiT.text = INPUT_TIP;
 			this.lipiT.maxChars = 8;
 			this.lipiT.restrict = "a-zA-Z0-9";
 			this.lipiT.addEventListener(FocusEvent.FOCUS_IN, function(param1:FocusEvent):Void {
@@ -190,7 +190,7 @@ class ValidateCodeWindow extends AddButtonWindow {
 
 	// ValidateCodeWindow.as:176-191
 	override private function setData():Void {
-		if (this.lipiT != null && this.lipiT.text != this.INPUT_TIP) {
+		if (this.lipiT != null && this.lipiT.text != INPUT_TIP) {
 			this.lipiT.text = "";
 		}
 		this.loadCodePicture();

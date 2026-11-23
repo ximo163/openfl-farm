@@ -1053,3 +1053,58 @@
   PropTween、写的是物理字段，属工具自述的误报类。防：triage 清单时先看
   被标变量的**声明处**类型与所写字段是不是自有类物理字段，别一见清单就
   加 cast。
+
+## 2026-11 · #42（提示片 write-tests：空实例坐标驱动 + countHealth 数值口径）
+
+- **Type.createEmptyInstance 的显示子类上 set_x/set_y 是 `__transform`
+  null NPE——测试侧 Reflect 补一枚 Matrix 即可强类型读写坐标**：openfl
+  DisplayObject 的 x/y 直落 `__transform.tx/ty`（DisplayObject.hx:1008，
+  ctor 里才 new），空实例跳过全部 ctor → 首次 `x = v` 抛 "field access on
+  null"（probe 实测）。MouseTip/DiyMouseTip 这类「ctor 取素材在 eval 必
+  抛 #2007」的提示类，钉字段 + `Reflect.setField(tip, "__transform",
+  new Matrix())` 后，mX/mY 覆写的偏移数学（-5/+20、-60/-120）就能在
+  eval 单测里断言（强类型读 `tip.x`）。防：给「ctor 要素材」的显示类写
+  坐标类单测时先补 __transform，别因此放弃定位公式的钉板；只读不写的
+  断言不受影响。
+- **AS3 int 参数的复合赋值截断在整式结果，不在被减项**：
+  LandInfoTip.countHealth 的 `param1 -= (loc8-param2)*loc9/60`（:107），
+  100-3.333 得 96——先 Std.int 被减项再相减会得 97，差 1 且编译期无感。
+  Haxe 侧必须 `param1 = Std.int(param1 - expr)` 整式截断；表驱动用例
+  专门放一行分数衰减（test/common/view/tip/LandInfoTipTest.hx c6）钉住。
+  同函数还有两个口径：`[[]].concat(action)` 对标量是包裹语义（Haxe 的
+  concat 只收数组，要 isOfType 门）；无动作条目（含合成的
+  "2228612959" 键）读 CommonData.serverTime，其 getter 对 set 时刻每秒
+  +1 漂移——期望值要离整数截断边界 ≥0.4、分支不等式余量 ≥200 秒。
+- **测试经 get/set 属性驱动 stub 阶段的覆写签名**：提示类的 data/mX/mY
+  是 Tip 基类 `(get, set)` 属性的 setter 覆写（override private function
+  set_data），write-tests 阶段给 stub 补「签名正确 + throw 体」即可让
+  `tip.data = null` 这类属性写法编译并失败——无需等实现（MouseTip 四类
+  的 stub 形态见对应 .hx；HistoryItemTip 是已译同款先例）。
+
+## 2026-11 · #42（提示片 implement：非反编译 swf 的符号类体按 ABC 字节码复原）
+
+- **类体长在部署 swf 的 DoABC2、CI 反编译产物没有它时，ABC 字节码就是
+  翻译依据**：farmui_full_v_40 不在 CI 反编译的五代码 swf 内，它的
+  SymbolClass 关联类（TipBg/FarmInfoPlus）在 legacy/decompiled 无 FFDec
+  产物——但这不是 BLOCKED：`tools/DumpAbcMethod.hx` retarget（改
+  TARGET_CLASS/TARGET_METHODS + swf 路径，头注写明复用约定）能导出字段表、
+  构造器与全部方法体字节码，部署 swf 里的 ABC 就是原版代码。复原要点：
+  字段表分得清具名子件槽（FVar，时间轴 PlaceObject 填）与代码字段
+  （seedSprite）；构造器 `super() + addFrameScript(0, frame1)`、frame1 空体
+  属时间轴胶水，AnimateLibrary 承担，按符号 shim 惯例不译（ToolBarBg
+  先例）；链式 `a.p = b.p = c.p = new X()` 字节码是 ODup/OSetReg 链——
+  同一实例三落，别译成三枚新实例（setOutput 里 growText 随后又单独
+  OConstructProperty 一枚新实例，那是原文如此，照抄）。防：先
+  `tools/dump_swf.php` 确认符号/导出名，再 retarget DumpAbcMethod 取方法
+  体，别对这类类自造行为。
+- **符号 shim 上按名取时间轴具名子件，别落同名字段**：As3.childOf 先
+  Reflect.field 再 getChildByName——FarmInfoPlus 若声明 `healthText` 实例
+  字段，childOf 会先取到 null 字段而永远走不到 getChildByName。方法内用
+  同名**局部变量**（`var healthText:TextField = cast(As3.childOf(this,
+  "healthText"), TextField);`）既保 1:1 可读又不挡查找。
+- **MovieClip 类型的动态面调用走 Reflect.callMethod**：LandInfoTip 的
+  `_farmInfo:MovieClip`（保持原类型）上调 setStep7/setOutput/setInfo/
+  setInfoIcon/setOutputIcon——openfl MovieClip 没有这些方法，直写
+  `_farmInfo.setStep7(...)` 编译都不过；`Reflect.callMethod(this._farmInfo,
+  Reflect.field(this._farmInfo, "setStep7"), [args])`（ModuleWater 先例）。
+  尾参缺省（AS3 undefined）由 shim 侧 `= null` 默认参 + `!= null` 门同形。

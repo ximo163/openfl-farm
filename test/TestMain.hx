@@ -190,6 +190,19 @@ class TestMain {
 		// 越延迟单次派发、killTweensOf 两分支（禁用/补渲染收尾）、killVars
 		// 摘链冻结、propTweenLookup 起止登记、构造链 initClass 四静态
 		runner.addCase(new com.greensock.TweenLiteTest());
+		// issue #42：提示片（write-tests 阶段，对 stub 失败）——TipControl
+		// 注册表与 show/update/hide 的 TipEvent 派发、TipLayer getTip 门位/
+		// onTipShow 待显暂存/onTipUpdate 同型刷新路由、四 tip 真身纯面
+		// （MouseTip/CropInfoTip 的 data null→"" 归一与文本落位、无舞台
+		// mX/mY -5/+20 跟随、DiyMouseTip 到期文案含原文 "11" 尾、
+		// LandInfoTip countHealth 健康衰减/动作档位表（含 :107 整式截断与
+		// Array 日志丢弃）/jsonToArray 时序排序/data 路由/-60/-120 锚点）
+		runner.addCase(new common.view.tip.TipControlTest());
+		runner.addCase(new framework.layers.TipLayerTest());
+		runner.addCase(new common.view.tip.MouseTipTest());
+		runner.addCase(new common.view.tip.CropInfoTipTest());
+		runner.addCase(new common.view.tip.DiyMouseTipTest());
+		runner.addCase(new common.view.tip.LandInfoTipTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		Report.create(runner);
 		runner.run();

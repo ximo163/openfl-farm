@@ -14,7 +14,7 @@ import shim.As3;
  *   getSeedUrl（:109-140）、getCropUrl（:142-178）、getHarvrstUrl（:180-199）、
  *   timeToMature（:201-228）、idToDiyUrl（:230-265）、getCropByID（:267-287）、
  *   idToToolName（:289-297）、getAssetUrl（:299-341）、fishTip（:342-354）、
- *   getInsectPosition（:356-373）、cropTip（:461-473）、
+ *   getInsectPosition（:356-373）、remainTime（:375-459）、cropTip（:461-473）、
  *   getNameByIDType（:475-535）、getFishByID（:537-557）、
  *   specialGrow（:559-587）、idState
  *   （:589-664）、idToDogUrl（:666-701）、getFishUrl（:703-723）、
@@ -329,6 +329,71 @@ class GetCropID {
 		}
 		_loc5_ = (_loc4_.split("|")[param2] : String).split(",");
 		return [[_loc5_[0], _loc5_[1]], [_loc5_[2], _loc5_[3]], [_loc5_[4], _loc5_[5]]];
+	}
+
+	// GetCropID.as:375-459（issue #42：remainTime：按 cropGrow 档位表算距下
+	// 一档的剩余秒/当前档文案/总进度；红土地（param3==2）的非红作物档位
+	// *0.8 提速、末两档再削去 %600 余数（同 idState :589-664 的分岔）；
+	// 末档命中 remain 归 0（已熟））
+	public static function remainTime(param1:Int, param2:Float, param3:Int):Dynamic {
+		var _loc7_:Array<Dynamic> = null;
+		var _loc16_:Int = 0;
+		var _loc17_:Int = 0;
+		if (param1 == 0) {
+			return {"remain": 0, "text": "", "progress": 1};
+		}
+		var _loc4_:Dynamic = getCropByID(Std.string(param1));
+		if (_loc4_ == null) {
+			return null;
+		}
+		var _loc5_:String = Reflect.field(_loc4_, "cropGrow");
+		if (_loc5_ == "") {
+			return null;
+		}
+		var _loc6_:String = Reflect.field(_loc4_, "nextText");
+		if (_loc6_ == "") {
+			return null;
+		}
+		_loc7_ = _loc5_.split(",");
+		var _loc8_:Array<Dynamic> = _loc6_.split(",");
+		var _loc9_:UInt = _loc7_.length;
+		var _loc10_:Float = As3.floatOf(_loc7_[_loc9_ - 2]);
+		var _loc11_:Float = CommonData.serverTime;
+		var _loc12_:Float = _loc11_ - param2;
+		var _loc13_:Float = _loc12_ / _loc10_;
+		if (_loc13_ > 1) {
+			_loc13_ = 1;
+		}
+		var _loc14_:Int = 0;
+		var _loc15_:Int = 0;
+		while (_loc15_ < _loc9_) {
+			if (param3 != 2) {
+				_loc14_ = As3.intOf(_loc7_[_loc15_]);
+			} else if (As3.eqString(Reflect.field(_loc4_, "isRed"), "2")) {
+				// AS3 `== "2"` 松等：isRed 数值/字符串双形态，As3.eqString
+				//（idState 同款）
+				_loc14_ = As3.intOf(_loc7_[_loc15_]);
+			} else if (_loc15_ < _loc9_ - 2) {
+				// AS3 `Math.floor(x * 0.8) as int`：字符串元素先隐式 Number
+				// 参与乘法（idState 同款）
+				_loc14_ = Std.int(Math.floor(As3.floatOf(_loc7_[_loc15_]) * 0.8));
+			} else {
+				_loc14_ = Std.int(Math.floor(As3.floatOf(_loc7_[_loc15_]) * 0.8));
+				_loc16_ = _loc14_ % 600;
+				if (_loc14_ > _loc16_) {
+					_loc14_ -= _loc16_;
+				}
+			}
+			if (_loc12_ < _loc14_) {
+				_loc17_ = Std.int(_loc14_ - _loc12_);
+				if (_loc15_ == _loc9_ - 1) {
+					_loc17_ = 0;
+				}
+				return {"remain": _loc17_, "text": _loc8_[_loc15_ + 1], "progress": _loc13_};
+			}
+			_loc15_++;
+		}
+		return {"remain": 0, "text": "", "progress": 1};
 	}
 
 	// GetCropID.as:461-473（issue #35：cropTip：种子买入窗口的说明文案，

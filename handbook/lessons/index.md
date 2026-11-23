@@ -1061,11 +1061,14 @@
   等多处），Haxe 直接红 "Cannot access static field … from a class
   instance"。防：翻译 `this.<全大写常量>` 时去掉 `this.` 裸用；静态常量
   本来就该类名或裸访问（`HEIGHT`，本类内）。
-- **反编译 HTML 文案里的「坏标记」是行为**：RequestErrorWindow.as 五路
-  限流文案里 harvest/planting/cgi_farm_index 的 `<font>` 有 `</font>`
-  闭合、scrounge/scarify 没有——Flash TextField 的未闭合 font 会把余文
-  全染色，原版显示就这样。write-tests 期望串照 AS3 逐字抽，别顺手补
-  闭合标签（本轮 2 个断言因此与原版不符，见 issue 报告的 NEEDS-TESTS）。
+- **抄反编译长 HTML 文案易漏闭合标签**：RequestErrorWindow.as 五路限流文案
+  （:156/:169/:182/:195/:208）**全部带 `</font>` 闭合**，无一路缺失；Flash
+  TextField 的 font 未闭合会把余文全染色，抄漏一个就是可见的画面回归。
+  真身坑：implement 阶段从反编译长串里抄文案，attempt 1 把 scrounge/scarify
+  两处 `</font>` 抄漏（5 路只写对 3 路），靠 write-tests 的逐字节断言才
+  拦下、attempt 2 补齐——是实现侧抄漏，不是原版没闭合。防：多路 HTML
+  文案逐字抽串后用 grep/比对工具对 .as 原文复核（如 `grep -c "</font>"`
+  两侧计数对齐），别凭「坏标记是行为」的直觉增删标签。
 - **`Type.createEmptyInstance` 在 eval 上 Int 字段是 null**：字段初始化器
   不跑（这是文档行为），但 eval 的 Int 是装箱值——未初始化就是 null 而
   不是 0/-1，且 `null == 0` 为 **false**（probe 实测：读值 null、eq0

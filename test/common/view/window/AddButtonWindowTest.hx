@@ -53,7 +53,7 @@ class AddButtonWindowTest {
 		var win = new AddButtonWindow(null);
 		var click = function(e) {};
 		var btn = win.addButton("确 定", "ButtonOrange", 80, 25, click);
-		Assert.notNull(btn); // 现为 stub 恒 null，实现后为 winButton 实例
+		Assert.notNull(btn); // addButton 返回所建 winButton 实例
 		Assert.equals("确 定", btn.text); // winButton :133
 		Assert.equals(80, Std.int(btn.width)); // :139
 		Assert.equals(25, Std.int(btn.height)); // :140

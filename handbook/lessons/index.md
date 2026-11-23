@@ -1108,3 +1108,26 @@
   `_farmInfo.setStep7(...)` 编译都不过；`Reflect.callMethod(this._farmInfo,
   Reflect.field(this._farmInfo, "setStep7"), [args])`（ModuleWater 先例）。
   尾参缺省（AS3 undefined）由 shim 侧 `= null` 默认参 + `!= null` 门同形。
+
+## 2026-11 · #43（引导与启动杂尾 implement）
+
+- **getMaterial 的符号名是泛名时，宿主库别猜、全量扫导出表定**：
+  `Utils.getMaterial("Arrow")`（GameGuide.as:108）的 Arrow 不在直觉宿主
+  farmui_full_v_40（那里只有 CursorArrow/ToolArrow/ComboBoxArrow 等带前缀
+  同尾名），`dump_swf.php` 对 module/ 下全部 swf（排除 allcrops/allcards）
+  按导出名整词扫，才定位到 farmui2_v_58（农场，char#240）与 farmui2_v_44
+  （牧场）双宿主——spec modules json 该条 assets.ref 就写着这两个，先查
+  spec 能省一步。双宿主按当前代码域选：main3 的 GameGuide 绑农场宿主，
+  牧场同名符号归 Master2 侧，别混。防：新 getMaterial 符号先查 spec 的
+  assets，再 dump 确认 tag（DefineSprite→MovieClip / DefineButton2→
+  SimpleButton），按 assets.md 三登记义务落地。
+- **`x as Boolean` 是类型检查不是真值化**（UserChangingBar.as:67-68 的
+  `data["showLoading"] as Boolean`）：非 Boolean 值（含 null）落 null、
+  赋给 Boolean 属性再隐式转 false——译成 `Std.isOfType(v, Bool) ? v :
+  false`，不是 As3.truthy（那会把 "1"/1 也当真）。与 #7「eval 裸 cast ≠
+  as」同族但坑向不同：这里错的不是回退分支而是布尔语义本身。
+- **eval 上 openfl.ui.Mouse.show/hide 直接 NPE**（Mouse.hx:100 遍历
+  Application.current.windows，eval 无窗口）：CursorLayer 一族的单测别碰
+  Mouse 路径（onSetCursor/onSwitchCursor/setCurrentCursor），只测 setPosition/
+  remove 这类纯几何面——CursorLayerTest 头注已写，后续给光标类补测试
+  照此口径，CI 时间轴/场景比对兜 Mouse 面。

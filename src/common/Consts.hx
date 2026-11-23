@@ -186,6 +186,8 @@ class Consts {
 	public static final MSG_FAIRY_DONATED:String = "DonateFriendFairy";
 	// Consts.as:402（issue #9：签到活动图标增删）
 	public static final MSG_REFRESH_CARDSGAME:String = "CardsGameUpdated";
+	// Consts.as:418（issue #43：升级模块监听，Session 账户更新跨级时派发）
+	public static final MSG_USER_LEVEL_UP:String = "userLevelUp";
 	// Consts.as:600（issue #9：ShortcutBar 监听安装入口图标）
 	public static final ADD_ENTRANCE_ICON:String = "ADD_ENTRANCE_ICON";
 	// Consts.as:590（关闭背包窗口）

@@ -1,5 +1,6 @@
 package com.greensock;
 
+import shim.As3;
 import utest.Assert;
 
 /**

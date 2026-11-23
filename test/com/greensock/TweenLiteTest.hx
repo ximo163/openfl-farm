@@ -15,6 +15,13 @@ import utest.Assert;
  * masterList 等静态跨用例共享，但用例各自新建目标对象（Dictionary 身份
  * 键），互不串门。
  *
+ * gc/initted 等 TweenCore Bool 字段在忠实翻译里没有赋值点（原版 VM 零默认
+ * false；给 TweenCore.hx 补 `= false` 超出本 issue 边界），eval 上未赋值
+ * 读 null 而 utest 的 isFalse 是严格 `== false`——读这类「无赋值点」字段
+ * 的断言统一 As3.truthy(...) 取 AS3 真值（truthy(null)==false，js/cpp 静
+ * 态零值同判；lessons #37「AS3 VM 的字段零值默认要显式落」）。已赋值字段
+ * （setEnabled 写过的 gc/active）不受影响，直读。
+ *
  * 出处：
  * - legacy/decompiled/main3_v_221/scripts/com/greensock/TweenLite.as
  *   （ctor :90-126、initClass :128-145、killTweensOf :147-171、from :173-181、
@@ -35,7 +42,7 @@ class TweenLiteTest {
 		Assert.notNull(tween);
 		Assert.equals(target, tween.target);
 		Assert.equals(0.0, target.x);
-		Assert.isFalse(tween.initted);
+		Assert.isFalse(As3.truthy(tween.initted));
 	}
 
 	// :286-289 早退门：首调 renderTime(0) 时 cachedTime 与 _loc5_ 同为 0 且
@@ -44,7 +51,7 @@ class TweenLiteTest {
 		var target = {x: 5.0};
 		var tween = TweenLite.to(target, 1, {x: 100.0});
 		tween.renderTime(0);
-		Assert.isFalse(tween.initted);
+		Assert.isFalse(As3.truthy(tween.initted));
 		Assert.equals(5.0, target.x);
 		Assert.equals(0.0, tween.ratio);
 	}
@@ -122,8 +129,8 @@ class TweenLiteTest {
 		var first = TweenLite.to(target, 1, {x: 100.0});
 		var second = TweenLite.to(target, 1, {y: 50.0});
 		Assert.isTrue(first.gc);
-		Assert.isFalse(first.active); // setEnabled(false) 顺带摘活
-		Assert.isFalse(second.gc);
+		Assert.isFalse(first.active); // setEnabled(false) 顺带摘活（已赋值，直读）
+		Assert.isFalse(As3.truthy(second.gc));
 		second.renderTime(0.5);
 		Assert.equals(37.5, target.y); // 0 + 0.75*50
 		Assert.equals(0.0, target.x); // first 从未 init，x 不动
@@ -135,8 +142,8 @@ class TweenLiteTest {
 		var target = {x: 0.0, y: 0.0};
 		var first = TweenLite.to(target, 1, {x: 100.0, overwrite: 0});
 		var second = TweenLite.to(target, 1, {y: 50.0, overwrite: 0});
-		Assert.isFalse(first.gc);
-		Assert.isFalse(second.gc);
+		Assert.isFalse(As3.truthy(first.gc));
+		Assert.isFalse(As3.truthy(second.gc));
 		first.renderTime(1);
 		second.renderTime(1);
 		Assert.equals(100.0, target.x);
@@ -151,8 +158,8 @@ class TweenLiteTest {
 		var b = {x: 0.0};
 		var ta = TweenLite.to(a, 1, {x: 100.0});
 		var tb = TweenLite.to(b, 1, {x: 200.0});
-		Assert.isFalse(ta.gc);
-		Assert.isFalse(tb.gc);
+		Assert.isFalse(As3.truthy(ta.gc));
+		Assert.isFalse(As3.truthy(tb.gc));
 		ta.renderTime(0.5);
 		tb.renderTime(0.5);
 		Assert.equals(75.0, a.x);

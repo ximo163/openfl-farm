@@ -2,8 +2,11 @@ package framework.layers;
 
 import common.Consts;
 import common.view.tip.TipControl;
+import events.TipEvent;
 import framework.base.BaseLayer;
+import interfaces.ITip;
 import openfl.errors.ArgumentError;
+import openfl.errors.Error;
 
 /**
  * framework.layers.TipLayer —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
@@ -48,5 +51,20 @@ class TipLayer extends BaseLayer {
 	// TipLayer.as:106-115（init：挂 TipEvent/鼠标监听，提示片翻译）
 	override private function init():Void {
 		super.init();
+	}
+
+	// TipLayer.as:60-95（getTip：注册表/实例缓存取提示，提示片翻译）
+	private function getTip(param1:String):ITip {
+		throw new Error("not implemented");
+	}
+
+	// TipLayer.as:148-160（onTipShow：暂存待显 tip + 复位延时器，提示片翻译）
+	private function onTipShow(param1:TipEvent):Void {
+		throw new Error("not implemented");
+	}
+
+	// TipLayer.as:162-173（onTipUpdate：同屏同型 tip 数据刷新，提示片翻译）
+	private function onTipUpdate(param1:TipEvent):Void {
+		throw new Error("not implemented");
 	}
 }

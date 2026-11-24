@@ -255,6 +255,18 @@ class TestMain {
 		runner.addCase(new common.view.window.RequestErrorWindowTest());
 		runner.addCase(new common.view.window.RedUpWindowTest());
 		runner.addCase(new common.view.window.UpgradeBlackWindowTest());
+		// issue #56：T3 时间轴行为对拍门禁（write-tests 阶段，对 stub 失败）——
+		// 期望侧纯逻辑（tools.TimelineSpec：结构 JSON 解析/键推导（""=主轴、
+		// "#<charId>"=无导出名）、多帧过滤、stepsFor=最大帧数、推进契约的
+		// currentFrame 序列/帧标签命中序列/循环次数与终点推导）与比对器纯逻辑
+		// （tools.TimelineDiff：记录 JSON 解析缺省、四件序列项独立判红（注入
+		// 跳帧/抓不动/倒放/提前 stop 各自红且步号准确）、剪辑缺失/多报、
+		// 步数不符资产级红、帧事件盲区降级标注（scriptFrames 非空不判红
+		// 非假绿、无脚本凭空触发红）、render 定位资产/符号/步/项）。CLI 与
+		// format 结构提取器、node 探针按 issue 走 implement 阶段，PR 说明列
+		// 复用件清单（StepAnimate.hx 等）
+		runner.addCase(new tools.TimelineSpecTest());
+		runner.addCase(new tools.TimelineDiffTest());
 		Report.create(runner);
 		runner.run();
 	}

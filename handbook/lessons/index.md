@@ -1214,6 +1214,49 @@
   改。防：include 扫描出的错误先 stash 对比分清「本片新引入」还是「main
   既有」，既有错误只报告不顺手修。
 
+## 2026-11 · #56（T3 时间轴对拍 implement：node 垫片、单行 JSON、期望侧镜像）
+
+- **node 垫片缺 `window.Image`，装带位图的库直接炸**：lime 的
+  HTML5HTTPRequest.__loadImage 写死 `new window.Image()`（:448），node 有
+  URL.createObjectURL/revokeObjectURL 却没有 Image——farmui1_v_42 一类含
+  BITMAP 符号的库在 `AnimateLibrary.load` 里就 `TypeError`。修法（垫片里，
+  `tools/run-openfl-node.js`）：FakeImage 1×1、`src` setter 同步派发
+  "load"（监听器在赋 src 之前挂好，:462→:489；lime Future 对已完成态会补调
+  onComplete，同步完成无碍）；真碰像素由垫片既有 mkCtx no-op 2d 上下文兜底。
+  防：node 跑 openfl 装库报「window.X is not a constructor」先查垫片缺哪个
+  浏览器全局，别怀疑库代码。
+- **库侧日志会冲掉「单行 JSON」输出契约，且不止 haxe trace 一条路**：
+  缺字体警告走 haxe trace（可 `haxe.Log.trace =` 改道），帧脚本求值错走
+  lime.utils.Log → **直连 console.info/warn/error**（AnimateTimeline.hx:569）
+  ——只拦 trace 不够。修法（探针里）：拦 console.log/info/warn/error 进
+  缓冲、随 JSON 的 `scriptLog` 字段出（截断防爆炸：gotoAndPlay 逐圈报错），
+  探针自己的 println 改走 `process.stdout.write` 不经 console。防：任何
+  「stdout 是机器可读契约」的 node 工具都要假设 openfl/lime 会从两条路打
+  日志。
+- **期望侧镜像运行侧，三个想当然会错**：① 根级多枚 DoABC 时 processAS3Tag
+  **逐枚覆盖** abcData——只有最后一枚生效（farmui_full_v_40 有 207 枚），
+  扫「第一枚/全部」都会拿错 ABC；② 符号名只认 SymbolClass(76)——运行侧
+  symbolsByClassName 就这一个来源，ExportAssets(56) exporter 不采，混采
+  键会对不上；③ AVM2.findClassByName 拆**最后**一段当类名，且 namespace
+  只认 public/internal/private/protected（其余 nameSpaceName 为 null 不匹配）。
+  防：静态提取器要镜像的每个规则，去 haxelib 源里找对应行为核实，别按
+  swf 规范的「应然」写。
+- **「脚本驱动播放头」是诚实红不是移植错**：帧脚本是 `gotoAndPlay` 族
+  （farmui1_v_42 的 GiftIcon/Timeline_39/a_151，a_151 还是随机跳）时，
+  currentFrame/loops/endFrame/labelHits 必红——期望侧推不出脚本干了什么
+  （#56 盲区），降级**只护 frameEvents 项**。这类红的处置归人
+  （deviations 候选），门禁照实红不吞。防：读到 gotoAndPlay 造成的红先看
+  该剪辑 scriptFrames 是否非空再定性。
+- **write-tests 把 stub 放进 test/ 后，implement 不能原地填（append-only）**：
+  test/** 对 implement 阶段是只许加文件不许改（#56 attempt 1 原地填
+  test/tools/TimelineSpec.hx 被规则驳回），stub 的类路径 `tools.TimelineSpec`
+  就被占死。解法是 `import.hx` 遮蔽：实现换模块路径（test/t3/，包 t3），
+  在 stub 所在包目录放 `test/tools/import.hx` 写
+  `import t3.TimelineSpec;`——Haxe 名字解析 **import（含 import.hx 默认
+  import）优先于同包同名类型**（4.3.6 --interp 实测），测试里的未限定名
+  就解析到实现，stub 不再被任何链加载、原样留作文档。防：下一轮
+  write-tests 再给纯逻辑工具类留 stub 时，别放进 test/（放 src/ 或工具
+  链自己的 classpath 下），省掉这层遮蔽；已经放进去了的按本条接。
 ## 2026-11 · #37/#44/#60（静态平台 null-Int 二犯：教训记了、工单丢了）
 
 - **「main 既有错只报告、归还原 issue」碰上归属 issue 已关闭＝石沉大海，

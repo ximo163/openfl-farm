@@ -8,9 +8,9 @@ import openfl.display.Timeline;
 import swf.exporters.animate.AnimateLibrary;
 import swf.exporters.animate.AnimateSpriteSymbol;
 import swf.exporters.animate.AnimateSymbol;
-import tools.TimelineDiff;
+import t3.TimelineDiff;
 import tools.TimelineExtract;
-import tools.TimelineSpec;
+import t3.TimelineSpec;
 import tools.TimelineTypes.ActualClip;
 import tools.TimelineTypes.AssetSpec;
 import tools.TimelineTypes.StepFrame;
@@ -20,9 +20,11 @@ import tools.TimelineTypes.StepName;
  * T3 时间轴行为对拍——实跑侧探针 CLI（issue #56）：在 html5 构建产物同一套
  * 运行时（AnimateLibrary + openfl Timeline/MovieClip）上装库、实例化、固定
  * 步长推进，录序列项四件（每步 currentFrame / 帧标签命中 / 循环与终点 /
- * 帧事件），再用 tools.TimelineDiff 对拍期望侧（tools.TimelineExtract 从 swf
+ * 帧事件），再用 t3.TimelineDiff 对拍期望侧（tools.TimelineExtract 从 swf
  * 结构静态提取），单行 JSON 出结果。期望侧提取与本 CLI 同进程（省一次 node
- * 启动），Diff/Spec 纯逻辑复用 test.hxml 编译的同一份类（-cp test）。
+ * 启动）；Spec/Diff 实现在 test/t3/（stub 类路径被 append-only 的
+ * test/tools/*.hx 占死，见 test/tools/import.hx），显式 import t3.* 经
+ * -cp test 进链。
  *
  * 用法（node 垫片同 StepAnimate）：
  *   haxe -cp tools -cp test -lib format -lib swf -lib openfl -lib lime \

@@ -2,7 +2,6 @@ package tools;
 
 import tools.TimelineTypes.AssetSpec;
 import tools.TimelineTypes.ClipSpec;
-import tools.TimelineTypes.LabelEntry;
 import tools.TimelineTypes.LabelHit;
 import tools.TimelineTypes.LoopEnd;
 
@@ -49,59 +48,24 @@ class TimelineSpec {
 	 * swf 里的出现顺序（dump 顺序），主时间轴条目照收（是否参与比对由
 	 * multiFrameClips 决定）。 */
 	static public function parseAssetStructure(json:String):AssetSpec {
-		// 结构 JSON 的键名契约 // issue #56（类头「结构 JSON 形状」）；labels/
-		// scriptFrames 缺省 = []（fixture 里 FS_01_1_2 等整体省略）
-		var d:Dynamic = haxe.Json.parse(json);
-		var rows:Array<Dynamic> = d.clips != null ? d.clips : [];
-		var clips:Array<ClipSpec> = [];
-		for (row in rows) {
-			var id:Dynamic = Reflect.field(row, "id");
-			var symbol:Dynamic = Reflect.field(row, "symbol");
-			var isMain:Bool = row.isMain;
-			var key = isMain ? "" : (symbol != null ? symbol : "#" + id);
-			var labels:Array<LabelEntry> = [];
-			var labelRows:Array<Dynamic> = Reflect.field(row, "labels");
-			if (labelRows != null) {
-				for (l in labelRows) labels.push({frame: Std.int(l.frame), name: l.name});
-			}
-			var scriptFrames:Array<Int> = [];
-			var scriptRows:Array<Dynamic> = Reflect.field(row, "scriptFrames");
-			if (scriptRows != null) {
-				for (sf in scriptRows) scriptFrames.push(Std.int(sf));
-			}
-			clips.push({key: key, isMain: isMain, frames: Std.int(row.frames), labels: labels, scriptFrames: scriptFrames});
-		}
-		return {asset: d.asset, clips: clips};
+		throw new haxe.Exception("not implemented");
 	}
 
 	/** 多帧剪辑（frames > 1）。单帧剪辑（主轴或子剪辑）不产生比对单元。 */
 	static public function multiFrameClips(a:AssetSpec):Array<ClipSpec> {
-		var out:Array<ClipSpec> = [];
-		for (c in a.clips) {
-			if (c.frames > 1) out.push(c);
-		}
-		return out;
+		throw new haxe.Exception("not implemented");
 	}
 
 	/** 推进步数：多帧剪辑的最大帧数（每个剪辑至少走满一圈，末步恰回到第 1 帧）；
 	 * 无多帧剪辑的资产返回 0（探针/比对都无事可做）。 */
 	static public function stepsFor(a:AssetSpec):Int {
-		var max = 0;
-		for (c in multiFrameClips(a)) {
-			if (c.frames > max) max = c.frames;
-		}
-		return max;
+		throw new haxe.Exception("not implemented");
 	}
 
 	/** 期望的每步后 currentFrame 序列（序列项一）：第 s 步（1 基）后
 	 * (s % frames) + 1。steps <= 0 返回 []。 */
 	static public function frameSequence(c:ClipSpec, steps:Int):Array<Int> {
-		if (steps <= 0) return [];
-		var seq:Array<Int> = [];
-		for (s in 1...steps + 1) {
-			seq.push((s % c.frames) + 1);
-		}
-		return seq;
+		throw new haxe.Exception("not implemented");
 	}
 
 	/** 期望的帧标签命中序列（序列项二）：按步序，第 s 步落在带标签的帧上即
@@ -110,20 +74,11 @@ class TimelineSpec {
 	 * 标签来源 tag43 与 tag86 并收（运行侧 haxelib swf 3.4.0 两路都进
 	 * frameIndexes；清单内 tag86 帧标签段全空，实测标签均出自 tag43）。 */
 	static public function labelHits(c:ClipSpec, steps:Int):Array<LabelHit> {
-		var hits:Array<LabelHit> = [];
-		if (steps <= 0) return hits;
-		for (s in 1...steps + 1) {
-			var frame = (s % c.frames) + 1;
-			for (l in c.labels) {
-				if (l.frame == frame) hits.push({step: s, frame: frame, name: l.name});
-			}
-		}
-		return hits;
+		throw new haxe.Exception("not implemented");
 	}
 
 	/** 期望的循环次数与终点（序列项三）。 */
 	static public function loopEnd(c:ClipSpec, steps:Int):LoopEnd {
-		if (c.frames <= 0) return {loops: 0, endFrame: 1};
-		return {loops: Std.int(steps / c.frames), endFrame: (steps % c.frames) + 1};
+		throw new haxe.Exception("not implemented");
 	}
 }

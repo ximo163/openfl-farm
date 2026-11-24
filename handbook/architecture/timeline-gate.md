@@ -16,10 +16,15 @@ html5 同一套运行时上**固定步长推进**录得，逐项 diff，报告�
 | `tools/TimelineProbe.hx` | 实跑侧探针（编译到 `export/timeline-gate/timeline-probe.js`，出口单行 JSON；期望侧提取同进程）。步进语义逐字复用 `tools/StepAnimate.hx`（stopTree/stepTree/根 `(currentFrame % totalFrames) + 1`） |
 | `tools/tools/TimelineExtract.hx` | 期望侧提取器：swf 字节 → 结构 JSON。format 3.7.0 Reader 主路 + 自带标签走查 fallback（a6291_1） |
 | `test/tools/TimelineTypes.hx` | 两侧共用的纯数据形状（typedef） |
-| `test/tools/TimelineSpec.hx` | 期望侧派生：多帧剪辑/步数/每步 currentFrame/标签命中/圈数终点（公式钉死，见下） |
-| `test/tools/TimelineDiff.hx` | 比对器 + 人读报告渲染；探针与单测复用同一份 |
+| `test/t3/TimelineSpec.hx` | 期望侧派生：多帧剪辑/步数/每步 currentFrame/标签命中/圈数终点（公式钉死，见下） |
+| `test/t3/TimelineDiff.hx` | 比对器 + 人读报告渲染；探针与单测复用同一份 |
+| `test/tools/import.hx` | 布局钥匙：把 package tools 里契约测试的未限定名 `TimelineSpec`/`TimelineDiff` 默认 import 到 t3 包（import 优先于同包类型）——`test/tools/TimelineSpec.hx`/`TimelineDiff.hx` 是 write-tests 留的 stub，test/** append-only 改不得、类路径又被它占死，实现只能换包再靠这里接线。stub 不被任何链加载，留作文档 |
 | `test/tools/TimelineSpecTest.hx`、`test/tools/TimelineDiffTest.hx` | 契约门（write-tests 钉死，只读） |
 | `tools/run-openfl-node.js` | node 垫片；本轮补了 `window.Image`（见 lessons） |
+
+探针/提取器编译线（TimelineGate.mjs 里）：`haxe -cp tools -cp test -lib
+format -lib swf -lib openfl -lib lime -js timeline-probe.js -main
+TimelineProbe`——`-cp test` 是为了 t3.Spec/Diff 和 tools.TimelineTypes。
 
 ## 用法
 

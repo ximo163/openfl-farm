@@ -1247,7 +1247,13 @@
   （#56 盲区），降级**只护 frameEvents 项**。这类红的处置归人
   （deviations 候选），门禁照实红不吞。防：读到 gotoAndPlay 造成的红先看
   该剪辑 scriptFrames 是否非空再定性。
-- **write-tests 留的 `throw` stub，implement 原地填是唯一正解**：test.hxml
-  是 `-cp src -cp test`，类路径被 test/ 占死，别处建同名类会被遮蔽/冲突；
-  test/** 追加-only 的规则下「新增文件替代 stub」编不出同一套契约测试可
-  引用的类。同类任务（stub 填写）沿用：只替换 throw 体，类头契约注释全保。
+- **write-tests 把 stub 放进 test/ 后，implement 不能原地填（append-only）**：
+  test/** 对 implement 阶段是只许加文件不许改（#56 attempt 1 原地填
+  test/tools/TimelineSpec.hx 被规则驳回），stub 的类路径 `tools.TimelineSpec`
+  就被占死。解法是 `import.hx` 遮蔽：实现换模块路径（test/t3/，包 t3），
+  在 stub 所在包目录放 `test/tools/import.hx` 写
+  `import t3.TimelineSpec;`——Haxe 名字解析 **import（含 import.hx 默认
+  import）优先于同包同名类型**（4.3.6 --interp 实测），测试里的未限定名
+  就解析到实现，stub 不再被任何链加载、原样留作文档。防：下一轮
+  write-tests 再给纯逻辑工具类留 stub 时，别放进 test/（放 src/ 或工具
+  链自己的 classpath 下），省掉这层遮蔽；已经放进去了的按本条接。

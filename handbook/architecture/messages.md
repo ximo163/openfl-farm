@@ -22,6 +22,12 @@
   ProfileHistory|HistoryItem`：六页 + 成果格。`ProfileHistory` 成鱼/成果
   复用同一类、靠构造 flag 分素材（HistoryItem 基类 + 鱼/作物两壳）。
 - `widgets/HistoryItemTip`：成果格悬停 tip（common/view/tip/Tip 通道）。
+- `common/view/window/PostWindow`（spec :227 公告窗条目，#45 补 #31 漏翻，
+  替换 #9 闭包 stub）：公告窗本体不在 module/messages 包——调用方是
+  uitools 的 LeftSideToolBar/ShortcutBar（openPostWindow，正文/图来自
+  user_getnotice 下发的 text/imgUrl，见 spec/protocol.json 该条）与
+  WaterGrayOpen（`fixSize = false`）；`:50` 起的 `super.marginL` 是 Panel
+  普通字段，按 lessons #36 落 this 访问。
 
 素材：ButtonGreen/TipBg/ItemBg/ButtonOrange 均在 farmui_full_v_40.swf
 （已声明库），无新增资产。时间戳格式化（今天/昨天/前天）各页自持一份

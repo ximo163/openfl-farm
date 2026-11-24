@@ -48,7 +48,8 @@ legacy 出处：`decompiled main3 module/uitools/`。
     这份部署包同样 null 后 NPE），箭头/超市按钮不渲染是 deviations
     候选。
   - `LeftSideToolBar`（← LeftSideToolBar.as）：左侧活动图标列（VBox），
-    邮件图标 openPostWindow（PostWindow 闭包 stub + Reflect.hasField 门）。
+    邮件图标 openPostWindow（公告窗 common/view/window/PostWindow #45 真身
+    + Reflect.hasField 门）。
   - `PersonInfo`（← PersonInfo.as）：头像/名字/金币/经验面板，数字滚动
     NumAnimation，点击档案区开 LevelAndExperience 窗（profile/ 5 类）。
     **头像加载出口并 `QQOutlets.loadImage`（不发送）**：headPic 是宿主

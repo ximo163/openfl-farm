@@ -226,6 +226,8 @@ class Consts {
 	public static final WINDOW_NAME_ALERT:String = "AlertWindow";
 	// Consts.as:182（issue #9：LevelAndExperience 窗口名）
 	public static final WINDOW_NAME_LEVEL_EXP:String = "LevelAndExp";
+	// Consts.as:188（issue #45：PostWindow 公告窗注册名）
+	public static final WINDOW_NAME_SYS_POST_MSG:String = "SystemPostMsgWindow";
 	public static final WINDOW_NAME_CONFIRM:String = "ConfirmWindow";
 	public static final WINDOW_NAME_GIFT:String = "GiftWindow";
 	public static final WINDOW_NAME_PREVIEWDIY:String = "PreviewDiyWindow";

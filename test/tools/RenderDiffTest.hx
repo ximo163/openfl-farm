@@ -88,10 +88,11 @@ class RenderDiffTest {
 	}
 
 	function test_injected_size_change_reds() {
-		// 尺寸变化（「改一个符号的缩放」的形态）：同字节像素横竖互换，
-		// 哈希（宽高参与布局）与 entry 尺寸字段任一不符即红
+		// 尺寸变化（「改一个符号的缩放」的形态）：1×1 基线条目 vs 1×2 实拍
+		// （合法 8 字节图）——哈希（宽高参与布局）与 entry 尺寸字段任一不符
+		// 即红，不依赖实现先比什么
 		var r = RenderDiff.compareShots(
-			[{key: KEY_F1, image: {width: 1, height: 2, pixels: red1x1().pixels}}],
+			[{key: KEY_F1, image: {width: 1, height: 2, pixels: [255, 0, 0, 255, 255, 0, 0, 255]}}],
 			baseline([KEY_F1 => redEntry()])
 		);
 		Assert.isFalse(r.pass);

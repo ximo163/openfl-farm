@@ -234,6 +234,13 @@ class TestMain {
 		runner.addCase(new com.qzone.qui.makers.ButtonMakerTest());
 		runner.addCase(new com.qzone.qui.managers.DragManagerTest());
 		runner.addCase(new com.qzone.qui.managers.EffectManagerTest());
+		// issue #45：messages 补缺 PostWindow 公告窗（write-tests 阶段，对
+		// stub 失败）——ctor 常量与 param2/3/4 落位（442.1×435.8、windowName
+		// SystemPostMsgWindow、param4 边距 3/5/27/5 与 PostWindowBG 守卫分支
+		// 保持 Panel 默认）、setData→text 路由（_postText.htmlText 同步）、
+		// text/imgUrl 空值守卫、enableBtn 的 _btn null 门与按钮写入、
+		// confirmFn 关窗+回调（回调用后不清）、fixSize 只写
+		runner.addCase(new common.view.window.PostWindowTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		// issue #41：farm-basic 窗口框架 9 类（write-tests 阶段，对 stub 失败）——
 		// WindowControl 注册表与 open/close 事件语义、WindowLayer 模块托管窗

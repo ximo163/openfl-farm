@@ -1,18 +1,29 @@
 package common.view.window;
 
+import com.qzone.qui.controls.Button;
 import interfaces.IMsgCenter;
+import openfl.display.Loader;
+import openfl.errors.Error;
+import openfl.text.TextField;
 
 /**
- * common.view.window.PostWindow —— 闭包 stub（issue #9）。完整类在
- * spec/modules/messages.json :228（公告窗 243 loc，messages 片翻译）；
- * 本片 uitools 的 LeftSideToolBar.openPostWindow/onSystemPostLoaded 引用的
- * 成员：ctor 默认参形态（PostWindow.as:38）、text 存取（:155-166/:200-203）、
- * imgUrl 写入（:205-229）；title/closeFn 继承自 Panel/TitleWindow。窗体显示
- * （皮肤、_postText、Loader 装配）随 messages 片接入，stub 只保成员语义。
+ * common.view.window.PostWindow —— write-tests stub（issue #45，#31 漏翻
+ * 补齐）。完整类 1:1 出自 spec/modules/messages.json :227 公告窗条目；本
+ * 阶段只补测试所需的成员签名（函数体 throw，真身随 implement）：
+ * ctor 常量/参数落位（PostWindow.as:38-72）、enableBtn（:147-153）、
+ * set text 刷 _postText（:155-166）、confirmFn（:168-175）、setData
+ * （:192-198）、imgUrl 空值守卫（:205-209）、fixSize（:237-240）。
  * legacy/decompiled/main3_v_221/scripts/common/view/window/PostWindow.as
  */
 @:keep
 class PostWindow extends AddButtonWindow {
+	// PostWindow.as:20（AS3 Function → Dynamic，AddButtonWindow.addButton
+	// param5 先例）
+	private var _btnCallback:Dynamic;
+
+	// PostWindow.as:22
+	private var _postText:TextField;
+
 	// PostWindow.as:24
 	private var _text:String;
 
@@ -20,11 +31,39 @@ class PostWindow extends AddButtonWindow {
 	// ctor :71 置 true，:101/:183 定尺寸分支随 messages 片）
 	private var _fixSize:Bool = true;
 
+	// PostWindow.as:26
+	private var _btn:Button;
+
+	// PostWindow.as:28
+	private var _defaultSkin:Bool;
+
+	// PostWindow.as:30
+	private var _btnText:String;
+
+	// PostWindow.as:32
+	private var _loader:Loader;
+
 	// PostWindow.as:38-72（ctor 默认参形态照抄；PostWindowBG 皮肤、边距、
 	// windowName 装配随 messages 片）
 	public function new(param1:IMsgCenter = null, param2:String = "", param3:Dynamic = null, param4:Bool = false) {
 		super(param1);
 		this._text = "";
+	}
+
+	// PostWindow.as:147-153（write-tests stub：真身随 implement）
+	public function enableBtn(param1:Bool):Void {
+		throw new Error("not implemented");
+	}
+
+	// PostWindow.as:168-175（write-tests stub：真身随 implement）
+	private function confirmFn():Void {
+		throw new Error("not implemented");
+	}
+
+	// PostWindow.as:192-198（BaseWindow.setData 覆写点；write-tests stub：
+	// 真身随 implement）
+	override private function setData():Void {
+		throw new Error("not implemented");
 	}
 
 	// PostWindow.as:200-203

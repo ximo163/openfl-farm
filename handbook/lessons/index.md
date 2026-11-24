@@ -1273,3 +1273,25 @@
   的最小交付物是工单，不是日志；（2）收工/审查必跑机械自检（CLAUDE.md
   「收工与审查的机械自检」条，脚本固化 #61）；（3）每批合并后看一眼
   android.yml——它是唯一编 hxcpp 的地方，红＝APK 断。
+
+## 2026-11 · #56（流程规则：stub 归树——test/ 是定稿区）
+
+- **write-tests 的 stub 放进 test/ 等于埋雷：append-only 会拒掉「填 stub」
+  这个 implement 的本职操作**：#56 的期望侧纯逻辑类（TimelineSpec/Diff）
+  被 write-tests 连同测试一起放进了 `test/tools/`（类头注释还写着
+  「实现阶段按此契约交付」，即预期 implement 来改），implement attempt-1
+  原地填 stub 被 DiffViolations 驳回——`test/**` 的 append-only 是文件级
+  判定（modified 即违规，行级插入也不行），attempt-2 被迫发明
+  `import.hx` 类路径遮蔽绕开，留下两个永不编译的僵尸 stub 文件和一条
+  一碰就红的名字解析链（改遮蔽行＝两个契约测试打回 stub）。根因：
+  append_only 按**路径**管、想管的语义是**已审断言不可削弱**，被测代码
+  是「测试的零件」时两条规则打架，而 write-tests 规矩里从没写 stub 放哪。
+  修（同笔落地）：① `test.hxml` 加 `-cp tools`——验证基建类的骨架可以放
+  `tools/`（它完工后所属的树），测试照常 import，implement 随便填；
+  ② write-tests 规矩立「stub 归树」条。标准：**待填的骨架永远放它完工后
+  所属的那棵树（产品类→src/，验证基建→tools/）；test/ 只放定稿物**
+  （用例、fixtures、写完即定稿的 testutils——TestMain 注册行的 #8 约束
+  同理同源）。防：留 stub 前问一句「这个文件完工后属于哪棵树」；本任务
+  implement 侧的姊妹条目（import.hx 遮蔽的机械细节）是规则修正前的应急
+  解——已经放进 test/ 的存量按那条接，新任务不要复用遮蔽，直接把骨架
+  放对树。

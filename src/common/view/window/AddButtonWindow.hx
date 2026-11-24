@@ -1,45 +1,95 @@
 package common.view.window;
 
 import com.qzone.qui.controls.Button;
-import common.view.window.BaseWindow;
+import common.Consts;
+import common.misc.Utils;
 import openfl.display.DisplayObject;
+import openfl.events.Event;
+import openfl.events.MouseEvent;
+
 /**
- * common.view.window.AddButtonWindow —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
- * 带附加按钮的提示窗（AddButtonWindow.as）；FarmStage 建层时按 Consts 注册进控件表，本片只保类形态
- * （@:keep 防 dce，供 register/Type.resolveClass 拿到类引用），窗体/动效
- * 随对应片接入。
- * issue #29 最小补了 DogFoodWindow 用到的成员（addChildCache/buttonCache 字段、
- * addWindowChild/removeAllButton），字段/方法体照抄原文行号；其余（init 的
- * 缓存子件上树 + 按钮排布 + toCenterPositon、winButton 内部类）仍属 qui 窗口
- * 片（后续模块依赖）。
- * issue #35 补译 init/toCenterPositon（AddButtonWindow.as:68-112）：BuyDiyWindow
- * （shop 片，本仓库 spec/modules/farm-shop-ui.json）setData 的 `super.init()`
- * 直落这里——没有这段，addWindowChild 缓存的子件永不上树、窗体空白。
- * addButton（winButton）本体仍属 qui 窗口片：stub 恒返 null 且不进 buttonCache，
- * init 的按钮排布循环在本部署是原版死代码，照抄保留。
+ * common.view.window.AddButtonWindow —— AddButtonWindow.as 逐句对应
+ * （issue #41 替换 #7 的闭包 stub；#29 补过缓存成员、#35 补过
+ * init/toCenterPositon）。带附加按钮的提示窗基类：addButton 建内部类
+ * winButton（构造参数→皮肤/文本格式/尺寸/点击闭包）入 buttonCache，
+ * init 时统一上树并按 _buttonSpace/_bottomSpace 排布居中。
  */
 @:keep
 class AddButtonWindow extends BaseWindow {
-	// AddButtonWindow.as:15
+	// AddButtonWindow.as:12
 	private var addChildCache:Array<Dynamic> = [];
 
-	// AddButtonWindow.as:17
+	// AddButtonWindow.as:14
 	private var buttonCache:Array<Dynamic> = [];
 
-	// AddButtonWindow.as:16（issue #35 补，init 按钮排布用）
+	// AddButtonWindow.as:16
 	private var _buttonSpace:Int = 10;
 
-	// AddButtonWindow.as:18（issue #35 补，init 按钮排布用）
+	// AddButtonWindow.as:18
 	private var _bottomSpace:Int = 40;
 
-	public function new(param1:interfaces.IMsgCenter = null) {
+	// AddButtonWindow.as:20-27
+	public function new(param1:interfaces.IMsgCenter) {
 		super(param1);
+		width = 360;
+		height = 240;
+		mode = true;
+		windowName = Consts.WINDOW_NAME_ABUTTON;
 	}
 
-	// AddButtonWindow.as:68-103（issue #35 补译；buttonCache 元素是 winButton
-	// （Button 子类，DisplayObject），Dynamic 接收者按三选一规则 cast 真类型；
-	// 本部署 addButton 恒返 null、buttonCache 恒空，排布循环为原版死代码）
-	private override function init():Void {
+	// AddButtonWindow.as:29-32（AS3 public set，无 get → 只写属性）
+	public var betweenSpace(never, set):Int;
+
+	private function set_betweenSpace(param1:Int):Int {
+		this._buttonSpace = param1;
+		return param1;
+	}
+
+	// AddButtonWindow.as:34-37
+	public var bottomSpace(never, set):Int;
+
+	private function set_bottomSpace(param1:Int):Int {
+		this._bottomSpace = param1;
+		return param1;
+	}
+
+	// AddButtonWindow.as:39-43
+	public function addSpecialButton(param1:DisplayObject):DisplayObject {
+		this.buttonCache.push(param1);
+		return param1;
+	}
+
+	// AddButtonWindow.as:45-49
+	public function addWindowChild(param1:DisplayObject):DisplayObject {
+		this.addChildCache.push(param1);
+		return param1;
+	}
+
+	// AddButtonWindow.as:51-54
+	public function removeAllButton():Void {
+		this.buttonCache = [];
+	}
+
+	// AddButtonWindow.as:56-61（winButton 是本文件包外内部类，Haxe 同文件
+	// 模块级私有类，语义同为文件内可见）
+	public function addButton(param1:String = "Button", param2:String = null, param3:Int = 100, param4:Int = 25,
+			param5:Dynamic = null, param6:Bool = true, param7:Int = 16777215, param8:Int = 12, param9:Bool = false,
+			param10:String = null, param11:Int = 0):Button {
+		var _loc12_:Button = new WinButton(param1, param2, param3, param4, param5, param6, param7, param8, param9,
+			param10, param11);
+		this.buttonCache.push(_loc12_);
+		return _loc12_;
+	}
+
+	// AddButtonWindow.as:63-66
+	public function removeAllWindowChild():Void {
+		this.addChildCache = [];
+	}
+
+	// AddButtonWindow.as:68-103（buttonCache 元素是 winButton（Button 子类，
+	// DisplayObject），Dynamic 接收者按三选一规则 cast 真类型；
+	// AS3 int += Number 的逐次截断 → Std.int（openfl width 是 Float））
+	override private function init():Void {
 		var _loc5_:Int = 0;
 		var _loc1_:Int = 0;
 		_loc1_ = 0;
@@ -54,7 +104,6 @@ class AddButtonWindow extends BaseWindow {
 			_loc5_ = _loc4_ - 1;
 			_loc1_ = 0;
 			while (_loc1_ < _loc5_) {
-				// AS3 int += Number 的逐次截断 → Std.int（openfl width 是 Float）
 				_loc3_ += Std.int(cast(this.buttonCache[_loc1_], DisplayObject).width + this._buttonSpace);
 				_loc1_++;
 			}
@@ -72,30 +121,73 @@ class AddButtonWindow extends BaseWindow {
 		this.toCenterPositon();
 	}
 
-	// AddButtonWindow.as:105-112（issue #35 补译）
+	// AddButtonWindow.as:105-112
 	private function toCenterPositon():Void {
 		if (stage != null) {
 			x = Math.floor(stage.stageWidth * 0.5 - width * 0.5);
 			y = Math.floor(stage.stageHeight * 0.5 - height * 0.5);
 		}
 	}
+}
 
-	// AddButtonWindow.as:56-62（addButton：建 qui Button + 排布 + 挂点按回调，
-	// qui 按钮片翻译；本片 PreviewDiyWindow 只调不用返回值。Function → Dynamic）
-	public function addButton(param1:String = "Button", param2:String = null, param3:Int = 100, param4:Int = 25,
-		param5:Dynamic = null, param6:Bool = true, param7:Int = 16777215, param8:Int = 12, param9:Bool = false,
-		param10:String = null, param11:Int = 0):Button {
-		return null;
+// AddButtonWindow.as:121-176（AS3 包外内部类 winButton → Haxe 同文件私有类，
+// 只在本模块可见，与原文件内 internal 语义一致）。构造参数原样透传：皮肤名
+// 经 Utils.getClass 反射，文本格式三元组落 textDefaultFormat，点击闭包存 ac
+// （clickFn 写路径被覆写成只写 ac——本类不走 Label 的 clickFn 挂监听链）。
+// 类名：Haxe 的 new 后类型名必须大写开头（小写在语法层解析不过），按 Task7/
+// CanPickIcon 先例用 @:native 改回原类名
+@:native("winButton")
+private class WinButton extends Button {
+	// winButton.as:124
+	private var ac:Dynamic = null;
+
+	// winButton.as:126-150。AS3 构造器与类同名，Haxe 归一为 new
+	public function new(param1:String = "Button", param2:String = null, param3:Int = 100, param4:Int = 25,
+			param5:Dynamic = null, param6:Bool = true, param7:Int = 16777215, param8:Int = 12, param9:Bool = false,
+			param10:String = null, param11:Int = 0) {
+		super();
+		if (param2 != null) {
+			defaultSkin = Utils.getClass(param2);
+		}
+		this.text = param1;
+		this.textDefaultFormat.color = param7;
+		this.textDefaultFormat.size = param8;
+		this.textDefaultFormat.bold = param9;
+		this.textDefaultFormat.font = param10;
+		this.enabled = param6;
+		this.width = param3;
+		this.height = param4;
+		if (param5 == null) {
+			this.ac = this.empty;
+		} else {
+			this.ac = param5;
+		}
+		addEventListener(MouseEvent.CLICK, this.operation);
 	}
 
-	// AddButtonWindow.as:64-68（缓存进窗，AddButtonWindow.init 上树）
-	public function addWindowChild(param1:DisplayObject):DisplayObject {
-		this.addChildCache.push(param1);
+	// winButton.as:152-158。Label.init 会 `clickFn = _clickFn`，被覆写的
+	// setter 会把 ac 打回 _clickFn（默认 null）——先存后复原，再把基类
+	// 挂监听用的 _clickFn 清掉，点击只走 operation→ac
+	override private function init():Void {
+		var _loc1_:Dynamic = this.ac;
+		super.init();
+		this.ac = _loc1_;
+		_clickFn = null;
+	}
+
+	// winButton.as:160-163（AS3 setter 无返回值，Haxe 属性 setter 返回入参）
+	override private function set_clickFn(param1:Dynamic):Dynamic {
+		this.ac = param1;
 		return param1;
 	}
 
-	// AddButtonWindow.as:70-73
-	public function removeAllButton():Void {
-		this.buttonCache = [];
+	// winButton.as:165-167
+	private function empty():Void {}
+
+	// winButton.as:169-175。`this.ac is Function` → Reflect.isFunction
+	private function operation(param1:Event):Void {
+		if (this.ac != null && Reflect.isFunction(this.ac)) {
+			this.ac();
+		}
 	}
 }

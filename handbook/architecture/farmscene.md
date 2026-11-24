@@ -135,13 +135,15 @@ BackgroundModel 的五槽里（与 background 节的「DECOR_DOG 不是槽」互
   `== false`（Boolean 对 0 的 loose 等）。
 - `DogFoodWindow`（← DogFoodWindow.as 149 行，#29 整类翻译替换 stub）：
   狗粮购买窗 400×250（AddButtonWindow 子类）。init 摆「购买狗粮」
-  ButtonOrange/「取消」ButtonBlue 两钮（**AddButtonWindow 还是 stub**：
-  addButton 回 null、按钮排布/居中/缓存子件上树未做，见 qui 窗口链节）、
+  ButtonOrange/「取消」ButtonBlue 两钮（AddButtonWindow #41 起全真：
+  addButton/按钮排布/缓存子件上树/toCenterPositon 都在，见 qui 窗口链
+  节）、
   dogHungry==0 摆 DogFood 否则 DogFoodNull 图（x=30/y=70）+ 两只
   ItemBorder 120×120（x=20/y=45）其一当 mask；`super.init()` 在
-  stub 期直落 Container.init（基类 chrome 提前跑、_inited 仍只置一次；
-  原版是 AddButtonWindow.init 布完按钮再由 initalize 补基类，PORT-NOTE
-  在类内）。addFood 关窗后构造 9002 狗粮礼包 Item（_fb=20/_yfb=16 是
+  #29 stub 期曾直落 Container.init（基类 chrome 提前跑、_inited 仍只置
+  一次；原版是 AddButtonWindow.init 布完按钮再由 initalize 补基类，
+  #41 后已恢复原链，PORT-NOTE 在类内）。addFood 关窗后构造 9002 狗粮
+  礼包 Item（_fb=20/_yfb=16 是
   swf 硬编码，与 toolstype.php:19 YFBPrice 15 不一致——客户端 swf 为
   行为权威，deviations 候选）派发 MSG_SHOW_BUY_DOG_FOOD。setData 按
   hours 拼「天/小时」html（`<24` 文案分岔），m_leftime 未建早退。
@@ -159,14 +161,29 @@ WindowBg/CloseButton 符号皮肤、ADDED_TO_STAGE→initalize→addedToLayer
 _inited=true），和 Event.ADDED 的虚调 `this.init()`（走最派生覆写，
 LevelAndExperience.init 不调 super）是两条不同路径——Haxe 方法全虚，
 写成 this.init() 基类初始化整段丢失。
-`AddButtonWindow`/`AlertWindow` 等仍是 #7/#8 的形态 stub（不在 farm-basic
-spec 清单里，做窗口片时按其头注接真）；`AddButtonWindow` #29 起补了
-DogFoodWindow 用到的最小成员（addChildCache/buttonCache 字段、
-addWindowChild/removeAllButton，行号照原文），**init 的缓存子件上树 +
-按钮排布 + toCenterPositon 仍未做**——DogFoodWindow 等子类的
-`super.init()` 暂落 Container.init（基类 chrome 提前、按钮不摆），整类
-翻译时把 init 覆写补上即恢复原链（DogFoodWindow.init 的 PORT-NOTE 记了
-这段时序差）。`Button` 也是真身（Button.as 逐句，
+窗口框架九类 #41 起全真（`common/view/window/` 的 WindowControl/
+AlertWindow/ConfirmWindow/AddButtonWindow/RequestErrorWindow/
+UpgradeBlackWindow/ValidateCodeWindow/RedUpWindow + `framework/layers/`
+的 WindowLayer，替换 #7/#8 的闭包 stub）：WindowControl 经
+WindowEvent.OPEN/CLOSE 分发窗口名开/关（m_winInstances 缓存在
+WindowLayer 侧，ALERT/CONFIRM/无名不缓存）；AlertWindow 三形态
+（text/ALERT_TYPE_PIC/ALERT_TYPE_PIC2，Consts 常量）；ConfirmWindow 是
+确认族基类（ConfirmIcon 素材 + 确认/取消双钮 + errorText/confirmFn
+确认Fn/hideIcon 数据键）；AddButtonWindow 附带 addButton 缓存排布 +
+内部类 winButton（小写类名 → `@:native("winButton")`，WinButton 大写
+壳，Task7 先例）；RequestErrorWindow 走 errorUrl 关键词五路文案 +
+RequestError_2 库四张 270×125 位图（BitmapData shim，`new cls(270,125)`
+构造）；UpgradeBlackWindow 用 BlackUpgradeShare 分享板（帧 1/2 +
+tfNum/tfPlace/btnShare/btnCancel 具名子件，formatNumber 的千分位从个位
+起 4 位一段、两段不对称照抄）；ValidateCodeContent 版面 + 图形验证码
+Loader；RedUpWindow 三页签（红/黑/金牌，jinPaiLand 配置窗口期才加金牌
+页签）+ redUpBanner 三帧横幅 + 金币/元宝 RadioGroup，黑土地查询
+CMD_UPGRADE_BLACK(op=0)、金牌购买 CMD_ALLIANCE_PRICE + getInGamePay。
+`redUpBanner` 是非预载库符号且 requestClass 被 shim 短路：gotoAndStop
+帧落点经 `SymbolClass.afterAttach` 登记（Crop 先例，见 assets.md 的
+按需拉起）；bindBitmap 的位图路径同款按需拉起（#41 起，pendingBitmaps
++ ensureLibraryLoaded，两队列合并一次 loadLibrary）。
+`Button` 也是真身（Button.as 逐句，
 `selected/toggle` 是 get/set 属性，跨类互斥走 Reflect.setProperty，
 见 uitools.md 约定）。`BaseWindow.m_msgCenter` 是原版真成员
 （BaseWindow.as:15），不要当 stub 产物删掉。

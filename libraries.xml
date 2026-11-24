@@ -202,4 +202,16 @@
          与 assets/legacy-assets.txt 同 commit 增删 -->
     <library path="assets/legacy/source/core/module/ui/decorate_v_0.swf" id="decorate_v_0" />
 
+    <!-- 窗口框架素材（issue #41）：红/黑/金牌土地升级窗顶横幅与限流/封禁
+         错误窗配图两库（secondList nc_data.php:35-36 → module/ui/main/）。
+         redUpBanner_v_2 导出 redUpBanner（char#18，3 帧 DefineSprite），
+         RedUpWindow.init requestClass("redUpBanner") 短路命中编译期 shim
+         （src/RedUpBanner.hx，@:native 小写原名），库由 SymbolClass.bind
+         按需拉起，gotoAndStop 帧落点经 afterAttach 登记；RequestError_2
+         导出 RequestErrorBG/ZZ/HP/FZ 四张 270x125 JPEG（RequestErrorWindow
+         的 BitmapData shim 走 bindBitmap 按需拉起）。不 preload：原版为
+         运行期网络加载。与 assets/legacy-assets.txt 同 commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/main/redUpBanner_v_2.swf" id="redUpBanner_v_2" />
+    <library path="assets/legacy/source/core/module/ui/main/RequestError_2.swf" id="RequestError_2" />
+
 </project>

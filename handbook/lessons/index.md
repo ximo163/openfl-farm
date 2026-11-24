@@ -1054,6 +1054,27 @@
   被标变量的**声明处**类型与所写字段是不是自有类物理字段，别一见清单就
   加 cast。
 
+## 2026-11 · #41（窗口框架片）
+
+- **AS3 的 `this.静态常量` 照抄编不过**：AS3 允许实例写法访问类常量
+  （RedUpWindow.as `this.HEIGHT`、ValidateCodeWindow.as `this.INPUT_TIP`
+  等多处），Haxe 直接红 "Cannot access static field … from a class
+  instance"。防：翻译 `this.<全大写常量>` 时去掉 `this.` 裸用；静态常量
+  本来就该类名或裸访问（`HEIGHT`，本类内）。
+- **抄反编译长 HTML 文案易漏闭合标签**：RequestErrorWindow.as 五路限流文案
+  （:156/:169/:182/:195/:208）**全部带 `</font>` 闭合**，无一路缺失；Flash
+  TextField 的 font 未闭合会把余文全染色，抄漏一个就是可见的画面回归。
+  真身坑：implement 阶段从反编译长串里抄文案，attempt 1 把 scrounge/scarify
+  两处 `</font>` 抄漏（5 路只写对 3 路），靠 write-tests 的逐字节断言才
+  拦下、attempt 2 补齐——是实现侧抄漏，不是原版没闭合。防：多路 HTML
+  文案逐字抽串后用 grep/比对工具对 .as 原文复核（如 `grep -c "</font>"`
+  两侧计数对齐），别凭「坏标记是行为」的直觉增删标签。
+- **`Type.createEmptyInstance` 在 eval 上 Int 字段是 null**：字段初始化器
+  不跑（这是文档行为），但 eval 的 Int 是装箱值——未初始化就是 null 而
+  不是 0/-1，且 `null == 0` 为 **false**（probe 实测：读值 null、eq0
+  false）。测试替身想模拟「默认态 0」不能用 createEmptyInstance 裸读，
+  要显式写一次（RedUpWindowTest 的 FakeTabBar 页签 0 案例因此打不进
+  `selectedIndex == 0` 分支，见 issue 报告的 NEEDS-TESTS）。
 ## 2026-11 · #42（提示片 write-tests：空实例坐标驱动 + countHealth 数值口径）
 
 - **Type.createEmptyInstance 的显示子类上 set_x/set_y 是 `__transform`

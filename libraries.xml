@@ -214,4 +214,16 @@
     <library path="assets/legacy/source/core/module/ui/main/redUpBanner_v_2.swf" id="redUpBanner_v_2" />
     <library path="assets/legacy/source/core/module/ui/main/RequestError_2.swf" id="RequestError_2" />
 
+    <!-- 升级红地动画（issue #58）：nc_data.php:37 secondList {"id":"redup",
+         "src":"$url/module/ui/main/RedUp.swf"}，FarmLandController.
+         onPlayUpgradeRedLandAnim 经 getSecondUrl("redup") 拉起（LocalSwfLoader
+         按文件名映射库名 RedUp）。主时间轴 134 帧，末帧帧脚本
+         dispatchEvent(new Event("end"))（RedUp_fla.MainTimeline.as:16-19）——
+         帧脚本的 openfl 侧复原走 shim/FrameScriptCompensation（根时间轴，
+         symbolKey 空串）。swf 在 scripts/decompile-legacy.sh 的 main_swfs
+         名单内（ABC 已进 legacy/decompiled/RedUp/），按素材库入库。不
+         preload：原版为运行期网络加载。与 assets/legacy-assets.txt 同
+         commit 增删 -->
+    <library path="assets/legacy/source/core/module/ui/main/RedUp.swf" id="RedUp" />
+
 </project>

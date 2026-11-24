@@ -97,7 +97,13 @@ class HarvestAnimationCustom extends FloatingBase {
 	}
 
 	// HarvestAnimationCustom.as:90-97（content 自报 "end"：卸载、摘子、置空
-	// 后 close）
+	// 后 close）。content 的 "end" 来自收获素材 swf 根轴的帧脚本——本地化
+	// 管线丢帧脚本，复原通道是 LocalSwfLoader → shim/FrameScriptCompensation
+	//（#58）；但挂 "h" 槽的只有三个 isAnimation 作物（nc_data.php:6171/:6181/
+	// :6301，Crop_158/168/334 的 asset 3476/3942/4729），对应 *_movie.swf 不在
+	// 部署包（legacy/deploy 全树查无），字节码无从提取、登记表无此键（不虚造，
+	// 见 FrameScriptCompensation 头注）——本部署下 setContent 拿不到 URL 直接
+	// 返回 / 加载失败走 IO_ERROR → close（下方 onComplete 的已译分支）
 	private function onEnd(param1:Event):Void {
 		this._loader.content.removeEventListener("end", this.onEnd);
 		this._loader.unload();

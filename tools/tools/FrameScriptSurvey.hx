@@ -54,10 +54,70 @@ class FrameScriptSurvey {
 	 *  两个对就是 4 个实参），且不同期编译器取方法的形态不同
 	 *  （OFindPropStrict+OGetProp / OGetLex / OThis+OGetProp——
 	 *  test/tools/FrameScriptSurveyTest.hx 的四型 fixtures）。无
-	 *  addFrameScript 调用的构造器返回 []。 */
+	 *  addFrameScript 调用的构造器返回 []。
+	 *
+	 *  实现：两态扫描。scan 态找 OFindPropStrict("addFrameScript")（mxmlc
+	 *  家族对虚方法的被调方恒用 findpropstrict 取，四型 fixtures 同证），
+	 *  命中转 collect 态；collect 态把实参段折叠成值序列——OInt 是 0 基帧
+	 *  实参（登记时 +1 转 1 基），方法引用按三型折叠（OGetLex 直取 /
+	 *  OFindPropStrict(m)+OGetProp(m) / OThis+OGetProp(m)，第二对前的
+	 *  OThis 只置接收者期待、不产值）；OCallProp/OCallPropVoid 收口时按
+	 *  (帧, 方法) 两两配对入表，回 scan 态（构造器分段多次调用的形态同样
+	 *  可收，虽然 fixtures 里未出现）。段内其余 op（OThis/OScope 壳、
+	 *  OPop 弃值）不产值也不打断扫描。 */
 	public static function ctorBindings(ops:Array<FrameScriptOp>):Array<FrameScriptBinding> {
-		// issue #58 write-tests stub
-		throw new haxe.Exception("not implemented");
+		var bindings:Array<FrameScriptBinding> = [];
+		var collecting:Bool = false;
+		// collect 态的值序列：奇偶交替——偶位 0 基帧号（Int）、奇位方法名（String）
+		var values:Array<Dynamic> = [];
+		// 方法引用的接收者期待：OFindPropStrict(m) 后等 OGetProp(m)；OThis 后
+		// 的 OGetProp(m) 即 this.m。二者互斥出现，配对后一并清空
+		var pendingName:String = null;
+		var pendingThis:Bool = false;
+		for (op in ops) {
+			switch (op) {
+				case OFindPropStrict(n):
+					if (n == "addFrameScript") {
+						collecting = true;
+						values = [];
+						pendingName = null;
+						pendingThis = false;
+					} else if (collecting) {
+						pendingName = n;
+					}
+				case OInt(v) if (collecting):
+					values.push(v);
+				case OGetLex(n) if (collecting):
+					values.push(n);
+				case OThis:
+					if (collecting) {
+						pendingThis = true;
+					}
+				case OGetProp(n) if (collecting):
+					if (pendingThis || (pendingName != null && pendingName == n)) {
+						values.push(n);
+					}
+					pendingName = null;
+					pendingThis = false;
+				case OCallProp(n, _) | OCallPropVoid(n, _):
+					if (collecting && n == "addFrameScript") {
+						// (帧, 方法) 两两配对；尾巴凑不成对（烂字节码防御）丢弃
+						var i:Int = 0;
+						while (i + 1 < values.length) {
+							var frame:Dynamic = values[i];
+							var method:Dynamic = values[i + 1];
+							if ((frame is Int) && (method is String)) {
+								bindings.push({frame: frame + 1, method: method});
+							}
+							i += 2;
+						}
+						collecting = false;
+						values = [];
+					}
+				default:
+			}
+		}
+		return bindings;
 	}
 
 	/** frameN 方法体的操作码流 → 空体判定：剥去 OThis/OScope/ODebug 与
@@ -65,7 +125,14 @@ class FrameScriptSurvey {
 	 *  只置空串的 init prop——都算实义；OOther 也算实义（未映射不猜）。
 	 *  空体 = 不进补偿登记表（src/FarmInfoPlus.hx:14-16 先例）。 */
 	public static function isBodyEmpty(ops:Array<FrameScriptOp>):Bool {
-		// issue #58 write-tests stub
-		throw new haxe.Exception("not implemented");
+		for (op in ops) {
+			switch (op) {
+				case OThis | OScope | ORetVoid | ODebug(_):
+					// 壳与调试信息：无行为
+				default:
+					return false;
+			}
+		}
+		return true;
 	}
 }

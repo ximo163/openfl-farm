@@ -147,10 +147,10 @@ class NPCView extends Sprite {
 			mcTalk.mouseChildren = false;
 			mcTalk.mouseEnabled = false;
 			mcTalk.gotoAndPlay(1);
-			// PORT-NOTE: 原版给 MaoPaoFlag 动态属性 talkInfo 赋值，帧脚本 frame1
-			// 读它填气泡文本（infoTxt.text = talkInfo）。本地化 swf 库处理把帧脚本
-			// 丢弃（scriptSource 导出为空串，openfl 运行时无从执行）——气泡文本
-			// 缺失是既知视觉偏差（deviations 候选），赋值照抄保留
+			// 原版 AS3 写法：气泡文本由 MaoPaoFlag 的帧脚本 frame24 在第 24 帧落上
+			//（infoTxt.text = talkInfo）并 stop。talkInfo 是 ABC 类字段（非动态
+			// 属性），落在 src/MaoPaoFlag.hx 的字段镜像上；帧脚本本体经
+			// shim/FrameScriptCompensation 在 openfl 侧复原（#58）
 			Reflect.setField(mcTalk, "talkInfo", Reflect.field(data, "bubble"));
 			p = container.localToGlobal(new Point(role.x, role.y));
 			lyr = this.controller.module.app.farmView.getLayerByName(Consts.LAYER_TOOLS);

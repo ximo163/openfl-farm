@@ -58,10 +58,10 @@ class LandTalkTip {
 		this.m_mcTalk.scaleX = _loc4_;
 		this.m_mcTalk.scaleY = _loc4_;
 		this.m_mcTalk.gotoAndPlay(1);
-		// PORT-NOTE: 原版给 MaoPaoFlag 动态属性 talkInfo 赋值，帧脚本 frame1
-		// 读它填气泡文本（infoTxt.text = talkInfo）。本地化 swf 库处理（haxelib
-		// run swf 管线）把帧脚本导成空 scriptSource，openfl 运行时无从执行——
-		// 气泡文本缺失是既知视觉偏差（deviations 候选），赋值照抄保留
+		// 原版 AS3 写法：气泡文本由 MaoPaoFlag 的帧脚本 frame24 在第 24 帧落上
+		//（infoTxt.text = talkInfo）并 stop。talkInfo 是 ABC 类字段（非动态
+		// 属性），落在 src/MaoPaoFlag.hx 的字段镜像上，Reflect.setField 各目标
+		// 成立；帧脚本本体经 shim/FrameScriptCompensation 在 openfl 侧复原（#58）
 		Reflect.setField(this.m_mcTalk, "talkInfo", param1);
 		this.m_parent.addChild(this.m_mcTalk);
 		this.m_timeout = As3.setTimeout(function():Void {

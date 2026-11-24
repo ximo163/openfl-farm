@@ -3,6 +3,7 @@ package shim;
 import openfl.Assets;
 import openfl.display.DisplayObject;
 import openfl.display.Loader;
+import openfl.display.MovieClip;
 import openfl.events.IOErrorEvent;
 import openfl.net.URLRequest;
 import openfl.system.ApplicationDomain;
@@ -79,7 +80,7 @@ class LocalSwfLoader extends Loader {
 			// super 调用/私有访问不能落在闭包里（Haxe 限制），抽成员方法。
 			// openfl 版本耦合：Loader_onComplete 是 9.5.2 的私有函数名，升版若
 			// 改名会编译红在这里（shim 定位就是这类版本胶水）。
-			attachContent(content);
+			attachContent(content, libraryId);
 		}).onError(function(e) {
 			this.contentLoaderInfo.dispatchEvent(new IOErrorEvent(IOErrorEvent.IO_ERROR, false, false, Std.string(e)));
 		});
@@ -87,7 +88,14 @@ class LocalSwfLoader extends Loader {
 
 	// openfl 原生完成路径的落点（见上：super./@:access 不能出现在本地函数内）
 	@:access(openfl.display.Loader)
-	private function attachContent(content:DisplayObject):Void {
+	private function attachContent(content:DisplayObject, libraryId:String):Void {
 		Loader_onComplete(content);
+		// #58 帧脚本补偿（根时间轴场景）：getMovieClip("") 的根符号无
+		// SymbolClass 名，导出器不给 scriptSource（AnimateLibraryExporter
+		// 只对 SymbolClass 绑定名跑 FrameScriptParser）——根轴帧脚本（RedUp
+		// 主轴末帧 dispatchEvent("end")）查表回挂，库无登记则无操作
+		if (Std.isOfType(content, MovieClip)) {
+			FrameScriptCompensation.attach(cast(content, MovieClip), libraryId, "");
+		}
 	}
 }

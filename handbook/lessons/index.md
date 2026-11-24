@@ -1366,3 +1366,32 @@
   实测并存）。防：按实参个数切窗口、偶奇位配对，三型都进 fixtures；
   帧号换算 0 基实参 → 1 基帧号，与方法名 frameN 的 N 互证。
 
+
+## 2026-11 · #58（帧脚本补偿 implement：接线时序、进帧即重跑、跨库同名分叉）
+
+- **addFrameScript 的接线必须在 bind 之后，先挂会被 scriptSource 整体
+  顶掉**：openfl `Timeline.__attachMovieClip` 在 `scripts` 数组非空时
+  重建 `__frameScripts`（html5 上 scriptSource 转出的 scripts 恒非空），
+  bind 前挂的补偿帧脚本全灭；绑完再挂则 `__addFrameScript` 同帧 set，
+  把跑不动的 scriptSource 残骸顶掉、不双跑。防：补偿只在
+  `SymbolClass.attach`/`bindRoot`/`LocalSwfLoader.attachContent`（都在
+  Timeline 挂上之后）调；别在符号 shim 构造器 super() 后立刻挂。时间轴
+  已挂上的早退分支重复登记幂等（同帧 set）。
+- **帧脚本里 gotoAndStop(N)，openfl 会重跑目标帧自己的帧脚本**：
+  `Timeline.__goto` 置 `__lastFrameScriptEval = -1` 后
+  `__evaluateFrameScripts(N)`——与 Flash「进帧即跑帧脚本」同序。所以
+  PackageTab 页签闭包 `gotoAndStop(2)` 会连带执行 frame2 的脚本（重挂
+  btnSeed/btnFish 监听 + stop），监听器逐次累积是**原版行为**，补偿
+  动作原语逐句建模、不合并去重。帧脚本执行时该帧子件已实例化
+  （`__evaluateFrameScripts` 先 `__updateSymbol`），As3.childOf 取得到
+  具名子件。
+- **帧标签先 dump 再登记 gotoAndPlay(标签)**：openfl
+  `__resolveFrameReference` 标签不存在直接抛 ArgumentError #2109——
+  补偿若引用错标签，跑起来是运行期红不是静默。FarmLoading "loop"（帧
+  23）/GiftIcon "GiftMove"（帧 3）都靠 `php tools/dump_swf.php` 核对
+  FrameLabel tag 后才进登记表。
+- **同符号跨库帧脚本会分叉，登记表键必须 (libraryId, symbolKey)**：
+  MaoPaoFlag 在 farmui_full 的 frame1 是空体，在 farmui1（牧场侧库）的
+  frame1 是 `talkInfo = ""`（实义）。按符号名全局合并会张冠李戴；查表/
+  清查都以 (库, 符号) 为单位（write-tests 阶段已立此规，本批 32 条
+  in-use 登记沿用）。

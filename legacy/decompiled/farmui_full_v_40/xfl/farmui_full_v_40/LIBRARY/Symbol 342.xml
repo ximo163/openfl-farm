@@ -1,0 +1,71 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 342" linkageClassName="List_Highlight" linkageExportForAS="true" scaleGridLeft="9.75" scaleGridRight="157.95" scaleGridTop="6.65" scaleGridBottom="21.35">
+     <timeline>
+          <DOMTimeline name="Symbol 342">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#af6bb2" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ccff00" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="81.0" ty="19.5" a="0.0" d="0.0" b="0.0140380859375" c="-0.108642578125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#99cc00" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#59a824" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="83.0" ty="19.5" a="0.0" d="0.0" b="0.0140380859375" c="-0.108642578125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#99cc00" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#59a824" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="4">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="89.0" ty="19.5" a="0.0" d="0.0" b="0.0140380859375" c="-0.108642578125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#99cc00" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#59a824" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" pixelHinting="true" scaleMode="normal" caps="square" joints="miter">
+                                                            <fill>
+                                                                 <SolidColor color="#669933"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 131 0[ 0 0 0 140| 0 420[ 0 560 131 560| 194 560| 3160 560| 3270 560[ 3396 560 3400 429| 3400 420| 3400 140[ 3400 0 3270 0| 3160 0| 194 0| 131 0"/>
+                                                  <Edge fillStyle0="4" fillStyle1="1" strokeStyle="0" edges="! 2160 30| 194 30| 131 30[ 30 31 30 140| 30 420[ 30 529 131 530| 194 530| 2160 530"/>
+                                                  <Edge fillStyle0="4" fillStyle1="2" strokeStyle="0" edges="! 2160 530| 2160 428| 2160 132| 2160 30"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 2160 30| 2339 30"/>
+                                                  <Edge fillStyle0="1" fillStyle1="3" strokeStyle="0" edges="! 2339 30| 2859 30"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 2859 30| 3160 30| 3270 30[ 3317 30 3342 55[ 3368 80 3370 132| 3370 140| 3370 420| 3370 429[ 3368 480 3342 506[ 3317 530 3270 530| 3160 530| 2859 530"/>
+                                                  <Edge fillStyle0="1" fillStyle1="3" strokeStyle="0" edges="! 2859 530| 2339 530"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 2339 530| 2160 530"/>
+                                                  <Edge fillStyle0="2" fillStyle1="3" strokeStyle="0" edges="! 2339 530| 2339 428| 2339 132| 2339 30"/>
+                                                  <Edge fillStyle0="3" fillStyle1="2" strokeStyle="0" edges="! 2859 530| 2859 428| 2859 132| 2859 30"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

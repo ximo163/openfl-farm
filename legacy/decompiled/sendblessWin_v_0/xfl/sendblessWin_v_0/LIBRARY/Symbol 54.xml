@@ -1,0 +1,43 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 54">
+     <timeline>
+          <DOMTimeline name="Symbol 54">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#b3af88" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#990033"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="-10.8" ty="9.0" a="0.0457305908203125" d="0.0335845947265625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffffcc" ratio="0.47058824"/>
+                                                            <GradientEntry color="#ffff00" ratio="0.63529414"/>
+                                                            <GradientEntry color="#ffcc00" ratio="0.8862745"/>
+                                                            <GradientEntry color="#fd8c1c" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#ffb700"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="3" fillStyle1="0" strokeStyle="0" edges="! 468 10| 544 10| 545 7[ 558 -15 558 -39[ 558 -121 394 -180[ 231 -238 0 -238[ -230 -238 -394 -180[ -557 -121 -557 -39[ -557 -18 -546 2| -544 1| -543 7| -542 10| -465 10"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! -465 10| -475 1| -482 -6[ -491 -17 -493 -30| -494 -39| -493 -46[ -485 -100 -349 -140[ -204 -181 0 -181[ 205 -181 350 -140[ 486 -100 495 -46| 495 -30| 484 -6| 476 2| 468 10"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 468 10| -465 10"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 546 10| 545 10| 546 9| 546 10"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

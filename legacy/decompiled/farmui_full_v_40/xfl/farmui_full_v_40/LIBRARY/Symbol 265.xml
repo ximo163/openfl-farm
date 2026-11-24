@@ -1,0 +1,81 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 265" linkageClassName="HarvestPlusB" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 265">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#47ace2">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="588" height="472" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="66.2" ty="4.2" a="0.6121368408203125" d="0.6117706298828125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>10 </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="29.9" bitmapSize="598" letterSpacing="-4" indent="0" leftMargin="0" lineSpacing="-30.95" rightMargin="0" fillColor="#009900" face="方正准圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;%</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="28.6" bitmapSize="572" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-30.95" rightMargin="0" fillColor="#009900" face="Arial Bold"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="2" blurY="2" color="#ffff99" quality="2" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#a0826c">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 262" centerPoint3DX="65.9" centerPoint3DY="23.0">
+                                             <matrix>
+                                                  <Matrix tx="55.0" ty="7.5" a="0.502655029296875" d="0.3891143798828125"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <filters>
+                                                  <GlowFilter blurX="2" blurY="2" color="#ffff99" quality="2" strength="10"/>
+                                             </filters>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#d8aa90" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="standard" name="txt" width="203.0" height="58.05" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="1.2" ty="2.35" a="0.612579345703125" d="0.6117706298828125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" lineSpacing="6.3" rightMargin="0.0" autoKern="false" size="50.2" bitmapSize="1004" face="方正准圆简体" fillColor="#ff6600" alpha="1.0"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="2" blurY="2" color="#ffff99" quality="2" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

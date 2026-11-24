@@ -1,0 +1,122 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 172" linkageClassName="CameraButton" linkageExportForAS="true" symbolType="button">
+     <timeline>
+          <DOMTimeline name="Symbol 172" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#b3a09b">
+                         <frames>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 171" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="-2.0" ty="4.0" a="0.04499969631433487" d="0.04499969631433487"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 171" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="-4.25" ty="1.75" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#79c8cf">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#02f4a1">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#b8bd93">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#f6a62a">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#f3a77e">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7" color="#a7f300">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 8" color="#fb6ea0">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 9" color="#f2ea25">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 10" color="#96e555">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 11" color="#96b649">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 12" color="#b07dbc">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 13" color="#d490ea">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 14" color="#8253d9">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 15" color="#a1c82b">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 16" current="true" isSelected="true" color="#dba2f1">
+                         <frames>
+                              <DOMFrame index="1" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 170" centerPoint3DX="18.0" centerPoint3DY="21.0">
+                                             <matrix>
+                                                  <Matrix tx="-3.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 169" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="-3.0" ty="0.0" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

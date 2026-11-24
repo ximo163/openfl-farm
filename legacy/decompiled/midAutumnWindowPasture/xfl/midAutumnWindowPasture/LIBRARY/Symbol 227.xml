@@ -1,0 +1,33 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 227" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 227" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="31.9" ty="103.3" a="0.063629150390625" d="0.098388671875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#8ce6fb" ratio="0.26666668"/>
+                                                            <GradientEntry color="#59c3f7" ratio="0.64705884"/>
+                                                            <GradientEntry color="#3e98e4" ratio="0.9882353"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 1776 1432[ 1867 1658 1979 2099[ 2091 2540 1982 2876[ 1873 3212 1697 3315[ 1395 3399 1047 3317[ 856 3272 643 3158[ 349 3001 197 2716[ 44 2430 76 2151[ 100 1948 216 1669[ 391 1248 410 1192[ 506 903 500 629[ 489 459 646 276[ 790 108 996 11[ 1207 -88 1344 -46[ 1501 1 1488 222[ 1475 444 1537 640[ 1568 737 1627 971[ 1685 1205 1776 1432"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

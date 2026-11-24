@@ -1,0 +1,30 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 194" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 194" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <BitmapFill bitmapPath="Bitmap 193.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-1.0" ty="-2.5" a="20.0048828125" d="20.009765625"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 3569 676[ 2381 38 2068 4| 2024 2| 2051 0| 2034 0| 2020 1| 1938 10| 1728 44| 1474 112[ 1247 187 1041 308| 1029 315| 833 468[ 730 534 586 575[ 362 649 222 738| 129 807| 110 824| 65 875[ 19 934 3 999| 1 1012| 0 1013| 0 1036[ 578 1348 1291 1696[ 1801 1943 2009 1996| 2010 1996| 2024 1999| 2031 2000| 2041 1999| 2043 1998| 2050 1997| 2069 1992[ 2324 1924 2667 1766| 2899 1660[ 3196 1522 3423 1401[ 3609 1299 3749 1209[ 3886 1117 3975 1037| 3979 1033| 3986 1027| 3989 1024| 3991 1023| 3992 1024| 3992 974| 3989 959| 3988 955| 3982 941| 3978 934| 3967 917| 3951 899| 3946 894[ 3851 800 3569 676"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

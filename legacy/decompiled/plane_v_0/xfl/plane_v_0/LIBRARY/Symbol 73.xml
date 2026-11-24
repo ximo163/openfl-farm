@@ -1,0 +1,59 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 73" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 73" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#2ea7e0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 7303 2272[ 7285 2277 7275 2288[ 7265 2299 7264 2316[ 7263 2335 7276 2367[ 7298 2423 7299 2473[ 7298 2582 7221 2765[ 7173 2879 7053 3105[ 6926 3351 6817 3617[ 6879 3543 7036 3300[ 7180 3081 7236 2981[ 7330 2814 7396 2753[ 7445 2709 7452 2651[ 7457 2607 7425 2571| 7380 2530[ 7342 2504 7323 2461[ 7303 2414 7291 2365| 7277 2323[ 7272 2311 7277 2299[ 7283 2286 7303 2272"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 7282 2319| 7296 2363| 7330 2457[ 7348 2496 7384 2524| 7431 2566[ 7464 2602 7458 2652[ 7450 2712 7400 2758[ 7334 2818 7241 2984[ 7181 3092 7029 3323[ 6862 3578 6808 3636| 6803 3633[ 6932 3326 7048 3103[ 7168 2876 7215 2763[ 7291 2582 7291 2474[ 7291 2428 7270 2371[ 7256 2336 7257 2316[ 7258 2298 7272 2283[ 7284 2270 7304 2266| 7323 2264| 7322 2270| 7306 2280[ 7289 2290 7283 2301[ 7279 2310 7282 2319"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="356.85" ty="154.1" a="0.0229034423828125" d="-0.0281219482421875" b="0.0101470947265625" c="0.0132904052734375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#daebc8" ratio="0.11372549"/>
+                                                            <GradientEntry color="#66b950" ratio="0.3529412"/>
+                                                            <GradientEntry color="#57ad65" ratio="0.39607844"/>
+                                                            <GradientEntry color="#3b987f" ratio="0.47843137"/>
+                                                            <GradientEntry color="#1c868f" ratio="0.56078434"/>
+                                                            <GradientEntry color="#007898" ratio="0.6431373"/>
+                                                            <GradientEntry color="#006d9c" ratio="0.7294118"/>
+                                                            <GradientEntry color="#00659d" ratio="0.8156863"/>
+                                                            <GradientEntry color="#00619d" ratio="0.90588236"/>
+                                                            <GradientEntry color="#005f9d" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 7280 2321| 7298 2380[ 7311 2424 7327 2459[ 7343 2496 7368 2517| 7428 2570[ 7466 2607 7452 2666[ 7441 2717 7399 2756[ 7332 2814 7238 2983[ 7178 3088 7026 3323[ 6858 3577 6806 3634[ 6934 3329 7051 3104[ 7172 2873 7217 2764[ 7296 2581 7294 2472[ 7295 2428 7277 2380[ 7259 2332 7260 2315[ 7262 2285 7292 2272| 7322 2268[ 7309 2274 7296 2282[ 7272 2301 7280 2321"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

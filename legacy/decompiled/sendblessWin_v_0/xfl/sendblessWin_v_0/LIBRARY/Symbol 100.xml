@@ -1,0 +1,26 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 100" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 100" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffc80d"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 2140 2360| 2600 2900| 3480 4120| 3320 3940| 3460 4120| 2060 2420| 1980 2440| 1860 2460[ 1740 2440 1660 2360| 60 3580| 180 3460[ #147.80 3329 #111.80 3372[ 262 3382 240 3400| #111.80 3372| 920 2840| 900 2860| 1600 2280| 1560 2080| 1580 1960| 1620 1900| 1160 1340| 1140 1300| 1100 1260| 160 20| 640 560| 520 380| 1700 1820| 1940 1760| 2120 1840| 4200 380| 2200 1920| 2240 2140| 2140 2360"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

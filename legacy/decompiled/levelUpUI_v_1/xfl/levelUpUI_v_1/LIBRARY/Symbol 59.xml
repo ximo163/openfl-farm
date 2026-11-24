@@ -1,0 +1,66 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 59" linkageClassName="Update.denShedRender" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 59">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#ed9eb0">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="standard" name="numChangeTxt" width="100.0" height="14.100000000000001" renderAsHTML="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="12.0" ty="117.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>可饲养动物+1</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="center" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" rightMargin="0.0" size="10" bitmapSize="200" face="方正粗圆简体" fillColor="#aa6d23"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#9437b7">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="standard" name="denShedTxt" width="112.0" height="14.100000000000001" renderAsHTML="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="6.0" ty="102.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>您可以升到第6级窝</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="center" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" rightMargin="0.0" size="10" bitmapSize="200" face="方正粗圆简体" fillColor="#aa6d23"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#72dcff" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 48" name="holder" centerPoint3DX="17.0" centerPoint3DY="4.0">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="-11.0" a="4.0" d="4.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

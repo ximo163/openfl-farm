@@ -1,0 +1,51 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 4" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 4" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 3480 -1720| 1000 300| 3480 2100| 400 980| 0 4280| -500 940| -3500 2260| -980 420| -3460 -1600| -580 -460| -200 -4280| 400 -460| 3480 -1720"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="-5.0" ty="20.0" a="0.20294189453125" d="0.20294189453125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffffc4" alpha="1.0" ratio="0.17254902"/>
+                                                            <GradientEntry color="#ffffe3" alpha="0.47058824" ratio="0.5529412"/>
+                                                            <GradientEntry color="#ffffff" alpha="0.0" ratio="0.89411765"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! -100 -2900[ 1260 -2900 2220 -1940[ 3200 -960 3200 400[ 3200 1760 2220 2720[ 1260 3700 -100 3700[ -1460 3700 -2440 2720[ -3400 1760 -3400 400[ -3400 -960 -2440 -1940[ -1460 -2900 -100 -2900"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

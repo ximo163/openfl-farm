@@ -1,0 +1,62 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 288" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 288" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ebf7eb"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 760 600[ 300 600 -20 320| -500 -20| -1180 420[ -1420 580 -1680 340| -2260 -560| -3260 -1100| -3280 -1240| -2820 -1680[ 400 -2860 2140 -1320[ 3920 200 2400 120| 1660 80| 1620 340[ 1500 700 760 600"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#eae6e1"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -2460 200[ -2840 980 -2400 1740[ -1460 1780 -540 940[ -20 1880 1800 2280[ 1660 1460 1840 840[ 3120 1620 4400 2120[ 4100 -620 1860 -1600[ -400 -2600 -2080 -2080[ -3760 -1580 -3940 140| -2780 240| -2460 200"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#d79362"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -2480 1700[ -1400 2080 -480 1240[ 820 2400 1660 2220[ 1880 1720 1900 1140[ 3180 1920 4260 2160[ 4160 -320 1920 -1300[ -340 -2300 -2020 -1780[ -3700 -1280 -4060 420| -2720 540| -2400 500[ -2980 840 -2480 1700"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

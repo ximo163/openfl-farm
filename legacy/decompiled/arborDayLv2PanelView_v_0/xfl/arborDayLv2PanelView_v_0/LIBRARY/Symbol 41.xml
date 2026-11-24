@@ -1,0 +1,26 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 41" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 41" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#d3a763"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! -240 -3160[ 180 -3280 620 -3160[ 1060 -3040 1280 -2720| 4140 1280[ 4380 1600 4300 1960[ 4220 2320 3860 2560[ 3500 2800 3040 2800| -2680 2800[ -3140 2800 -3500 2560[ -3840 2320 -3940 1960[ -4020 1600 -3780 1280| -920 -2720[ -680 -3040 -240 -3160"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

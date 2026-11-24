@@ -1,0 +1,42 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 224" linkageClassName="TalkBoxMy1" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 224">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#fa84fb" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="-13.5" ty="-32.05" a="0.0" d="0.0" b="0.03973388671875" c="-0.03778076171875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffffff" alpha="0.6" ratio="0.0"/>
+                                                            <GradientEntry color="#ffffff" alpha="0.8" ratio="0.47058824"/>
+                                                            <GradientEntry color="#ffffff" alpha="0.6" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" pixelHinting="true" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#ffffff"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 571 -1260| -1111 -1260[ -1270 -1260 -1270 -1101| -1270 -438[ -1270 -280 -1111 -280| 58 -280| 8 -22| 243 -280| 571 -280[ 730 -280 730 -438| 730 -1101[ 730 -1260 571 -1260"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

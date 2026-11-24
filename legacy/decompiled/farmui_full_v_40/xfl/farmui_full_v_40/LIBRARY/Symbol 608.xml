@@ -1,0 +1,35 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 608" linkageClassName="com.qzone.qui.skins.ToolTipSkin" linkageExportForAS="true" scaleGridLeft="3.35" scaleGridRight="77" scaleGridTop="4" scaleGridBottom="16.6">
+     <timeline>
+          <DOMTimeline name="Symbol 608">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#9bea4c" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffe1" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="0.05" pixelHinting="true" solidStyle="hairline" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#000000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 0 380[ 0 420 40 420| 66 420| 1541 420| 1560 420[ 1600 420 1600 380| 1600 333| 1600 79| 1600 41[ 1600 0 1560 0| 1541 0| 66 0| 40 0[ 0 0 0 41| 0 79| 0 333| 0 380"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

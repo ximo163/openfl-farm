@@ -1,0 +1,87 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 167" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 167" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="24.95" ty="12.4" a="3.0517578125E-5" d="3.0517578125E-5" b="-0.00750732421875" c="0.007232666015625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffbf00" alpha="1.0" ratio="0.007843138"/>
+                                                            <GradientEntry color="#fbfb04" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="2.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#ffff33"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 868 184[ 865 125 801 125| 197 125[ 134 125 128 184| 128 291[ 128 362 197 362| 801 362[ 868 362 868 291| 868 184"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="24.3" ty="10.75" a="3.0517578125E-5" d="6.103515625E-5" b="-0.0082244873046875" c="0.013153076171875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#feac01" alpha="1.0" ratio="0.007843138"/>
+                                                            <GradientEntry color="#ffcc00" alpha="1.0" ratio="0.38039216"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 973 384| 973 150[ 973 98 947 74[ 929 56 898 53| 876 52| 486 52| 536 53| 98 52[ 0 52 0 150| 0 384[ 0 483 98 483| 876 483[ 973 483 973 384"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="2.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#d98200"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="0" strokeStyle="1" edges="! 973 384| 973 150[ 973 98 947 74[ 929 56 898 53| 876 52| 98 52[ 0 52 0 150| 0 384[ 0 483 98 483| 876 483[ 973 483 973 384"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

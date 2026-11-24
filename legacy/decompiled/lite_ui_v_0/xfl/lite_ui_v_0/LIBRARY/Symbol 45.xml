@@ -1,0 +1,30 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 45" linkageClassName="Farmland_Lite" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 45">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#e4d18a" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <BitmapFill bitmapPath="Bitmap 43.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-1.35" ty="-1.6" a="19.9951171875" d="19.98992919921875"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 3596 688| 3706 740| 3749 762| 3883 844| 3906 862| 3944 896[ 3982 935 3986 970| 3986 1014| 2910 1642| 2664 1755[ 2295 1926 2025 1990| 1971 1976[ 1094 1607 148 1081| 133 1073| 105 1057| 0 998[ 2 953 27 910| 32 901[ 58 860 104 820| 203 747| 225 733[ 359 654 438 625| 536 588| 574 575| 613 562| 666 543[ 739 514 800 478| 809 472| 812 470| 815 468| 922 385| 945 370| 968 354| 1312 168| 1440 118| 1518 94| 1629 63| 1906 11| 2001 1| 2015 0[ 2062 -2 2142 17[ 2380 77 2903 333[ 3180 469 3539 662| 3565 675| 3568 677| 3596 688"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

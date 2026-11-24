@@ -1,0 +1,35 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 93" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 93" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#000000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="20.0">
+                                                            <fill>
+                                                                 <SolidColor color="#000000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 7780 -8040[ 9400 -7860 10380 -6860[ 11340 -5860 11340 -4420[ 11340 -2200 9740 -960[ 8120 260 5420 260[ 3040 260 1580 -520| 1580 -3360[ 3120 -2200 5200 -2200[ 6500 -2200 7280 -2780[ 8040 -3360 8040 -4440[ 8040 -5540 7140 -6120[ 6220 -6700 4560 -6700| 3180 -6700| 3180 -9180| 4460 -9180[ 7580 -9180 7580 -11280[ 7580 -13260 5180 -13260[ 3620 -13260 2160 -12240| 2160 -14920[ 3760 -15740 5920 -15740[ 8120 -15740 9500 -14720[ 10860 -13720 10860 -11920[ 10860 -8880 7780 -8100| 7780 -8040"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

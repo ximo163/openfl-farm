@@ -1,0 +1,33 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 9" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 9" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="140.15" ty="8.9" a="0.26312255859375" d="0.26312255859375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#eaefb1" alpha="0.9411765" ratio="0.0"/>
+                                                            <GradientEntry color="#93d631" alpha="0.5803922" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 122 -2075| 2314 -175| 2372 -243| 2412 -280| 2461 -317| 1473 -2075| 2245 -2075| 2678 -413| 2820 -428| 2879 -425| 2948 -416| 3159 -2075| 3776 -2075| 3035 -256| 3160 -167| 4674 -2075| 5077 -2075| 5077 -1359| 3206 -72| 3258 96| 5077 -667| 5077 234| 3309 304| 3203 422| 5077 1665| 5077 2075| 4952 2075| 3151 747| 3111 769[ 3002 826 2874 836| 3586 2075| 2602 2075| 2766 836| 2697 827[ 2593 808 2505 756| 1500 2075| 237 2075| 2402 680| 2374 654| 2372 652| 2324 598| -1239 2075| -3181 2075| 2286 547| 2245 475| -5077 1668| -5077 963| 2243 469| 2217 404| 2216 401| -5077 28| -5077 -872| 2196 316[ 2189 274 2188 230| 2187 209| -5077 -2022| -5077 -2075| -3109 -2075| 2359 129| 2359 -29| -1173 -2075| 122 -2075"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 2243 469| 2245 475| 2304 465| 2243 469"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

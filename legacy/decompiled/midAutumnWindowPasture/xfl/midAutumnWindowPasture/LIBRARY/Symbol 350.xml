@@ -1,0 +1,31 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 350" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 350" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#fefefe"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#cdcdcd"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 2520 440| 2540 400| 2560 400| 2820 200| 2860 180| 2900 160| 3020 100| 3080 80| 3400 40[ 3880 -20 4280 40| 4580 80[ 5080 200 5460 420[ 5860 660 6000 1000| 5920 1160| 5580 1460[ 5340 1580 5080 1680| 4560 1760| 4480 1760| 4420 1760| 4400 1760"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 4400 1760| 3480 1740| 2640 1780| 2020 1900| 1480 1840| 880 1500| 400 1280| 220 1180| 140 1020| 60 840| 0 720| 260 760| 920 940[ 1380 1040 1860 800| 2520 440"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 2520 440| 2440 580| 3460 500| 5080 340| 3800 520[ 4640 620 5720 960| 3540 660[ 4220 840 4940 1400[ 4100 860 3220 680| 2520 760| 2540 780| 2860 1000[ 3360 1280 3760 1600| 4480 1760| 3920 1680| 4400 1760"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

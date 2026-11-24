@@ -1,0 +1,114 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 199" symbolType="button">
+     <timeline>
+          <DOMTimeline name="Symbol 199" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#55aade">
+                         <frames>
+                              <DOMFrame index="1" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="73.85" height="17.7" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="8.9" ty="-7.75"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>分享到空间</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.7" rightMargin="0.0" size="13" bitmapSize="260" face="方正粗圆简体" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters/>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#952add">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#e109be">
+                         <frames>
+                              <DOMFrame index="1" duration="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 196" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="-8.05" ty="-12.95" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#e9b6e6">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#56b0f8">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#ff51c4">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7" color="#fc56b0">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 8" color="#ebd02a">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 9" color="#d53d90">
+                         <frames>
+                              <DOMFrame index="1" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 197" centerPoint3DX="4.0" centerPoint3DY="-0.55">
+                                             <matrix>
+                                                  <Matrix tx="-8.05" ty="-12.95"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 10" color="#e7ebdc">
+                         <frames>
+                              <DOMFrame index="1" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 195" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 11" current="true" isSelected="true" color="#cae14c">
+                         <frames/>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

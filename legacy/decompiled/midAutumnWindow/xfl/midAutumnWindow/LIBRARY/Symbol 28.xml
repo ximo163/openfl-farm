@@ -1,0 +1,43 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 28">
+     <timeline>
+          <DOMTimeline name="Symbol 28">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#8f7eda" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="-0.05" ty="0.05" a="0.0" d="0.0" b="-0.1428070068359375" c="0.1416168212890625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#134a49" ratio="0.0"/>
+                                                            <GradientEntry color="#1e736a" ratio="0.7372549"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="-5.05" ty="0.05" a="0.0" d="0.0" b="-0.1428070068359375" c="0.1416168212890625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#134a49" ratio="0.0"/>
+                                                            <GradientEntry color="#1e736a" ratio="0.7372549"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! -159 -2320| 1016 -2320[ 1171 -2320 1171 -2165| 1171 2166[ 1171 2321 1016 2321| -159 2321"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! -159 2321| -1115 2321[ -1270 2321 -1270 2166| -1270 -2165[ -1270 -2320 -1115 -2320| -159 -2320"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! -159 -2320| -159 2321"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

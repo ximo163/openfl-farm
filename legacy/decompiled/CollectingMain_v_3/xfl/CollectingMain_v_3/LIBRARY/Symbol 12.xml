@@ -1,0 +1,53 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 12" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 12" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 860 -3320| -1900 -560[ -2120 -340 -2120 -40| -2120 0| -2120 40[ -2120 340 -1900 560| 860 3320[ 1080 3540 1380 3560[ 1680 3560 1900 3340[ 2120 3120 2120 2820[ 2100 2520 1880 2300| -400 0| 1880 -2300[ 2100 -2520 2120 -2820[ 2120 -3120 1900 -3340[ 1680 -3560 1380 -3560[ 1080 -3540 860 -3320"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="80.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#ba943d"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 860 -3320| -1900 -560[ -2120 -340 -2120 -40| -2120 0| -2120 40[ -2120 340 -1900 560| 860 3320[ 1080 3540 1380 3560[ 1680 3560 1900 3340[ 2120 3120 2120 2820[ 2100 2520 1880 2300| -400 0| 1880 -2300[ 2100 -2520 2120 -2820[ 2120 -3120 1900 -3340[ 1680 -3560 1380 -3560[ 1080 -3540 860 -3320"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

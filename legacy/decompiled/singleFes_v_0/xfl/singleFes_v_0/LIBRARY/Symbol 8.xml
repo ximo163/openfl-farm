@@ -1,0 +1,46 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 8" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 8" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#fef3de"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#fbde9d"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#e9af5a"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="4">
+                                                       <SolidColor color="#e29d36"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 1340 6200| 1440 5800| 1720 5020| -360 4860| -940 4840| -3820 5060[ -5040 5280 -5040 5580| -4960 5700"/>
+                                                  <Edge fillStyle0="1" fillStyle1="4" strokeStyle="0" edges="! -4960 5700[ -4840 5860 -4300 6000| -4080 6060"/>
+                                                  <Edge fillStyle0="1" fillStyle1="3" strokeStyle="0" edges="! -4080 6060| -3820 6100| -940 6320| -780 6320"/>
+                                                  <Edge fillStyle0="1" fillStyle1="4" strokeStyle="0" edges="! -780 6320| 380 6280| 1340 6200"/>
+                                                  <Edge fillStyle0="0" fillStyle1="4" strokeStyle="0" edges="! 1340 6200[ 940 8080 1640 9940"/>
+                                                  <Edge fillStyle0="0" fillStyle1="3" strokeStyle="0" edges="! 1640 9940[ 1960 10800 2520 11640| 2600 11760| 2640 11860| 2660 11900| 2600 12020[ 2280 12280 280 12680| -2680 12920[ -3680 12940 -3980 12620| -4080 12480| -4100 12420| -4120 12420[ -4920 11240 -5240 10040"/>
+                                                  <Edge fillStyle0="0" fillStyle1="4" strokeStyle="0" edges="! -5240 10040[ -5860 7880 -4960 5700"/>
+                                                  <Edge fillStyle0="3" fillStyle1="2" strokeStyle="0" edges="! -340 10080[ -40 10800 440 11520| 520 11640| 620 11780[ -1380 12420 -2820 12160[ -3420 11180 -3780 10120"/>
+                                                  <Edge fillStyle0="3" fillStyle1="4" strokeStyle="0" edges="! -3780 10120| -5240 10040"/>
+                                                  <Edge fillStyle0="3" fillStyle1="4" strokeStyle="0" edges="! 1640 9940| 1380 9960| -340 10080[ -1120 8200 -780 6320"/>
+                                                  <Edge fillStyle0="4" fillStyle1="3" strokeStyle="0" edges="! -3780 10120[ -4220 8800 -4300 7400| -4220 6700| -4080 6060"/>
+                                                  <Edge fillStyle0="3" fillStyle1="2" strokeStyle="0" edges="! -3780 10120| -1980 10140| -340 10080"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

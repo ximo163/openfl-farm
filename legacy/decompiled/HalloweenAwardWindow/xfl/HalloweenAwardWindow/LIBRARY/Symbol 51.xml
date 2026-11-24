@@ -1,0 +1,216 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 51" linkageClassName="awardText9" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 51">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#7894db">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="cdkeyText" width="95.95" height="23.75" border="true">
+                                             <matrix>
+                                                  <Matrix tx="152.0" ty="218.85"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" lineSpacing="2.0" rightMargin="0.0" autoKern="false" size="16.0" bitmapSize="320" face="Microsoft YaHei" fillColor="#000000" alpha="1.0"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#60decc">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 48" name="piaoLinkBtn" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="-28.0" ty="181.8"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#e9c4a0">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 45" name="copyBtn" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="257.55" ty="219.45"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#8af640">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="1491" height="337" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="12.0" ty="220.45"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters> QQ</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="13.5" bitmapSize="270" letterSpacing="0" indent="0" leftMargin="3" lineSpacing="0" rightMargin="0" fillColor="#ffe609" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>电影票优惠码：</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="13.5" bitmapSize="270" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffe609" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <DropShadowFilter angle="44.999253346524966" blurX="4" blurY="4" color="#790629" distance="0" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#8dbfcb">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="3250" height="678" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="-27.0" ty="142.05"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>哇！人品要不要那么好，居然被你砸到</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.8" bitmapSize="236" letterSpacing="0" indent="0" leftMargin="30" lineSpacing="9" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>1</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.8" bitmapSize="236" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="9" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>张电影票！</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.8" bitmapSize="236" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="9" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;睁大眼、掐掐脸，你木有做梦！</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.8" bitmapSize="236" letterSpacing="0" indent="0" leftMargin="88" lineSpacing="9" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <DropShadowFilter angle="44.999253346524966" blurX="4" blurY="4" color="#790629" distance="0" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#86728d">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="1610" height="450" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="38.8" ty="8.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>QQ</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="18.55" bitmapSize="371" letterSpacing="0" indent="0" leftMargin="47" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>电影票一张</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="18.55" bitmapSize="371" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7" color="#bba62b" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="8.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#790629"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 4491 262[ 4465 319 4404 375| 4387 384| 4510 384[ 4532 385 4535 410[ 4532 434 4510 434| 4428 434[ 4438 522 4524 569[ 4543 580 4530 601[ 4515 620 4496 610[ 4399 561 4380 434| 4356 434| 4356 557[ 4354 572 4377 550[ 4392 538 4406 550[ 4420 565 4407 580| 4346 627[ 4307 639 4310 596| 4310 434| 4295 434[ 4270 434 4268 410[ 4269 385 4293 384| 4310 384| 4310 242[ 4310 223 4332 221[ 4354 223 4356 242| 4356 384| 4382 384| 4366 377[ 4350 360 4366 342[ 4412 295 4443 247[ 4455 227 4477 232[ 4500 241 4491 262"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 4248 235[ 4281 233 4279 268| 4279 334[ 4281 379 4248 372| 4201 372[ 4196 374 4196 379| 4194 416[ 4190 424 4197 422| 4252 422[ 4279 424 4281 457| 4281 498[ 4283 606 4247 616| 4155 613[ 4131 601 4137 580[ 4146 560 4172 569| 4217 572[ 4235 574 4233 504| 4233 479[ 4233 469 4225 469| 4168 469[ 4139 473 4145 442| 4151 352[ 4149 323 4182 324| 4227 324| 4233 319| 4233 288| 4229 283| 4158 283[ 4137 283 4135 261[ 4135 237 4156 235| 4248 235"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 4067 452| 3717 452[ 3696 452 3695 425[ 3696 399 3717 397| 4067 397[ 4090 399 4093 425[ 4090 452 4067 452"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3381 342| 3326 342| 3326 364| 3381 364| 3381 342"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3428 362| 3483 362| 3483 342| 3428 342| 3428 362"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3428 301| 3483 301| 3483 282| 3428 282| 3428 301"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3381 282| 3274 282[ 3258 282 3258 260[ 3258 237 3274 235| 3641 235[ 3655 237 3657 260[ 3655 282 3641 282| 3534 282| 3534 301| 3604 301[ 3631 301 3631 323| 3631 381[ 3630 406 3604 406| 3309 406[ 3278 408 3280 383| 3280 328[ 3278 301 3305 301| 3381 301| 3381 282"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3286 440[ 3288 422 3303 420| 3610 420[ 3641 440 3610 459| 3302 459[ 3286 459 3286 440"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3586 342| 3534 342| 3534 362| 3586 362| 3586 342"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3641 477[ 3674 498 3641 522| 3488 522| 3488 592[ 3490 641 3399 622[ 3379 616 3377 598[ 3379 579 3397 577| 3405 579[ 3438 582 3438 572| 3438 522| 3272 522[ 3256 522 3254 500[ 3256 478 3274 477| 3641 477"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3557 533[ 3589 547 3631 572[ 3652 584 3641 604[ 3628 623 3606 613| 3531 572[ 3516 559 3526 541[ 3536 526 3557 533"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3367 574| 3297 620[ 3274 630 3262 613[ 3254 592 3272 580| 3293 567[ 3334 538 3340 536[ 3358 528 3372 543[ 3382 560 3367 574"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3199 247[ 3213 266 3201 278[ 3155 315 3092 346[ 3075 352 3065 333[ 3057 314 3073 303[ 3135 270 3167 242[ 3182 232 3199 247"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3030 237[ 3056 239 3057 262| 3057 336[ 3056 365 3030 365| 2975 365| 2983 379| 3057 379[ 3073 381 3073 405[ 3069 425 3054 425| 2840 425[ 2821 425 2820 403[ 2821 381 2840 379| 2928 379| 2928 377[ 2924 370 2928 365| 2875 365[ 2842 367 2844 333| 2844 264[ 2844 239 2870 237| 3030 237"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3013 319| 2887 319| 2887 331| 3013 331| 3013 319"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3013 273| 2887 273| 2887 288| 3013 288| 3013 273"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2873 437| 3020 437[ 3053 437 3051 466| 3051 495[ 3051 522 3024 520| 2975 520| 2975 594[ 2977 630 2901 615[ 2873 592 2903 575[ 2934 580 2930 569| 2930 522| 2873 522[ 2848 524 2849 497| 2849 466[ 2848 436 2873 437"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2891 488| 3004 488| 3004 473| 2891 473| 2891 488"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3208 364[ 3221 381 3213 395[ 3177 436 3098 481[ 3076 493 3061 477[ 3047 454 3067 440[ 3147 391 3179 362| 3208 364"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 3215 492[ 3230 508 3218 524| 3092 616[ 3057 629 3056 596| 3039 602[ 3022 601 3016 584| 3012 579| 2999 551[ 2991 539 3008 528| 3037 529| 3061 580| 3172 497| 3180 490| 3215 492"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2600 262| 2714 262[ 2755 260 2753 302| 2753 479[ 2757 524 2711 519| 2600 519| 2600 550[ 2591 580 2644 577| 2692 577[ 2739 580 2739 545[ 2739 522 2764 522[ 2784 526 2786 548[ 2784 588 2753 611[ 2727 623 2688 623| 2634 623[ 2548 623 2550 563| 2550 519| 2439 519[ 2393 522 2397 479| 2397 302[ 2391 260 2439 262| 2550 262| 2550 249[ 2550 227 2574 225[ 2598 227 2600 249| 2600 262"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2600 369| 2704 369| 2704 319| 2696 311| 2600 311| 2600 369"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2550 311| 2454 311| 2446 317| 2446 369| 2550 369| 2550 311"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2446 463[ 2444 475 2454 473| 2550 473| 2550 415| 2446 415| 2446 463"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2600 473| 2696 473[ 2704 475 2704 466| 2704 415| 2600 415| 2600 473"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2823 592| 2861 534[ 2895 516 2899 553| 2858 615| 2832 616[ 2817 606 2823 592"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2123 425[ 2126 522 2205 526| 2233 522| 2219 507[ 2210 498 2210 490[ 2212 461 2239 457| 2256 465| 2276 481[ 2288 456 2288 425[ 2282 329 2205 324[ 2126 329 2123 425"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 2205 264[ 2343 276 2356 425[ 2354 488 2326 526| 2352 548[ 2367 560 2367 574[ 2364 594 2336 598[ 2325 598 2307 584| 2282 567[ 2251 582 2205 582[ 2063 575 2055 425[ 2065 276 2205 264"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 1891 264[ 2028 276 2041 425[ 2039 488 2012 526| 2038 548[ 2053 560 2053 574[ 2049 594 2022 598[ 2010 598 1993 584| 1967 567[ 1936 582 1891 582[ 1749 575 1740 425[ 1751 276 1891 264"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 1942 465| 1962 481[ 1974 456 1974 425[ 1967 329 1891 324[ 1812 329 1809 425[ 1812 522 1891 526| 1919 522| 1905 507[ 1895 498 1895 490[ 1897 461 1925 457| 1942 465"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

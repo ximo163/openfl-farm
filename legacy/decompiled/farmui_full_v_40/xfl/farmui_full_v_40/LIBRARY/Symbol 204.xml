@@ -1,0 +1,30 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 204">
+     <timeline>
+          <DOMTimeline name="Symbol 204">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#e9dcb1" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <BitmapFill bitmapPath="Bitmap 202.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-53.0" ty="-131.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 3474 1395[ 3231 1527 2973 1641[ 2715 1754 2452 1880[ 2189 2006 2006 2004| 1989 1997[ 1580 1882 1262 1694[ 689 1431 0 1050| 0 1049[ 49 731 682 549[ 808 499 935 395[ 1437 30 2042 3| 2057 2| 2128 4| 2423 106[ 2702 204 3805 799[ 4034 847 3998 1068[ 3943 1122 3822 1179[ 3716 1262 3474 1395"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,34 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 31" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 31" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0.08203125">
+                                                            <matrix>
+                                                                 <Matrix tx="171.0" ty="495.0" a="0.3228759765625" d="0.6036376953125" b="0.28594970703125" c="-0.65399169921875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#a71305" alpha="0.41960785" ratio="0.12941177"/>
+                                                            <GradientEntry color="#eddb3d" alpha="1.0" ratio="0.50980395"/>
+                                                            <GradientEntry color="#f4fcad" alpha="1.0" ratio="0.83137256"/>
+                                                            <GradientEntry color="#fafee7" alpha="1.0" ratio="0.9254902"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 5840 0[ 7080 3120 7200 4620[ 7320 6140 7180 8260[ 7040 10360 5600 12020[ 4140 13700 4680 11960[ 5220 10220 4200 9680[ 3180 9160 1280 11840[ -620 14520 320 11240[ 1260 7980 3540 5820[ 5820 3660 5840 0"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,34 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 12" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 12" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#48771a"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#50dc0c"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#95fd37"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 1777 -33[ 1899 -33 1899 89| 1899 496[ 1899 619 1777 619| 50 619[ -74 619 -74 496| -74 89[ -74 -33 50 -33| 1777 -33"/>
+                                                  <Edge fillStyle0="1" fillStyle1="3" strokeStyle="0" edges="! 1854 122| 1854 129| 1854 461[ 1851 534 1777 534| 50 534[ -27 534 -29 460| -29 129| -29 122| -29 89| -29 82[ -25 12 50 12| 1777 12[ 1850 12 1854 82| 1854 89| 1854 122"/>
+                                                  <Edge fillStyle0="2" fillStyle1="3" strokeStyle="0" edges="! 1823 69| 1818 60[ 1799 33 1753 33| 72 33[ 26 33 7 60| 2 69[ -5 86 -5 111| -5 433[ -5 511 72 511| 1753 511[ 1832 511 1832 433| 1832 111[ 1832 86 1823 69"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

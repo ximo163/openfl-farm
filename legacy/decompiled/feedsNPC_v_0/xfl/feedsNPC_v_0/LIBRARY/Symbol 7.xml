@@ -1,0 +1,32 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 7" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 7" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="46.0" ty="23.75" a="0.05657958984375" d="0.0292205810546875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#000000" alpha="0.4" ratio="0.6117647"/>
+                                                            <GradientEntry color="#000000" alpha="0.0" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 1570 139[ 1840 279 1840 475[ 1840 672 1570 811[ 1301 950 920 950[ 539 950 269 811[ 0 672 0 475[ 0 279 269 139[ 539 0 920 0[ 1301 0 1570 139"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

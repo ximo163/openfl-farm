@@ -1,0 +1,43 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 316" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 316" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="-50.0" ty="-268.0" a="0.2349853515625" d="0.0457763671875" b="0.66314697265625" c="-0.12939453125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffd0aa" ratio="0.0"/>
+                                                            <GradientEntry color="#f0b387" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#dd8e6e"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 4480 2920| 4040 680| 3660 -880| 2760 -3860[ 2140 -5580 1440 -6820[ 380 -8160 -1700 -7180[ -3780 -6200 -3740 -6060"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! -3740 -6060| -3280 -4380| -2240 740| -1800 2220[ -1620 2820 -1620 3300[ -1620 4120 -1840 4660| -1960 5000| -2020 5220| -2060 5300| -2020 5340"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -2020 5340[ -1220 6100 -440 4460[ -200 4460 -140 4720"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! -140 4720| -100 4760| -120 4780"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -120 4780| -60 5360[ -20 5840 -260 6060| -300 6080| -580 6260| -620 6300| -640 6280| -840 6400"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! -840 6400| -800 6480| -580 6560[ 420 6560 420 5500| 400 5100[ 720 5260 1020 5260[ 1480 5260 1940 4640[ 2100 4400 2460 4360| 3080 4320| 3380 3880[ 3560 3420 3960 3500[ 4360 3580 4440 2920| 4480 2920"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 4480 2920| 4500 3380[ 4480 4100 4380 4360| 3800 4760| 3500 4860[ 3600 5800 3420 6060| 3040 6400| 2180 6340| 2020 6720| 1620 7100[ 1480 7140 1440 7220| 360 7420[ -180 7420 -560 7100[ -820 6880 -920 6580| -960 6480| -840 6400"/>
+                                                  <Edge fillStyle0="2" fillStyle1="0" strokeStyle="0" edges="! -3740 -6060[ -4380 -5640 -4640 -4940| -4560 -4320| -4300 -3280| -3680 -1540[ -3300 -660 -3140 140| -2920 1300| -2560 3520[ -2240 5360 -2040 5340| -2020 5340"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! -120 4780| -160 4700| -140 4720"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

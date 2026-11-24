@@ -1,0 +1,34 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 301" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 301" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="0.0" ty="0.0" a="0.024566650390625" d="0.0358734130859375" b="0.03997802734375" c="-0.0584716796875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#f0be75" alpha="0.4" ratio="0.0"/>
+                                                            <GradientEntry color="#ce8716" alpha="1.0" ratio="0.8980392"/>
+                                                            <GradientEntry color="#ce8716" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 520 -761[ 737 -446 737 0[ 737 445 520 760[ 305 1076 0 1076[ -305 1076 -521 760[ -736 445 -736 0[ -736 -446 -521 -761[ -305 -1076 0 -1076[ 305 -1076 520 -761"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 551 -806[ 780 -472 780 0[ 780 472 551 806[ 323 1140 0 1140[ -323 1140 -552 806[ -780 472 -780 0[ -780 -472 -552 -806[ -323 -1140 0 -1140[ 323 -1140 551 -806"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

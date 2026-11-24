@@ -1,0 +1,115 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 68" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 68" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="7844.0" ty="2933.0" a="-0.079345703125" d="0.07659912109375" b="0.4852294921875" c="0.50140380859375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffffff" ratio="0.07450981"/>
+                                                            <GradientEntry color="#00a2e9" ratio="0.6666667"/>
+                                                            <GradientEntry color="#009de2" ratio="0.7058824"/>
+                                                            <GradientEntry color="#008ecb" ratio="0.78039217"/>
+                                                            <GradientEntry color="#0074a7" ratio="0.88235295"/>
+                                                            <GradientEntry color="#004f7b" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 162620 60480[ 164340 61700 163640 64080[ 154540 59100 154360 58280[ 154240 57780 152460 54660| 150700 51660[ 150960 51380 151320 51240[ 152120 50880 152820 51440[ 153260 51800 153840 52680| 155160 54380[ 155460 54700 157360 55580[ 158820 56300 159620 57860[ 159980 58600 162620 60480"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#056fb8"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 158780 55580[ 158520 55340 158240 54600| 158120 54420[ 157860 53720 157280 53180[ 156880 52820 156000 52220| 155780 52040[ 155100 51580 155280 51240| 155240 51240[ 155120 51340 155120 51520[ 155120 52040 156040 52960[ 156620 53580 156620 54460[ 156620 55620 155720 56960| 155420 57320[ 153840 59260 153400 60680[ 153780 60680 155460 59520| 156840 58460| 157540 57960| 158700 57740[ 160100 57640 160720 57740[ 161600 57920 162700 58700| 162960 58740[ 163020 58560 162700 58140[ 162040 57280 161560 56900[ 160980 56440 160020 56120[ 159040 55800 158780 55580"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 158700 57920[ 157940 58000 157640 58140| 156960 58600| 155560 59660[ 153620 60960 153260 60860| 153220 60860| 153180 60780| 153180 60760[ 153620 59200 155280 57220| 155520 56860[ 157220 54460 155940 53120[ 154500 51700 155100 51120[ 155280 50960 155640 50920| 155960 50880| 155960 51060[ 155680 51060 155500 51240| 155420 51380[ 155420 51580 155900 51900| 156120 52040| 157420 53080[ 158020 53640 158300 54340| 158380 54520[ 158680 55240 158900 55440[ 159140 55660 160060 55940[ 161040 56260 161680 56760[ 162220 57180 162840 58020[ 163320 58700 163060 58880| 162620 58840[ 161560 58060 160720 57920[ 160100 57820 158700 57920"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="7725.0" ty="3077.0" a="0.0" d="0.0" b="0.4681396484375" c="0.48370361328125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#daebc8" ratio="0.0"/>
+                                                            <GradientEntry color="#d6e9c4" ratio="0.043137256"/>
+                                                            <GradientEntry color="#cde4b7" ratio="0.09803922"/>
+                                                            <GradientEntry color="#bddca0" ratio="0.15686275"/>
+                                                            <GradientEntry color="#a6d181" ratio="0.21960784"/>
+                                                            <GradientEntry color="#83c25c" ratio="0.28627452"/>
+                                                            <GradientEntry color="#74bd4e" ratio="0.30980393"/>
+                                                            <GradientEntry color="#51b175" ratio="0.38431373"/>
+                                                            <GradientEntry color="#00a498" ratio="0.4862745"/>
+                                                            <GradientEntry color="#0099ad" ratio="0.5764706"/>
+                                                            <GradientEntry color="#0091b9" ratio="0.65882355"/>
+                                                            <GradientEntry color="#008dbf" ratio="0.7254902"/>
+                                                            <GradientEntry color="#008bc1" ratio="0.76862746"/>
+                                                            <GradientEntry color="#154389" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 162660 58780| 162980 58800[ 163200 58740 162760 58100[ 162100 57260 161640 56860[ 161020 56340 160060 56020[ 159040 55700 158780 55440[ 158600 55260 158240 54380[ 157900 53640 157240 53040| 155820 51980[ 155120 51520 155380 51200| 155500 51120| 155160 51200[ 154620 51660 156000 53040[ 157280 54420 155640 56940| 154540 58320[ 153620 59620 153300 60780[ 153400 61040 155500 59580| 157240 58240[ 157680 57960 158700 57860[ 160100 57720 160720 57860[ 161560 58000 162660 58780"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="7842.0" ty="2903.0" a="0.0" d="0.0" b="0.2191162109375" c="0.2264404296875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#00a2e9" ratio="0.4117647"/>
+                                                            <GradientEntry color="#202a69" ratio="0.93333334"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 162740 58740| 163060 58780[ 163280 58700 162840 58060| 161780 56800[ 161200 56220 160280 55880[ 159340 55480 159120 55340[ 158700 55020 158420 54280[ 158080 53540 157500 52960| 156120 51940[ 155420 51480 155560 51200| 155680 51060| 155240 51160[ 154720 51620 156080 53000[ 156960 53880 156740 55260[ 156580 56120 156180 56760| 155240 57740[ 154400 58660 154060 59800[ 153880 60020 153960 60040[ 154140 60120 155460 59200| 157360 57860[ 157840 57560 158960 57460[ 160180 57360 160900 57640[ 161520 57860 162740 58740"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

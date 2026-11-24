@@ -1,0 +1,42 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 226" linkageClassName="TalkBoxHe1" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 226">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#56adea" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="-13.5" ty="-33.05" a="0.0" d="0.0" b="0.03851318359375" c="-0.03778076171875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#0099ff" alpha="0.6" ratio="0.0"/>
+                                                            <GradientEntry color="#0099ff" alpha="0.8" ratio="0.47058824"/>
+                                                            <GradientEntry color="#0099ff" alpha="0.69411767" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" pixelHinting="true" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#ffffff"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 571 -1280| -1111 -1280[ -1270 -1280 -1270 -1121| -1270 -458[ -1270 -300 -1111 -300| 58 -300| 8 -42| 243 -300| 571 -300[ 730 -300 730 -458| 730 -1121[ 730 -1280 571 -1280"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

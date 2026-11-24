@@ -1,0 +1,44 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 26" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 26" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 13420 14120[ 13920 13960 14320 14260| 14560 14520[ 14700 13980 15280 13780[ 15960 13600 16500 14020[ 16820 14260 16920 14600[ 17080 15180 16620 15840| 16740 16020[ 16840 16280 16560 16660| 16520 16700| 16460 16780| 16100 17020| 15580 17000| 15480 16980| 15520 17180[ 15680 17680 15380 18080[ 15040 18520 14640 18460| 14300 18300| 14220 18240[ 13600 18740 13000 18300[ 12100 17600 13020 16640| 12720 16480[ 12240 16120 12240 15580[ 12260 15100 12600 14660[ 12940 14260 13420 14120"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 17180 5940[ 17480 6180 17580 6560[ 17740 7140 17300 7780| 17420 7960[ 17520 8240 17220 8620| 17200 8680| 17140 8740[ 16980 8940 16760 8980| 16240 8980| 16120 8920| 16200 9120[ 16340 9620 16040 10020[ 15740 10440 15320 10400| 14960 10240| 14900 10180| 13680 10220[ 12780 9560 13660 8600| 13420 8440[ 12920 8080 12920 7520[ 12920 7080 13280 6620[ 13600 6200 14080 6040[ 14580 5920 14980 6200| 15240 6460[ 15360 5920 15940 5740[ 16620 5540 17180 5940"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

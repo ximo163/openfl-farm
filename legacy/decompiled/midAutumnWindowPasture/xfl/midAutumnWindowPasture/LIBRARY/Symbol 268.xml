@@ -1,0 +1,59 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 268">
+     <timeline>
+          <DOMTimeline name="Symbol 268">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#b5bd4f">
+                         <frames>
+                              <DOMFrame index="0" duration="2" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 267" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="22.85" ty="12.9" a="-0.00555343646556139" d="0.0061515807174146175" b="-0.00948410015553236" c="-0.01050720177590847"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color alphaMultiplier="0.66015625"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#256dfa">
+                         <frames>
+                              <DOMFrame index="0" duration="2" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 267" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="4.25" ty="66.3" a="-0.00951995886862278" d="0.010547637939453125" b="0.0015701294178143144" c="0.0017402649391442537"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#72e95a">
+                         <frames>
+                              <DOMFrame index="0" duration="2" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 267" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="74.15" ty="45.75" a="-0.012967681512236595" d="0.01436614990234375" b="-0.0011466980213299394" c="-0.001270294189453125"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

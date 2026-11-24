@@ -1,0 +1,70 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 101">
+     <timeline>
+          <DOMTimeline name="Symbol 101">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#ebe042">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 100" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="-24.1" ty="-0.55" a="0.11517562717199326" d="0.11517562717199326" b="-0.11517562717199326" c="0.11517562717199326"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color redMultiplier="0.16015625" greenMultiplier="0.16015625" blueMultiplier="0.16015625" redOffset="214" greenOffset="214" blueOffset="214"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#b5f5b0">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 100" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="-20.1" ty="-20.15" a="0.20339584350585938" d="0.20339584350585938"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color redMultiplier="0.16015625" greenMultiplier="0.16015625" blueMultiplier="0.16015625" redOffset="214" greenOffset="214" blueOffset="214"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#a4efed" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="-0.75" ty="1.85" a="0.0202178955078125" d="0.0202178955078125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#fffcf4" alpha="1.0" ratio="0.039215688"/>
+                                                            <GradientEntry color="#ffffff" alpha="0.0" ratio="0.8117647"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! -11 -226[ 95 -226 171 -149[ 247 -74 247 32[ 247 138 171 214[ 95 290 -11 290[ -118 290 -193 214[ -269 138 -269 32[ -269 -74 -193 -149[ -118 -226 -11 -226"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

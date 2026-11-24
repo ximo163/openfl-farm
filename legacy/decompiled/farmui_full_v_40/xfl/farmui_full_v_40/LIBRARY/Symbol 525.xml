@@ -1,0 +1,35 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 525" linkageClassName="ItemBg" linkageExportForAS="true" scaleGridLeft="14.75" scaleGridRight="45.25" scaleGridTop="14.75" scaleGridBottom="45.25">
+     <timeline>
+          <DOMTimeline name="Symbol 525">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#44b0af" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" pixelHinting="true" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#3399ff"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 10 1052[ 10 1200 156 1200| 294 1200| 906 1200| 1062 1200[ 1210 1200 1210 1052| 1210 906| 1210 294| 1210 146[ 1210 0 1062 0| 906 0| 294 0| 156 0[ 10 0 10 146| 10 294| 10 906| 10 1052"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,36 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 265" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 265" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="388.0" ty="266.0" a="0.0" d="0.0" b="0.32470703125" c="-0.474853515625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ff5f6f" alpha="1.0" ratio="0.5254902"/>
+                                                            <GradientEntry color="#ff6170" alpha="0.0" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#fffdf9" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 9660 4120[ 9100 4120 8700 3720[ 8300 3320 8300 2760[ 8300 2200 8700 1800[ 9100 1400 9660 1400[ 10220 1400 10620 1800[ 11020 2200 11020 2760[ 11020 3320 10620 3720[ 10220 4120 9660 4120"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 13240 9080[ 10980 10640 7760 10640[ 4540 10640 2260 9080[ 0 7520 0 5320[ 0 3120 2260 1560[ 4540 0 7760 0[ 10980 0 13240 1560[ 15520 3120 15520 5320[ 15520 7520 13240 9080"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

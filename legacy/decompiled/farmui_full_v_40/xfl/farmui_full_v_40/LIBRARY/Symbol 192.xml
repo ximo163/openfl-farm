@@ -1,0 +1,30 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 192" linkageClassName="com.qzone.ui.FarmlandS2" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 192">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#f18ca7" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <BitmapFill bitmapPath="Bitmap 190.png">
+                                                            <matrix>
+                                                                 <Matrix tx="0.0" ty="-7.1" a="19.9951171875" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 4005 950[ 4014 966 4015 982| 4015 1020| 4018 1021| 4015 1022| 4005 1031[ 3680 1326 2687 1767[ 2319 1938 2049 2002[ 1846 1958 1307 1697[ 584 1344 0 1029| 8 1026| 12 1007[ 75 752 604 576[ 748 535 851 469| 1047 316| 1059 309[ 1501 50 2037 2| 2051 1| 2085 2| 2107 6| 2148 20[ 2509 102 3591 684[ 3949 841 4005 950"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

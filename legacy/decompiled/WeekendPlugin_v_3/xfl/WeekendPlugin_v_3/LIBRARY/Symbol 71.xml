@@ -1,0 +1,44 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 71" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 71" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#f8f9da"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 45560 32500[ 45600 32180 45920 31880[ 46240 31580 46880 31560[ 47500 31520 47920 31960[ 48300 32400 48300 32860[ 48260 33340 47920 33320| 47220 33080| 46740 32940| 45820 32840[ 45500 32800 45560 32500"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#e7d780"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 45860 31640[ 45440 31900 45280 32320[ 45100 32740 45160 32980[ 45200 33200 45360 33280| 45940 33380| 46760 33500[ 47140 33620 47240 33700| 47700 33900[ 48100 34040 48340 33800[ 48820 33060 48380 32320| 48320 32260[ 48060 31780 47720 31580[ 47400 31400 46860 31380[ 46320 31360 45860 31640"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

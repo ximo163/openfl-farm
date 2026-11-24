@@ -1,0 +1,83 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 358" linkageClassName="CursorHand" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 358">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#f5fc94">
+                         <frames>
+                              <DOMFrame index="0" duration="2" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 353" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#afc2f1" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#676f8f"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="29.35" ty="-9.7" a="0.0151214599609375" d="0.0133056640625" b="0.0201568603515625" c="-0.0174713134765625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffffff" ratio="0.0"/>
+                                                            <GradientEntry color="#d6dde4" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! 501 -679| 399 -683| 396 -678[ 486 -639 548 -586| 596 -532| 513 -597[ 462 -631 379 -657| 377 -657[ 276 -690 217 -665| 207 -657[ 328 -633 411 -578[ 460 -547 477 -521[ 380 -585 269 -617| 179 -634| -20 -648[ -51 -573 5 -534[ 32 -513 65 -508[ 259 -479 371 -388[ 425 -342 443 -303[ 443 -283 387 -289| 330 -300[ 173 -373 122 -314[ 96 -283 102 -238[ 164 -227 315 -161[ 391 -99 480 -73[ 539 -55 613 -53| 613 -50[ 622 -69 638 -88| 670 -119[ 635 -74 630 -29| 629 -2| 644 18[ 688 73 728 69[ 761 66 795 22| 946 -137[ 975 -150 971 -170[ 967 -187 939 -222| 929 -232[ 909 -249 884 -254| 884 -267[ 889 -383 819 -484| 747 -562[ 665 -667 583 -679| 550 -680[ 602 -647 643 -604| 678 -561[ 626 -618 557 -654| 498 -679| 501 -679"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 564 -713[ 666 -713 768 -585[ 814 -547 851 -491[ 915 -392 913 -278| 929 -269| 961 -240| 992 -198[ 1004 -173 999 -153[ 994 -127 964 -111| 818 42[ 773 100 723 100[ 671 100 620 39[ 599 13 588 -23[ 424 -35 300 -135| 208 -171| 96 -209| 76 -212| 73 -234[ 70 -249 73 -271[ 79 -309 100 -334[ 131 -371 189 -371[ 250 -371 340 -330| 396 -319[ 358 -367 292 -404[ 197 -458 60 -478[ -17 -493 -47 -549[ -73 -596 -47 -660| -39 -680| 165 -665[ 202 -706 275 -706| 364 -693[ 386 -720 436 -720| 519 -705| 564 -713"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 721 -549| 736 -529[ 755 -503 761 -478| 760 -506[ 754 -537 721 -549"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 662 -498[ 689 -465 702 -433[ 704 -450 698 -473[ 683 -514 638 -524| 662 -498"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 609 -417[ 582 -455 533 -452| 566 -433[ 603 -408 625 -378[ 622 -398 609 -417"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#676f8f"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="30.65" ty="-9.15" a="0.0204315185546875" d="0.0136566162109375" b="0.025604248046875" c="-0.0171051025390625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffffff" ratio="0.0"/>
+                                                            <GradientEntry color="#d9e0e5" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 542 -752[ 649 -752 756 -619[ 804 -579 842 -521[ 911 -416 908 -296[ 937 -283 959 -257| 991 -213[ 1003 -187 999 -166[ 993 -138 961 -122| 807 39[ 760 100 709 100[ 654 100 602 36[ 580 8 568 -29| 518 -33[ 467 -39 426 -52[ 331 -83 253 -156[ 122 -245 66 -256| 45 -260| 42 -283[ 39 -299 42 -322[ 48 -361 69 -387| 76 -394| 26 -385[ -13 -385 -30 -413[ -53 -449 -23 -515[ -6 -568 25 -617[ 82 -702 154 -702| 158 -702[ 183 -745 251 -745| 334 -732[ 357 -760 409 -760[ 446 -760 496 -744| 542 -752"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! 576 -563| 490 -631[ 436 -667 349 -694| 348 -694[ 244 -728 201 -701| 194 -690[ 327 -651 411 -582[ 457 -544 473 -514[ 378 -592 267 -637[ 212 -659 175 -667| 175 -668[ 106 -683 49 -596[ 20 -552 6 -504[ -34 -413 31 -417[ 64 -419 105 -440[ 134 -462 145 -483[ 154 -501 170 -509[ 234 -482 320 -403| 393 -330[ 394 -309 352 -328| 309 -352[ 145 -429 93 -366[ 66 -334 72 -287[ 136 -274 271 -182[ 351 -105 450 -78| 594 -60| 594 -58| 620 -96| 653 -130[ 622 -89 613 -49| 611 -36| 610 -7| 626 14[ 673 71 714 68[ 749 64 785 18| 943 -149[ 972 -161 969 -183[ 965 -201 935 -237[ 912 -265 878 -271| 877 -285[ 883 -408 809 -513| 734 -595[ 648 -704 563 -718| 535 -715[ 586 -682 625 -639| 662 -593[ 608 -654 536 -691| 474 -717| 476 -717| 371 -721| 367 -716[ 462 -675 525 -620[ 562 -587 576 -563"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 620 -555| 645 -527[ 674 -493 686 -459[ 689 -478 682 -500[ 668 -544 620 -555"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 723 -559[ 742 -532 749 -507| 748 -537[ 741 -569 707 -580| 723 -559"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 173 -471[ 162 -448 135 -424| 163 -426[ 211 -426 274 -402[ 216 -451 174 -473| 173 -471"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 545 -460[ 584 -433 606 -402[ 603 -423 590 -443[ 562 -483 510 -479| 545 -460"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

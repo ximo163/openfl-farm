@@ -1,0 +1,27 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 77">
+     <timeline>
+          <DOMTimeline name="Symbol 77">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#85e0ef" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 76" centerPoint3DX="3.5" centerPoint3DY="11.6">
+                                             <matrix>
+                                                  <Matrix tx="1.9" ty="5.1" a="0.892303466796875" d="0.6692352294921875" b="-0.3582916259765625" c="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color redMultiplier="0.65625" greenMultiplier="0.65625" blueMultiplier="0.65625" redOffset="69" greenOffset="87"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

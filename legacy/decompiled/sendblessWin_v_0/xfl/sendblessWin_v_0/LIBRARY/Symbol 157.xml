@@ -1,0 +1,101 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 157" symbolType="button">
+     <timeline>
+          <DOMTimeline name="Symbol 157" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#7dd947">
+                         <frames>
+                              <DOMFrame index="1" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="620" height="337" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="11.9" ty="2.45" a="0.97955322265625" d="1.015716552734375" b="0.001129150390625" c="0.005950927734375"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>换奖品</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="16.9" bitmapSize="338" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <DropShadowFilter angle="44.999253346524966" blurX="5" blurY="5" color="#48771a" distance="0" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#3aded3">
+                         <frames>
+                              <DOMFrame index="1" duration="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="620" height="337" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="11.9" ty="2.45" a="0.97955322265625" d="1.015716552734375" b="0.001129150390625" c="0.005950927734375"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>换奖品</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="16.9" bitmapSize="338" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <DropShadowFilter angle="44.999253346524966" blurX="5" blurY="5" color="#48771a" distance="0" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" current="true" isSelected="true" color="#7ce684">
+                         <frames>
+                              <DOMFrame index="1" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 149" centerPoint3DX="41.6" centerPoint3DY="12.35">
+                                             <matrix>
+                                                  <Matrix tx="1.0" ty="0.0" a="0.838714599609375" d="1.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="4" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#48771a"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#6fb726"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#a2de65"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! #565.3B 111[ #565.3B 1 #50B.7D 1| #331.9E 0| #331.9E 1| #2A1.5B 1| #2A1.5B 0| #25B.BE 0| #25B.BE 1| #18A.11 0| #18A.11 1| #6D.BE 0[ 20 0 20 110| #14.D6 382[ #15.AD 493 #6F.6B 493| #50D.2B 494[ #566.E9 494 #566.12 383| #565.3B 111"/>
+                                                  <Edge fillStyle0="2" fillStyle1="3" strokeStyle="0" edges="! #533.BF 362| #532.E9 131[ #532.E9 62 #4FA.B7 62| #331.9E 61| #331.9E 62| #25F.F0 61| #25F.F0 62| #18A.11 61| #18A.11 62| #7C.D6 61[ #44.A5 61 #44.A5 130| #45.7B 361[ #46.52 432 #7E.84 432| #18A.11 433| #18A.11 432| #25F.F0 433| #25F.F0 432| #331.9E 433| #331.9E 432| #4FC.64 433[ #534.96 433 #533.BF 362"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! #50B.7D 42| #331.9E 41| #331.9E 42| #25F.F0 41| #25F.F0 42| #18A.11 41| #18A.11 42| #6D.BE 41[ #34.B5 41 #34.B5 110| #35.8C 382[ #36.63 452 #6F.6B 452| #18A.11 453| #18A.11 452| #25F.F0 453| #25F.F0 452| #331.9E 453| #331.9E 452| #50D.2B 453[ #545.5C 453 #544.86 383| #543.AF 111[ #543.AF 42 #50B.7D 42"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,68 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 142" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 142">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#41faf6" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" duration="2" keyMode="17922" tweenType="shape" acceleration="0">
+                                   <morphHintsList>
+                                        <MorphHint startPoint="#FFFFFF.2C, #FFFFF3.F6" endPoint="#FFFFFF.2C, #FFFFF2.D1" key="0"/>
+                                        <MorphHint startPoint="#0.00, #FFFFF3.9F" endPoint="#0.00, #FFFFF2.7A" key="1"/>
+                                        <MorphHint startPoint="#0.D4, #FFFFF3.F6" endPoint="#0.D4, #FFFFF2.D1" key="2"/>
+                                        <MorphHint startPoint="#1.2C, #FFFFF4.CA" endPoint="#1.2C, #FFFFF3.A5" key="3"/>
+                                        <MorphHint startPoint="#0.D4, #FFFFF5.9E" endPoint="#0.D4, #FFFFF4.79" key="4"/>
+                                        <MorphHint startPoint="#0.00, #FFFFF5.F6" endPoint="#0.00, #FFFFF4.D1" key="5"/>
+                                        <MorphHint startPoint="#FFFFFF.2C, #FFFFF5.9E" endPoint="#FFFFFF.2C, #FFFFF4.79" key="6"/>
+                                        <MorphHint startPoint="#FFFFFE.D5, #FFFFF4.CA" endPoint="#FFFFFE.D5, #FFFFF3.A5" key="7"/>
+                                   </morphHintsList>
+                                   <elements>
+                                        <DOMShape>
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ff0000" alpha="0.6509804"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="0.0">
+                                                            <fill>
+                                                                 <SolidColor color="#000000" alpha="0.0"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle1="1" strokeStyle="1" edges="! -212 -3082[ -124 -3169 0 -3169[ 124 -3169 212 -3082[ 300 -2994 300 -2870[ 300 -2746 212 -2658[ 124 -2570 0 -2570[ -124 -2570 -212 -2658[ -299 -2746 -299 -2870[ -299 -2994 -212 -3082"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" keyMode="9728">
+                                   <elements>
+                                        <DOMShape>
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ff0000" alpha="0.5529412"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="0.0">
+                                                            <fill>
+                                                                 <SolidColor color="#000000" alpha="0.0"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle1="1" strokeStyle="1" edges="! -212 -3375[ -124 -3462 0 -3462[ 124 -3462 212 -3375[ 300 -3287 300 -3163[ 300 -3039 212 -2951[ 124 -2863 0 -2863[ -124 -2863 -212 -2951[ -299 -3039 -299 -3163[ -299 -3287 -212 -3375"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

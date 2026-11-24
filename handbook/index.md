@@ -26,6 +26,7 @@
 | 资产声明与本地化加载 | [architecture/assets.md](architecture/assets.md) | `assets/legacy-assets.txt`、根目录 `libraries.xml`、`src/shim/LocalSwfLoader.hx` |
 | 场景运行器与请求对拍（tools/scenario.mjs、场景/基线 JSON、nodeboot 应答分档） | [architecture/scenario-runner.md](architecture/scenario-runner.md) | 判定期望值的出处见 `test/ScenarioRunnerContractTest.hx` 断言消息 |
 | 时间轴行为对拍门禁（T3：swf 结构期望序列 vs 探针实跑序列、tools/TimelineGate.mjs、盲区降级） | [architecture/timeline-gate.md](architecture/timeline-gate.md) | 步进语义 `tools/StepAnimate.hx`；scriptFrames 镜像规则 `haxelib swf` FrameScriptParser/AnimateLibraryExporter |
+| 资产渲染对拍门禁（T2：逐资产截图哈希对拍、tools/RenderGate.mjs、node 软画布通道、自回归基线与换源口） | [architecture/render-gate.md](architecture/render-gate.md) | 拍点/基线契约 `tools/tools/*.hx` + `test/tools/*Test.hx`；通道钩子 `tools/SoftCanvas.hx`/`DecodingImage.hx` |
 | 环境、工具、反直觉的坑 | [lessons/index.md](lessons/index.md) | — |
 
 还没有页面的子系统：翻译完成时由实现 agent 建页并在表里加一行。

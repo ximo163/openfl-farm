@@ -4,8 +4,7 @@ import tools.RenderTypes.ShotPlan;
 import tools.TimelineTypes.ClipSpec;
 
 /**
- * T2 资产渲染对拍——拍点计划（issue #57；write-tests 阶段为 stub，契约由
- * test/tools/RenderPlanTest.hx 钉死）。静态关键帧拍点（gotoAndStop 起点帧 +
+ * T2 资产渲染对拍——拍点计划（issue #57）。静态关键帧拍点（gotoAndStop 起点帧 +
  * 各标签帧）与播放抽帧拍点（每隔 k 步 + 起点/中间/回绕必抽）的纯推导。
  *
  * 输入是 T3 的结构侧 ClipSpec（tools.TimelineTypes——swf 结构静态提取的
@@ -24,7 +23,22 @@ class RenderPlan {
 	 * help 的 pageN 一族就是单帧带脚本符号）。标签帧与起点同帧时去重。
 	 * 标签表乱序输入也输出升序（基线键稳定）。 */
 	static public function staticShots(clip:ClipSpec):Array<ShotPlan> {
-		throw new haxe.Exception("not implemented");
+		// 起点恒在；标签帧即使与起点同帧也只记一条（id 进基线键，序必须确定）
+		var frames = [1];
+		if (clip.labels != null) {
+			for (label in clip.labels) {
+				frames.push(label.frame);
+			}
+		}
+		frames.sort(function(a, b) return a - b);
+		var out:Array<ShotPlan> = [];
+		var prev = -1;
+		for (f in frames) {
+			if (f == prev) continue;
+			prev = f;
+			out.push({id: "f" + f, kind: "f", index: f});
+		}
+		return out;
 	}
 
 	/** 播放抽帧拍点（0 基步号，升序去重）：必抽 {0（起点）、
@@ -34,6 +48,29 @@ class RenderPlan {
 	 * clip.frames <= 1 或 steps <= 0 返回 []（无播放可比）。k < 1 时抛
 	 * haxe.Exception 且消息含 "k"（配置错先于数据形状报，不被单帧门吞掉）。 */
 	static public function playbackShots(clip:ClipSpec, steps:Int, k:Int):Array<ShotPlan> {
-		throw new haxe.Exception("not implemented");
+		if (k < 1) {
+			throw new haxe.Exception('播放抽帧间隔 k 非法: k=${k}（须 ≥ 1）');
+		}
+		var frames = clip.frames;
+		if (frames <= 1 || steps <= 0) {
+			return [];
+		}
+		var set = new Map<Int, Bool>();
+		set.set(0, true); // 起点（冻结首帧）
+		var mid = Math.floor(frames / 2);
+		if (mid <= steps) set.set(mid, true); // 中间（域内必抽，域外不虚造）
+		var wrap = frames; // s%frames==0 且 s>0：回绕步，直到 steps 为止
+		while (wrap <= steps) {
+			set.set(wrap, true);
+			wrap += frames;
+		}
+		var grid = 0; // k 的非负倍数
+		while (grid <= steps) {
+			set.set(grid, true);
+			grid += k;
+		}
+		var list = [for (s in set.keys()) s];
+		list.sort(function(a, b) return a - b);
+		return [for (s in list) {id: "s" + s, kind: "s", index: s}];
 	}
 }

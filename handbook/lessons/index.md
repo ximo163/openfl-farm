@@ -1295,3 +1295,49 @@
   implement 侧的姊妹条目（import.hx 遮蔽的机械细节）是规则修正前的应急
   解——已经放进 test/ 的存量按那条接，新任务不要复用遮蔽，直接把骨架
   放对树。
+
+## 2026-11 · #57（T2 渲染对拍 implement：node 软画布通道与 Haxe↔js 互操作坑）
+
+- **Haxe 类生成的 js 构造器上，外部裸赋值不走 set_src 方法**：lime 的
+  HTML5HTTPRequest 生成的是普通 js 赋值 `image.src = uri`，落不到 Haxe
+  属性方法上（方法只对本类静态调用方存在）——顶替 `globalThis.Image` 做
+  解码钩子时必须 `Object.defineProperty(cls.prototype, 'src', …)` 在原型
+  上桥过去，否则 17 个请求发出去 0 个完成、装库静默挂死（不抛、退出 0）。
+  同族：node 里没有 `HTMLCanvasElement` 全局，lime `ImageBuffer.set_src`
+  的 `instanceof` 裸标识符分流直接 ReferenceError——`installNode()` 把
+  软画布元素类注册成这个全局即可；`URL.createObjectURL` node 的 URL 没有
+  （先于 lime 调用就炸），置成 `() => null` 逼 lime 落它自己的 data URI
+  分支。三个都是「环境钩子」，见 `tools/DecodingImage.hx`/`SoftCanvas.hx`。
+- **js 上 `Bytes.get` 被内联成 `.b[i]`、DCE 不发射运行时方法**：`px.get()`
+  写在 Dynamic 接收者上直接 "not a function"——像素读出后要静态定型
+  `var px:haxe.io.Bytes` 再调，编译器才会内联出数组访问（RenderProbe 的
+  readPixelsStraight 消费点）。同类：**typedef 不能声明成类成员**（模块
+  级），模块的次级类型从别的模块裸名引用解析不到（用全限定）。
+- **管道上 `process.stdout.write` 是异步的，紧随的 `process.exit` 截尾**：
+  farmui2 的 280KB 单行 JSON 实测丢 60KB，gate 侧 JSON.parse 才炸
+  "Unexpected end"。探针 println 一律 `fs.writeSync(1, s + "\n")` 同步落。
+- **`arc(x, y, r, 0, 2π, true)` 按 WHATWG 字面是零弧，但 Chrome/openfl 语义
+  是整圆**：openfl 的 CanvasGraphics 只有两处 arc 调用（:1092/:2405），
+  全是 `arc(x,y,r,0,Math.PI*2,true)` 意图整圆，Cairo 后端同位传 false；
+  软画布若按规范字面归一化（ccw 正 span → 0），资产里**所有圆全部消失**
+  ——门禁会绿（基线也空圆）但画面错。规则：|span| ≥ 2π-ε 两个方向都收
+  成整圆，跟 Chrome（SoftCanvasContext.arc 的注释写了完整推理链）。
+- **swf 帧脚本带 Math.random（原版 AS3 本意随机相位）→ 截图基线不可比**：
+  farmui1 a_151 第 1 帧 `this.gotoAndPlay(Math.floor(Math.random()*100))`。
+  T3 躲过它是运气：步进公式从第 2 帧起恰不进第 1 帧（frame 131 的
+  `gotoAndPlay(2)` 又短路回绕）；T2 的 f1 拍点 gotoAndStop(1) 必进。修法
+  = 探针装库前把 `Math.random` 换成定种子 mulberry32（整数全 32 位
+  Math.imul，跨 node 版本逐位稳定）——脚本照原样执行，只是每次同值。
+  防：给截图/对拍类探针加新资产先扫 scriptSource 的非确定源（Math.random/
+  Date/getTimer），69 bundle 实测只有这一处。
+- **`frames: []` 空帧表符号实例化必炸**：AnimateTimeline.init 读
+  `frames[0].objects`（levelUpUI 的 #13/#26/Update.bigPanel）。T3 的
+  「< 2 帧不记录」门从未实例化它们所以没见过；T2 全符号实例化必须逐符号
+  try/catch + 计数进报告（instantiateFails）——不许一个坏符号拖死整个资产。
+- **注入自检的目标要先筛「有可见画面」**：Crop_1056_3 主轴渲染 0×0，对它
+  scaleX=2 后还是空拍点，注入不红 = 自检假阴（门禁其实有牙）。选注入目标
+  前 `getBounds` 非空；全空资产选不出时 inject 报 null 让 gate 报失败。
+- **format 3.7.0 没有 JPEG 解码器**（只有 Writer）：SOF 段扫真实宽高 +
+  黑像素兜底，计数进报告不静默；104 张 jpg 资产的采样面因此是假的——
+  这正是「自回归模式先立、换源后保真」的动机之一（真 Flash 参考侧没有
+  这个盲区）。

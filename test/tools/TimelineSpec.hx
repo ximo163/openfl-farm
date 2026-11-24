@@ -1,0 +1,76 @@
+package tools;
+
+import tools.TimelineTypes.AssetSpec;
+import tools.TimelineTypes.ClipSpec;
+import tools.TimelineTypes.LabelHit;
+import tools.TimelineTypes.LoopEnd;
+
+/**
+ * T3 时间轴行为对拍——期望侧：swf 结构 → 期望序列（issue #56；write-tests
+ * 阶段为 stub，契约由 test/tools/TimelineSpecTest.hx 钉死）。
+ *
+ * 输入是「结构 JSON」：format 库读 swf 的提取器（tools/ 一次性工具，实现
+ * 阶段按此契约交付）逐资产产出的纯数据（键名 // issue #56；与
+ * test/fixtures/timeline-fish01-structure.json 同构）：
+ *
+ *   { "asset": "<assets/legacy-assets.txt 相对路径>",
+ *     "clips": [ {
+ *         "id": 23,             // DefineSprite char id；主时间轴为 null
+ *         "symbol": "FS_01_0_2", // SymbolClass/ExportAssets 绑定名；无绑定为 null
+ *         "isMain": false,       // 是否主时间轴
+ *         "frames": 8,           // 本层 ShowFrame 计数
+ *         "labels": [ {"frame":3,"name":"..."} ], // 1 基；可缺省 = 无
+ *         "scriptFrames": [1]    // 本层 DoAction/DoABC 帧位（1 基）；可缺省 = 无
+ *       } ] ] }
+ *
+ * 剪辑键（比对两侧的对齐键）：主时间轴 → ""（tools/StepAnimate.hx:17
+ * 「空串=根」先例）；有导出名 → symbol；无导出名 → "#<id>"（char id）。
+ *
+ * 推进契约（钉死；出处 tools/StepAnimate.hx:79 根剪辑、:107-113 stopTree
+ * 整树先冻结在第 1 帧、:116-129 stepTree 每步每剪辑 gotoAndStop((currentFrame
+ * % totalFrames) + 1) 后记录，issue #56「固定步长推进（StepAnimate 复用）」）：
+ * 第 s 步（1 基）后 currentFrame = (s % frames) + 1；完成圈数 loops =
+ * floor(steps / frames)（回到第 1 帧的次数）；终点 endFrame =
+ * (steps % frames) + 1。固定步长推进不读帧率（step 模式与 fps 无关，
+ * 12fps 的 redUpBanner_v_2 与 24fps 的 fish_01 同一公式）。
+ *
+ * 只做纯逻辑：不读文件、不碰显示对象——结构 JSON 由调用方（提取器 CLI/
+ * 测试）传入。单帧剪辑不产生比对单元（StepAnimate.hx:122 的 totalFrames>1
+ * 门同款，由 multiFrameClips 落实）。
+ */
+class TimelineSpec {
+	/** 结构 JSON → AssetSpec。labels/scriptFrames 缺省补 []；clips 顺序保持
+	 * swf 里的出现顺序（dump 顺序），主时间轴条目照收（是否参与比对由
+	 * multiFrameClips 决定）。 */
+	static public function parseAssetStructure(json:String):AssetSpec {
+		throw new haxe.Exception("not implemented");
+	}
+
+	/** 多帧剪辑（frames > 1）。单帧剪辑（主轴或子剪辑）不产生比对单元。 */
+	static public function multiFrameClips(a:AssetSpec):Array<ClipSpec> {
+		throw new haxe.Exception("not implemented");
+	}
+
+	/** 推进步数：多帧剪辑的最大帧数（每个剪辑至少走满一圈，末步恰回到第 1 帧）；
+	 * 无多帧剪辑的资产返回 0（探针/比对都无事可做）。 */
+	static public function stepsFor(a:AssetSpec):Int {
+		throw new haxe.Exception("not implemented");
+	}
+
+	/** 期望的每步后 currentFrame 序列（序列项一）：第 s 步（1 基）后
+	 * (s % frames) + 1。steps <= 0 返回 []。 */
+	static public function frameSequence(c:ClipSpec, steps:Int):Array<Int> {
+		throw new haxe.Exception("not implemented");
+	}
+
+	/** 期望的帧标签命中序列（序列项二）：按步序，第 s 步落在带标签的帧上即
+	 * 命中（currentLabel 变为该名）；同帧多标签按 labels 表顺序。 */
+	static public function labelHits(c:ClipSpec, steps:Int):Array<LabelHit> {
+		throw new haxe.Exception("not implemented");
+	}
+
+	/** 期望的循环次数与终点（序列项三）。 */
+	static public function loopEnd(c:ClipSpec, steps:Int):LoopEnd {
+		throw new haxe.Exception("not implemented");
+	}
+}

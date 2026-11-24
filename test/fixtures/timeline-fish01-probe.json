@@ -1,0 +1,14 @@
+{
+  "asset": "source/core/module/ui/farm/fish/fish_01.swf",
+  "steps": 8,
+  "clips": [
+    { "key": "FJ_01_2_2", "frames": [2, 3, 4, 5, 6, 1, 2, 3], "loops": 1, "endFrame": 3 },
+    { "key": "FJ_01_2_0", "frames": [2, 3, 4, 5, 6, 1, 2, 3], "loops": 1, "endFrame": 3, "labels": [], "frameEvents": [] },
+    { "key": "FS_01_0_2", "frames": [2, 3, 4, 5, 6, 7, 8, 1], "loops": 1, "endFrame": 1 },
+    { "key": "FS_01_1_2", "frames": [2, 3, 4, 5, 6, 7, 8, 1], "loops": 1, "endFrame": 1 },
+    { "key": "FS_01_2_2", "frames": [2, 3, 4, 5, 6, 7, 8, 1], "loops": 1, "endFrame": 1 },
+    { "key": "FS_01_0_0", "frames": [2, 3, 4, 5, 6, 7, 8, 1], "loops": 1, "endFrame": 1 },
+    { "key": "FS_01_1_0", "frames": [2, 3, 4, 5, 6, 7, 8, 1], "loops": 1, "endFrame": 1 },
+    { "key": "FS_01_2_0", "frames": [2, 3, 4, 5, 6, 7, 8, 1], "loops": 1, "endFrame": 1, "labels": [] }
+  ]
+}

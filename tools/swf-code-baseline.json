@@ -1,0 +1,195 @@
+{
+  "_comment": "带交互代码但不进 main_swfs 反编译名单的登记账（tools/swf_code_audit.py 的对账白名单）。本账存在的意义：让「哪些带代码的 swf 没被翻」从暗知识变成显式决策——每条必须有 reason；新增条目=有意识的决策（配套 issue 或明确理由），不是默认收纳。family 的 pattern 以 /* 结尾=目录前缀匹配。改本账请与 tools/swf_code_audit.py 的输出对账：出账的条目要删，新 LEAK 要么进 scripts/decompile-legacy.sh 的 main_swfs 要么进本账。普查基线：2026-11-24（6309 swf：art 996 / stub 4786 / 在册 10 / 本账 513）。",
+  "families": [
+    {
+      "pattern": "host/*",
+      "reason": "discuz 论坛/QQ 空间/ucenter 宿主的页面 swf（上传/播放器/涂鸦/摄像头等），服务农牧场客户端之外的宿主应用，永不翻译",
+      "tracked": null
+    },
+    {
+      "pattern": "source/core/module/mc/farm/product/*",
+      "reason": "农产品动画帧脚本族（292 个，gotoAndStop 级小脚本）；#58 帧脚本族领域，翻译随帧脚本批次",
+      "tracked": "#58"
+    },
+    {
+      "pattern": "source/core/module/mc/farm/aswf/*",
+      "reason": "动物/场景动画帧脚本族（116 个）；#58 帧脚本族领域",
+      "tracked": "#58"
+    },
+    {
+      "pattern": "source/core/module/mc/submodule/*",
+      "reason": "牧场侧节日/活动场景动画（springfestival/christmas/newyear/autumn/love 等 16 个）；活动宿主未开工，帧脚本归 #58 族",
+      "tracked": "#58"
+    },
+    {
+      "pattern": "source/core/module/mc/farm/wild/*",
+      "reason": "野生动物玩法族：农场侧 WildShellNc_v_5 由 FarmApplication.loadWildShell 反射（#65 同族登记）；牧场侧 WildShell_v_33/WildScene/ToolScene/武器/动物素材由 mc_main.php wild 节与目录清单加载。牧场批次再立项，农场侧待 #65 后续",
+      "tracked": "#65"
+    },
+    {
+      "pattern": "source/core/module/mc/farm/intel/*",
+      "reason": "mc_main.php moduleList2（Intel 活动）物料，帧脚本级",
+      "tracked": "牧场批次"
+    },
+    {
+      "pattern": "source/core/module/mc/farm/enemy/*",
+      "reason": "mc_main.php moduleList2（天灾老鼠）物料，帧脚本级",
+      "tracked": "牧场批次"
+    },
+    {
+      "pattern": "source/core/module/plugin/*",
+      "reason": "插件系统 4 个（FairyPlugin 53KB/44 文本、MailPromotion、Promotions、Weekend）——真功能模块，待立项",
+      "tracked": "待立项"
+    },
+    {
+      "pattern": "source/core/module/ui/npc/*",
+      "reason": "节日 NPC 窗口族（Halloween/midAutumn/ThanksGiving/sendbless/feedsNPC，9 个），多为纯文本窗口；文本渲染归 #65 根因B，活动宿主待活动批次",
+      "tracked": "#65"
+    },
+    {
+      "pattern": "source/core/module/ui/dialogs/*",
+      "reason": "ArborDay 植树节活动面板（主面板 78KB + 两个子面板）；活动批次",
+      "tracked": "待立项"
+    },
+    {
+      "pattern": "source/core/module/ui/cardgames/*",
+      "reason": "卡牌游戏窗口（CardsGameWindow/Activity）；主入口 main3 ModuleCardsGame 反射（#65 同族登记）",
+      "tracked": "#65"
+    },
+    {
+      "pattern": "source/core/module/mc/main/*",
+      "reason": "牧场侧 UI/功能件：farmui1_v_42/farmui2_v_44/commonui_v_12（mc_main.php:21-23 清单）、upgrade_v_1、updateDen×2、windows/flopGift×2+nokia、outswf/help.swf（牧场 help，Master2 OutSwf/HelpWindow.as 加载）。牧场批次的前置：开工时这些进 main_swfs 或专项立项",
+      "tracked": "牧场批次"
+    }
+  ],
+  "entries": {
+    "source/core/module/labor/LaborDayMain_v_2.swf": {
+      "reason": "劳动节活动主模块，普查无任何配置/代码引用（过期活动的孤儿）；发现引用再重新对账",
+      "tracked": null
+    },
+    "source/core/module/collect/CollectingMain_v_3.swf": {
+      "reason": "采集活动主模块（URL 表 + collect/ 目录清单引用，83KB/33 文本）——真功能，待立项",
+      "tracked": "待立项"
+    },
+    "source/core/module/wildAdv/WildAdvMain_v_9.swf": {
+      "reason": "丛林寻宝活动（mc_main.php activity_list 引用，60KB/5 文本）；牧场批次",
+      "tracked": "牧场批次"
+    },
+    "source/core/module/ui/cards_v_1.swf": {
+      "reason": "卡牌游戏模块（nc_main.php:21，main3 ModuleCardsGame 反射拉 CardsGameController）；#65 同族登记",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/quickshoot_v_0.swf": {
+      "reason": "快速拍照模块（nc_main.php:20，main3 ModuleQuickShoot 反射拉 QuickShootController）；#65 同族登记",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/gifts_v_11.swf": {
+      "reason": "FreeGift 礼物模块（nc_main.php:22）；加载链细节待考证",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/lite_ui_v_0.swf": {
+      "reason": "轻量 UI 库（10 个类）；用途与加载链待分诊",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/main/farmui2_v_58.swf": {
+      "reason": "现役农场 UI 库（nc_main.php:12），59 类帧脚本 + 15 文本；帧脚本族已由 #58 跟踪，是否整库反编译待决策",
+      "tracked": "#58"
+    },
+    "source/core/module/ui/main/task_v_2.swf": {
+      "reason": "新手任务素材（nc_data.php:39 fresherTask，className taskAwokeButton；宿主 WelcomeView 已译）；22 个文本字段渲染归 #65 根因B",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/water_ui_v_0.swf": {
+      "reason": "鱼塘商店 UI（nc_main.php:13；宿主 ShopView 已译）；12 文本归 #65 根因B",
+      "tracked": "#65"
+    },
+    "source/core/module/mc/levelup/levelUpUI_v_1.swf": {
+      "reason": "升级庆祝 UI：农场侧 LevelUpModel.getSecondUrl(\"levelUpUI\")（宿主已译）+ 牧场 mc_main levelup 节双引用；8 文本归 #65 根因B",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/tools/Fertilizer_v_7.swf": {
+      "reason": "鱼食素材（nc_addon.php:271 Fertilizer，className Fertilizer）；宿主 src/FishFood_*.hx 已建；4 文本归 #65 根因B",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/plane_v_0.swf": {
+      "reason": "飞机撒药 UI（nc_addon.php:289 plane；宿主 FarmLandController 已译）；10 文本归 #65 根因B",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/main/RedUp.swf": {
+      "reason": "红土地升级窗素材（nc_data.php:37 redup，className \"Red\"；宿主 RedUpWindow 已译）；swf 侧类绑定待核",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/main/redUpBannerNew_v_1.swf": {
+      "reason": "红土地横幅（redup 键族）；3 文本归 #65 根因B",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/main/redUpBanner_v_2.swf": {
+      "reason": "红土地横幅（redup 键族，宿主 RedUpWindow 已译）；3 文本归 #65 根因B",
+      "tracked": "#65"
+    },
+    "source/core/module/ui/main/shop_v_0.swf": {
+      "reason": "URL 表引用的 shop 并行/旧版（现行 shop_v_7 已在 main_swfs）；两版差异未考证，发现实际加载再立项",
+      "tracked": null
+    },
+    "source/core/module/ui/main/warehouse_v_0.swf": {
+      "reason": "URL 表引用的 warehouse 并行/旧版（现行 warehouse_v_23 已在 main_swfs）；同上",
+      "tracked": null
+    },
+    "source/core/module/ui/main/farmui_full_v_40.swf": {
+      "reason": "farmui 完整版（207 个 DoABC/60 文本，URL 表引用）——量级异常，#65 已建议单独立审计 issue（所有者拍板）",
+      "tracked": "待立项"
+    },
+    "source/core/module/ui/main/decorate_v_0.swf": {
+      "reason": "ui/main/ 路径下的另一份 decorate（现行 ui/decorate_v_0.swf 已在 main_swfs）；副本关系未考证",
+      "tracked": null
+    },
+    "source/core/module/ui/freegift_v_5.swf": {
+      "reason": "免费礼物窗（nc_addon freegift 键——配置指 v_6、部署是 v_5，版本漂移待核）；活动窗口",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/monthEnd_v_5.swf": {
+      "reason": "月末结算窗（main3 有 MonthEndModel 宿主）；活动窗口待核",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/recall_v_3.swf": {
+      "reason": "召回活动窗；待分诊",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/sellyouji_v_1.swf": {
+      "reason": "游记售卖窗；待分诊",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/singleFes_v_0.swf": {
+      "reason": "单身节活动窗；待分诊",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/stocks_v_2.swf": {
+      "reason": "股票（黄钻礼包）窗；待分诊",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/QDSeed_v_1.swf": {
+      "reason": "Q 币种子推广窗；待分诊",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/farm/houseKeeper_v_0.swf": {
+      "reason": "管家窗；待分诊",
+      "tracked": "待分诊"
+    },
+    "source/core/module/ui/allcrops/Crop_566_3.swf": {
+      "reason": "部署包内文件损坏（zlib 解压失败），原样冻结；游戏原版同样读不了",
+      "tracked": null
+    },
+    "source/core/module/ui/allcrops/Crop_577_3.swf": {
+      "reason": "部署包内文件损坏（zlib 解压失败），原样冻结",
+      "tracked": null
+    },
+    "source/core/module/ui/farm/diy/265.swf": {
+      "reason": "部署包内文件损坏（zlib 解压失败），原样冻结",
+      "tracked": null
+    },
+    "source/core/source/script/swfobject/expressInstall.swf": {
+      "reason": "部署包内文件损坏（zlib 解压失败）；swfobject 宿主页组件，非农牧场客户端",
+      "tracked": null
+    }
+  }
+}

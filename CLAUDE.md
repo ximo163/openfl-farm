@@ -132,10 +132,21 @@
   新增命中即驳回。扫描出的 **main 既有**错误只报告、不顺手修，但必须**当场
   开 issue** 跟踪（归属 issue 已关闭就新开并把发现链路写全）——#44 曾把它
   记进 lesson 后归给已关闭的 #37，无人承接：教训日志不是工单池。
+  任务动了 swf 资产入库（`assets/legacy-assets.txt` / `libraries.xml`）的，
+  加跑 `python tools/swf_code_audit.py`（CI swf-audit 同款门禁，见「资产」节）。
 - 翻不过去（行为无法等价）的地方不要硬翻：`BLOCKED: <类名.方法名，卡在什么>`。
 
 ### 资产
 
+- **入库前先验内容（2026-11-24 help.swf 教训，#65）**：任何要按「素材」消费的
+  swf（Loader 加载 / getMaterial / className 取符号）先跑
+  `python tools/swf_code_audit.py`——报 LEAK（带交互代码、既不在
+  `scripts/decompile-legacy.sh` 的 main_swfs 也不在 `tools/swf-code-baseline.json`
+  登记账）的 swf **不是素材**，输出
+  `BLOCKED: <swf> 自带 AS3，须进 main_swfs 反编译（人管）+ 立项翻译`，不要按
+  素材映射了事。「按引用形态分类」救不了你——help.swf 就是裸 Loader 加载被当
+  素材、6 个类无人翻。新模块/新活动开工（含未来的牧场）第一件事同跑这条审计，
+  差集（CI 名 swf-audit 同款门禁）逐个给出去向。
 - 需要新资产时：把路径加进 `assets/legacy-assets.txt`（相对
   `legacy/deploy/QFarmFlash/` 的完整路径），同步脚本会拷进 `assets/legacy/`。
   **不要手拷文件、不要改资产内容**。

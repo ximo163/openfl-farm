@@ -3,6 +3,7 @@ package tools;
 import haxe.Json;
 import sys.io.File;
 import tools.TimelineTypes.ClipSpec;
+import tools.TimelineTypes.LabelHit;
 import utest.Assert;
 
 /**
@@ -11,28 +12,42 @@ import utest.Assert;
  *
  * 期望值出处：
  * - 序列项四件与「期望序列从 swf 结构静态提取」：verification.md「动画与
- *   特效怎么验」第 1 节（时间轴行为比对）——docs 仓库在容器外不可达，
- *   引文以 issue #56 转述为准（// issue #56）。
+ *   特效怎么验」第 1 节（时间轴行为比对）——docs 仓库在容器外不可达
+ *   （github.com/ximo163/openfl-farm-docs 实测 404），引文以 issue #56 转述
+ *   为准（// issue #56）。
  * - 推进契约（每步 +1 带回绕、步后记录、先冻结第 1 帧、单帧剪辑跳过）：
  *   tools/StepAnimate.hx:79（gotoAndStop((currentFrame % totalFrames) + 1)）、
  *   :107-113（stopTree）、:116-129（stepTree，:122 的 totalFrames>1 门）。
- * - swf 结构样例（php tools/dump_swf.php 容器内实测输出 + 帧标签探针扫描）：
+ * - swf 结构样例（php tools/dump_swf.php 容器内实测输出，对
+ *   assets/legacy-assets.txt 全 69 项跑过一遍；帧数另与
+ *   spec/swf-inventory.json frames 字段交叉核对）：
  *   · fish_01.swf：主轴 1 帧、8 个 DefineSprite 全多帧——FJ_01_2_2=char#7
  *     6 帧、FJ_01_2_0=char#14 6 帧、FS_01_0_2=char#23 8 帧、FS_01_1_2=
  *     char#32 8 帧、FS_01_2_2=char#41 8 帧、FS_01_0_0=char#49 8 帧、
  *     FS_01_1_0=char#57 8 帧、FS_01_2_0=char#66 8 帧（SymbolClass 导出名）；
- *     根脚本帧 1（主轴 DoABC）；sprite 层无脚本帧。
+ *     根脚本帧 1（主轴 DoABC）；sprite 层无脚本帧；无任何 FrameLabel 行、
+ *     DefineSceneAndFrameLabelData 帧标签 0。
  *   · water_v_5.swf：WaterLand3=char#27 26 帧、StoneFrame1=char#30 单帧、
- *     主轴 1 帧、根脚本帧 1。
+ *     主轴 1 帧、根脚本帧 1、多帧的只有 WaterLand3、无 FrameLabel 行。
  *   · redUpBanner_v_2.swf：redUpBanner=char#18 3 帧（库帧率 12）。
  *   · FDog100_v_1.swf：主轴 695 帧（spec/swf-inventory.json frames:695，
- *     6290 资产中 90 个主轴多帧之一——inventory 实测 90/6290 与 issue 转
- *     述一致）、FDog100=char#91 151 帧、char#90 23 帧（无导出名）、根脚本
- *     帧 1。
- *   · 帧标签：assets/legacy-assets.txt 全部 69 个可解析资产的
- *     DefineSceneAndFrameLabelData 与 sprite 内 FrameLabel 扫描均为空——
- *     清单内资产的期望标签命中序列恒空；带标签的用例因此是合成结构
- *     （// issue #56：钉 labelHits 推导本身）。
+ *     inventory 里 6290 个 swf 中主轴多帧的恰 90 个，与 issue 转述一致）、
+ *     FDog100=char#91 151 帧、char#90 23 帧（无导出名）、根脚本帧 1。
+ *   · 帧标签（dump_swf.php 的 FrameLabel/DefineSceneAndFrameLabelData 行，
+ *     69 项全量实测）：**12/69 资产含 FrameLabel(43)**——9 个只在主轴
+ *     frame1（包装类名：main3_v_221 "module_Main"、shop_v_7
+ *     "module_shop_ShopWrapper" 等；这些 swf 主轴均 1 帧，不构成比对单元）；
+ *     3 个含多帧带标签 sprite：farmui_full_v_40（char#680 FarmLoading 48 帧
+ *     f23"loop"、char#536 SellLockIcon 2 帧 f1"lock"/f2"unlock"、char#588
+ *     farmui_full_1_fla.lock_mc_46 2 帧 f1"unlock"/f2"lock"、char#76 GiftIcon
+ *     42 帧 f3"GiftMove"）、farmui1_v_42（char#136 GiftIcon 42 帧 f3
+ *     "GiftMove"、char#60 SellLockIcon 2 帧 f1"lock"/f2"unlock"）、
+ *     lite_ui_v_0（char#9 FarmLoading_Lite 48 帧 f23"loop"）。
+ *     DefineSceneAndFrameLabelData(86) 只出现在主轴（56/69 个资产），帧标签
+ *     段全清单为 0（只有场景名，如 fish_01 的「场景 1」）——比对会用到的
+ *     标签全部来自 tag43。前一轮（write-tests attempt 1）曾断言「69 资产
+ *     （含 sprite 内）FrameLabel 均为空」被驳回：标签用例一律取上述实测
+ *     数据，不造合成标签。
  * - 键名/键空串=根/"#<id>" 无导出名：// issue #56（StepAnimate.hx:17 用法
  *   行「空串=根」先例）。
  */
@@ -162,7 +177,7 @@ class TimelineSpecTest {
 				head: [2, 3, 1, 2], tail: [3], len: 5
 			},
 			{
-				src: "最小多帧 N=2，K=4：每步翻转",
+				src: "最小多帧 N=2，K=4：每步翻转（farmui SellLockIcon 同形）",
 				frames: 2, steps: 4,
 				head: [2, 1, 2], tail: [1], len: 4
 			}
@@ -192,31 +207,85 @@ class TimelineSpecTest {
 		Assert.same([], TimelineSpec.frameSequence(clip(26), 0));
 	}
 
-	// ---- labelHits：帧标签命中序列 ----
+	// ---- labelHits：帧标签命中序列（用例全部取清单内真实带标签 sprite） ----
 
-	function test_labelHits_in_step_order() {
-		// 合成结构（清单 69 资产扫描无帧标签，见类头）：N=6，标签 frame1="a"、
-		// frame4="b"。第 s 步落帧 (s%6)+1：frame4 在 s=3、frame1 在 s=6
-		var c:ClipSpec = {key: "Labeled", isMain: false, frames: 6, labels: [{frame: 1, name: "a"}, {frame: 4, name: "b"}], scriptFrames: []};
-		Assert.same([{step: 3, frame: 4, name: "b"}, {step: 6, frame: 1, name: "a"}], TimelineSpec.labelHits(c, 8));
-		// K=5：第二圈未到 frame1，只命中 frame4
-		Assert.same([{step: 3, frame: 4, name: "b"}], TimelineSpec.labelHits(c, 5));
-		// 多标签多圈：N=4，frame2="x"/frame3="y"/frame4="z"，K=6 命中 5 次（按步序）
-		var c2:ClipSpec = {key: "L2", isMain: false, frames: 4, labels: [{frame: 2, name: "x"}, {frame: 3, name: "y"}, {frame: 4, name: "z"}], scriptFrames: []};
-		Assert.same([
-			{step: 1, frame: 2, name: "x"},
-			{step: 2, frame: 3, name: "y"},
-			{step: 3, frame: 4, name: "z"},
-			{step: 5, frame: 2, name: "x"},
-			{step: 6, frame: 3, name: "y"}
-		], TimelineSpec.labelHits(c2, 6));
-		// 标签在步数之外（frame6 但 K=3）：不命中
-		var c3:ClipSpec = {key: "L3", isMain: false, frames: 6, labels: [{frame: 6, name: "late"}], scriptFrames: []};
-		Assert.same([], TimelineSpec.labelHits(c3, 3));
+	function test_labelHits_real_labeled_clips() {
+		// 结构数据出处（类头「帧标签」条，dump_swf.php 实测）；期望值按推进
+		// 契约独立推导：第 s 步后落帧 (s%N)+1，该帧带标签即命中，按步序排列
+		var rows:Array<{src:String, c:ClipSpec, steps:Int, hits:Array<LabelHit>}> = [
+			{
+				// farmui1_v_42 SellLockIcon（char#60）2 帧 f1"lock"/f2"unlock"
+				// （farmui_full_v_40 的 char#536 同名同帧数、标签同组）。K=2 恰一
+				// 圈：步 1 落 f2"unlock"、步 2 落 f1"lock"——命中按步序，与
+				// 标签表序（f1 在前）相反
+				src: "SellLockIcon 2 帧 K=2：命中步序与表序相反",
+				c: {key: "SellLockIcon", isMain: false, frames: 2, labels: [{frame: 1, name: "lock"}, {frame: 2, name: "unlock"}], scriptFrames: []},
+				steps: 2,
+				hits: [{step: 1, frame: 2, name: "unlock"}, {step: 2, frame: 1, name: "lock"}]
+			},
+			{
+				// 同一剪辑 K=6：三圈，lock/unlock 交替成对
+				src: "SellLockIcon 2 帧 K=6：三圈交替",
+				c: {key: "SellLockIcon", isMain: false, frames: 2, labels: [{frame: 1, name: "lock"}, {frame: 2, name: "unlock"}], scriptFrames: []},
+				steps: 6,
+				hits: [
+					{step: 1, frame: 2, name: "unlock"},
+					{step: 2, frame: 1, name: "lock"},
+					{step: 3, frame: 2, name: "unlock"},
+					{step: 4, frame: 1, name: "lock"},
+					{step: 5, frame: 2, name: "unlock"},
+					{step: 6, frame: 1, name: "lock"}
+				]
+			},
+			{
+				// farmui1_v_42 GiftIcon（char#136）42 帧 f3"GiftMove"（farmui_full
+				// _v_40 的 char#76 同名同构）。K=42：f3 只在步 2 出现（(2%42)+1=3），
+				// 一圈内恰一次
+				src: "GiftIcon 42 帧 K=42：圈内单次命中",
+				c: {key: "GiftIcon", isMain: false, frames: 42, labels: [{frame: 3, name: "GiftMove"}], scriptFrames: []},
+				steps: 42,
+				hits: [{step: 2, frame: 3, name: "GiftMove"}]
+			},
+			{
+				// farmui_full_v_40 FarmLoading（char#680，与 lite_ui_v_0 的
+				// FarmLoading_Lite char#9 同构）48 帧 f23"loop"。K=10：步 1..10
+				// 落帧 2..11，到不了 f23——不命中（标签在步数之外）
+				src: "FarmLoading 48 帧 K=10：loop 帧未及",
+				c: {key: "FarmLoading", isMain: false, frames: 48, labels: [{frame: 23, name: "loop"}], scriptFrames: []},
+				steps: 10,
+				hits: []
+			},
+			{
+				// 同上 K=70（一圈 48 步再走 22 步）：f23 在步 22 与步 70
+				// （70%48=22）各命中一次
+				src: "FarmLoading 48 帧 K=70：两圈中两次 loop",
+				c: {key: "FarmLoading", isMain: false, frames: 48, labels: [{frame: 23, name: "loop"}], scriptFrames: []},
+				steps: 70,
+				hits: [{step: 22, frame: 23, name: "loop"}, {step: 70, frame: 23, name: "loop"}]
+			},
+			{
+				// farmui_full_v_40 lock_mc_46（char#588）2 帧 f1"unlock"/f2"lock"
+				// （与 SellLockIcon 同帧数、名字互换）。K=4：两圈
+				src: "lock_mc_46 2 帧 K=4",
+				c: {key: "farmui_full_1_fla.lock_mc_46", isMain: false, frames: 2, labels: [{frame: 1, name: "unlock"}, {frame: 2, name: "lock"}], scriptFrames: []},
+				steps: 4,
+				hits: [
+					{step: 1, frame: 2, name: "lock"},
+					{step: 2, frame: 1, name: "unlock"},
+					{step: 3, frame: 2, name: "lock"},
+					{step: 4, frame: 1, name: "unlock"}
+				]
+			}
+		];
+		for (r in rows) {
+			Assert.same(r.hits, TimelineSpec.labelHits(r.c, r.steps), r.src);
+		}
 	}
 
-	function test_labelHits_empty_for_corpus_assets() {
-		// 清单资产扫描（类头）无任何帧标签：fish_01 全部 8 个多帧剪辑期望命中为空
+	function test_labelHits_empty_for_unlabeled_fish_01() {
+		// fish_01 的 8 个多帧剪辑无帧标签（dump_swf.php 实测：fish_01 无任何
+		// FrameLabel 行、DefineSceneAndFrameLabelData 帧标签 0）——期望命中为
+		// 空。这只是 fish_01 的性质，不是全清单的（12/69 资产有标签，类头）
 		var spec = TimelineSpec.parseAssetStructure(File.getContent(STRUCTURE_FIXTURE));
 		for (c in TimelineSpec.multiFrameClips(spec)) {
 			Assert.same([], TimelineSpec.labelHits(c, TimelineSpec.stepsFor(spec)), c.key);
@@ -231,7 +300,7 @@ class TimelineSpecTest {
 			{src: "fish_01 FS_* 8 帧 K=8：恰一圈", frames: 8, steps: 8, loops: 1, endFrame: 1},
 			{src: "fish_01 FJ_* 6 帧 K=8：一圈余 2 步 → 终点 3", frames: 6, steps: 8, loops: 1, endFrame: 3},
 			{src: "redUpBanner 3 帧 K=5：一圈余 2 → 终点 3", frames: 3, steps: 5, loops: 1, endFrame: 3},
-			{src: "N=2 K=4：两圈", frames: 2, steps: 4, loops: 2, endFrame: 1},
+			{src: "farmui SellLockIcon 2 帧 K=6：三圈回 1", frames: 2, steps: 6, loops: 3, endFrame: 1},
 			{src: "FDog100 #90 23 帧 K=695：695=23*30+5 → 30 圈终点 6", frames: 23, steps: 695, loops: 30, endFrame: 6},
 			{src: "FDog100 FDog100 151 帧 K=695：695=151*4+91 → 4 圈终点 92", frames: 151, steps: 695, loops: 4, endFrame: 92},
 			{src: "FDog100 主轴 695 帧 K=695：恰一圈", frames: 695, steps: 695, loops: 1, endFrame: 1},

@@ -2,6 +2,10 @@
 // V1 探路工具（issue #1）：无依赖的 SWF 结构速查。只读二进制，输出每个样本的
 // 头部（版本/帧率/帧数/舞台矩形）、标签普查、每个 DefineSprite 的帧数与嵌套、
 // DefineSound / StartSound / DoAction / SymbolClass 位置。
+// issue #56 增补：帧标签三路全打——根与 sprite 内的 FrameLabel(43)（带 1 基
+// 帧号）、DefineSceneAndFrameLabelData(86) 的场景名与帧标签段（变长 u32 + \0
+// 结尾串，编码对齐 haxelib swf 3.4.0 的同名 tag 解析器）。动画标签大多在嵌套
+// sprite 里，只有 root 扫描会漏。
 // 用法：php tools/dump_swf.php <file.swf> [file2.swf ...]
 //
 // 为什么不用 swf 库的解析器：它 import format.abc（容器里没有 format haxelib，
@@ -37,6 +41,19 @@ function read_rect(&$d, &$p) {
     return $mins; // SWF 顺序：Xmin, Xmax, Ymin, Ymax
 }
 
+// SWF 变长 u32（DefineSceneAndFrameLabelData 的场景数/帧号用）：低 7 位一档、
+// 高位续传，最多 5 字节。与 haxelib swf 3.4.0 SWFData.readEncodedU32 一致。
+function read_var_u32(&$d, &$p) {
+    $v = 0; $shift = 0;
+    for ($i = 0; $i < 5; $i++) {
+        $b = ord($d[$p]); $p++;
+        $v |= ($b & 0x7F) << $shift;
+        if (($b & 0x80) === 0) break;
+        $shift += 7;
+    }
+    return $v;
+}
+
 const TAG_NAMES = [
     0=>'End',1=>'ShowFrame',2=>'DefineShape',4=>'PlaceObject',5=>'RemoveObject',6=>'DefineBits',
     7=>'DefineButton',8=>'JPEGTables',9=>'SetBackgroundColor',10=>'DefineFont',11=>'DefineText',
@@ -60,6 +77,7 @@ function walk_tags(&$d, &$p, $end, $ctx, $indent, &$report) {
     $startSound_frames = [];          // StartSound 出现时本层已见 ShowFrame 数（1 基帧号）
     $doaction_frames = [];
     $place_chars = [];                // 本层放置过的 character id（去重）
+    $framelabels = [];                // FrameLabel(43)：[1 基帧号, 名字]（issue #56 标签扫描）
     while ($p < $end) {
         $codeLen = read_u16($d, $p);
         $code = $codeLen >> 6; $len = $codeLen & 0x3F;
@@ -76,6 +94,12 @@ function walk_tags(&$d, &$p, $end, $ctx, $indent, &$report) {
             case 12: case 72: case 79: case 82: // DoABC 系列：记录出现帧
                 $doaction_frames[] = $sprite_frames + 1;
                 break;
+            case 43: // FrameLabel：体是 \0 结尾名（+可选 anchor 字节）。标签作用在
+                // 即将到来的帧上：出现时本层已见 ShowFrame 数 + 1（1 基）
+                $r = $body; $s = '';
+                while ($r < $body + $len && $d[$r] !== "\0") $s .= $d[$r++];
+                $framelabels[] = [$sprite_frames + 1, $s];
+                break;
             case 39: // DefineSprite：递归
                 $q = $body;
                 $charId = read_u16($d, $q);
@@ -91,11 +115,13 @@ function walk_tags(&$d, &$p, $end, $ctx, $indent, &$report) {
                 $report['sprites'][$idx]['counts'] = $stats['counts'];
                 $report['sprites'][$idx]['startSound'] = $stats['startSound'];
                 $report['sprites'][$idx]['doAction'] = $stats['doAction'];
+                $report['sprites'][$idx]['frameLabels'] = $stats['frameLabels'];
                 break;
         }
     }
     return ['frames' => $sprite_frames, 'counts' => $tag_counts,
-            'startSound' => $startSound_frames, 'doAction' => $doaction_frames];
+            'startSound' => $startSound_frames, 'doAction' => $doaction_frames,
+            'frameLabels' => $framelabels];
 }
 
 function name_tag($code) { return TAG_NAMES[$code] ?? "Tag_$code"; }
@@ -130,15 +156,21 @@ function dump_file($path) {
     echo implode(', ', $parts) . "\n";
     if ($rootStats['startSound']) {
         echo "  根 StartSound: ";
-        foreach ($rootStats['startSound'] as [$f, $id]) echo "帧$f→sound#$id ";
+        foreach ($rootStats['startSound'] as [$f, $id]) echo "帧{$f}→sound#{$id} ";
         echo "\n";
     }
     if ($rootStats['doAction']) echo "  根脚本(DoAction/DoABC) 帧: " . implode(',', $rootStats['doAction']) . "\n";
+    // 根帧标签（tag43，含 1 基帧号）——walk_tags 顺带收集
+    if ($rootStats['frameLabels']) {
+        echo "  根 FrameLabel: ";
+        foreach ($rootStats['frameLabels'] as [$f, $s]) echo "帧{$f}→\"{$s}\" ";
+        echo "\n";
+    }
 
     // 声音定义
     // 重走一遍根流找 DefineSound / SymbolClass / FrameLabel / ExportAssets 的原始体
     $q = $tagStart;
-    $labels = []; $exports = []; $sounds = []; $bgcolor = null;
+    $exports = []; $sounds = []; $bgcolor = null; $dsfld = null;
     while ($q < strlen($body)) {
         $codeLen = read_u16($body, $q);
         $code = $codeLen >> 6; $len = $codeLen & 0x3F;
@@ -154,10 +186,27 @@ function dump_file($path) {
             $fmtName = [ 'uncompressed', 'ADPCM', 'MP3', 'uncompressed-le', 'Nellymoser16k', 'Nellymoser8k', 'Nellymoser', 'Speex' ][$fmt] ?? "?$fmt";
             $samples = read_u32($body, $r + 1);
             $sounds[] = sprintf('#%d %s %dHz %dbit %s 样本%d 数据%dB', $id, $fmtName, $rateHz, $size ? 16 : 8, $type ? 'stereo' : 'mono', $samples, $len - 7);
-        } else if ($code === 43) { // FrameLabel：体就是一串以 \0 结尾的名字
-            $r = $b; $s = '';
-            while ($r < $q && $body[$r] !== "\0") $s .= $body[$r++];
-            $labels[] = $s;
+        } else if ($code === 86) { // DefineSceneAndFrameLabelData：场景数 +（帧标签数
+            // 0 基帧号 + \0 结尾名）——编码与 haxelib swf 3.4.0
+            // TagDefineSceneAndFrameLabelData.parse 一致（readEncodedU32 + readSTRING）
+            $r = $b; $scenes = []; $labels86 = [];
+            $sceneCount = read_var_u32($body, $r);
+            for ($i = 0; $i < $sceneCount && $r < $q; $i++) {
+                read_var_u32($body, $r); // scene offset
+                $sn = '';
+                while ($r < $q && $body[$r] !== "\0") $sn .= $body[$r++];
+                $r++;
+                $scenes[] = $sn;
+            }
+            $labelCount = read_var_u32($body, $r);
+            for ($i = 0; $i < $labelCount && $r < $q; $i++) {
+                $fn = read_var_u32($body, $r); // 0 基帧号
+                $nm = '';
+                while ($r < $q && $body[$r] !== "\0") $nm .= $body[$r++];
+                $r++;
+                $labels86[] = [$fn + 1, $nm]; // 统一 1 基（与 tag43 行一致）
+            }
+            $dsfld = ['scenes' => $scenes, 'labels' => $labels86];
         } else if ($code === 56 || $code === 76) { // ExportAssets / SymbolClass
             $r = $b; $count = read_u16($body, $r);
             for ($i = 0; $i < $count; $i++) {
@@ -171,7 +220,16 @@ function dump_file($path) {
         }
     }
     if ($sounds) { echo "  DefineSound:\n"; foreach ($sounds as $s) echo "    $s\n"; }
-    if ($labels) echo "  FrameLabel: " . implode(', ', $labels) . "\n";
+    if ($dsfld) {
+        echo "  DefineSceneAndFrameLabelData: 场景" . count($dsfld['scenes']) . "（"
+           . implode(',', $dsfld['scenes']) . "）帧标签" . count($dsfld['labels']);
+        if ($dsfld['labels']) {
+            echo "（";
+            foreach ($dsfld['labels'] as [$f, $s]) echo "帧{$f}→\"{$s}\" ";
+            echo "）";
+        }
+        echo "\n";
+    }
     if ($exports) { echo "  Export/SymbolClass:\n"; foreach ($exports as $e) echo "    $e\n"; }
     if ($bgcolor !== null) echo "  SetBackgroundColor: $bgcolor\n";
 
@@ -184,10 +242,16 @@ function dump_file($path) {
         }
         if ($s['startSound']) {
             echo sprintf('  sprite#%d(parent %s) StartSound: ', $s['id'], $s['parent']);
-            foreach ($s['startSound'] as [$f, $id]) echo "帧$f→sound#$id ";
+            foreach ($s['startSound'] as [$f, $id]) echo "帧{$f}→sound#{$id} ";
             echo "\n";
         }
         if ($s['doAction']) echo sprintf("  sprite#%d(parent %s) 脚本帧: %s\n", $s['id'], $s['parent'], implode(',', $s['doAction']));
+        // sprite 内帧标签（issue #56：动画标签大多在嵌套 sprite 里，root 扫描看不到）
+        if ($s['frameLabels']) {
+            echo sprintf('  sprite#%d(parent %s) FrameLabel: ', $s['id'], $s['parent']);
+            foreach ($s['frameLabels'] as [$f, $nm]) echo "帧{$f}→\"{$nm}\" ";
+            echo "\n";
+        }
     }
     echo "  DefineSprite 总数={$mc}，多帧(>1)的 " . count($multi) . " 个：\n";
     foreach (array_slice($multi, 0, 40) as $m) echo "    $m\n";

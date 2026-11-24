@@ -11,8 +11,13 @@ import tools.TimelineTypes.LoopEnd;
  *
  * 输入是「结构 JSON」：format 库读 swf 的提取器（tools/ 一次性工具，实现
  * 阶段按此契约交付）逐资产产出的纯数据（键名 // issue #56；与
- * test/fixtures/timeline-fish01-structure.json 同构）：
+ * test/fixtures/timeline-fish01-structure.json 同构）。
+ * 提取器注意：format 3.7.0 的 Reader 在 a6291_1.swf（清单第 8 行）上抛 Eof
+ * （PlaceObject3 className，Reader.hx:971），69 个清单资产只能读 68 个——
+ * 提取器对该件要么自带标签走查（dump_swf.php 同款，零依赖），要么单点容
+ * 错跳过并记录。
  *
+ * 结构 JSON 形状：
  *   { "asset": "<assets/legacy-assets.txt 相对路径>",
  *     "clips": [ {
  *         "id": 23,             // DefineSprite char id；主时间轴为 null
@@ -64,7 +69,10 @@ class TimelineSpec {
 	}
 
 	/** 期望的帧标签命中序列（序列项二）：按步序，第 s 步落在带标签的帧上即
-	 * 命中（currentLabel 变为该名）；同帧多标签按 labels 表顺序。 */
+	 * 命中（currentLabel 变为该名）；同帧多标签按 labels 表顺序（防御性
+	 * 规则——清单 12 个带标签资产的标签都在相异帧，此分支无实测用例）。
+	 * 标签来源 tag43 与 tag86 并收（运行侧 haxelib swf 3.4.0 两路都进
+	 * frameIndexes；清单内 tag86 帧标签段全空，实测标签均出自 tag43）。 */
 	static public function labelHits(c:ClipSpec, steps:Int):Array<LabelHit> {
 		throw new haxe.Exception("not implemented");
 	}

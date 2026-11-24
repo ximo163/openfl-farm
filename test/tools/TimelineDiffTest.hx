@@ -19,10 +19,17 @@ import utest.Assert;
  * - 帧事件盲区（scriptFrames 非空 → 降级标注不判红、实测照录、非假绿）：
  *   issue #56「已知盲区要写清」；swf 侧事实——FrameScriptParser.convertToJS
  *   只对有类绑定的符号做 AVM2 frameN→JS（haxelib swf 3.4.0）、
- *   AnimateTimeline.hx:102-130 非 js 目标丢弃 scriptSource；清单资产 sprite
- *   层无脚本帧、根脚本帧恒 1（php tools/dump_swf.php 实测，见
- *   TimelineSpecTest 类头）——fish_01/FS_* 与 water_v_5/WaterLand3 的
- *   scriptFrames 为空（可严格判红），FDog100 主轴 scriptFrames=[1]（盲区）。
+ *   AnimateTimeline.hx:102-130 非 js 目标丢弃 scriptSource；脚本帧分布
+ *   （dump_swf.php 69 资产实测）：sprite 层全清单无帧脚本，主轴帧脚本有则
+ *   恒在帧 1（62 资产单个、lite_ui_v_0 十个、farmui_full_v_40 一百八十一个
+ *   都在帧 1；farm/diy/1-4 与 diy/board/1 五件无脚本）——fish_01/FS_* 与
+ *   water_v_5/WaterLand3 的 scriptFrames 为空（可严格判红），FDog100 主轴
+ *   scriptFrames=[1]（盲区）。
+ * - 帧标签：12/69 资产含 FrameLabel(43)、3 个含多帧带标签 sprite
+ *   （farmui_full_v_40/farmui1_v_42/lite_ui_v_0 的 SellLockIcon/GiftIcon/
+ *   FarmLoading 等）——详单见 TimelineSpecTest 类头「帧标签」条（dump_swf.php
+ *   实测）。前一轮曾误断「全清单无帧标签」并被驳回，凭空标签判红的用例
+ *   只对实测无标签的剪辑（water_v_5/WaterLand3）做。
  * - swf 结构数值（帧数/键）：见 TimelineSpecTest 类头（dump_swf.php 容器
  *   内实测 + spec/swf-inventory.json frames 字段）。
  * - 记录 JSON 键名与「labels/frameEvents 可缺省 = 空」：// issue #56
@@ -129,30 +136,34 @@ class TimelineDiffTest {
 	// ---- 序列项二 labelHits ----
 
 	function test_labelHits_mismatch_reds() {
-		// 合成带标签结构（清单 69 资产无帧标签，见 TimelineSpecTest 类头）：
-		// N=6、标签 frame1="a"/frame4="b"、K=6 → 期望命中 [{3,"b"},{6,"a"}]
+		// 真实带标签剪辑（farmui1_v_42 SellLockIcon=char#60，dump_swf.php 实测：
+		// 2 帧、f1"lock"/f2"unlock"；结构详单见 TimelineSpecTest 类头）。单剪辑
+		// 资产 stepsFor=2，期望命中：步 1"unlock"、步 2"lock"
 		var labeled:AssetSpec = {
-			asset: "synthetic-labels",
-			clips: [{key: "Labeled", isMain: false, frames: 6, labels: [{frame: 1, name: "a"}, {frame: 4, name: "b"}], scriptFrames: []}]
+			asset: "source/core/module/mc/main/farmui1_v_42.swf",
+			clips: [{key: "SellLockIcon", isMain: false, frames: 2, labels: [{frame: 1, name: "lock"}, {frame: 2, name: "unlock"}], scriptFrames: []}]
 		};
-		// 忠实：全绿
-		var ok = TimelineDiff.compare(labeled, record("synthetic-labels", 6, [
-			clipRec("Labeled", faithful(6, 6), 1, 1, '[{"step":3,"name":"b"},{"step":6,"name":"a"}]')
+		// 忠实（含真实标签命中序列，帧序 2,1 即 (s%2)+1）：全绿
+		var ok = TimelineDiff.compare(labeled, record("source/core/module/mc/main/farmui1_v_42.swf", 2, [
+			clipRec("SellLockIcon", [2, 1], 1, 1, '[{"step":1,"name":"unlock"},{"step":2,"name":"lock"}]')
 		]));
 		Assert.isTrue(ok.pass);
-		// 漏命中：期望首个命中在第 3 步
-		var missed = TimelineDiff.compare(labeled, record("synthetic-labels", 6, [clipRec("Labeled", faithful(6, 6), 1, 1)]));
+		// 漏命中：期望首个命中在第 1 步
+		var missed = TimelineDiff.compare(labeled, record("source/core/module/mc/main/farmui1_v_42.swf", 2, [
+			clipRec("SellLockIcon", [2, 1], 1, 1)
+		]));
 		Assert.isFalse(missed.pass);
 		Assert.equals("labelHits", missed.clips[0].mismatches[0].item);
-		Assert.equals(3, missed.clips[0].mismatches[0].step);
-		// 多出命中：第 2 步冒出 "zz"
-		var spurious = TimelineDiff.compare(labeled, record("synthetic-labels", 6, [
-			clipRec("Labeled", faithful(6, 6), 1, 1, '[{"step":2,"name":"zz"},{"step":3,"name":"b"},{"step":6,"name":"a"}]')
+		Assert.equals(1, missed.clips[0].mismatches[0].step);
+		// 多出命中：第 2 步的 "lock" 后面又冒出 "zz"
+		var spurious = TimelineDiff.compare(labeled, record("source/core/module/mc/main/farmui1_v_42.swf", 2, [
+			clipRec("SellLockIcon", [2, 1], 1, 1, '[{"step":1,"name":"unlock"},{"step":2,"name":"lock"},{"step":2,"name":"zz"}]')
 		]));
 		Assert.isFalse(spurious.pass);
 		Assert.equals("labelHits", spurious.clips[0].mismatches[0].item);
 		Assert.equals(2, spurious.clips[0].mismatches[0].step);
-		// 清单资产期望命中恒空（扫描无帧标签）：探针凭空记标签 = 红
+		// 实测无标签的剪辑（water_v_5 WaterLand3，dump 实测无 FrameLabel 行）：
+		// 探针凭空记标签 = 红（清单 12/69 资产有标签，此处用例挑的是真没有的）
 		var invented = TimelineDiff.compare(waterSpec(), record("source/core/module/ui/water_v_5.swf", 26, [
 			clipRec("WaterLand3", faithful(26, 26), 1, 1, '[{"step":4,"name":"surprise"}]')
 		]));

@@ -63,7 +63,8 @@ bindBitmap 头注）。全部进 dceAnchor（#20 段）。
 ## 已知偏差/待裁决
 
 - BeastAPI.showFarmStage/showWildStage 是空 stub（#pasture 牧场片接线）；
-  ButtonMaker.addTarget/setSelected/setEnabled 是既有 stub。
+  ButtonMaker 真身在 #44 落地（本片调 addTarget/setEnabled 自此有状态
+  机行为）。
 - 好友头像、vip_mc 的 `ExternalInterface.call("window.open", …)`、召回
   `QzoneJSAPI.sendGameRequest` 全走 shim.QQOutlets（deviations
   qqoutlets-shim/no-qzone-jsapi 族，PR 列候选）。

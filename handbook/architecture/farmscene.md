@@ -173,8 +173,9 @@ addWindowChild/removeAllButton，行号照原文），**init 的缓存子件上�
 
 PopUpManager/PopUpLayer（弹窗宿主层、模态遮罩、Enter 派发 keyEnter）与
 ToolTipManager/ToolTipLayer（stage MOUSE_OVER 捕获 + flowMouse/钳位）#18
-已全真；EffectManager/DragManager 仍是签名 stub，进出场动画/拖拽随后续
-模块接（PopUpLayer 头注的 [param] 数组形态就是它们的 rest 参数约定）。
+已全真；EffectManager/DragManager 的真身在 #44 落地（进出场动画走
+TweenLite、TitleWindow 拖拽自此有行为；[param] 数组形态就是它们的 rest
+参数约定）。
 
 **spec 外的形态 stub 也要逐字保真**（#8 implement 驳回轮的教训）：构造器
 签名、默认参数值、成对出现的成员都要照原文——即使本片没有任何调用方也不

@@ -113,7 +113,11 @@ jobs:
           haxelib run lime config ANDROID_NDK_ROOT "$ANDROID_NDK_ROOT"
           haxelib run lime config JAVA_HOME "$JAVA_HOME"
           haxelib run lime config ANDROID_SETUP true
-          haxelib run openfl build android -release
+          # -debug（2026-11-24 起真机验收期）：hxcpp 只在 debug 配置编入
+          # HXCPP_STACK_TRACE 异常栈采集，release 下闪退日志只有一行消息没有
+          # Called from 栈（#10 真机 Invalid field:x 靠 455 候选静态排除的教训）。
+          # 验收期结束是否回 -release 由人再定。
+          haxelib run openfl build android -debug
 
       - name: 找 APK
         id: apk

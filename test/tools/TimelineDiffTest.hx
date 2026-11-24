@@ -21,8 +21,9 @@ import utest.Assert;
  *   只对有类绑定的符号做 AVM2 frameN→JS（haxelib swf 3.4.0）、
  *   AnimateTimeline.hx:102-130 非 js 目标丢弃 scriptSource；脚本帧分布
  *   （dump_swf.php 69 资产实测）：sprite 层全清单无帧脚本，主轴帧脚本有则
- *   恒在帧 1（62 资产单个、lite_ui_v_0 十个、farmui_full_v_40 一百八十一个
- *   都在帧 1；farm/diy/1-4 与 diy/board/1 五件无脚本）——fish_01/FS_* 与
+ *   恒在帧 1（62 资产单个、lite_ui_v_0 十个、farmui_full_v_40 二百零七个
+ *   （207，根标签普查 DoABC2×207）都在帧 1；farm/diy/1-4 与 diy/board/1 五件
+ *   无脚本）——fish_01/FS_* 与
  *   water_v_5/WaterLand3 的 scriptFrames 为空（可严格判红），FDog100 主轴
  *   scriptFrames=[1]（盲区）。
  * - 帧标签：12/69 资产含 FrameLabel(43)、3 个含多帧带标签 sprite

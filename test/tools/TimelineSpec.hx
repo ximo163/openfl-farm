@@ -13,7 +13,7 @@ import tools.TimelineTypes.LoopEnd;
  * 阶段按此契约交付）逐资产产出的纯数据（键名 // issue #56；与
  * test/fixtures/timeline-fish01-structure.json 同构）。
  * 提取器注意：format 3.7.0 的 Reader 在 a6291_1.swf（清单第 8 行）上抛 Eof
- * （PlaceObject3 className，Reader.hx:971），69 个清单资产只能读 68 个——
+ * （PlaceObject3 className，Reader.hx:961），69 个清单资产只能读 68 个——
  * 提取器对该件要么自带标签走查（dump_swf.php 同款，零依赖），要么单点容
  * 错跳过并记录。
  *

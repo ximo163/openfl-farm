@@ -1341,3 +1341,28 @@
   黑像素兜底，计数进报告不静默；104 张 jpg 资产的采样面因此是假的——
   这正是「自回归模式先立、换源后保真」的动机之一（真 Flash 参考侧没有
   这个盲区）。
+
+## 2026-11 · #58（帧脚本清查 write-tests：帧归属以字节码为准、多对单调用）
+
+- **帧脚本的帧归属别信转述（issue 文本、PORT-NOTE），字节码才是准数**：
+  farmui_full MaoPaoFlag 构造器实为 `addFrameScript(0, frame1, 23,
+  frame24)` 且 frame1 是**空方法**——`infoTxt.text = talkInfo; stop()`
+  两句都在 frame24。但 issue #58 文本和两处 PORT-NOTE
+  （widgets/LandTalkTip.hx:61「帧脚本 frame1 读 talkInfo」、src/MaoPaoFlag.hx:7
+  「frame1 脚本做 infoTxt.text = talkInfo、frame24 stop」）全写成 frame1
+  填文本。FFDec 的 AS3 文本本身没错（MaoPaoFlag.as:20-28 与 ABC 同源），
+  错的是转述层。坑点：这个 swf 不在 CI 反编译五 swf 内时人不会翻 FFDec
+  文本，只看 haxelib swf 转出的 scriptSource（JS 转译，帧号语义又隔着
+  0/1 基）——两头都容易抄错。防：帧号/动作归属进补偿表或门禁前，先用
+  format 3.7.0 dump 构造器和 frameN 体核对（test/tools/
+  FrameScriptSurveyTest.hx 的 fixtures 就是模板：op 序列逐字抄，含第二个
+  OThis 这种「看着多余」的接收者）。同一符号跨 swf 版本还会分叉：
+  farmui1 的同名 MaoPaoFlag frame1 是 `talkInfo = ""`（实义），数据必须
+  按 (libraryId, symbol) 取，不能按符号名全局合并。
+- **mxmlc 把多对 (帧, 方法) 合成单次 addFrameScript 调用**：两对 =
+  4 实参一次调（`addFrameScript(0, frame1, 23, frame24)`），只按
+  「实参恒为 2」写的抽取器会把 MaoPaoFlag 报成无绑定。且各 swf 编译期
+  取方法形态不同（FindPropStrict+GetProp / OGetLex / OThis+GetProp 三型
+  实测并存）。防：按实参个数切窗口、偶奇位配对，三型都进 fixtures；
+  帧号换算 0 基实参 → 1 基帧号，与方法名 frameN 的 N 互证。
+

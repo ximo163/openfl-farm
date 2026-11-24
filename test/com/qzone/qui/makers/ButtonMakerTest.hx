@@ -48,15 +48,22 @@ class ButtonMakerTest {
 
 	// :27-30：addTarget 缺省（enabled=true, selected=false）——buttonMode/
 	// mouseChildren 落位；setEnabled(true) 撞上 Sprite 缺省 mouseEnabled=true
-	// 的 `!=` 门（:86）是 no-op：无 ROLL_OVER 监听、滤镜不动、tabEnabled
-	// 保持缺省 false
+	// 的 `!=` 门（:86）是 no-op：无 ROLL_OVER 监听、滤镜不动、:99 的
+	// tabEnabled 写入未触达
 	public function test_addTarget_defaults_set_flags_and_skip_noop_enable() {
 		var sprite = new Sprite();
 		ButtonMaker.addTarget(sprite);
 		Assert.isTrue(sprite.buttonMode); // :29
 		Assert.isFalse(sprite.mouseChildren); // :30
 		Assert.isFalse(sprite.hasEventListener(MouseEvent.ROLL_OVER)); // :86 no-op，未挂监听
-		Assert.isFalse(sprite.tabEnabled); // :99 未触达
+		// changed for #44: 原断言 isFalse 把「:99 未写」当成「读缺省 false」，
+		// 但 tabEnabled 的文档缺省带例外清单——buttonMode=true 的
+		// Sprite/MovieClip 缺省即 true（Adobe AS3 参考
+		// flash.display.InteractiveObject.tabEnabled）；openfl 9.5.2
+		// Sprite.hx:393-396 的 get_tabEnabled（__tabEnabled==null ?
+		// __buttonMode）照此实现，addTarget 后读 true，逐字对应的翻译无法
+		// （也不应）让它读 false
+		Assert.isTrue(sprite.tabEnabled); // :99 未触达，读 buttonMode 联动缺省 true
 		Assert.equals(0, sprite.filters.length); // 滤镜未动
 	}
 

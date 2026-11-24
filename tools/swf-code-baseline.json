@@ -23,8 +23,8 @@
     },
     {
       "pattern": "source/core/module/mc/farm/wild/*",
-      "reason": "野生动物玩法族：农场侧 WildShellNc_v_5 由 FarmApplication.loadWildShell 反射（#65 同族登记）；牧场侧 WildShell_v_33/WildScene/ToolScene/武器/动物素材由 mc_main.php wild 节与目录清单加载。牧场批次再立项，农场侧待 #65 后续",
-      "tracked": "#65"
+      "reason": "野生动物玩法族：农场侧 WildShellNc_v_5 由 FarmApplication.loadWildShell 反射（规格提取 #66）；牧场侧 WildShell_v_33/WildScene/ToolScene/武器/动物素材由 mc_main.php wild 节加载，归牧场批次",
+      "tracked": "#66"
     },
     {
       "pattern": "source/core/module/mc/farm/intel/*",
@@ -76,16 +76,16 @@
       "tracked": "牧场批次"
     },
     "source/core/module/ui/cards_v_1.swf": {
-      "reason": "卡牌游戏模块（nc_main.php:21，main3 ModuleCardsGame 反射拉 CardsGameController）；#65 同族登记",
-      "tracked": "#65"
+      "reason": "卡牌游戏模块（nc_main.php:21，main3 ModuleCardsGame 反射拉 CardsGameController）；规格提取 #66",
+      "tracked": "#66"
     },
     "source/core/module/ui/quickshoot_v_0.swf": {
-      "reason": "快速拍照模块（nc_main.php:20，main3 ModuleQuickShoot 反射拉 QuickShootController）；#65 同族登记",
-      "tracked": "#65"
+      "reason": "快速拍照模块（nc_main.php:20，main3 ModuleQuickShoot 反射拉 QuickShootController）；规格提取 #66",
+      "tracked": "#66"
     },
     "source/core/module/ui/gifts_v_11.swf": {
-      "reason": "FreeGift 礼物模块（nc_main.php:22）；加载链细节待考证",
-      "tracked": "#65"
+      "reason": "礼物模块（nc_main.php:22 FreeGift Module）；加载链考证定级 #67",
+      "tracked": "#67"
     },
     "source/core/module/ui/lite_ui_v_0.swf": {
       "reason": "轻量 UI 库（10 个类）；用途与加载链待分诊",
@@ -136,8 +136,8 @@
       "tracked": null
     },
     "source/core/module/ui/main/farmui_full_v_40.swf": {
-      "reason": "farmui 完整版（207 个 DoABC/60 文本，URL 表引用）——量级异常，#65 已建议单独立审计 issue（所有者拍板）",
-      "tracked": "待立项"
+      "reason": "farmui 完整版（207 个 DoABC/60 文本）；加载链考证定级 #67",
+      "tracked": "#67"
     },
     "source/core/module/ui/main/decorate_v_0.swf": {
       "reason": "ui/main/ 路径下的另一份 decorate（现行 ui/decorate_v_0.swf 已在 main_swfs）；副本关系未考证",

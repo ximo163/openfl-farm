@@ -267,6 +267,25 @@ class TestMain {
 		// 复用件清单（StepAnimate.hx 等）
 		runner.addCase(new tools.TimelineSpecTest());
 		runner.addCase(new tools.TimelineDiffTest());
+		// issue #57：T2 资产渲染对拍门禁（write-tests 阶段，对 stub 失败）——
+		// 拍点计划纯逻辑（tools.RenderPlan：静态关键帧=起点帧+各标签帧去重
+		// 升序、单帧符号也拍起点；播放抽帧=起点/中间/回绕必抽+每隔 k 步、
+		// 单帧与零步门、k<1 报错）；容差像素 diff 纯逻辑（tools.PixelDiff：
+		// 四通道等权逐像素取最大、边界含的 perPixel/ratio 容差、缺省 0/0
+		// 逐字节、尺寸不等哨兵红且容差不救、长度前置校验）；图像内容哈希
+		// （tools.RenderHash：MD5 over 规范文本布局钉死、宽高参与、一字节
+		// 敏感——基线兼容性哨兵）；基线文件（tools.BaselineFile：
+		// asset|symbol|shot 拍点键、JSON 形状与缺省、键升序确定性序列化、
+		// source 换源口）；自回归基线比对与聚合报告（tools.RenderDiff：逐
+		// 拍点哈希比对、missing/extra 对齐红、注入改坏恰红一处、报告定位
+		// 拍点键）。stub 按「stub 归树」规矩放 tools/tools/（implement 原地
+		// 填充）；截图探针、node/浏览器通道选型、生成/重建 CLI 按 issue 走
+		// implement 阶段
+		runner.addCase(new tools.RenderPlanTest());
+		runner.addCase(new tools.PixelDiffTest());
+		runner.addCase(new tools.RenderHashTest());
+		runner.addCase(new tools.BaselineFileTest());
+		runner.addCase(new tools.RenderDiffTest());
 		Report.create(runner);
 		runner.run();
 	}

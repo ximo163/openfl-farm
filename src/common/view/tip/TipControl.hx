@@ -1,47 +1,69 @@
 package common.view.tip;
 
+import events.TipEvent;
 import interfaces.IMsgCenter;
 
 /**
- * common.view.tip.TipControl —— V3b/V3c 模块翻译，闭包 stub（issue #7）。
- * 提示控件（注册表 + show/hide/update）属于通用视图的提示片；这里只保
- * 公共 API 形态（TipControl.as:13-62 的签名）让 FarmStage/FarmApplication
- * 编译，原版行为（延时显示 TipLayer 上的 tip）随提示片接入。
+ * common.view.tip.TipControl —— TipControl.as 逐句对应（issue #42，替换 #7
+ * 的闭包 stub）。提示控制面：tip 名 → 类的注册表（FarmStage 建层时灌入），
+ * show/update/hide 把请求派发成 TipEvent，由 TipLayer 监听落地。
  */
 @:keep
 class TipControl {
-	// TipControl.as:8
-	private var m_libs:Dynamic;
+	// TipControl.as:9
+	private var m_msgCenter:IMsgCenter;
+
+	// TipControl.as:11（null 起手，register 才建对象——getClass 的 null 门）
+	private var m_lib:Dynamic;
 
 	// TipControl.as:13-18
 	public function new(param1:IMsgCenter) {
-		this.m_libs = {};
+		this.m_lib = null;
 		this.m_msgCenter = param1;
 	}
-
-	private var m_msgCenter:IMsgCenter;
 
 	// TipControl.as:20-23
 	public function getMsgCenter():IMsgCenter {
 		return this.m_msgCenter;
 	}
 
-	// TipControl.as:25-31（update：同屏 tip 数据刷新，提示片翻译）
-	public function update(param1:String, param2:Dynamic):Void {}
+	// TipControl.as:25-31
+	public function update(param1:String, param2:Dynamic):Void {
+		var _loc3_:TipEvent = new TipEvent(TipEvent.TIP_UPDATE);
+		_loc3_.tipArgument = param2;
+		_loc3_.tipType = param1;
+		this.m_msgCenter.dispatchEvent(_loc3_);
+	}
 
-	// TipControl.as:33-40（getClass：注册表查类）
+	// TipControl.as:33-40
 	public function getClass(param1:String):Class<Dynamic> {
-		return Reflect.field(this.m_libs, param1);
+		if (this.m_lib == null) {
+			return null;
+		}
+		return Reflect.field(this.m_lib, param1);
 	}
 
-	// TipControl.as:42-46（hide：隐藏当前 tip，提示片翻译）
-	public function hide():Void {}
+	// TipControl.as:42-46
+	public function hide():Void {
+		var _loc1_:TipEvent = new TipEvent(TipEvent.TIP_HIDE);
+		this.m_msgCenter.dispatchEvent(_loc1_);
+	}
 
-	// TipControl.as:48-55（register：tip 名 → 类）
+	// TipControl.as:48-55
 	public function register(param1:String, param2:Class<Dynamic>):Void {
-		Reflect.setField(this.m_libs, param1, param2);
+		if (this.m_lib == null) {
+			this.m_lib = {};
+		}
+		Reflect.setField(this.m_lib, param1, param2);
 	}
 
-	// TipControl.as:57-62（show：显示 tip，提示片翻译）
-	public function show(param1:String, param2:Dynamic, param3:Int = 0, param4:Int = 0):Void {}
+	// TipControl.as:57-65
+	public function show(param1:String, param2:Dynamic, param3:Int = 0, param4:Int = 0):Void {
+		var _loc5_:TipEvent = new TipEvent(TipEvent.TIP_SHOW);
+		_loc5_.tipArgument = param2;
+		_loc5_.tipType = param1;
+		_loc5_.tX = param3;
+		_loc5_.tY = param4;
+		this.m_msgCenter.dispatchEvent(_loc5_);
+	}
 }

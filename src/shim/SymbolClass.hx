@@ -258,7 +258,16 @@ class SymbolClass {
 				// 均经 requestClass/getMaterial 反射构造。两库非预载，
 				// bind/bindBitmap 按需拉起（见 ensureLibraryLoaded）
 				ConfirmIcon, ValidateCodeContent, BlackUpgradeShare, RedUpBanner,
-				RequestErrorBG, RequestErrorZZ, RequestErrorHP, RequestErrorFZ
+				RequestErrorBG, RequestErrorZZ, RequestErrorHP, RequestErrorFZ,
+				// #42 提示片：TipBg 提示底板（MouseTip/CropInfoTip/DiyMouseTip/
+				// HistoryItemTip 经 Utils.getMaterial 反射构造）与 FarmInfoPlus
+				// 地块信息提示版面（LandInfoTip 同款；原版类体长在该 swf 的
+				// DoABC2，方法按 ABC 字节码复原，见类头）——宿主都是
+				// farmui_full_v_40，零外部引用，必须锚进来。
+				TipBg, FarmInfoPlus,
+				// #43 引导片：GameGuide ctor 经 Utils.getMaterial("Arrow") 反射
+				// 构造的引导箭头（farmui2_v_58，零外部引用）
+				Arrow
 			];
 		}
 #end

@@ -190,6 +190,36 @@ class TestMain {
 		// 越延迟单次派发、killTweensOf 两分支（禁用/补渲染收尾）、killVars
 		// 摘链冻结、propTweenLookup 起止登记、构造链 initClass 四静态
 		runner.addCase(new com.greensock.TweenLiteTest());
+		// issue #42：提示片（write-tests 阶段，对 stub 失败）——TipControl
+		// 注册表与 show/update/hide 的 TipEvent 派发、TipLayer getTip 门位/
+		// onTipShow 待显暂存/onTipUpdate 同型刷新路由、四 tip 真身纯面
+		// （MouseTip/CropInfoTip 的 data null→"" 归一与文本落位、无舞台
+		// mX/mY -5/+20 跟随、DiyMouseTip 到期文案含原文 "11" 尾、
+		// LandInfoTip countHealth 健康衰减/动作档位表（含 :107 整式截断与
+		// Array 日志丢弃）/jsonToArray 时序排序/data 路由/-60/-120 锚点）
+		runner.addCase(new common.view.tip.TipControlTest());
+		runner.addCase(new framework.layers.TipLayerTest());
+		runner.addCase(new common.view.tip.MouseTipTest());
+		runner.addCase(new common.view.tip.CropInfoTipTest());
+		runner.addCase(new common.view.tip.DiyMouseTipTest());
+		runner.addCase(new common.view.tip.LandInfoTipTest());
+		// issue #43：引导与启动杂尾（write-tests 阶段，对 stub 失败）——
+		// adobe StringUtil 整类（beginsWith/endsWith 前后缀比对、ltrim/rtrim
+		// 的 >32 裁剪集与 U+00A0 边界、replace 手工扫描的跳针/空针语义、
+		// remove、stringsAreEqual 大小写两档与 null 相等、stringHasValue）；
+		// DisplayUtil 整类（setEnabled 的 hasOwnProperty 门与 filters 无条件
+		// 写、copyProperties 选择性拷贝与双真值门、copyXYWH 四键、removeChild
+		// 三卫塔回归钉、removeChildByName/At、disableMouse 双分支）；
+		// GameGuide 步进纯面（九步坐标表、toggle_water/_stop/前进向/表长
+		// 四道门、大小视图偏移与 icon 特加、(-1,-1) 动态锚、dir 朝向变换、
+		// 容器缺失抛错、hide/autoHide(0)、tip 懒建只在 WATER_FISH_ITEM 步
+		// 挂载）；CursorLayer setPosition 两分支与 remove；UserChangingBar
+		// 切换结果分支与 __reload__ 重派发
+		runner.addCase(new com.adobe.utils.StringUtilTest());
+		runner.addCase(new com.qzone.utils.DisplayUtilTest());
+		runner.addCase(new module.GameGuideTest());
+		runner.addCase(new framework.layers.CursorLayerTest());
+		runner.addCase(new module.load.UserChangingBarTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
 		// issue #41：farm-basic 窗口框架 9 类（write-tests 阶段，对 stub 失败）——
 		// WindowControl 注册表与 open/close 事件语义、WindowLayer 模块托管窗

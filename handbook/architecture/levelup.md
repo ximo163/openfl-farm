@@ -18,7 +18,11 @@
 - `LandRender`/`SeedItemRender`：面板行素材渲染（Update.landRender /
   Update.seedsRender）。
 - `AlignUtils`：无状态布局数学（`int(...)` 截断 → Std.int）。
-- `LevelUpModule`：模块壳（#7 形态，按 MSG 挂载）。
+- `LevelUpModule`：升级触发壳（#7 模块壳 → #43 真身）。ctor 建 LevelUpModel
+  并听 `MSG_USER_LEVEL_UP`（Consts.as:418 "userLevelUp"；派发点在
+  Session.as:381 账户更新的跨级分支，Session 侧随会话片接入）；
+  `__onLevelUp` 从 nowLevel 逐级 `new LevelUpWindow` 补弹到 preLevel+1——
+  一次涨多级每级各一扇。
 
 ## 面板素材（levelUpUI_v_1.swf）
 

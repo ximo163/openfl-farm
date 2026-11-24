@@ -139,7 +139,41 @@ EffectManager 同为签名 stub（PopUpLayer/ToolTipLayer 调它们空体）。
   （m_cusrsorLib——**原版拼写如此，别修**）+ setCursor/useSystem 经
   msgCenter 派发 CursorEvent；`CursorTool`/`CursorCropSeed` 携带工具态。
   光标视觉类是 farmui_full_v_40 的 SymbolClass 符号（符号 shim 规则见
-  [assets.md](assets.md)）。
+  [assets.md](assets.md)）。宿主层 `CursorLayer`（framework/layers，
+  #7 闭包 stub → #43 真身）：SET_CURSOR 按注册表反射构造光标剪辑（带参
+  写 `cursorArgument` 走 Reflect.setProperty——光标类的 (never,set) 属性；
+  name/mouse* cast MovieClip 后写真属性）、SWITCH_CURSOR 系统鼠标
+  （Mouse.show/hide）与剪辑对偶、stage 鼠标四事件驱动 ARROW 按下/弹起帧
+  与跟随（CROPSEED 按自身宽高居中）。触屏下该层可见性归 shim 适配层按
+  spec/interaction-map.json 决定，不进翻译类。
+- tip/（← common/view/tip/）：#42 提示片全量翻译（基类 `Tip` #19 已译，
+  `HistoryItemTip` #19）。`TipControl` 是注册表（m_lib **null 起手**，
+  register 才建——getClass 的 null 门）+ show/update/hide 派发 TipEvent
+  （"tipShow"/"update"/"tipHide"）；FarmStage 建层时 register 五个 tip 名。
+  宿主 `TipLayer`（framework/layers，#7 闭包 stub → #42 真身）：TIP_SHOW
+  暂存 (名/载荷/tX/tY) + `Timer(300,1)` 延时，getTip 反射建类 +
+  m_libs 按名缓存实例，MOUSE_MOVE 跟随（mX/mY 写进当前 tip），TIP_UPDATE
+  只刷同屏同型，TIP_HIDE remove + timer.stop。四个 tip：`MouseTip`
+  （TipBg 底板 + (5,5) autoSize 文本，mX/mY 舞台钳位）、`CropInfoTip`
+  （MouseTip 换 htmlText + GlowFilter(16777215,1,3,3) + leading 10；
+  data **直写 _data 不走 super**）、`DiyMouseTip`（装饰名/到期时间两行，
+  `+"11"` 尾串是原文笔误照抄）、`LandInfoTip`（地块详情窗，最重的一类）。
+  LandInfoTip：`FarmInfoPlus` 版面 + countHealth 健康值推进（AS3 int
+  复合赋值整式截断、`[[]].concat(标量)` 包裹语义——lessons #42 write-tests
+  条）+ onFarmTimer 按 `_step==7`/remain 分流 setStep7（枯死）/setOutput
+  （成熟，含已摘取与健康模式文案分岔）/setInfo（生长，含 countHealth 状态
+  文案与精灵加成）+ ENTER_FRAME 按 `_frequence`（剩余 <1h 走 1s 否则 5s）
+  自刷新；mX/mY 锚点 -60/-120。支撑成员同 commit 补：`GetCropID.remainTime`
+  （:375-459，红地 *0.8 提速同 idState）、`Consts.FAIRY_LAND`（:584）、
+  `Session.healthModeTimeOut`（:26）。
+  **TipBg/FarmInfoPlus 的类体长在 farmui_full_v_40 的 DoABC2 里**（该 swf
+  不在 CI 反编译的五代码 swf 内，legacy/decompiled 无产物）：按
+  `tools/DumpAbcMethod.hx` retarget 导出的 ABC 字节码复原（字段表 + 方法体
+  + 构造器只 super()/addFrameScript——帧脚本由 AnimateLibrary 承担不走
+  Haxe），见 lessons #42 implement 条；LandInfoTip 侧对 `_farmInfo`
+  （MovieClip 类型，保持原样）的 set* 调用走 Reflect.callMethod 动态派发
+  （ModuleWater 先例），`["stepText"]["defaultTextFormat"]` 走 As3.childOf
+  取出后 cast TextField 写真属性。
 - `MaterialProxy`：素材代理，executeCommand(2102) 经
   PluginManager.getPluginByID → IPluginProxy 接口（#9 新翻，src/com/qzone/
   farm/api/interfaces/，IFarmAPI 仍属插件接口片未翻，PluginManager.api

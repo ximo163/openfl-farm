@@ -190,6 +190,8 @@ class Consts {
 	public static final MSG_FAIRY_DONATED:String = "DonateFriendFairy";
 	// Consts.as:402（issue #9：签到活动图标增删）
 	public static final MSG_REFRESH_CARDSGAME:String = "CardsGameUpdated";
+	// Consts.as:418（issue #43：升级模块监听，Session 账户更新跨级时派发）
+	public static final MSG_USER_LEVEL_UP:String = "userLevelUp";
 	// Consts.as:600（issue #9：ShortcutBar 监听安装入口图标）
 	public static final ADD_ENTRANCE_ICON:String = "ADD_ENTRANCE_ICON";
 	// Consts.as:590（关闭背包窗口）
@@ -317,6 +319,8 @@ class Consts {
 	public static final ITEM_TYPE_DIY:String = "808080";
 	public static final ORGANIC_FERTILIZER_ID:Int = 30;
 	public static final FAIRY_LADY:Int = 92001;
+	// Consts.as:584（issue #42：LandInfoTip 的土地精灵加成判定）
+	public static final FAIRY_LAND:Int = 92002;
 	// Consts.as:586（issue #36：PlantsPage 卖出合计的财神爷加成判定）
 	public static final FAIRY_MONEY:Int = 92003;
 	// Consts.as:588（issue #9：AddExpFloating 的花神加成判定）

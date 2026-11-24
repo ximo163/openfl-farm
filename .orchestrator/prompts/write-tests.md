@@ -17,6 +17,16 @@
   漏了只能整轮回退重写（#8 踩过，review-impl round 2 驳回点）。
 - 被测代码还不存在时，加最小的能编译的 stub：签名正确，函数体
   `throw new Error("not implemented")`。不要做任何实现。
+- **stub 放它完工后所属的树，不进 `test/`（#56 教训）**：`test/**` 对
+  implement 是 append-only——凡进 `test/` 的文件视为定稿，骨架放进去
+  implement 就填不了。#56 的 stub 类头注释写着「实现阶段按此契约交付」，
+  原地填仍被驳回，implement 被迫用 import.hx 类路径遮蔽绕开，留下永不
+  编译的僵尸文件。规矩：产品类 stub 放 `src/` 对应包路径；被测的是
+  「测试的零件」（期望侧纯逻辑、对拍器等验证基建）时放 `tools/`（包
+  `tools`、路径 `tools/tools/`，`test.hxml` 已 `-cp tools`，测试照常
+  import）。被测试 import 的 tools/ 类必须在 test.hxml 的 -lib 集内可
+  编译——要 format 等额外库的走自己的编译命令（`haxe -cp tools -lib
+  format …`），测试别 import 它。
 - 新测试必须在实现之前失败；已有的测试必须照样通过。
 - 只有 issue 改变了某个已有测试检查的行为时，才能改那个测试，并在上方注释
   `// changed for #<issue>: <原因>`。

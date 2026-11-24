@@ -9,6 +9,18 @@
 # 会拖出这些类型，缺它编译不过（write-tests 容器内实测）。
 -cp src
 -cp test
+# -cp tools（#56 教训，2026-11-24 加）：write-tests 给「验证基建」类（期望侧
+#   纯逻辑、对拍器等——被测的是测试的零件，不是 src/ 产品类）留的 stub，
+#   按「stub 放它完工后所属的树」的规矩放 tools/（包 tools，路径
+#   tools/tools/），测试照常 import。没有这条 classpath 时，这类骨架只剩
+#   src/（污染「src/＝翻译产物」语义）或 test/（test/** 对 implement 是
+#   append-only，骨架放进去就永远填不了——#56 attempt-1 原地填被驳回、
+#   attempt-2 被迫用 import.hx 类路径遮蔽绕开，留下两个永不编译的僵尸
+#   stub 文件）。注意：被测试 import 的 tools/ 类必须在本文件这套 -lib
+#   内可编译；要 format/swf 等额外库的走自己的编译命令
+#   （haxe -cp tools -lib format …，tools/tools/TimelineExtract.hx 先例），
+#   不进测试线。
+-cp tools
 -lib utest
 -lib openfl
 -lib lime

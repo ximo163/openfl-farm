@@ -19,6 +19,10 @@ class Consts {
 	public static final ALERT_TYPE_TIP:String = "tip";
 	// Consts.as:224（issue #9：NavigationBar 超市未点亮提示窗类型）
 	public static final ALERT_TYPE_TEXT:String = "text";
+	// Consts.as:226（issue #41：AlertWindow 的图类型提示窗，setData 走 ExtLoader）
+	public static final ALERT_TYPE_PIC:String = "picture";
+	// Consts.as:228（issue #41：AlertWindow 的窄图类型提示窗）
+	public static final ALERT_TYPE_PIC2:String = "picture2";
 	public static final MSG_REQUEST_NET_CLIENT_ERROR:String = "RequestNetError";
 	public static final MSG_REQUEST_CHECK_ERROR:String = "RequestCheckError";
 	public static final CMD_NAME_REQUESTSERVICE:String = "CmdServiceRequest";

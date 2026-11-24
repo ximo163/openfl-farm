@@ -63,7 +63,13 @@
   char id 与 SymbolClass 对应关系（CWS 解压 + fps/frameCount 跳过即可），
   别按 MovieClip 惯例写完再撞运行期。bind/bindButton 共用 pending 队列
   （target 放宽到 DisplayObject；afterAttach 登记只有 MovieClip 路径会走，
-  SimpleButton 恒空数组）。**部署包缺符号的**（#9：ButtonMaker 表引用的
+  SimpleButton 恒空数组）。⑤ **位图符号（DefineBitsJPEG/Lossless 导出，
+  BitmapData shim，VipL1/RequestError 四图先例）**：`SymbolClass.bindBitmap
+  (this, 库id, 符号名)`，构造底全透明、库图 copyPixels 补像素；#41 起
+  位图路径也有按需拉起（pendingBitmaps 队列，与 pending 合并一次
+  loadLibrary——lime 的 loadLibrary 不去重并发请求，ensureLibraryLoaded
+  的在途表兜着），此前「库未加载即留痕丢弃」的缺口消除。**部署包缺符号
+  的**（#9：ButtonMaker 表引用的
   ButtonSuperMarket/ButtonMill1/NavigationLeftArrow/NavigationRightArrow
   全部署 swf 都不导出——main3 代码比部署包的 farmui_full 新一个版本位）：
   保空 MovieClip 垫片让 getMaterial 反射可构造、启动不炸（原版跑这份

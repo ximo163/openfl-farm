@@ -221,6 +221,19 @@ class TestMain {
 		runner.addCase(new framework.layers.CursorLayerTest());
 		runner.addCase(new module.load.UserChangingBarTest());
 		// 新测试文件在这里注册：runner.addCase(new XxxTest());
+		// issue #41：farm-basic 窗口框架 9 类（write-tests 阶段，对 stub 失败）——
+		// WindowControl 注册表与 open/close 事件语义、WindowLayer 模块托管窗
+		// 拒建、Alert/Confirm/AddButton/ValidateCode/RequestError/RedUp 六窗
+		// 的数据提取与文案表、UpgradeBlack 的 formatNumber 分组
+		runner.addCase(new common.view.window.WindowControlTest());
+		runner.addCase(new framework.layers.WindowLayerTest());
+		runner.addCase(new common.view.window.AlertWindowTest());
+		runner.addCase(new common.view.window.ConfirmWindowTest());
+		runner.addCase(new common.view.window.AddButtonWindowTest());
+		runner.addCase(new common.view.window.ValidateCodeWindowTest());
+		runner.addCase(new common.view.window.RequestErrorWindowTest());
+		runner.addCase(new common.view.window.RedUpWindowTest());
+		runner.addCase(new common.view.window.UpgradeBlackWindowTest());
 		Report.create(runner);
 		runner.run();
 	}

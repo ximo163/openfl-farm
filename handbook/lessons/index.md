@@ -1152,3 +1152,64 @@
   Mouse 路径（onSetCursor/onSwitchCursor/setCurrentCursor），只测 setPosition/
   remove 这类纯几何面——CursorLayerTest 头注已写，后续给光标类补测试
   照此口径，CI 时间轴/场景比对兜 Mouse 面。
+
+## 2026-11 · #44（qui 管理器/工具 write-tests：无窗 Stage 垫子与滤镜比对）
+
+- **eval 单测要「有 frameRate 的舞台 + ENTER_FRAME 推进」时用
+  Type.createEmptyInstance(Stage) 补钉四字段，别等真窗口**：
+  `new Stage(null)` 在 ctor 的 `window.application` 上抛 "field access on
+  null"（eval 无 lime 窗口）；空实例 + Reflect 补钉 `stage`（指自身，等价
+  ctor 的 `this.stage = this`）、`window`（空 Window + NativeWindow 后端钉
+  `frameRate`，Stage 本体在 window==null 时 frameRate 恒 0 且 set 不落）、
+  `__uncaughtErrorEvents`（Stage.__dispatchEvent 进门就读，null 即炸派发链）
+  后，frameRate 可读可写、addEventListener/dispatchEvent 照常——测试手动
+  `stage.dispatchEvent(new Event(Event.ENTER_FRAME))` 就是确定性帧推进
+  （`test/support/FakeStage.hx`，openfl 9.5.2 + lime 8.3.2 容器内实证；
+  MouseTipTest 补 `__transform` 的姊妹手法）。防：帧驱动类（FrameTimer 这类
+  「ms→帧换算 + frameCount%delay 门」）的数值面别因「eval 没舞台」放弃钉板
+  或改 sleep；同理 MouseEvent 直接 dispatchEvent 在无舞台 Sprite 上可用，
+  startDrag/stopDrag 也不炸——按钮状态机/拖拽事件流都能纯驱动。
+- **openfl 的 `DisplayObject.filters` 是克隆语义，断言要比结构不是比引用
+  **：set_filters 把数组元素逐个 clone 进新数组、get_filters 再 copy 一份
+  （openfl 源码核实）——`sprite.filters == Style.getXxxFilter()` 恒假。期望
+  侧取 Style 缓存单例的 `[0]` matrix、实际侧同名取，`Std.string(matrix)`
+  相等比对（Style 三张按钮滤镜表都是单元素 ColorMatrixFilter）；空表
+  （rollOut）断言 `length == 0`。防：filters 相关断言先想克隆链，引用比对
+  是假红。
+
+## 2026-11 · #44（qui 管理器/工具 implement：tabEnabled 平台读值与 Dictionary 迭代）
+
+- **openfl 的 Sprite.tabEnabled 在未显式写过时读值联动 buttonMode，与
+  Adobe 文档相反——「未触达」断言钉 openfl 属性读值前先查 getter 链**：
+  openfl 9.5.2 Sprite.hx:393-396 覆写 `get_tabEnabled()` 为
+  `__tabEnabled == null ? __buttonMode : __tabEnabled`；而 Adobe AIR SDK
+  参考的 Sprite.buttonMode 原文是 "To include a sprite in the tab order,
+  set the tabEnabled property (inherited from the InteractiveObject class
+  and **false by default**) to true"——AS3 的 tabEnabled 是独立 Boolean 槽
+  （getter 不联动，读值 false；「buttonMode 精灵进 tab 序」是播放器焦点
+  系统的实效行为，openfl 把它折进了 getter）。后果：ButtonMaker.as:29 的
+  `param1.buttonMode = true` 照译后，任何「tabEnabled 未被写过应读
+  false」的断言（ButtonMakerTest.hx:59）在 openfl 上恒红、忠实翻译无解，
+  本轮因此 NEEDS-TESTS；断言需改为不依赖 tabEnabled 读值（或按 openfl
+  读值钉），差异属 deviations 候选（openfl-sprite-tabenabled-buttonmode，
+  人裁决）。防：给「未触达的 openfl 属性」写断言，先读 openfl 源里该属性
+  的 getter 有没有联动/回退链（tabEnabled/focusRect 这类三态家族是重灾
+  区）；别按 Adobe 文档默认值直接定期望。
+- **openfl Dictionary 没有 keys()：迭代用 `iterator()`——它返回的是键**：
+  `for (k in dict.keys())` 编译红（"has no field keys"）；abstract 上的
+  `iterator():Iterator<K>` 内部转调底层 map 的 `this.keys()`（openfl
+  Dictionary.hx:120-127，文档注释与类型签名牛头不对马嘴）。AS3 for-in 收
+  Dictionary 键 → `for (k in dict.iterator())`。另：js/eval 的 IntMap
+  keys() 先快照成数组再迭代，循环内 remove 当前键（FrameTimer.onEnterFrame
+  的 clearTimeout）安全、中途 set 新键不进本轮——与 AVM2 对动态 Dictionary
+  的枚举行为同口径。防：`Dictionary<UInt/Int,…>` 的键迭代别顺手写
+  `.keys()`，K 是 UInt 也能落 IntMap（探针实证）。
+- **main 上躺着一个既有的 cpp typer 红（#37 遗留，非本片）**：
+  WaterModel.hx:310 的 `this._requestOutputRecord.get(_loc3_._id) == null`
+  ——`Dictionary<Int,Int>` 的 get 返回 Int，静态目标上 `Int == null` 直接
+  "null can't be used as basic type Int"（CLAUDE.md 静态目标规则），#44
+  收工跑 #18/#29 的 include 扫描时现形（stash 前后同现，证明非本片引入；
+  扫描 exclude 表也压不掉——它被别的水模块引用链拖进类型化）。修法在
+  `exists()` 或读经 Dynamic；归 #37/water 片处理，别在无关 issue 里顺手
+  改。防：include 扫描出的错误先 stash 对比分清「本片新引入」还是「main
+  既有」，既有错误只报告不顺手修。

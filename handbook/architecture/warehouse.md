@@ -94,8 +94,9 @@ PackClose（char#179，DefineButton2 → bindButton/SimpleButton）。
 - **外链花束图**：Loader.load(URLRequest) 保持原调用形态（CLAUDE.md：
   远程 swf → Assets 映射只在 mcloader 加载器类；HarvestAnimationCustom
   先例）。花束 pic 是 PHP 下发的完整 http URL。
-- **FrameTimer 是 closure stub**（setTimeout 返 0）：本片 FlowerPlayer
-  用 `As3.setTimeout`，真语义归 qui 片——调用点照译即可。
+- **FrameTimer 真身在 #44 落地**（ENTER_FRAME 帧驱动）：本片 FlowerPlayer
+  当初按 stub 期口径译成 `As3.setTimeout`，调用点保持不动（shim 语义与
+  FrameTimer.setTimeout 等价，改写调用点属顺手重构）。
 
 ## 原版死路/怪癖（照抄不修，PR 说明列过的疑点）
 

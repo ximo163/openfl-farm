@@ -89,8 +89,16 @@ ToolTipManager/ToolTipLayer`，makers `RadioGroup/TipInputMaker`，
 `events.ResizeEvent`、`utils.TextFormatUtil`、12 个皮肤符号 shim 与
 `ButtonDefaultSkin` 等 4 张皮肤表。原 #8/#9 的 `Panel/TitleWindow/Button`
 stub 全部退役（旧调用方编译期已按同签名接上）。ScrollBar 本体仍是 #9
-签名 stub（不构造 ScrollThumb，滑块装配随后续模块），DragManager/
-EffectManager 同为签名 stub（PopUpLayer/ToolTipLayer 调它们空体）。
+签名 stub（不构造 ScrollThumb，滑块装配随后续模块）。#44（qui 管理器/
+工具片）把 #7/#8 留下的四类闭包 stub 换成真身：`makers.ButtonMaker`
+（按钮状态机）、`managers.DragManager`（按命中区名登记的拖拽注册表）、
+`managers.EffectManager`（In/Out 按 `effect` 属性路由动效，无动效直落
+回调；补间经 `tweenerClass`＝TweenLite，#39 本体之上验收）、
+`utils.FrameTimer`（ENTER_FRAME 驱动的 setTimeout/setInterval 替代品：
+delay 存换算后的帧数，`frameCount % delay == 0` 触发、判后自增；
+`init` 只认首个 `_stage`，表项/`_targets` 这类 AS3 Object 走 Dynamic +
+Reflect 读写，Dictionary 迭代用 `iterator()`——它返回的是**键**，
+openfl Dictionary 没有 `keys()`）。
 
 约定（改这些类前必读）：
 

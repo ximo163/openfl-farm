@@ -1,0 +1,86 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 328">
+     <timeline>
+          <DOMTimeline name="Symbol 328">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#9d7684" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="27.7" height="14.0" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="2.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>首页</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="2.0" rightMargin="0.0" size="12" bitmapSize="240" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="2" blurY="2" color="#ffffff" quality="3" strength="1"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="27.7" height="14.0" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="2.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>首页</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="2.0" rightMargin="0.0" size="12" bitmapSize="240" face="SimSun" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="3" blurY="3" color="#000000" quality="3" strength="1"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="27.7" height="14.0" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="2.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>首页</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="2.0" rightMargin="0.0" size="12" bitmapSize="240" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="2" blurY="2" color="#ffffff" quality="3" strength="1"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#666666"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 489 -1| 489 259| -1 259| -1 -1| 489 -1"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

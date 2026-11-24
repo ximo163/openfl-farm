@@ -1,0 +1,65 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 157">
+     <timeline>
+          <DOMTimeline name="Symbol 157">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#d1fdc5">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 41" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="79.9" ty="17.0" a="0.015625" d="0.015625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color redMultiplier="0.0" greenMultiplier="0.0" blueMultiplier="0.0" alphaMultiplier="0.0" redOffset="252" greenOffset="229" blueOffset="95" alphaOffset="255"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#e5318d">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 40" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="63.9" ty="17.0" a="0.015625" d="0.015625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color redMultiplier="0.0" greenMultiplier="0.0" blueMultiplier="0.0" alphaMultiplier="0.0" redOffset="252" greenOffset="229" blueOffset="95" alphaOffset="255"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#b35296" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 39" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="47.9" ty="17.0" a="0.015625" d="0.015625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color redMultiplier="0.0" greenMultiplier="0.0" blueMultiplier="0.0" alphaMultiplier="0.0" redOffset="252" greenOffset="229" blueOffset="95" alphaOffset="255"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

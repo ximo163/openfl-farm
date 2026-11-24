@@ -1,0 +1,872 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 73" linkageClassName="CardsGameWindow" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 73">
+               <layers>
+                    <DOMLayer name="Script Layer" color="#ce457f">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <Actionscript>
+                                        <script>closeBtn.addEventListener(MouseEvent.CLICK,function():*
+{
+   dispatchEvent(new Event("closeCardsGameWindow"));
+});
+yellowBtn.addEventListener(MouseEvent.CLICK,function():*
+{
+   dispatchEvent(new Event("openVipLink"));
+});
+yellowBtn_vip.addEventListener(MouseEvent.CLICK,function():*
+{
+   dispatchEvent(new Event("openVipLink"));
+});
+</script>
+                                   </Actionscript>
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#266ff5">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="359.9" ty="189.1" a="0.016876220703125" d="0.019866943359375" b="-0.0488739013671875" c="0.05755615234375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#769d0f" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#a7de14" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#bfee44" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#6c840d"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                                  <StrokeStyle index="2">
+                                                       <SolidStroke weight="1.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#779f0f"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 8681 2816| 8693 2798| 8678 2817| 8681 2816"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 8610 2835| 8610 2793| 8592 2822"/>
+                                                  <Edge fillStyle0="1" fillStyle1="1" strokeStyle="1" edges="! 8592 2822| 8610 2835"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 8610 2835| 8610 2844"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="1" edges="! 8610 2844| 8610 2899"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 8610 2899| 8610 2921"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="1" edges="! 8610 2921| 8610 2943"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 8610 2943| 8610 3589[ 8088 4192 7376 4604| 7373 4606"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 7373 4606| 6593 4606| 6599 4601| 6612 4604"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 6612 4604| 6607 4599"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 6607 4599| 6609 4597"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="1" edges="! 6609 4597| 6597 4563"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="2" edges="! 6597 4563[ 7971 3653 8541 2881"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 8541 2881| 8537 2883| 8543 2877"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="1" edges="! 8543 2877[ 8550 2865 8537 2818[ 8525 2776 8592 2822"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 8592 2822| 8543 2877"/>
+                                                  <Edge fillStyle0="1" fillStyle1="1" strokeStyle="1" edges="! 8543 2877| 8541 2881"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 8541 2881[ 8580 2858 8610 2844"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 8610 2943| 8594 2960[ 8561 2996 8610 2921"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 8610 2899[ 8364 3197 8276 3282[ 7717 3865 6609 4597"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 6607 4599| 6610 4599"/>
+                                                  <Edge fillStyle0="1" fillStyle1="1" strokeStyle="1" edges="! 6610 4599| 7376 4604"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! 6612 4604| 6611 4601| 6610 4599"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#29f9d9">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 71" name="Activity" centerPoint3DX="340.7" centerPoint3DY="37.35">
+                                             <matrix>
+                                                  <Matrix tx="252.65" ty="-138.2"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#50cace">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 44" name="yellowBtn_vip" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="9.8" ty="-71.2"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#8cee2c">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 41" name="yellowBtn" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="9.8" ty="-71.2"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#70ceb3">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 37" name="closeBtn" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="406.5" ty="-166.8"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7" color="#a2b5aa">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 33" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 8" color="#6fd5d8">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="yellowText" width="143.1" height="18.45" renderAsHTML="true" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="-190.4" ty="-81.25"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>黄钻用户可翻 2 张牌哟</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="center" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="14" bitmapSize="280" face="微软雅黑" fillColor="#ffec00"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="4" blurY="4" color="#9d710f" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 9" color="#b8c92a">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="loginDays" width="47.75" height="26.4" renderAsHTML="true" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="-14.75" ty="-143.2"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>666</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="center" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="20" bitmapSize="400" face="微软雅黑" fillColor="#9bcb5b"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#5f7e0c" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 10" color="#9e908b">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="-18.2" fontRenderingMode="standard" width="1870" height="1234" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="-98.85" ty="-140.2"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.5" bitmapSize="290" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="10" rightMargin="0" fillColor="#715137" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>您已连续签到</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.5" bitmapSize="290" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="10" rightMargin="0" fillColor="#715137" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.5" bitmapSize="290" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="10" rightMargin="0" fillColor="#715137" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>天，</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.5" bitmapSize="290" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="10" rightMargin="0" fillColor="#715137" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;翻牌选择今日奖励吧</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.5" bitmapSize="290" letterSpacing="0" indent="0" leftMargin="2" lineSpacing="10" rightMargin="0" fillColor="#715137" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>^_^</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.5" bitmapSize="290" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="10" rightMargin="0" fillColor="#715137" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 11" color="#fb1081">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#dcc68d"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 2803 -52[ 2806 -144 2796 -231[ 2816 -266 2978 -283[ 3024 -290 3017 -258| 2999 -65| 3099 -56| 2919 178[ 2916 232 2702 -41| 2803 -52"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 12" color="#71c653">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="giftText3" width="127.69999999999999" height="21.15" renderAsHTML="true" isSelectable="false" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="90.7" ty="116.85" a="0.998199462890625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>这是礼物名 </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#709c32" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 13" color="#819898">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="62.8" fontRenderingMode="standard" width="290" height="312" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="66.9" ty="134.8" a="0.9981842041015625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>+</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="21.7" bitmapSize="434" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffff00" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#62892c" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 14" color="#e09079">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="64.5" fontRenderingMode="standard" width="274" height="403" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="51.9" ty="138.8" a="0.9981842041015625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>7</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="21.7" bitmapSize="434" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffff00" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#62892c" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 15" color="#bccf51">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="34.3" fontRenderingMode="standard" width="829" height="314" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="52.0" ty="145.6" a="0.9981842041015625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>连续</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>天</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#709c32" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 16" color="#aafd02">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#aed665"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 4155 3083[ 4105 3369 3955 3592[ 3327 3440 2949 3459[ 2571 3478 2143 3548| 2676 3546[ 2572 3573 2157 3614[ 1743 3655 1691 3232[ 1638 2809 1683 2179| 1650 2176| 1683 2178| 1681 2161[ 1697 2173 1690 2178| 1787 2560[ 1773 2386 1848 2188[ 2735 2195 3527 2090[ 4137 2133 4172 2465[ 4206 2797 4155 3083"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 1997 3446| 2004 3465[ 2009 3479 2027 3489| 1997 3446"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 17" color="#b38f7b">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="giftText2" width="127.69999999999999" height="21.15" renderAsHTML="true" isSelectable="false" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="90.7" ty="24.25" a="0.998199462890625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>这是礼物名 </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#709c32" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 18" color="#97c748">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="64.5" fontRenderingMode="standard" width="265" height="409" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="58.9" ty="44.8" a="0.9981842041015625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>5</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="21.7" bitmapSize="434" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffff00" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#62892c" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 19" color="#3cdb70">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="40.55" fontRenderingMode="standard" width="704" height="314" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="52.0" ty="51.6" a="0.9981842041015625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>连续</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>天</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#709c32" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 20" color="#98cb21">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 21" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 21" color="#55b1e0">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="giftText1" width="127.69999999999999" height="21.15" renderAsHTML="true" isSelectable="false" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="90.7" ty="-73.95" a="0.998199462890625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>这是礼物名 </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters> </characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="1.8" rightMargin="0.0" size="16" bitmapSize="320" face="微软雅黑" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#709c32" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 22" color="#eb53c7">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="64.5" fontRenderingMode="standard" width="267" height="415" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="58.9" ty="-53.2" a="0.9981842041015625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>3</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="21.7" bitmapSize="434" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffff00" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#62892c" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 23" color="#f710d5">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="40.55" fontRenderingMode="standard" width="704" height="314" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="52.0" ty="-46.4" a="0.9981842041015625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>连续</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>天</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.65" bitmapSize="253" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#709c32" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 24" color="#d6ef24">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#aed665"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 1681 -1679[ 1697 -1667 1690 -1662| 1787 -1280[ 1773 -1454 1848 -1652[ 2735 -1645 3527 -1750[ 4137 -1707 4172 -1375[ 4206 -1043 4155 -757[ 4105 -471 3955 -248[ 3327 -400 2949 -381[ 2571 -362 2143 -292| 2676 -294[ 2572 -267 2157 -226[ 1743 -185 1691 -608[ 1638 -1031 1683 -1661| 1650 -1664| 1683 -1662| 1681 -1679"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 1997 -394| 2004 -375[ 2009 -361 2027 -351| 1997 -394"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 25" color="#e4c640">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="23.9" fontRenderingMode="standard" width="1048" height="355" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="77.55" ty="-115.5" a="0.9981842041015625" d="0.9981842041015625" b="0.00408935546875" c="-0.00408935546875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>连续登录奖励</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.5" bitmapSize="290" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#9c753f" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 26" color="#a498ad">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 14" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 27" color="#c20aed">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 13" centerPoint3DX="147.7" centerPoint3DY="35.0">
+                                             <matrix>
+                                                  <Matrix tx="71.35" ty="-138.2"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 28" color="#dad814">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 11" centerPoint3DX="-113.65" centerPoint3DY="-69.0">
+                                             <matrix>
+                                                  <Matrix tx="-184.5" ty="-128.95" a="0.9986724853515625" d="0.9986724853515625" b="-0.048248291015625" c="0.048248291015625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <filters>
+                                                  <GlowFilter blurX="6" blurY="6" color="#ccff00" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 29" color="#47dbdd">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 9" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

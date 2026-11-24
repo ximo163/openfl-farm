@@ -1,0 +1,39 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 298" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 298" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#e6e6e6" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" pixelHinting="true" scaleMode="normal" caps="square" joints="miter">
+                                                            <fill>
+                                                                 <SolidColor color="#4d4d4d"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 481 199| 481 2759| 200 2759[ 0 2759 0 2959| 0 4899[ 0 5099 200 5099| 481 5099| 481 7602[ 481 7800 681 7800| 4120 7800| 4120 0| 681 0[ 481 0 481 199"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 681 40| 4080 40| 4080 7760| 681 7760[ 521 7760 521 7602| 521 5099[ 521 5083 509 5071[ 497 5059 481 5059| 200 5059[ 40 5059 40 4899| 40 2959[ 40 2799 200 2799| 481 2799[ 497 2799 509 2787[ 521 2775 521 2759| 521 199[ 521 40 681 40"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

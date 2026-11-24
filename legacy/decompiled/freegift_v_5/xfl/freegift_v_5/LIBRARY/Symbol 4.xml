@@ -1,0 +1,54 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 4" linkageClassName="HallowTick" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 4">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#9b42ce">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 3" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="18.15" ty="-4.9" a="0.415924072265625" d="0.415924072265625" b="0.415924072265625" c="-0.415924072265625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#2d7c09" quality="1" strength="5"/>
+                                             </filters>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#9fe08c" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#2d7c09" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#2d7c09"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 537 70| 240 367| 119 248[ 89 218 46 216[ 1 218 -30 248[ -61 279 -61 323[ -61 367 -30 398| 165 591[ 196 622 240 622[ 284 622 314 591| 317 589| 320 586| 686 219[ 717 188 717 144[ 717 100 686 70[ 656 39 612 39[ 568 39 537 70"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,57 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 51" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 51" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="66.0" ty="200.0" a="0.0775146484375" d="0.0164794921875" b="0.38604736328125" c="-0.08209228515625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#fdb102" ratio="0.0"/>
+                                                            <GradientEntry color="#c51818" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -1600 -7860[ -1587 -7846 -1575 -7833[ -1577 -7836 -1580 -7840| -1600 -7860"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -1575 -7833[ -959 -6935 -660 -5740| -640 -5600| -520 -5020| -260 -3360| -160 -1860| -160 -860[ -160 -40 -280 1240| -400 2940[ -400 4120 680 6400[ 1320 7740 2140 8620| 2160 8580[ 1840 8000 1700 7440[ 1560 6920 1560 6420| 1880 3920[ 2180 1660 2440 260[ 2700 -1160 1700 -2980[ 864 -5169 -1575 -7833"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="-59.0" ty="-73.0" a="0.07293701171875" d="0.02349853515625" b="0.4241943359375" c="-0.1373291015625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#eda451" ratio="0.0"/>
+                                                            <GradientEntry color="#da340c" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -1580 -7840[ -760 -4480 -1780 -2180[ -2280 -840 -2360 -240| -2540 1720[ -2680 3080 -2180 4720[ -1640 6420 200 7560| 2380 8940| 2520 9020| 1840 7760| 1700 7440[ 1840 8000 2160 8580| 2140 8620[ 1320 7740 680 6400[ -400 4120 -400 2940| -280 1240[ -160 -40 -160 -860| -160 -1860| -260 -3360| -520 -5020| -640 -5600| -660 -5740[ -960 -6940 -1580 -7840"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

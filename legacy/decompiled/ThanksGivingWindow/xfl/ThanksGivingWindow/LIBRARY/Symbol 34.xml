@@ -1,0 +1,38 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 34" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 34" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#244a0a"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="0.0" ty="-2.0" a="0.0030517578125" d="0.0042724609375" b="-0.0054931640625" c="0.00732421875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#549522" ratio="0.007843138"/>
+                                                            <GradientEntry color="#427a18" ratio="0.3882353"/>
+                                                            <GradientEntry color="#264f0a" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 240 -40[ 160 -240 -140 -40"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! -140 -40| -140 -20[ -60 -60 0 -40[ -100 0 -160 60[ -140 40 -40 20[ -40 60 -20 100[ -40 20 40 0[ 120 -40 120 100[ 140 -20 240 -40"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 240 -40[ 260 120 80 120[ -240 101 -259 #87.80[ -260 #89.80 -260 140[ #FFFEFC.80 #89.80 -259 #87.80[ -237 57 -140 -40"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

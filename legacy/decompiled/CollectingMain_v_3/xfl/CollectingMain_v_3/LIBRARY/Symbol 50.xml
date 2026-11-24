@@ -1,0 +1,26 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 50" scaleGridLeft="4.75" scaleGridRight="145.5" scaleGridTop="2.25" scaleGridBottom="11.25">
+     <timeline>
+          <DOMTimeline name="Symbol 50">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#b380ac" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#c8d938"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 95 266| 146 270| 823 270| 1638 270| 2039 270| 2854 270| 2913 264[ 2955 254 2977 228[ 3000 199 3000 150| 3000 120[ 3000 73 2978 45[ 2957 16 2913 6| 2854 0| 2039 0| 1638 0| 823 0| 146 0| 95 5[ 45 14 22 45[ 0 73 0 120| 0 150[ 0 198 23 227[ 47 256 95 266"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

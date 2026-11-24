@@ -1,0 +1,60 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 27">
+     <timeline>
+          <DOMTimeline name="Symbol 27">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#ab927f">
+                         <frames>
+                              <DOMFrame index="0" duration="2" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText name="labelTf" antiAliasSharpness="0" antiAliasThickness="0" width="48.0" height="15.649999999999999" renderAsHTML="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="6.5" ty="5.4"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="center" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="17" bitmapSize="340" face="方正粗圆简体" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#39aca7" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#d9b746" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 12" centerPoint3DX="31.7" centerPoint3DY="14.7">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 12" centerPoint3DX="31.45" centerPoint3DY="14.45">
+                                             <matrix>
+                                                  <Matrix tx="-0.25" ty="-0.25" a="1.0244293212890625" d="1.022064208984375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

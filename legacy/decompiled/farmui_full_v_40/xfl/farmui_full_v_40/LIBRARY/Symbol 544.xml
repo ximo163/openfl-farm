@@ -1,0 +1,78 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 544" linkageClassName="CloseButton" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 544">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#8c96e8">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 542" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 543" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#faf078">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 263 120| 263 140| 242 140| 242 160| 221 160| 221 180| 202 180| 202 219| 221 219| 221 239| 242 239| 242 259| 263 259| 263 279| 280 279| 280 300| 221 300| 221 280| 203 280| 203 260| 181 260| 181 240| 161 240| 161 260| 141 260| 141 280| 121 280| 121 300| 60 300| 60 279| 80 279| 80 259| 101 259| 101 239| 121 239| 121 219| 141 219| 141 180| 121 180| 121 160| 101 160| 101 140| 80 140| 80 120| 60 120| 60 100| 121 100| 121 120| 141 120| 141 140| 161 140| 161 160| 181 160| 181 140| 203 140| 203 120| 221 120| 221 100| 280 100| 280 120| 263 120"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" duration="2" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#7ebad9" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#00ccff" alpha="0.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 352 358| -36 358| -36 -30| 352 -30| 352 358"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

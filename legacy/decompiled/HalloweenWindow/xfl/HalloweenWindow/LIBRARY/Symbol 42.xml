@@ -1,0 +1,56 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 42" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 42" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="596.0" ty="798.0" a="0.12847900390625" d="0.0836181640625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffffff" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#ffffff" alpha="0.0" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 14320 15880[ 14320 16480 13640 16900[ 12940 17340 11960 17340[ 10980 17340 10280 16900[ 9580 16480 9580 15880[ 9580 15280 10280 14860[ 10980 14420 11960 14420[ 12940 14420 13640 14860[ 14320 15280 14320 15880"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0.796875">
+                                                            <matrix>
+                                                                 <Matrix tx="601.0" ty="668.0" a="0.0" d="0.0" b="0.23162841796875" c="-0.30853271484375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#00ffff" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#00ffff" alpha="0.0" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 12080 9560[ 14040 9560 15420 10680[ 16820 11800 16820 13380[ 16820 14960 15420 16080[ 14040 17200 12080 17200[ 10120 17200 8720 16080[ 7340 14960 7340 13380[ 7340 11800 8720 10680[ 10120 9560 12080 9560"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

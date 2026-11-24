@@ -1,0 +1,93 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 6">
+     <timeline>
+          <DOMTimeline name="Symbol 6">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#b93cfd">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="0" height="0" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <textRuns/>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#9b42ce">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="632" height="3840" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>童</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="59.3" bitmapSize="1186" letterSpacing="0" indent="0" leftMargin="6.75" lineSpacing="-21" rightMargin="0" fillColor="#ece8df" face="华康海报体W12(P)"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;叟</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="59.3" bitmapSize="1186" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-21" rightMargin="0" fillColor="#ece8df" face="华康海报体W12(P)"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;无</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="59.3" bitmapSize="1186" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-21" rightMargin="0" fillColor="#ece8df" face="华康海报体W12(P)"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;欺</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="59.3" bitmapSize="1186" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-21" rightMargin="0" fillColor="#ece8df" face="华康海报体W12(P)"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#9fe08c" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 3">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#aecb44">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Font 2">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

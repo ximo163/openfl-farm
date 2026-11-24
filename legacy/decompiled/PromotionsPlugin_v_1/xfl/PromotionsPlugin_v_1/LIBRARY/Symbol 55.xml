@@ -1,0 +1,46 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 55">
+     <timeline>
+          <DOMTimeline name="Symbol 55">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#fd72d9">
+                         <frames>
+                              <DOMFrame index="0" duration="8" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 54" centerPoint3DX="7.75" centerPoint3DY="8.7">
+                                             <matrix>
+                                                  <Matrix tx="-0.8" ty="-2.8" a="0.9976043701171875" d="0.9976043701171875" b="-0.0658416748046875" c="0.0658416748046875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <filters>
+                                                  <GlowFilter blurX="4" blurY="4" color="#6d230e" quality="1" strength="3"/>
+                                             </filters>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#8b4bc7" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" duration="8" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 52" centerPoint3DX="43.95" centerPoint3DY="62.2">
+                                             <matrix>
+                                                  <Matrix tx="-4.1" ty="15.3" a="0.326324462890625" d="0.326324462890625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <filters>
+                                                  <GlowFilter blurX="5" blurY="5" color="#621317" quality="1" strength="4"/>
+                                             </filters>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

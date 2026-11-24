@@ -1,0 +1,58 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 22">
+     <timeline>
+          <DOMTimeline name="Symbol 22">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#3ca1fe">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="1373" height="411" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="-59.8" ty="5.1" a="0.9974822998046875" d="0.9974822998046875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>立刻购买礼包</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="25.5" bitmapSize="510" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <DropShadowFilter angle="44.999253346524966" blurX="5" blurY="5" color="#48771a" distance="0" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#4cfcaf" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#6fb726"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#a2de65"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#48771a"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="2" fillStyle1="3" strokeStyle="0" edges="! 1220 40| -1219 40[ -1288 40 -1288 108| -1288 566[ -1288 635 -1219 635| 1220 635[ 1289 635 1289 566| 1289 108[ 1289 40 1220 40"/>
+                                                  <Edge fillStyle0="3" fillStyle1="0" strokeStyle="0" edges="! 1220 0| -1219 0[ -1328 0 -1328 108| -1328 566[ -1328 675 -1219 675| 1220 675[ 1329 675 1329 566| 1329 108[ 1329 0 1220 0"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 1200 60| -1200 60[ -1269 60 -1269 128| -1269 546[ -1269 615 -1200 615| 1200 615[ 1268 615 1268 546| 1268 128[ 1268 60 1200 60"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

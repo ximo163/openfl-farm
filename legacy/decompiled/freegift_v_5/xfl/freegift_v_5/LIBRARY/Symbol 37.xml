@@ -1,0 +1,34 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 37" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 37" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ff9900"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#ffcc00"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#a65802"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="3" fillStyle1="2" strokeStyle="0" edges="! 1785 113| 1785 143| 1785 149| 1785 458[ 1783 525 1713 525| 114 525[ 44 525 42 458| 42 149| 42 143| 42 113| 42 107[ 45 42 114 42| 1713 42[ 1782 42 1785 107| 1785 113"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 1757 95| 1751 85[ 1733 62 1692 62| 135 62[ 94 62 77 85| 70 95[ 63 111 63 133| 63 432[ 63 504 135 504| 1692 504[ 1764 504 1764 432| 1764 133[ 1764 111 1757 95"/>
+                                                  <Edge fillStyle0="0" fillStyle1="3" strokeStyle="0" edges="! 1827 489[ 1827 603 1713 603| 114 603[ 0 603 0 489| 0 113[ 0 0 114 0| 1713 0[ 1827 0 1827 113| 1827 489"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,47 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 34">
+     <timeline>
+          <DOMTimeline name="Symbol 34">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#f6f39d">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="num_txt" width="48.45" height="18.45" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="-0.95" ty="-0.6"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>00+</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="center" rotation="true" indent="0.0" leftMargin="0.0" lineSpacing="1.8" rightMargin="0.0" autoKern="false" size="16.4" bitmapSize="328" face="微软雅黑" fillColor="#ffffff" alpha="1.0"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#fbb7bb" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ff6600"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 178 -67| 170 -66[ 111 -63 69 0[ 25 70 25 166[ 25 264 69 331[ 111 395 170 399| 178 399| 310 399| 315 399| 318 399| 415 399| 420 399| 525 399| 528 399| 702 399[ 765 399 809 331[ 853 264 853 166[ 853 70 809 0[ 765 -67 702 -67| 528 -67| 525 -67| 423 -67| 420 -67| 318 -67| 315 -67| 178 -67"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,66 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 462" linkageClassName="QB" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 462">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#ba5bbc">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="14.2" height="14.0" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="17.2" ty="2.4"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>点</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="0.0" rightMargin="0.0" size="12" bitmapSize="240" face="SimSun" fillColor="#003366"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#f7ea31">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="10.2" height="15.399999999999999" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="7.6" ty="0.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>Q</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="0.0" rightMargin="0.0" size="11" bitmapSize="220" face="Tahoma" fillColor="#003366"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#d5fffe" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 458" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

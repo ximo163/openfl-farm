@@ -1,0 +1,92 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 606" linkageClassName="FlowerCardUI" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 606">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#a86f9a">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="txtDesc" width="362.0" height="16.0" isSelectable="false" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="22.0" ty="181.0" a="1.000213623046875" d="1.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" lineSpacing="2.0" rightMargin="0.0" autoKern="false" size="11.95" bitmapSize="239" face="Verdana" fillColor="#636768" alpha="1.0"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#a88eb4">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="txtFriendName" width="229.95" height="16.0" isSelectable="false" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="153.0" ty="158.0" a="1.000213623046875" d="1.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="right" rotation="true" indent="0.0" leftMargin="0.0" lineSpacing="2.0" rightMargin="0.0" autoKern="false" size="11.95" bitmapSize="239" face="Verdana" fillColor="#636768" alpha="1.0"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#a187d0">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="txtWord" width="229.95" height="85.05" isSelectable="false" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="153.0" ty="68.0" a="1.000213623046875" d="1.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" lineSpacing="7.95" rightMargin="0.0" autoKern="false" size="11.95" bitmapSize="239" face="Verdana" fillColor="#636768" alpha="1.0"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#c821fd" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="txtMasterName" width="229.95" height="16.0" isSelectable="false" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="153.0" ty="47.0" a="1.000213623046875" d="1.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" lineSpacing="2.0" rightMargin="0.0" autoKern="false" size="12.0" bitmapSize="240" face="Verdana" fillColor="#636768" alpha="1.0"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

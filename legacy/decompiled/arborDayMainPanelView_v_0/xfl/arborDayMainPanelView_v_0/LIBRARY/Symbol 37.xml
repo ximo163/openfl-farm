@@ -1,0 +1,131 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 37">
+     <timeline>
+          <DOMTimeline name="Symbol 37">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#d6c3f3">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 31" name="ncBagBtns" centerPoint3DX="62.1" centerPoint3DY="138.55">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="81.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#f96bf3">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="20.05" antiAliasSharpness="0" antiAliasThickness="0" width="825" height="285" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="-2.4" ty="25.35"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>农场环保礼包</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="9.85" bitmapSize="197" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ff6600" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="4" blurY="4" color="#ffffff" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#76c3af">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="8.3" antiAliasSharpness="0" antiAliasThickness="0" width="1064" height="284" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="-0.65" ty="61.05"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>400</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="9.85" bitmapSize="197" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#1f610b" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>积分或</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="9.85" bitmapSize="197" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#1f610b" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>100Q</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="9.85" bitmapSize="197" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#1f610b" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>点</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="9.85" bitmapSize="197" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#1f610b" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="4" blurY="4" color="#ffffff" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#e0368c">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <BitmapFill bitmapPath="Bitmap 33.jpg" bitmapIsClipped="true">
+                                                            <matrix>
+                                                                 <Matrix tx="7.15" ty="36.45" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 2043 1789| 143 1789| 143 729| 2043 729| 2043 1789"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#58fd69" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 17" centerPoint3DX="54.85" centerPoint3DY="46.65">
+                                             <matrix>
+                                                  <Matrix tx="2.35" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

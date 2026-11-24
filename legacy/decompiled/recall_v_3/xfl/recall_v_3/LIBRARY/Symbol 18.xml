@@ -1,0 +1,66 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 18">
+     <timeline>
+          <DOMTimeline name="Symbol 18">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#f21cc9">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <BitmapFill bitmapPath="Bitmap 16.png" bitmapIsClipped="true">
+                                                            <matrix>
+                                                                 <Matrix tx="123.45" ty="0.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 2469 0| 2869 0| 2869 400| 2469 400| 2469 0"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#908283" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="4121" height="275" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="4.6"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>农友们接受了你的邀请</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.4" bitmapSize="248" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#1a9cd0" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.4" bitmapSize="248" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#1a9cd0" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>，回农场和你一块种菜！去邀请更多好友回来吧！</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="12.4" bitmapSize="248" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#1a9cd0" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

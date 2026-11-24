@@ -1,0 +1,75 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 281" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 281" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#f9ba5b" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 3421 2289[ 3906 2437 3609 2885[ 4166 2316 3421 2289"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 3394 1690[ 3879 1838 3582 2286[ 4139 1717 3394 1690"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 810 3047[ 890 3334 996 3426[ 638 3739 405 3272[ 615 4025 1002 3430[ 1073 3488 1157 3457[ 1370 4150 1753 3540[ 1401 3867 1167 3453[ 1283 3402 1421 3182[ 1050 3527 810 3047"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 3135 2631[ 3480 2260 2999 2020[ 3767 2235 3135 2631"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="72.3" ty="144.95" a="0.0560760498046875" d="0.1039276123046875" b="0.083648681640625" c="-0.1550445556640625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#f90f0f" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#b52020" alpha="1.0" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="72.3" ty="144.95" a="0.0560760498046875" d="0.1039276123046875" b="0.083648681640625" c="-0.1550445556640625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#fb5151" alpha="1.0" ratio="0.25490198"/>
+                                                            <GradientEntry color="#d43125" alpha="1.0" ratio="0.54901963"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="0.05">
+                                                            <fill>
+                                                                 <SolidColor color="#502623" alpha="0.2"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 5014 709| 5094 797[ 5288 1030 5301 1291| 5302 1332[ 5299 1956 4575 2737[ 3851 3517 2718 3967[ 1584 4417 766 4018[ 174 3728 40 3214"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="1" edges="! 40 3214[ 22 3148 13 3078[ -6 2941 4 2790[ 60 1961 792 1313[ 1523 664 2401 218[ 2479 178 2558 146"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 2558 146[ 2642 112 2727 86[ 3059 -17 3410 4"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 3410 4[ 3837 30 4292 240| 4317 251[ 4770 463 5014 709"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 3410 4[ 3415 16 3564 82| 3897 230[ 4126 333 4286 417[ 4446 501 4619 679| 4648 709[ 4793 862 4803 918[ 4813 979 4830 1022| 4621 1004[ 4517 1004 4391 1059[ 4256 1117 4142 1220[ 4104 1254 4072 1291[ 3861 1526 3861 1850[ 3861 2241 3929 2501[ 3980 2695 4051 2745[ 3875 2909 3679 3059[ 3628 3012 3438 2950[ 3234 2883 3112 2883[ 2945 2883 2787 2978[ 2650 3060 2507 3222[ 2449 3287 2403 3379| 2329 3541[ 2320 3562 2319 3613| 2320 3682| 2320 3728| 2321 3814[ 1464 4118 775 3843[ 237 3628 40 3214"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

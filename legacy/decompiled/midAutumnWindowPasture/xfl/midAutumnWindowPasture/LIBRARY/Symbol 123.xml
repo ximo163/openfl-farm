@@ -1,0 +1,54 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 123" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 123" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#333333"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 3060 -2460[ 4440 -820 4440 1440[ 4440 2280 3800 3060[ 2780 4300 640 4300[ -2760 4300 -3900 3200[ -4440 2660 -4440 1820[ -4440 -1500 -3060 -3100[ -1840 -4500 0 -4260[ 1760 -4000 3060 -2460"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 220 -3320[ -1340 -3460 -2400 -2620[ -3480 -1780 -3660 -660[ -3860 440 -3760 1000[ -3680 1540 -3160 2400[ -2640 3260 -1120 3660[ 400 4060 1720 3620[ 3020 3160 3220 2560[ 3400 1960 3400 1280[ 3400 -480 2600 -1820[ 1780 -3160 220 -3320"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ca0202"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#ff6666"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#840000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 2340 -2500[ 2480 -2220 2480 -1820[ 2480 -1440 2160 -1020[ 1800 -580 1280 -580[ 480 -580 120 -1300[ -100 -1700 -100 -2080[ -100 -2560 300 -2860[ 640 -3100 1060 -3100"/>
+                                                  <Edge fillStyle0="1" fillStyle1="3" strokeStyle="0" edges="! 1060 -3100| 280 -3140[ -860 -3000 -1740 -2280[ -2680 -1540 -2680 -720[ -2680 -80 -1940 880[ -880 2260 900 2260| 1560 2200[ 2320 2140 2880 1200[ 3200 660 3200 20[ 3200 -1680 2340 -2500"/>
+                                                  <Edge fillStyle0="2" fillStyle1="3" strokeStyle="0" edges="! 2340 -2500[ 2100 -3140 1200 -3140| 1060 -3100"/>
+                                                  <Edge fillStyle0="0" fillStyle1="3" strokeStyle="0" edges="! 3300 -1760[ 4100 -880 4420 20[ 3460 -160 3460 960| 4260 1420[ 4060 2740 3260 3360[ 2440 3980 80 4040[ -2280 4080 -3080 2960[ -3900 1820 -3900 1020| -3900 860| -3860 280[ -3860 -2420 -2520 -3440| -1880 -3780[ -1160 -4280 -220 -4300[ 1140 -4320 2120 -3320[ 2620 -2840 2900 -2220| 3300 -1760"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,36 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 175" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 175" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#000000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="20.0">
+                                                            <fill>
+                                                                 <SolidColor color="#000000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 7700 -17040| 7700 -5640| 5120 -5640| 5120 -8600[ 3060 -7780 1220 -6920| 400 -9500[ 3040 -10440 5120 -11300| 5120 -13380| 3440 -11760| 680 -14560| 2260 -16040| 5120 -13460| 5120 -17040| 7700 -17040"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 14200 -16660| 13240 -14920| 19700 -14920| 19700 -12960[ 17940 -8100 11900 -5940| 11660 -5000| 19920 -5000| 19920 -2640| 12540 -2640[ 14620 -440 20160 -100[ 19680 740 18800 2760[ 12700 2180 10060 -1720[ 7420 1720 1280 2740| 320 40[ 5460 -620 7380 -2640| 640 -2640| 640 -5000| 8820 -5000[ 9140 -5920 9240 -7000| 10640 -7000| 9920 -7960[ 11640 -8520 12980 -9220| 11020 -10860| 12620 -12420| 14980 -10480[ 16340 -11540 17020 -12800| 11880 -12800[ 10840 -11300 9660 -10080| 7920 -11760[ 10260 -14080 11600 -17160| 14200 -16660"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

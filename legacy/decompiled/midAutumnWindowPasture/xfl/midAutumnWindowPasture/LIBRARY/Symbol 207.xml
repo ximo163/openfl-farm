@@ -1,0 +1,44 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 207" symbolType="button">
+     <timeline>
+          <DOMTimeline name="Symbol 207" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1" current="true" isSelected="true" color="#68b5cd">
+                         <frames>
+                              <DOMFrame index="1" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 205" centerPoint3DX="23.95" centerPoint3DY="25.0">
+                                             <matrix>
+                                                  <Matrix tx="11.3" ty="11.8" a="0.8985137939453125" d="0.8985137939453125"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 206" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="11.3" ty="11.8" a="0.044925689697265625" d="0.044925689697265625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

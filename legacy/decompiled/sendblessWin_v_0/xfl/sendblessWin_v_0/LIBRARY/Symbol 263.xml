@@ -1,0 +1,76 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 263" symbolType="button">
+     <timeline>
+          <DOMTimeline name="Symbol 263" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#c7faad">
+                         <frames>
+                              <DOMFrame index="1" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 262" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" current="true" isSelected="true" color="#08a3e8">
+                         <frames>
+                              <DOMFrame index="1" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="-21.25" fontRenderingMode="standard" width="1965" height="291" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="23.15" ty="2.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>看年度穿越动画赢</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.85" bitmapSize="237" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#e2e1d8" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>Iphone4</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.85" bitmapSize="237" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#e2e1d8" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>、</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.85" bitmapSize="237" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#e2e1d8" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>Ipad</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.85" bitmapSize="237" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#e2e1d8" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>》</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.85" bitmapSize="237" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#e2e1d8" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <DropShadowFilter angle="44.999253346524966" blurX="3" blurY="3" color="#7b0404" distance="0" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

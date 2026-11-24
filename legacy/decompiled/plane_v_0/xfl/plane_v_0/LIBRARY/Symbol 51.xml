@@ -1,0 +1,45 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 51">
+     <timeline>
+          <DOMTimeline name="Symbol 51">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#db5497" layerType="mask" locked="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ff0000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 813 910[ 799 913 712 962| 628 1010[ 618 1007 612 998[ 601 980 620 952[ 629 939 655 923| 703 888| 737 828[ 757 788 801 766[ 822 755 864 704[ 893 667 977 656[ 836 905 813 910"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#ab927f" parentLayerIndex="0" locked="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 50" centerPoint3DX="5.45" centerPoint3DY="5.05">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <filters>
+                                                  <BlurFilter blurX="2.399993896484375" blurY="2.399993896484375" quality="1"/>
+                                             </filters>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

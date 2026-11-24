@@ -1,0 +1,39 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 123" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 123" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#000000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="20.0">
+                                                            <fill>
+                                                                 <SolidColor color="#000000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 1700 -17060| 1700 0| 0 0| 0 1700| 3420 1700| 3420 0| 5120 0| 5120 -5120| 8540 -5120| 8540 0| 11940 0| 11940 -5120| 15360 -5120| 15360 0| 11940 0| 11940 1700| 18760 1700| 18760 -17060| 1700 -17060"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 15360 -11940| 11940 -11940| 11940 -15360| 15360 -15360| 15360 -11940"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 15360 -6820| 11940 -6820| 11940 -10240| 15360 -10240| 15360 -6820"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 8540 -11940| 5120 -11940| 5120 -15360| 8540 -15360| 8540 -11940"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 8540 -10240| 8540 -6820| 5120 -6820| 5120 -10240| 8540 -10240"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,835 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 197" linkageClassName="plugins.external.fairy.BuyWindowWrapper__winCls" linkageIdentifier="BuyFairyWindow" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 197">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#c4ab45">
+                         <frames>
+                              <DOMFrame index="0" duration="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 196" name="vip" centerPoint3DX="279.25" centerPoint3DY="74.3">
+                                             <matrix>
+                                                  <Matrix tx="161.25" ty="60.25"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#609ec8">
+                         <frames>
+                              <DOMFrame index="0" duration="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 191" name="normal" centerPoint3DX="280.25" centerPoint3DY="74.3">
+                                             <matrix>
+                                                  <Matrix tx="161.25" ty="60.3"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#16b3fe">
+                         <frames>
+                              <DOMFrame index="0" duration="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 183" name="xhDiscount" centerPoint3DX="254.0" centerPoint3DY="85.0">
+                                             <matrix>
+                                                  <Matrix tx="144.0" ty="53.35"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#cdf8e6">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 171" name="discount_mask" centerPoint3DX="198.95" centerPoint3DY="243.9">
+                                             <matrix>
+                                                  <Matrix tx="72.45" ty="229.45"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#bdee62">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 169" name="discount" centerPoint3DX="263.55" centerPoint3DY="75.25">
+                                             <matrix>
+                                                  <Matrix tx="145.25" ty="53.25"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#19c7f0">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 140" name="flag7" centerPoint3DX="44.0" centerPoint3DY="68.9">
+                                             <matrix>
+                                                  <Matrix tx="12.4" ty="54.9"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7" color="#b0fd8a">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="tfPrice1" width="42.0" height="16.45" renderAsHTML="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="217.6" ty="77.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>480</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="Arial" fillColor="#ff6600"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 8" color="#44fd63">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="tfPrice" width="42.0" height="16.45" renderAsHTML="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="217.6" ty="56.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>600</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="Arial" fillColor="#ff6600"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 9" color="#3fe8ee">
+                         <frames>
+                              <DOMFrame index="0" duration="2" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="2" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 49" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="29.65" ty="70.75" a="0.7646636962890625" d="0.7646636962890625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 10" color="#e1b5df">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 55" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="31.55" ty="66.95" a="0.7531890869140625" d="0.7531890869140625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" duration="2" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 11" color="#5acddd">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 54" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="32.6" ty="66.5" a="0.82391357421875" d="0.82391357421875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" duration="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 12" color="#d9eb51">
+                         <frames>
+                              <DOMFrame index="0" duration="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 90" centerPoint3DX="168.3" centerPoint3DY="143.55">
+                                             <matrix>
+                                                  <Matrix tx="124.65" ty="95.45" a="0.7305908203125" d="0.7300262451171875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 13" color="#af03e7">
+                         <frames>
+                              <DOMFrame index="0" duration="3" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 79" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="30.65" ty="66.75" a="0.7805023193359375" d="0.780487060546875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 14" color="#06ec9d">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="1402" height="2497" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="217.6" ty="99.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>小仙女可以为农场提供</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;经验加成，好友供奉小</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;仙的金币将由您支配。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;守护时间结束后，小仙</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;女将返回召仙阁，加成</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;效果消失。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="1401" height="2497" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="217.6" ty="99.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>土地公可以农场作物提</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;供产量加成，好友供奉</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;小仙的金币将由您支</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;配。守护时间结束后，</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;土地公公将返回召仙</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;台，加成效果消失。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="1401" height="2498" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="217.6" ty="99.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>财神爷可为果实和成鱼</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;提供售价加成，好友供</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;奉小仙的金币将由您支</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;配。守护时间结束后，</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;财神爷将返回召仙台，</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;加成效果消失。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="1530" height="2499" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="217.6" ty="116.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>仙皇限黄钻用户购买。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-1" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;仙皇可为农场提供经验</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-1" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;和售价加成、土地增产</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-1" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;，好友供奉仙皇的金币</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-1" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;将由您支配，守护时间</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-1" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;结束后，仙皇将返回招</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-1" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&#13;仙阁，加成效果消失。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="-1" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 15" color="#a1cba1">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="629" height="358" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="163.8" ty="21.65" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>小仙女</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.2" bitmapSize="284" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="787" height="355" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="163.8" ty="21.65" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>土地公公</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.2" bitmapSize="284" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="627" height="359" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="163.8" ty="21.65" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>财神爷</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.2" bitmapSize="284" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="469" height="354" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="163.8" ty="21.65" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>仙皇</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="14.2" bitmapSize="284" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 16" color="#fd40bd">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 156" name="btn2" centerPoint3DX="278.75" centerPoint3DY="242.35">
+                                             <matrix>
+                                                  <Matrix tx="254.4" ty="236.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 17" color="#deca6a">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 156" name="btn1" centerPoint3DX="220.25" centerPoint3DY="242.35">
+                                             <matrix>
+                                                  <Matrix tx="195.9" ty="236.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 18" color="#6f98f6">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 156" name="btn0" centerPoint3DX="161.75" centerPoint3DY="242.35">
+                                             <matrix>
+                                                  <Matrix tx="137.4" ty="236.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 19" color="#acf167">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 153" name="btnCancel" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="201.65" ty="266.6"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 20" color="#517ce4">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 151" name="btnOK" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="119.15" ty="266.6"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 21" color="#a385cd">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="374" height="314" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="262.65" ty="77.35" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>Q</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>点</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 22" color="#cadf6a">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="374" height="314" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="262.65" ty="56.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>Q</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>点</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 23" color="#1bf2b8">
+                         <frames>
+                              <DOMFrame index="0" duration="3" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="551" height="320" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="175.1" ty="99.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>说明：</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="551" height="320" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="175.1" ty="116.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>说明：</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 24" color="#c0e5df">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="689" height="325" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="161.1" ty="77.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>特惠价：</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 25" color="#fea0b7">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="654" height="324" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="165.15" ty="56.9" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>Q</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>点价：</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.9" bitmapSize="238" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 26" color="#f49fd7">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="2381" height="288" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="75.6" ty="234.85" a="0.9997406005859375" d="0.9998321533203125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>守护时间：</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="10.65" bitmapSize="213" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>     1</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="10.65" bitmapSize="213" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>个月</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="10.65" bitmapSize="213" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>         6</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="10.65" bitmapSize="213" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>个月</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="10.65" bitmapSize="213" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>        12</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="10.65" bitmapSize="213" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>个月</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="10.65" bitmapSize="213" letterSpacing="0.05" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#402411" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 27" color="#65d4c8">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 38" centerPoint3DX="157.05" centerPoint3DY="164.0">
+                                             <matrix>
+                                                  <Matrix tx="78.85" ty="58.3" a="0.7416839599609375" d="0.741546630859375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 28" color="#c8ba50">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 142" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

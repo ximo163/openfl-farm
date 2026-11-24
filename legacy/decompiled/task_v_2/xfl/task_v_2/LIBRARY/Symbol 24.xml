@@ -1,0 +1,166 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 24" linkageClassName="task4" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 24">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#fbb7bb">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 23" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#bddd59">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="358.25" height="41.0" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="98.45" a="1.0" d="0.999267578125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>在</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>商店</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#cc0000"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>购买的作物种子都放在你的</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>背包</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#cc0000"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>里，打开你</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>的背包，点击种子，再点击</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>空地</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#cc0000"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>就可以完成种植。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#d428ba">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#cab3a4"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#ab835c"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#8a6653"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="4">
+                                                       <SolidColor color="#d3bfb4"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="5">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="271.45" ty="39.35" a="0.017974853515625" d="0.0085906982421875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#cbb39f" ratio="0.0"/>
+                                                            <GradientEntry color="#b5976b" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="6">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="261.4" ty="54.95" a="0.0314788818359375" d="0.031494140625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#d5bcb3" ratio="0.0"/>
+                                                            <GradientEntry color="#c0a783" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="3" strokeStyle="0" edges="! 5832 780| 5612 926[ 5677 977 5725 1045| 5736 1063[ 5778 1136 5791 1207[ 5809 1321 5733 1412[ 5675 1481 5573 1520[ 5471 1560 5352 1560[ 5222 1560 5111 1513[ 4998 1468 4944 1391[ 4880 1302 4915 1200[ 4951 1094 5004 1020[ 5085 904 5207 860[ 5159 750 5117 733| 5035 700| 5107 650| 5156 624[ 5211 600 5267 600[ 5361 600 5430 671| 5444 672[ 5462 672 5474 656| 5484 641| 5502 636| 5551 629[ 5603 629 5637 656[ 5671 682 5682 731[ 5701 750 5712 750| 5832 780"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 5270 892| 5233 805[ 5184 708 5135 689| 5226 653[ 5265 644 5300 652"/>
+                                                  <Edge fillStyle0="3" fillStyle1="2" strokeStyle="0" edges="! 5300 652[ 5352 660 5394 703"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 5394 703| 5403 713| 5443 720[ 5490 720 5515 680| 5571 677[ 5630 688 5637 752| 5664 779[ 5697 803 5724 796[ 5593 874 5533 929"/>
+                                                  <Edge fillStyle0="3" fillStyle1="4" strokeStyle="0" edges="! 5533 929[ 5579 955 5621 996| 5666 1045[ 5729 1126 5744 1216[ 5767 1346 5641 1432[ 5525 1512 5352 1512[ 5178 1512 5053 1429[ 4919 1339 4961 1216[ 4994 1116 5046 1045| 5097 985[ 5173 912 5270 892"/>
+                                                  <Edge fillStyle0="1" fillStyle1="4" strokeStyle="0" edges="! 5270 892| 5316 886"/>
+                                                  <Edge fillStyle0="1" fillStyle1="5" strokeStyle="0" edges="! 5316 886| 5227 707[ 5276 680 5324 701"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 5324 701| 5300 652"/>
+                                                  <Edge fillStyle0="4" fillStyle1="6" strokeStyle="0" edges="! 5353 916[ 5439 916 5515 958[ 5556 982 5594 1019| 5621 1045[ 5689 1124 5705 1216[ 5725 1332 5612 1409[ 5508 1482 5353 1482[ 5196 1482 5084 1406[ 4963 1326 5001 1216[ 5036 1114 5091 1045| 5125 1009[ 5192 943 5280 924| 5353 916"/>
+                                                  <Edge fillStyle0="5" fillStyle1="4" strokeStyle="0" edges="! 5316 886| 5352 883[ 5426 883 5492 910"/>
+                                                  <Edge fillStyle0="5" fillStyle1="1" strokeStyle="0" edges="! 5492 910| 5613 810[ 5573 790 5558 721[ 5478 796 5396 752"/>
+                                                  <Edge fillStyle0="5" fillStyle1="2" strokeStyle="0" edges="! 5396 752| 5405 868[ 5384 769 5324 701"/>
+                                                  <Edge fillStyle0="4" fillStyle1="1" strokeStyle="0" edges="! 5533 929[ 5513 918 5492 910"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! 5396 752| 5394 703"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#e3c645" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="142.95" height="16.25" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="2.0" a="1.0" d="0.999267578125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>任务：种植新的作物</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="2.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#0099ff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

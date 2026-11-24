@@ -1,0 +1,61 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 323">
+     <timeline>
+          <DOMTimeline name="Symbol 323">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#960fee">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 322" name="gou" centerPoint3DX="79.45" centerPoint3DY="72.6">
+                                             <matrix>
+                                                  <Matrix tx="65.05" ty="61.65"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#a19ae5">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="tfName" width="60.5" height="12.0" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="11.5" ty="63.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>农场玩家</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="center" rotation="true" indent="0.0" leftMargin="0.0" lineSpacing="0.0" rightMargin="0.0" autoKern="false" size="12.0" bitmapSize="240" face="SimSun" fillColor="#f8fdff" alpha="1.0"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#abca1d" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 318" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="41.1" ty="4.75"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

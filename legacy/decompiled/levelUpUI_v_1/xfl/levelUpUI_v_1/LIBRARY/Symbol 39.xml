@@ -1,0 +1,70 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 39">
+     <timeline>
+          <DOMTimeline name="Symbol 39">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#bec4d2">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="614" height="377" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="24.8" ty="6.0" a="1.1383514404296875" d="1.18035888671875" b="0.001312255859375" c="0.0069122314453125"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>分</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="15.3" bitmapSize="306" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="15.3" bitmapSize="306" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>享</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="15.3" bitmapSize="306" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <DropShadowFilter angle="44.999253346524966" blurX="5" blurY="5" color="#48771a" distance="0" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#f5d8ab" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#a2de65"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#48771a"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#6fb726"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 1938 49| 1329 49| 1194 49| 133 48[ 48 48 48 128| 49 618[ 52 700 135 700| 1194 701| 1329 701| 1941 701[ 2025 701 2023 620| 2022 129[ 2022 49 1938 49"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 1913 72| 1329 72| 1194 72| 155 71[ 72 71 72 151| 73 594[ 76 676 158 676| 1194 677| 1329 677| 1916 678[ 2001 678 1998 595| 1997 152[ 1997 72 1913 72"/>
+                                                  <Edge fillStyle0="2" fillStyle1="0" strokeStyle="0" edges="! 2073 620| 2071 129[ 2071 1 1938 1| 1329 1| 133 0[ 0 0 0 128| 1 618[ 3 747 135 747| 1194 748| 1941 748[ 2075 748 2073 620"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

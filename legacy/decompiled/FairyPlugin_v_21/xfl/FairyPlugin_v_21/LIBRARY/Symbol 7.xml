@@ -1,0 +1,178 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 7" linkageClassName="plugins.external.fairy.FairyPlugin__xianHuangIcon" linkageIdentifier="XianHuangIcon" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 7">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#943ee8" layerType="mask" locked="true">
+                         <frames>
+                              <DOMFrame index="0" duration="5" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="21.9" ty="6.95" a="0.0120086669921875" d="0.0079345703125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#fef39a" alpha="0.6627451" ratio="0.0"/>
+                                                            <GradientEntry color="#fef4ab" alpha="0.11372549" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="21.95" ty="19.85" a="0.0141754150390625" d="0.00689697265625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#fef39a" alpha="0.6627451" ratio="0.0"/>
+                                                            <GradientEntry color="#fef4ab" alpha="0.11372549" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 635 233[ 637 273 596 269| 271 269[ 244 267 242 233| 242 94[ 242 51 275 51| 393 51| 396 45| 406 19[ 419 5 446 11[ 464 22 464 40| 462 52| 461 54| 604 54[ 632 57 635 90| 635 233"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 570 115| 306 115[ 302 115 304 118| 304 129| 572 129| 572 119| 570 115"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 572 193| 304 193| 304 205| 571 205| 572 204| 572 193"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 405 431| 262 431[ 236 431 233 398[ 236 368 262 365| 405 365| 405 350| 248 350[ 224 350 222 316[ 224 286 248 284| 619 284[ 646 286 647 316[ 646 350 619 350| 475 350| 475 365| 610 365[ 637 368 638 398[ 637 431 610 431| 475 431| 475 446| 643 446[ 668 448 670 477[ 668 507 644 510| 234 510[ 209 507 206 477[ 209 448 235 446| 405 446| 405 431"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#7f42fb" parentLayerIndex="0" locked="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 6" centerPoint3DX="15.65" centerPoint3DY="24.3">
+                                             <matrix>
+                                                  <Matrix tx="-4.45" ty="0.2" a="0.5779571533203125" d="0.5755157470703125"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color alphaMultiplier="0.80078125"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 6" centerPoint3DX="25.5" centerPoint3DY="24.4">
+                                             <matrix>
+                                                  <Matrix tx="5.4" ty="0.3" a="0.527801513671875" d="0.57049560546875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color alphaMultiplier="0.80078125"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 6" centerPoint3DX="35.25" centerPoint3DY="24.5">
+                                             <matrix>
+                                                  <Matrix tx="15.15" ty="0.4" a="0.4776458740234375" d="0.5654754638671875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color alphaMultiplier="0.80078125"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 6" centerPoint3DX="45.1" centerPoint3DY="24.6">
+                                             <matrix>
+                                                  <Matrix tx="25.0" ty="0.5" a="0.427490234375" d="0.5604400634765625"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color alphaMultiplier="0.80078125"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 6" centerPoint3DX="54.85" centerPoint3DY="24.65">
+                                             <matrix>
+                                                  <Matrix tx="34.75" ty="0.55" a="0.3773345947265625" d="0.555419921875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color alphaMultiplier="0.80078125"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#b16aad">
+                         <frames>
+                              <DOMFrame index="0" duration="5" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="5" duration="12" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#d4a0a9">
+                         <frames>
+                              <DOMFrame index="0" duration="5" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="5" duration="12" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#bdd3f1">
+                         <frames>
+                              <DOMFrame index="0" duration="17" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 3" centerPoint3DX="42.85" centerPoint3DY="13.35">
+                                             <matrix>
+                                                  <Matrix tx="40.25" ty="-1.65"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color alphaMultiplier="0.0"/>
+                                             </color>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#d3d352">
+                         <frames>
+                              <DOMFrame index="0" duration="17" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 1" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

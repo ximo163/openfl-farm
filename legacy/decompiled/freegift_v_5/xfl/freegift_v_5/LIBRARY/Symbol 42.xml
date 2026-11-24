@@ -1,0 +1,84 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 42" linkageClassName="freegift_fla.Timeline_16" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 42">
+               <layers>
+                    <DOMLayer name="Script Layer" color="#49f6e9">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <Actionscript>
+                                        <script>stop();
+</script>
+                                   </Actionscript>
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#d17092">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements/>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="730" height="353" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="15.55" ty="3.05" a="0.9499969482421875" d="0.9499969482421875"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>答谢好友</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="18.75" bitmapSize="375" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#ffffff" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <DropShadowFilter angle="44.999253346524966" blurX="5" blurY="5" color="#464646" distance="0" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#a9bff3" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 40" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#8c8c8c"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#bfbfbf"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#535353"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="3" fillStyle1="2" strokeStyle="0" edges="! 1785 149| 1785 458[ 1783 525 1713 525| 114 525[ 44 525 42 458| 42 149| 42 143| 42 113| 42 107[ 45 42 114 42| 1713 42[ 1782 42 1785 107| 1785 113| 1785 143| 1785 149"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 1751 85[ 1733 62 1692 62| 135 62[ 94 62 77 85| 70 95[ 63 111 63 133| 63 432[ 63 504 135 504| 1692 504[ 1764 504 1764 432| 1764 133[ 1764 111 1757 95| 1751 85"/>
+                                                  <Edge fillStyle0="0" fillStyle1="3" strokeStyle="0" edges="! 1827 489[ 1827 603 1713 603| 114 603[ 0 603 0 489| 0 113[ 0 0 114 0| 1713 0[ 1827 0 1827 113| 1827 489"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

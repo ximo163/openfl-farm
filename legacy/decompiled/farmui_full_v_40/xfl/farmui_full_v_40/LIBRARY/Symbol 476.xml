@@ -1,0 +1,39 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 476" linkageClassName="ToolBarBg" linkageExportForAS="true" scaleGridLeft="17" scaleGridRight="331" scaleGridTop="10.1" scaleGridBottom="44">
+     <timeline>
+          <DOMTimeline name="Symbol 476">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#93aa74" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#e6e6e6" alpha="0.69411767"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="0.05" pixelHinting="true" solidStyle="hairline" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#999999"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 40 201| 40 198[ 40 40 204 40| 339 40| 6621 40| 6747 40[ 6910 40 6910 198| 6910 201| 6910 881| 6910 1070| 6621 1070| 339 1070| 40 1070| 40 881| 40 201"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 0 1110| 339 1110| 6621 1110| 6950 1110| 6950 881| 6950 201| 6950 198[ 6950 0 6747 0| 6621 0| 339 0| 204 0[ 0 0 0 198| 0 201| 0 881| 0 1110"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

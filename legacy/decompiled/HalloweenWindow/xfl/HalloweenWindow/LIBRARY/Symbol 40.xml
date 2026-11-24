@@ -1,0 +1,34 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 40" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 40" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#1737b5" alpha="0.4"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#1367b9" alpha="0.73333335"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 369 488[ 195 245 0 0[ 2667 2774 2789 5203| 2794 5424[ 2884 7712 4244 9723[ 3316 10598 2644 10992"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 2644 10992[ 1338 11757 1004 10704"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 1004 10704[ 887 10334 889 9740| 894 9544[ 968 7844 1634 5960[ 2188 4189 1398 2273"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 1398 2273| 707 985| 542 738[ 459 612 369 488"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! 369 488[ 2721 3149 2779 5481| 2779 5694[ 2811 7904 4012 9845[ 3228 10607 2644 10992"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! 1004 10704[ 929 10366 942 9862| 951 9673[ 1056 8031 1707 6212[ 2309 4324 1398 2273"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

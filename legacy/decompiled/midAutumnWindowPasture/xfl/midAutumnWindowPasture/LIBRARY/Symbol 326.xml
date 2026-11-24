@@ -1,0 +1,37 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 326" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 326" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#000000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="1.0">
+                                                            <fill>
+                                                                 <SolidColor color="#000000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 85 -853| 85 -768| 427 -768| 427 -853| 85 -853"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 597 -938| 597 -682| 512 -682| 512 -597| 597 -597| 597 -171| 512 -171| 512 -256| 427 -256| 427 -341| 256 -341| 256 -427| 341 -427| 341 -512| 512 -512| 512 -597| 0 -597| 0 -512| 171 -512| 171 -427| 85 -427| 85 -256| 0 -256| 0 -85| 512 -85| 512 0| 427 0| 427 85| 597 85| 597 0| 682 0| 682 -171| 768 -171| 768 -597| 853 -597| 853 0| 682 0| 682 85| 938 85| 938 0| 1024 0| 1024 -682| 768 -682| 768 -938| 597 -938"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 171 -256| 341 -256| 341 -171| 171 -171| 171 -256"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

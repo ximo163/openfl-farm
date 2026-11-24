@@ -1,0 +1,50 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 4">
+     <timeline>
+          <DOMTimeline name="Symbol 4">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#f76fb9">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#cc5200"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 34 360| 70 360| 70 342[ 70 332 85 331[ 99 332 100 342| 100 360| 174 360[ 184 361 185 374[ 184 387 174 387| 100 387| 100 415| 178 415[ 190 416 191 429[ 191 443 179 443| -18 443[ -30 443 -30 429[ -30 416 -18 415| 70 415| 70 387| 14 387| -1 406| -19 404[ -28 395 -20 385| 12 340[ 18 331 30 337[ 42 343 38 354| 35 358| 34 360"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 19 487| 19 519| 22 522| 140 522| 143 519| 143 487| 140 484| 22 484[ 19 484 19 487"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 171 476| 171 529[ 172 549 150 548| 9 548[ -11 549 -10 525| -10 478[ -11 457 12 457| 150 457[ 171 457 171 476"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! -210 361| -245 361[ -256 361 -257 349[ -257 337 -246 336| -191 336[ -168 335 -173 355[ -181 384 -198 411| -181 411[ -163 412 -165 431| -175 465[ -182 476 -193 474[ -203 469 -199 457| -192 440[ -192 437 -197 436| -203 436| -203 529[ -203 553 -246 544[ -258 540 -256 529[ -254 520 -241 520[ -228 524 -229 516| -229 436| -250 436[ -263 436 -263 424[ -262 412 -249 411| -225 411| -238 400| -244 395[ -251 387 -246 380[ -238 372 -229 376| -215 386| -205 368| -205 363[ -206 361 -210 361"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! -39 349[ -39 361 -50 361| -91 361| -96 381| -69 381[ -50 381 -50 398| -50 488[ -51 499 -63 499[ -75 499 -75 488| -75 412[ -76 406 -80 406| -132 406| -137 411| -137 487[ -138 498 -150 498[ -162 498 -162 487| -162 400[ -163 381 -143 381| -123 381| -117 361| -158 361[ -169 361 -171 349[ -170 337 -158 336| -51 336[ -40 337 -39 349"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! -105 417[ -93 419 -92 430[ -91 482 -105 504| -95 501[ -73 508 -51 521[ -38 528 -40 539[ -47 551 -60 546[ -79 534 -106 525[ -113 522 -113 515[ -132 535 -164 550[ -178 553 -184 545[ -190 532 -174 526[ -144 514 -131 495[ -117 479 -117 429[ -117 418 -105 417"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#d428ba" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 2" centerPoint3DX="-0.05" centerPoint3DY="16.65">
+                                             <matrix>
+                                                  <Matrix tx="-17.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <filters>
+                                                  <GlowFilter blurX="2" blurY="2" color="#4a0d00" quality="1" strength="8"/>
+                                             </filters>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,222 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 20" linkageClassName="HallowThanks" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 20">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#b16aad">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="thanksNick" width="148.0" height="42.55" renderAsHTML="true" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="-28.0" ty="-154.55"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="2.0" rightMargin="0.0" size="18" bitmapSize="360" face="SimSun" fillColor="#ff6600"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#d4a0a9">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="605" height="371" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="-82.1" ty="-159.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>答谢：</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="19.9" bitmapSize="398" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#0098fd" face="微软雅黑"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#bdd3f1">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 16" name="content_mc" centerPoint3DX="-240.95" centerPoint3DY="-141.0">
+                                             <matrix>
+                                                  <Matrix tx="-240.95" ty="-141.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#bb6d6e">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 15" name="thanksBtn" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="-47.15" ty="144.25"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#f55d7c">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 8" name="closeBtn" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="221.05" ty="-187.3"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#f21cc9" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-194.0" ty="-194.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-244.0" ty="-194.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-204.0" ty="-194.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="4">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-224.0" ty="-194.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="5">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-184.05" ty="-194.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="6">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-244.0" ty="-215.75" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="7">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-194.0" ty="-215.75" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="8">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-204.0" ty="-215.75" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="9">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-204.0" ty="-244.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="10">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-194.0" ty="-244.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                                  <FillStyle index="11">
+                                                       <BitmapFill bitmapPath="Bitmap 5.png">
+                                                            <matrix>
+                                                                 <Matrix tx="-244.0" ty="-244.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="3" strokeStyle="0" edges="! 4300 -3880| 5000 -3880| 5000 -2430"/>
+                                                  <Edge fillStyle0="0" fillStyle1="8" strokeStyle="0" edges="! 5000 -2430| 5000 -810"/>
+                                                  <Edge fillStyle0="0" fillStyle1="3" strokeStyle="0" edges="! 5000 -810| 5000 1405"/>
+                                                  <Edge fillStyle0="0" fillStyle1="9" strokeStyle="0" edges="! 5000 1405| 5000 3720| 4300 3720"/>
+                                                  <Edge fillStyle0="0" fillStyle1="10" strokeStyle="0" edges="! 4300 3720| 2880 3720"/>
+                                                  <Edge fillStyle0="0" fillStyle1="11" strokeStyle="0" edges="! 2880 3720| -4880 3720| -4880 1405"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! -4880 1405| -4880 -810"/>
+                                                  <Edge fillStyle0="0" fillStyle1="6" strokeStyle="0" edges="! -4880 -810| -4880 -2430"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! -4880 -2430| -4880 -3880| -2300 -3880"/>
+                                                  <Edge fillStyle0="0" fillStyle1="5" strokeStyle="0" edges="! -2300 -3880| -1021 -3880"/>
+                                                  <Edge fillStyle0="0" fillStyle1="4" strokeStyle="0" edges="! -1021 -3880| 1180 -3880"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 1180 -3880| 2880 -3880"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 2880 -3880| 4300 -3880"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 4300 -3880| 4300 -2430"/>
+                                                  <Edge fillStyle0="3" fillStyle1="8" strokeStyle="0" edges="! 4300 -2430| 5000 -2430"/>
+                                                  <Edge fillStyle0="6" fillStyle1="7" strokeStyle="0" edges="! 2880 -810| 2880 -2430"/>
+                                                  <Edge fillStyle0="6" fillStyle1="2" strokeStyle="0" edges="! 2880 -2430| -4880 -2430"/>
+                                                  <Edge fillStyle0="8" fillStyle1="3" strokeStyle="0" edges="! 4300 -810| 5000 -810"/>
+                                                  <Edge fillStyle0="8" fillStyle1="7" strokeStyle="0" edges="! 4300 -2430| 4300 -810"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 4300 -810| 4300 1405"/>
+                                                  <Edge fillStyle0="3" fillStyle1="9" strokeStyle="0" edges="! 4300 1405| 5000 1405"/>
+                                                  <Edge fillStyle0="1" fillStyle1="7" strokeStyle="0" edges="! 4300 -810| 2880 -810"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 2880 -810| 2880 1405"/>
+                                                  <Edge fillStyle0="1" fillStyle1="10" strokeStyle="0" edges="! 2880 1405| 4300 1405"/>
+                                                  <Edge fillStyle0="9" fillStyle1="10" strokeStyle="0" edges="! 4300 1405| 4300 3720"/>
+                                                  <Edge fillStyle0="1" fillStyle1="7" strokeStyle="0" edges="! 2880 -2430| 4300 -2430"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! 2880 -2430| 2880 -3880"/>
+                                                  <Edge fillStyle0="2" fillStyle1="4" strokeStyle="0" edges="! 1180 -3880| 1180 -3300| -1097 -3300"/>
+                                                  <Edge fillStyle0="2" fillStyle1="5" strokeStyle="0" edges="! -1097 -3300| -2300 -3340| -2300 -3880"/>
+                                                  <Edge fillStyle0="11" fillStyle1="10" strokeStyle="0" edges="! 2880 3720| 2880 1405"/>
+                                                  <Edge fillStyle0="11" fillStyle1="2" strokeStyle="0" edges="! 2880 1405| -4880 1405"/>
+                                                  <Edge fillStyle0="4" fillStyle1="5" strokeStyle="0" edges="! -1021 -3880| -1021 -3340| -1120 -3340| -1097 -3300"/>
+                                                  <Edge fillStyle0="6" fillStyle1="2" strokeStyle="0" edges="! -4880 -810| 2880 -810"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

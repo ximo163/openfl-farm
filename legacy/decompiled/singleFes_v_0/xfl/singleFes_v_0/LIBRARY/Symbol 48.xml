@@ -1,0 +1,62 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 48" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 48" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="-0.55859375">
+                                                            <matrix>
+                                                                 <Matrix tx="2319.0" ty="3882.0" a="0.057373046875" d="0.0439453125" b="0.08209228515625" c="-0.0836181640625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffe600" alpha="1.0" ratio="0.29803923"/>
+                                                            <GradientEntry color="#ebd76e" alpha="0.56078434" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 45700 76160| 45720 76160| 46140 77040[ 45920 77040 45740 77180| 45380 76260| 45500 76160| 45700 76160"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 45100 77220| 45140 76980| 46160 77460| 46540 76260[ 46760 76300 47000 76480| 46480 77620| 47400 78040[ 47320 78160 47360 78360| 46680 78080| 46700 78600| 46800 78760| 46960 78760| 47000 78560| 47320 78740| 47120 79060| 47000 79060| 46880 79040| 46680 78980[ 46340 78800 46340 78540[ 46320 78180 46360 77940| 46080 77800[ 46060 78540 45420 78500| 45140 78180[ 45660 78160 45680 77620| 45120 77360| 45100 77340| 45080 77320| 45100 77220"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 47700 77400| 46900 77760| 46780 77400[ 47020 77220 47580 76980| 47700 77400"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="2294.0" ty="4050.0" a="-0.00457763671875" d="-0.01312255859375" b="0.08758544921875" c="-0.08941650390625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffe600" alpha="1.0" ratio="0.29803923"/>
+                                                            <GradientEntry color="#ebd76e" alpha="0.56078434" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 47200 80200| 47160 80320[ 46920 80800 46940 81300| 46220 81180| 45500 80940| 45800 79820| 46820 80100| 47200 80200"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 46660 80800| 46220 80700| 45900 80620| 45860 80780| 46220 80880| 46640 80940[ 46600 80880 46660 80800"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 46800 80380| 46640 80360| 46060 80220| 46000 80380| 46200 80440| 46720 80560| 46800 80380"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 46140 81720| 45800 81620| 45820 81900| 46160 81860| 46200 82220| 45580 82320| 45420 81980| 45500 81780| 45460 81100| 45320 81260| 45200 81080| 45220 82140| 44880 82000| 44880 80920| 44620 81320| 44560 80860| 45040 80260| 44820 80180| 44940 79820| 45180 79960| 45280 79540| 45540 79660| 45420 80100| 45680 80180| 45560 80500| 45340 80420[ 45260 80520 45240 80700| 45480 81020| 45800 81140[ 45760 81240 45780 81340| 46120 81420| 46140 81720"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 46260 81240| 46520 81300| 46540 81560[ 46680 81440 46900 81400| 47120 81700[ 46800 81740 46540 81880| 46560 82100[ 46560 82220 46720 82260| 46760 82260| 46840 82160| 46880 81880| 47180 82080| 47120 82420[ 47040 82580 46800 82540| 46620 82520[ 46360 82460 46300 82320| 46260 82100| 46180 81220| 46260 81240"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,68 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 579" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 579" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="620.0" ty="223.0" a="0.0" d="0.0" b="0.21728515625" c="-0.244140625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#fda31c" ratio="0.0"/>
+                                                            <GradientEntry color="#ff8300" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 800 6860[ 800 7660 1600 7660| 1680 7660| 14920 7660| 15200 7660[ 16000 7660 16000 6860| 16000 5920| 16000 2180| 16000 1600[ 16000 800 15200 800| 14920 800| 1680 800| 1600 800[ 800 800 800 1600| 800 2180| 800 5920| 800 6860"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffd702"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 15200 8020[ 16400 8020 16400 6820| 16400 1600[ 16400 400 15200 400| 13320 400| 1600 400[ 400 400 400 1600| 400 6820[ 400 8020 1600 8020| 13320 8020| 15200 8020"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#d55f0d"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 16800 1600| 16800 1360[ 16680 0 15200 0| 14120 0| 1600 0| 880 120[ 80 380 20 1380| 0 1600| 0 5120| 0 6800[ 0 7980 880 8300| 1600 8400| 14120 8400| 15200 8400[ 16800 8400 16800 6800| 16800 5120| 16800 1600"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

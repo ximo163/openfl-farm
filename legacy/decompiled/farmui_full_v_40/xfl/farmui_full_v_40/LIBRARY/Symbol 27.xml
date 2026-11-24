@@ -1,0 +1,33 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 27" linkageClassName="com.qzone.ui.JPLandS" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 27">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#8b32f1" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ffffff"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <BitmapFill bitmapPath="Bitmap 25.png" bitmapIsClipped="true">
+                                                            <matrix>
+                                                                 <Matrix tx="15.0" ty="2.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! 4020 2000| 300 2000| 300 40| 4020 40| 4020 2000"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

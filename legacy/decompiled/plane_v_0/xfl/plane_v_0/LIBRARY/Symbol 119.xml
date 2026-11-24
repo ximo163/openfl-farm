@@ -1,0 +1,37 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 119">
+     <timeline>
+          <DOMTimeline name="Symbol 119">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#bccf51" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="36.05" ty="36.1" a="9.1552734375E-5" d="-9.1552734375E-5"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#f093b6" ratio="0.0"/>
+                                                            <GradientEntry color="#ec8eb3" ratio="0.101960786"/>
+                                                            <GradientEntry color="#df80ab" ratio="0.23921569"/>
+                                                            <GradientEntry color="#ca699f" ratio="0.4"/>
+                                                            <GradientEntry color="#ad4d91" ratio="0.5764706"/>
+                                                            <GradientEntry color="#8b2e84" ratio="0.74509805"/>
+                                                            <GradientEntry color="#362951" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 723 723| 721 724| 720 721| 722 720| 723 723"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

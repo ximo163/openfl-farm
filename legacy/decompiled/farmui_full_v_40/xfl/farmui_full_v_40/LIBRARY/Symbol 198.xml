@@ -1,0 +1,30 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 198" linkageClassName="com.qzone.ui.FarmlandG" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 198">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#09aad5" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <BitmapFill bitmapPath="Bitmap 196.png">
+                                                            <matrix>
+                                                                 <Matrix tx="0.0" ty="-2.25" a="19.9951171875" d="20.01007080078125"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 4004 945| 4010 958| 4011 962| 4014 977| 4014 1029| 4016 1030| 4014 1031| 4011 1034| 4004 1040| 4000 1044[ 3911 1125 3773 1217[ 3632 1308 3445 1410[ 3217 1532 2918 1672| 2685 1779[ 2340 1938 2083 2006| 2064 2011| 2057 2012| 2045 2014| 2038 2013| 2024 2010| 2023 2010[ 1814 1957 1302 1708[ 582 1356 0 1041| 0 1010| 7 981[ 15 946 46 902[ 77 857 102 832[ 176 760 301 694[ 421 631 585 576[ 706 542 799 490| 833 469| 1029 316| 1041 309[ 1068 293 1096 278| 1127 262[ 1228 206 1335 162[ 1490 101 1654 61[ 1832 18 2021 1| 2035 0| 2079 2[ 2161 11 2303 61[ 2705 203 3589 678[ 3881 806 3973 903| 4000 938| 4004 945"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

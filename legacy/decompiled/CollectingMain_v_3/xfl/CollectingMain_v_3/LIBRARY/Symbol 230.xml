@@ -1,0 +1,59 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 230" linkageIdentifier="CollectingLeftTipMC" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 230">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#817fee">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="tfTip" width="99.7" height="26.0" renderAsHTML="true" isSelectable="false" lineType="multiline">
+                                             <matrix>
+                                                  <Matrix tx="6.3" ty="8.2"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>神秘动物共0种</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="2.0" rightMargin="0.0" size="12" bitmapSize="240" face="SimSun" fillColor="#fcf7c7"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="2.0" rightMargin="0.0" size="12" bitmapSize="240" face="SimSun"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>您已点亮0种</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="2.0" rightMargin="0.0" size="12" bitmapSize="240" face="SimSun" fillColor="#fcf7c7"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#fc2986" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#893e19" alpha="0.8"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 0 762[ 0 882 120 882| 473 882| 711 1120[ 753 1162 795 1120| 1033 882| 2162 882[ 2282 882 2282 762| 2282 120[ 2282 0 2162 0| 120 0[ 0 0 0 120| 0 762"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

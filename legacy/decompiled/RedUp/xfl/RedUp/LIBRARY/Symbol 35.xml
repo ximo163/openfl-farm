@@ -1,0 +1,31 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 35">
+     <timeline>
+          <DOMTimeline name="Symbol 35">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#a9f106" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#4f2624"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#703532"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="0" edges="! -29 13| -30 12| -34 -2[ -34 -27 1 -25[ 35 -23 35 5| 35 11"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 35 11| 35 12| 34 16[ 31 23 12 23| -23 18| -28 15| -29 13"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! -29 13| -31 3[ -31 -15 2 -6[ 33 1 35 11"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

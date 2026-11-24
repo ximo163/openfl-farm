@@ -1,0 +1,33 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 258" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 258" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0.94921875">
+                                                            <matrix>
+                                                                 <Matrix tx="391.0" ty="564.0" a="-0.37353515625" d="0.2838134765625" b="-0.65032958984375" c="-0.6976318359375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#e6501a" alpha="1.0" ratio="0.21960784"/>
+                                                            <GradientEntry color="#b64011" alpha="1.0" ratio="0.6666667"/>
+                                                            <GradientEntry color="#a71305" alpha="1.0" ratio="0.91764706"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 9340 14520[ 9260 14620 9160 15000| 9140 15060| 9100 15400| 9100 15420| 9080 15460| 8980 16060| 9100 16240| 9120 16260| 9260 16540| 9720 17500| 9920 17720[ 9800 17440 9840 17200| 9920 16580[ 9980 16300 10140 16220| 10480 16140[ 10680 16120 11200 16400[ 11740 16680 11960 16980| 11640 16500| 11500 16300| 11440 16240| 11380 16120| 11260 16000| 11240 15940| 10140 14940| 9980 14840| 9560 14560| 9400 14460| 9360 14420| 9360 14500| 9340 14520"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

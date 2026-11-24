@@ -1,0 +1,36 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 51" symbolType="button">
+     <timeline>
+          <DOMTimeline name="Symbol 51" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1" current="true" isSelected="true" color="#b2728a">
+                         <frames>
+                              <DOMFrame index="1" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" antiAliasSharpness="0" antiAliasThickness="0" width="848" height="322" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="2.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>活动详情</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.5" bitmapSize="230" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#e17c00" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>&gt;&gt;</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="11.5" bitmapSize="230" letterSpacing="0" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#e17c00" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters/>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,32 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 158">
+     <timeline>
+          <DOMTimeline name="Symbol 158">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#dba2f1" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="14.2" ty="10.95" a="0.0191650390625" d="0.0191650390625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#11447b" ratio="0.0"/>
+                                                            <GradientEntry color="#1b8aba" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 326 141[ 326 199 278 240[ 231 282 163 282[ 95 282 47 240[ 0 199 0 141[ 0 83 47 41[ 95 0 163 0[ 231 0 278 41[ 326 83 326 141"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

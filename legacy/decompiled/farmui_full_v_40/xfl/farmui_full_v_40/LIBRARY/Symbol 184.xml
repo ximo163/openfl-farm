@@ -1,0 +1,144 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 184" linkageClassName="FarmInfoPlus" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 184">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#eae875">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 183" name="growBar" centerPoint3DX="41.85" centerPoint3DY="74.15">
+                                             <matrix>
+                                                  <Matrix tx="3.25" ty="70.15"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#e0fb44">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 181" name="bg2" centerPoint3DX="63.0" centerPoint3DY="74.05">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="69.05"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#75e72d">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 180" name="healthBar" centerPoint3DX="63.0" centerPoint3DY="44.05">
+                                             <matrix>
+                                                  <Matrix tx="3.0" ty="40.05"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#b0aa6c">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 178" name="bg" centerPoint3DX="63.0" centerPoint3DY="44.0">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="39.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#5cdc50">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="stepText" width="179.5" height="14.5" renderAsHTML="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="40.0" ty="2.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="11" bitmapSize="220" face="Verdana" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="3" blurY="3" color="#ffffff" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#b4aaa8">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="growText" width="218.5" height="14.5" renderAsHTML="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="52.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>第1季(过14小时59分大叶子)</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="0.0" rightMargin="0.0" size="12" bitmapSize="240" face="Verdana" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="3" blurY="3" color="#ffffff" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7" color="#f1f5da" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" name="healthText" width="217.5" height="14.5" renderAsHTML="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="22.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>状态(优秀)100/100</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="0.0" rightMargin="0.0" size="12" bitmapSize="240" face="Verdana" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                             <filters>
+                                                  <GlowFilter blurX="3" blurY="3" color="#ffffff" quality="1" strength="10"/>
+                                             </filters>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

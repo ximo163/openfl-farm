@@ -1,0 +1,212 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 18" linkageClassName="task2" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 18">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#8ddb43">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 17" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#7cfb1f">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="366.1" height="65.75" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="98.45" a="1.0" d="0.9993896484375"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>作物收获后就会</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>枯萎</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#cc0000"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>（多季作物收获最后一季才枯</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>萎），用</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>铲子</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#cc0000"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>铲除后才可以继续种植。（</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>铲子</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#cc0000"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>在屏幕</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters>下方操作栏中）</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="8.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#f161d9">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#7f7f7f" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#555555" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#666666" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="4">
+                                                       <SolidColor color="#333333" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="5">
+                                                       <SolidColor color="#000000" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="6">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="231.1" ty="37.7" a="0.002532958984375" d="0.00799560546875" b="6.561279296875E-4" c="-0.0020751953125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#f0c20f" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#f4d38a" alpha="1.0" ratio="0.36862746"/>
+                                                            <GradientEntry color="#ce950f" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="7">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="226.55" ty="53.25" a="0.0028533935546875" d="0.0114593505859375" b="7.781982421875E-4" c="-0.0030975341796875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#555555" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#1a1a1a" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="8">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="225.9" ty="57.45" a="-0.0023345947265625" d="-0.004180908203125" b="0.0086517333984375" c="-0.015655517578125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#000000" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#333333" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="9">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="216.6" ty="65.55" a="0.0" d="0.0" b="0.013580322265625" c="-0.0063323974609375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#333333" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#333333" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" scaleMode="normal" caps="square" joints="miter">
+                                                            <fill>
+                                                                 <SolidColor color="#000000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                                  <StrokeStyle index="2">
+                                                       <SolidStroke weight="0.8" scaleMode="normal" caps="square" joints="miter">
+                                                            <fill>
+                                                                 <SolidColor color="#996600"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 4454 953| 4471 887[ 4478 861 4502 844| 4563 632[ 4570 607 4589 593[ 4609 580 4632 580| 4654 583| 4700 594[ 4729 602 4744 629[ 4760 655 4751 683| 4691 892[ 4701 918 4695 940| 4679 995| 4877 1030| 4778 1390| 4778 1391[ 4756 1452 4695 1507[ 4575 1617 4379 1620| 4367 1620| 4355 1612[ 4302 1581 4257 1524[ 4166 1408 4183 1255| 4183 1249| 4255 915| 4454 953"/>
+                                                  <Edge fillStyle0="1" fillStyle1="6" strokeStyle="2" edges="! 4541 872| 4610 636[ 4613 627 4622 622| 4640 619| 4687 633[ 4696 635 4701 645[ 4706 653 4704 663| 4638 893"/>
+                                                  <Edge fillStyle0="1" fillStyle1="7" strokeStyle="1" edges="! 4638 893| 4644 901[ 4649 909 4647 919| 4619 1023"/>
+                                                  <Edge fillStyle0="1" fillStyle1="5" strokeStyle="1" edges="! 4619 1023| 4695 1038"/>
+                                                  <Edge fillStyle0="1" fillStyle1="8" strokeStyle="1" edges="! 4695 1038| 4817 1061| 4731 1366[ 4713 1415 4662 1464[ 4553 1561 4379 1563"/>
+                                                  <Edge fillStyle0="1" fillStyle1="9" strokeStyle="1" edges="! 4379 1563[ 4336 1538 4297 1487[ 4218 1387 4232 1252| 4293 965"/>
+                                                  <Edge fillStyle0="1" fillStyle1="8" strokeStyle="1" edges="! 4293 965| 4489 1000"/>
+                                                  <Edge fillStyle0="1" fillStyle1="7" strokeStyle="1" edges="! 4489 1000| 4518 891[ 4521 882 4530 876| 4541 872"/>
+                                                  <Edge fillStyle0="6" fillStyle1="7" strokeStyle="1" edges="! 4541 872| 4548 872| 4630 889| 4638 893"/>
+                                                  <Edge fillStyle0="3" fillStyle1="7" strokeStyle="0" edges="! 4541 900| 4536 906| 4496 1058| 4497 1066| 4505 1073| 4514 1071| 4521 1065| 4560 914| 4558 904| 4552 898| 4541 900"/>
+                                                  <Edge fillStyle0="4" fillStyle1="8" strokeStyle="0" edges="! 4748 1106| 4691 1325[ 4688 1330 4692 1338[ 4695 1344 4703 1344| 4716 1344| 4725 1333| 4782 1114| 4779 1103| 4770 1092| 4756 1096[ 4749 1100 4748 1106"/>
+                                                  <Edge fillStyle0="5" fillStyle1="8" strokeStyle="0" edges="! 4483 1255[ 4628 1212 4695 1038"/>
+                                                  <Edge fillStyle0="7" fillStyle1="8" strokeStyle="0" edges="! 4489 1000[ 4449 1130 4483 1255"/>
+                                                  <Edge fillStyle0="7" fillStyle1="5" strokeStyle="0" edges="! 4483 1255[ 4596 1170 4619 1023"/>
+                                                  <Edge fillStyle0="2" fillStyle1="9" strokeStyle="0" edges="! 4296 1034| 4246 1253[ 4245 1261 4250 1266[ 4253 1273 4261 1274| 4272 1272| 4281 1261| 4331 1041| 4327 1028| 4316 1021| 4303 1023[ 4297 1027 4296 1034"/>
+                                                  <Edge fillStyle0="8" fillStyle1="9" strokeStyle="0" edges="! 4293 965[ 4524 1110 4379 1563"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#33c2ff" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText fontRenderingMode="device" width="158.75" height="16.25" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="2.0" ty="2.0" a="1.0" d="0.9993896484375"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>任务：铲除枯萎的作物</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="true" lineSpacing="2.0" rightMargin="0.0" size="14" bitmapSize="280" face="SimSun" fillColor="#0099ff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

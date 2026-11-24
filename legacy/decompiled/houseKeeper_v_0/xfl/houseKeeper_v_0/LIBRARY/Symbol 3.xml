@@ -1,0 +1,54 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 3" linkageClassName="Tool_7_3" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 3">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#b93cfd">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#7a1214"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 349 618| 399 640[ 396 663 396 689| 373 679[ 370 692 370 705| 398 710| 402 746[ 417 737 436 735| 413 721[ 402 708 403 691[ 403 667 415 654[ 426 657 437 663| 443 663| 444 664| 442 649| 402 636[ 403 617 407 601| 438 610| 437 596| 481 603| 483 621| 519 629[ 522 616 528 610| 569 626[ 565 630 564 638| 589 640| 587 678| 551 674| 548 682| 565 686[ 573 686 580 693[ 588 698 588 715[ 588 736 580 744[ 569 758 542 756| 514 748| 523 761| 579 765| 581 798| 538 795| 539 805| 574 807[ 574 821 577 835| 541 833[ 540 837 542 841| 578 842[ 578 856 581 870| 544 869| 544 878| 586 880| 588 911| 460 899| 460 905| 418 900| 410 780[ 404 780 401 783| 405 826[ 404 849 395 859| 353 861| 338 856[ 315 846 307 831[ 297 815 298 790[ 298 763 305 736| 332 754| 326 791| 330 808[ 331 807 332 809| 335 743[ 316 736 300 732| 296 683| 337 696| 341 665| 335 662[ 330 674 328 689| 295 668[ 301 618 319 583| 356 604| 349 618"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 373 803| 368 768| 395 770| 389 756| 368 751[ 365 785 365 822[ 366 819 370 820| 373 803"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 505 666| 487 661| 488 673| 473 672[ 482 674 487 683| 494 702[ 495 691 504 680| 515 684| 522 682| 503 672| 505 666"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 442 691| 435 693| 434 695| 436 706| 446 711| 458 712| 462 708| 457 695| 450 693| 442 691"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 471 744| 501 737[ 494 728 494 718| 487 735| 457 740| 461 755| 476 755| 471 744"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 453 794| 491 801| 491 791| 453 784| 453 794"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 552 711| 544 709| 537 709| 526 711[ 524 719 529 723| 540 728| 553 727| 556 720[ 556 710 552 711"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 709 616| 774 627| 751 681[ 718 670 687 666| 709 616"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 633 751| 739 737| 807 617| 860 623| 807 724| 907 701| 908 752| 777 783| 715 908| 658 891[ 681 841 707 795| 632 803| 633 751"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 640 721| 661 673| 729 687| 709 738| 640 721"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 902 806| 880 861| 769 848[ 777 820 790 792| 902 806"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 493 828| 455 822| 456 831| 494 835| 493 828"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 496 864| 457 858| 458 868| 497 873| 496 864"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#9b42ce">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 1" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="9.55" ty="4.0" a="0.8524627685546875" d="0.8524627685546875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,46 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 37" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 37" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="38.35" ty="109.55" a="0.0544891357421875" d="0.1183013916015625" b="0.038970947265625" c="-0.0846099853515625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#1baeed" alpha="0.5019608" ratio="0.0"/>
+                                                            <GradientEntry color="#a7f1e9" alpha="0.9411765" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="38.35" ty="109.55" a="0.0544891357421875" d="0.1183013916015625" b="0.038970947265625" c="-0.0846099853515625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#1baeed" alpha="0.6" ratio="0.0"/>
+                                                            <GradientEntry color="#3ae1da" alpha="0.3019608" ratio="0.972549"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 434 3030[ 263 3089 160 2890[ 137 2847 118 2791| 107 2757[ -184 1811 629 1116[ 1212 722 1769 458[ 2084 300 2182 146"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 2182 146[ 2068 280 1791 414[ 1217 675 617 1070[ -221 1769 79 2749| 90 2784[ 110 2842 133 2888[ 245 3104 432 3031| 434 3030"/>
+                                                  <Edge fillStyle0="2" fillStyle1="0" strokeStyle="0" edges="! 434 3030| 570 2958| 781 2840"/>
+                                                  <Edge fillStyle0="2" fillStyle1="1" strokeStyle="0" edges="! 781 2840[ 1026 2694 1202 2568[ 2015 1974 2236 1430[ 2489 854 2231 75"/>
+                                                  <Edge fillStyle0="2" fillStyle1="0" strokeStyle="0" edges="! 2231 75| 2182 146"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 2231 75[ 2250 37 2257 0[ 2536 826 2272 1425[ 2044 1980 1207 2576[ 1029 2700 781 2840"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

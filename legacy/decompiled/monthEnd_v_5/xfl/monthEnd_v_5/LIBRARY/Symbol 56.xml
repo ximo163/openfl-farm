@@ -1,0 +1,34 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 56" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 56" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#d5d5d5"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#777777"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#999999"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="2" fillStyle1="0" strokeStyle="0" edges="! 995 0| -994 0[ -1103 0 -1103 108| -1103 366[ -1103 475 -994 475| 995 475[ 1104 475 1104 366| 1104 108[ 1104 0 995 0"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 975 60| -975 60[ -1044 60 -1044 128| -1044 346[ -1044 415 -975 415| 975 415[ 1043 415 1043 346| 1043 128[ 1043 60 975 60"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 995 40| -994 40[ -1063 40 -1063 108| -1063 366[ -1063 435 -994 435| 995 435[ 1064 435 1064 366| 1064 108[ 1064 40 995 40"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

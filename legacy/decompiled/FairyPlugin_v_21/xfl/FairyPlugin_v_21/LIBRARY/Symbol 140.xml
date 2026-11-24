@@ -1,0 +1,102 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 140">
+     <timeline>
+          <DOMTimeline name="Symbol 140">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#a1c82b">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="510" height="354" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="10.85" ty="3.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>四折</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="15.1" bitmapSize="302" letterSpacing="1.5" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#fdbf38" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="1" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="514" height="354" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="10.85" ty="3.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>五折</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="15.1" bitmapSize="302" letterSpacing="1.5" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#fdbf38" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="2" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="516" height="354" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="10.85" ty="3.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>六折</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="15.1" bitmapSize="302" letterSpacing="1.5" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#fdbf38" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                              <DOMFrame index="3" keyMode="9728">
+                                   <elements>
+                                        <DOMStaticText left="0" fontRenderingMode="standard" width="517" height="354" autoExpand="true" isSelectable="false">
+                                             <matrix>
+                                                  <Matrix tx="10.85" ty="3.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>八折</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs aliasText="false" rotation="true" size="15.1" bitmapSize="302" letterSpacing="1.5" indent="0" leftMargin="0" lineSpacing="0" rightMargin="0" fillColor="#fdbf38" face="方正粗圆简体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMStaticText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#dba2f1" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <BitmapFill bitmapPath="Bitmap 134.png" bitmapIsClipped="true">
+                                                            <matrix>
+                                                                 <Matrix tx="0.0" ty="0.0" a="20.0" d="20.0"/>
+                                                            </matrix>
+                                                       </BitmapFill>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 1160 560| 0 560| 0 0| 1160 0| 1160 560"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

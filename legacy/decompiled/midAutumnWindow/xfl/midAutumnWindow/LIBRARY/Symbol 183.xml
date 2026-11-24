@@ -1,0 +1,40 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 183" symbolType="button">
+     <timeline>
+          <DOMTimeline name="Symbol 183" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#4bedcc">
+                         <frames>
+                              <DOMFrame index="1" duration="4" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 182" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0" a="0.05000000074505806" d="0.05000000074505806"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                             <color>
+                                                  <Color/>
+                                             </color>
+                                             <filters/>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#9fcb72">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#38b893">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#b9f108">
+                         <frames/>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" current="true" isSelected="true" color="#a5c2dc">
+                         <frames/>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

@@ -1,0 +1,36 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 10" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 10" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#000000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="20.0">
+                                                            <fill>
+                                                                 <SolidColor color="#000000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 7180 -16400[ 6480 -14260 5600 -12220| 5600 2720| 2800 2720| 2800 -6860| 1240 -4480| 280 -8260[ 2880 -12500 4400 -17140| 7180 -16400"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 19520 -16080| 19520 -13220| 15540 -9300| 15540 -8500| 20220 -8500| 20220 -5820| 15540 -5820| 15540 -120[ 15540 560 15340 1140[ 15140 1700 14640 2120[ 14120 2540 12620 2640| 9360 2700[ 9160 1040 8860 -100| 11600 0[ 12700 0 12700 -1280| 12700 -5820| 6640 -5820| 6640 -8500| 12700 -8500| 12700 -10220| 16060 -13440| 8000 -13440| 8000 -16080| 19520 -16080"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

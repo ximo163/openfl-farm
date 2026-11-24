@@ -1,0 +1,52 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 502" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 502" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="420.0" ty="660.0" a="0.29296875" d="0.10986328125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#333333" ratio="0.0"/>
+                                                            <GradientEntry color="#000000" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="413.0" ty="580.0" a="0.24505615234375" d="0.01220703125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#303030" ratio="0.0"/>
+                                                            <GradientEntry color="#666666" ratio="0.5176471"/>
+                                                            <GradientEntry color="#020202" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#000000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 12300 11400| 12300 11800| 4280 11800| 4280 11400"/>
+                                                  <Edge fillStyle0="1" fillStyle1="3" strokeStyle="0" edges="! 4280 11400| 3600 11400| 3600 13600| 3600 13680[ 3620 14220 4260 14600[ 4980 15000 5960 15000[ 6940 15000 7600 14600[ 8080 14300 8240 13960| 8320 13860[ 8360 13820 8440 13820| 8540 13860| 8620 13960[ 8720 14300 9220 14600[ 9700 14880 10340 14960| 10360 14960| 10880 15000| 11640 14940| 12260 14740| 12280 14740| 12560 14600| 13140 14040| 13140 14020| 13200 13680| 13200 13600| 13200 11400| 12300 11400"/>
+                                                  <Edge fillStyle0="2" fillStyle1="3" strokeStyle="0" edges="! 12300 11400| 4280 11400"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 6020 14140[ 6660 14140 7100 13900[ 7600 13600 7580 13200[ 7600 12800 7100 12520| 7100 12500[ 6660 12260 6020 12260[ 5380 12260 4940 12500[ 4420 12800 4440 13200[ 4420 13600 4940 13900[ 5380 14140 6020 14140"/>
+                                                  <Edge fillStyle0="3" fillStyle1="0" strokeStyle="0" edges="! 5040 13720[ 4640 13500 4640 13200[ 4640 12900 5040 12680[ 5440 12460 6020 12460[ 6600 12460 7000 12680[ 7380 12900 7380 13200[ 7380 13500 7000 13720| 6020 13940[ 5440 13940 5040 13720"/>
+                                                  <Edge fillStyle0="0" fillStyle1="3" strokeStyle="0" edges="! 3400 13600| 3400 11200| 13400 11200| 13400 13600| 13400 13680| 13320 14100[ 13140 14480 12660 14760| 12340 14920| 11660 15140| 10880 15200| 10320 15160[ 9640 15080 9120 14760[ 8540 14420 8420 14020[ 8260 14420 7700 14760[ 7000 15200 5960 15200[ 4920 15200 4160 14760[ 3400 14320 3400 13680| 3400 13600"/>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 9240 13180| 9240 13200| 9260 13340[ 9320 13640 9740 13900| 10200 14080| 10800 14140[ 11440 14140 11880 13900| 11900 13900[ 11920 13860 11960 13860| 12020 13820[ 12400 13560 12380 13200[ 12400 12800 11880 12500[ 11440 12260 10800 12260[ 10180 12260 9740 12500| 9740 12520[ 9240 12800 9240 13180"/>
+                                                  <Edge fillStyle0="3" fillStyle1="0" strokeStyle="0" edges="! 9840 12680[ 10240 12460 10800 12460[ 11380 12460 11780 12680[ 12180 12900 12180 13200[ 12180 13460 11900 13660| 11780 13720[ 11380 13940 10800 13940| 10240 13880| 9840 13720[ 9500 13520 9460 13280| 9440 13200| 9440 13180[ 9460 12900 9840 12680"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

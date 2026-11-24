@@ -1,0 +1,33 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 38" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 38" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="118.55" ty="195.95" a="0.0435943603515625" d="0.2406005859375" b="0.0252532958984375" c="-0.1394195556640625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#ffffff" alpha="1.0" ratio="0.8235294"/>
+                                                            <GradientEntry color="#ffffff" alpha="0.0" ratio="1.0"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 4327 513[ 4597 630 4328 1511[ 4061 2390 3414 3516[ 2766 4642 2117 5355[ 1469 6068 1198 5950[ 929 5831 1195 4952[ 1464 4072 2111 2945[ 2760 1820 3408 1107[ 4058 394 4327 513"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 4466 1454[ 4012 2714 3077 4327[ 2142 5941 1274 6963[ 407 7984 114 7815[ -178 7645 276 6385[ 731 5124 1666 3510[ 2601 1897 3468 876[ 4337 -146 4629 24[ 4922 193 4466 1454"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

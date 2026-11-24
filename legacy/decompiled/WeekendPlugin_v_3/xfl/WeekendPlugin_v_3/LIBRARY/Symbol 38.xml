@@ -1,0 +1,34 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 38" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 38" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#a2de65"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#48771a"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <SolidColor color="#6fb726"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="3" fillStyle1="1" strokeStyle="0" edges="! 1684 190[ 1684 90 1587 90| 181 89[ 84 89 84 189| 85 523[ 88 626 184 626| 1590 628[ 1688 628 1686 525| 1684 190"/>
+                                                  <Edge fillStyle0="2" fillStyle1="0" strokeStyle="0" edges="! 1771 161[ 1771 2 1616 2| 155 0[ 0 0 0 160| 1 554[ 4 715 158 715| 1619 716[ 1775 716 1773 555| 1771 161"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! 1713 161[ 1713 61 1616 61| 155 60[ 56 60 56 160| 58 554[ 60 655 158 655| 1619 657[ 1717 657 1715 555| 1713 161"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

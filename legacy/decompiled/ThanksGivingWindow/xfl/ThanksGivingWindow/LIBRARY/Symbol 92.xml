@@ -1,0 +1,193 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 92" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 92" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="-12.0" ty="-1.0" a="0.0030517578125" d="0.0042724609375" b="-0.00152587890625" c="-0.00244140625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#96da2e" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#52c14b" alpha="1.0" ratio="0.3372549"/>
+                                                            <GradientEntry color="#2d622e" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <SolidColor color="#abf204" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#336633" alpha="0.3019608"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! -380 100[ -340 -100 -200 -120"/>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! -200 -120[ -200 -60 -80 -60| -160 -40"/>
+                                                  <Edge fillStyle0="0" fillStyle1="2" strokeStyle="1" edges="! -160 -40[ -260 -80 -380 120| -380 100"/>
+                                                  <Edge fillStyle0="1" fillStyle1="2" strokeStyle="0" edges="! -380 100[ -280 -100 -200 -60| -160 -40"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#336633" alpha="0.3019608"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="0" strokeStyle="1" edges="! 60 -100[ 180 -160 160 -220[ 260 -200 360 -60| #174.19 #FFFFE8.4C| 380 #FFFFFF.FF[ #180.70 #FFFFF2.AB #174.19 #FFFFE8.4C[ #148.E3 -60 80 -60[ 20 180 -120 20| -140 40[ #FFFF6B.F8 #30.07 #FFFF68.F3 #38.C7[ #FFFF55.75 #71.63 20 200[ -80 180 -120 200| -160 200[ -360 140 -260 -60[ -140 -20 -180 -40| -100 -40[ -80 -60 -20 -80[ -20 -100 40 -100| 60 -100"/>
+                                                  <Edge fillStyle0="0" fillStyle1="0" strokeStyle="1" edges="! 40 -80| 40 -100"/>
+                                                  <Edge fillStyle0="0" fillStyle1="0" strokeStyle="1" edges="! 40 -80[ 60 -80 80 -60"/>
+                                                  <Edge fillStyle0="0" fillStyle1="0" strokeStyle="1" edges="! -120 20| -20 -80"/>
+                                                  <Edge fillStyle0="0" fillStyle1="0" strokeStyle="1" edges="! -120 200[ #FFFF40.63 #80.63 #FFFF68.F3 #38.C7[ #FFFF6D.B5 #30.63 -140 40"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="-9.0" ty="2.0" a="0.00457763671875" d="0.0054931640625" b="-0.0042724609375" c="0.00701904296875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#96da2e" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#52c14b" alpha="1.0" ratio="0.3372549"/>
+                                                            <GradientEntry color="#2d622e" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -260 -60[ -360 140 -160 200[ -220 100 -100 -40| -180 -40[ -167 -33 -171 -33[ -180 -33 -260 -60"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="-5.0" ty="6.0" a="-0.00335693359375" d="-0.0048828125" b="0.0" c="6.103515625E-4"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#52c14b" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#2d622e" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -140 40[ -148 48 -151 57[ -146 48 -140 40"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -151 57[ -192 128 -120 200[ -100 190 -65 190[ -30 190 20 200[ -171 113 -151 57"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#abf204" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 40 -100| 40 -80[ 60 -80 80 -60[ 329 -60 372 -24| 360 -60[ 80 -80 60 -100| 40 -100"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 372 -24| 380 0[ 384 -13 372 -24"/>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! -20 -80[ -80 -60 -100 -40[ -220 100 -160 200| -120 200[ -200 120 -140 40| -120 20| -20 -80"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="0.0" ty="4.0" a="-0.00152587890625" d="-0.00244140625" b="-0.00396728515625" c="0.0067138671875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#52c14b" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#2d622e" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 40 -100[ -20 -100 -20 -80| -120 20[ -64 84 -21 84[ 44 84 80 -60[ 60 -80 40 -80| 40 -100"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="11.0" ty="-6.0" a="-0.00701904296875" d="-0.00518798828125" b="-0.00152587890625" c="0.0018310546875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#96da2e" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#52c14b" alpha="1.0" ratio="0.3372549"/>
+                                                            <GradientEntry color="#2d622e" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 160 -220[ 180 -160 60 -100[ 80 -80 360 -60[ 260 -200 160 -220"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

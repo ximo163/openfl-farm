@@ -1,0 +1,102 @@
+<DOMDocument xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" currentTimeline="1" xflVersion="2.2" creatorInfo="JPEXS Free Flash Decompiler" platform="Windows" versionInfo="Saved by JPEXS Free Flash Decompiler v.26.5.0" majorVersion="26.5.0" buildNumber="" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false" autoSaveHasPrompted="true" backgroundColor="#00ffff" frameRate="24">
+     <fonts>
+          <DOMFontItem name="Font 10" font="微软雅黑" size="0" id="1" embedRanges="" embeddedCharacters="0123—“一动去只吧圣奖快日时月树活物的礼袜诞长间领："/>
+          <DOMFontItem name="Font 12" font="方正粗圆简体" size="0" id="2" embedRanges="" embeddedCharacters=" 、。一中丰为会作农动励厚圣在场大奖它定就带得您戏或收时有机来活游牧物的等能获袜诞集餐！，"/>
+          <DOMFontItem name="Font 46" font="Arial" size="0" id="3" embedRanges="" embeddedCharacters="x"/>
+     </fonts>
+     <symbols>
+          <Include href="Symbol 1.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 3.xml" loadImmediate="false"/>
+          <Include href="Symbol 5.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 6.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 7.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 8.xml" loadImmediate="false"/>
+          <Include href="Symbol 9.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 17.xml" loadImmediate="false"/>
+          <Include href="Symbol 18.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 20.xml" loadImmediate="false"/>
+          <Include href="Symbol 22.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 23.xml" loadImmediate="false"/>
+          <Include href="Symbol 25.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 26.xml" loadImmediate="false"/>
+          <Include href="Symbol 27.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 28.xml" loadImmediate="false"/>
+          <Include href="Symbol 30.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 31.xml" loadImmediate="false"/>
+          <Include href="Symbol 32.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 33.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 35.xml" loadImmediate="false"/>
+          <Include href="Symbol 37.xml" loadImmediate="false"/>
+          <Include href="Symbol 39.xml" itemIcon="0" loadImmediate="false"/>
+          <Include href="Symbol 40.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 41.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 42.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 43.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 44.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 45.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 49.xml" itemIcon="0" loadImmediate="false"/>
+          <Include href="Symbol 55.xml" loadImmediate="false"/>
+          <Include href="Symbol 57.xml" loadImmediate="false"/>
+          <Include href="Symbol 62.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 65.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 66.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 67.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 68.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 69.xml" itemIcon="0" loadImmediate="false"/>
+          <Include href="Symbol 70.xml" loadImmediate="false"/>
+     </symbols>
+     <timelines>
+          <DOMTimeline name="场景 1">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#7af046">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 3" centerPoint3DX="508.05" centerPoint3DY="149.0">
+                                             <matrix>
+                                                  <Matrix tx="484.85" ty="129.75"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#6b36e9">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 55" centerPoint3DX="268.35" centerPoint3DY="302.75">
+                                             <matrix>
+                                                  <Matrix tx="32.2" ty="135.15"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#65f4c4" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 70" name="btnGetGift" centerPoint3DX="245.1" centerPoint3DY="12.45">
+                                             <matrix>
+                                                  <Matrix tx="23.2" ty="-115.9"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timelines>
+</DOMDocument>

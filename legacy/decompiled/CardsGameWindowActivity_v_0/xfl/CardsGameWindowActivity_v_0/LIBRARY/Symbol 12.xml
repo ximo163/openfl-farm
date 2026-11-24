@@ -1,0 +1,53 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 12" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 12" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#ece2b1" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="2.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#dbc589"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 2617 92| 2507 166| 2437 0| 1770 4| 1571 70| 343 67| 319 75| 311 103| 281 200| 211 119| 203 105| 14 140| 23 787| 91 891| 91 1050| 49 1080| 23 1098| 23 1347| 167 1439| 23 1523| 23 6816| 23 6820| 501 6820[ 571 6760 626 6758[ 617 6784 621 6820| 3023 6820| 3023 6816| 3023 3163[ 2993 3122 2968 3104| 3023 2954| 3023 2609| 2919 2661| 3028 2514| 3023 58| 2662 59| 2617 92"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#e4d2ab" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 2603 181[ 2497 256 2493 255| 2423 89| 1756 93| 1557 159| 329 156| 305 164| 297 192| 267 289[ 220 243 197 208| 189 194| 0 229| 9 876| 77 980| 77 1139| 35 1169| 9 1187| 9 1436| 153 1528| 9 1612| 9 6905| 9 6909| 487 6909| 597 6842| 607 6909| 3009 6909| 3009 6905| 3009 3252[ 2979 3211 2954 3193| 3009 3043| 3009 2698| 2905 2750| 3014 2603| 3009 147| 2648 148| 2603 181"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

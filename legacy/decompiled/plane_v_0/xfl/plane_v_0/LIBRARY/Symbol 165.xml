@@ -1,0 +1,72 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 165">
+     <timeline>
+          <DOMTimeline name="Symbol 165">
+               <layers>
+                    <DOMLayer name="Layer 1" color="#bd69a0">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 164" centerPoint3DX="15.75" centerPoint3DY="6.85">
+                                             <matrix>
+                                                  <Matrix tx="3.8" ty="0.0" a="0.8032989501953125" d="0.767822265625" b="0.2152252197265625" c="-0.20574951171875"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#e565f1">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 162" centerPoint3DX="7.0" centerPoint3DY="6.75">
+                                             <matrix>
+                                                  <Matrix tx="1.0" ty="2.0" a="0.9459228515625" d="1.04730224609375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#69c956">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 160" centerPoint3DX="9.4" centerPoint3DY="9.5">
+                                             <matrix>
+                                                  <Matrix tx="0.4" ty="2.0" a="1.1442718505859375" d="1.1442718505859375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#962eca" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 158" centerPoint3DX="8.15" centerPoint3DY="8.85">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="1.8" a="1.3478546142578125" d="1.2931671142578125"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

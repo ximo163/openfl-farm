@@ -1,0 +1,35 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 113" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 113" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#000000"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke scaleMode="normal" weight="1.0">
+                                                            <fill>
+                                                                 <SolidColor color="#000000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="0" edges="! 85 -853| 85 -768| 427 -768| 427 -512| 0 -512| 0 -427| 341 -427| 341 -256| 256 -256| 256 -171| 171 -171| 171 -85| 85 -85| 85 0| 0 0| 0 85| 171 85| 171 0| 256 0| 256 -85| 341 -85| 341 -171| 427 -171| 427 -256| 512 -256| 512 0| 597 0| 597 85| 1024 85| 1024 -171| 853 -171| 853 0| 682 0| 682 -427| 1024 -427| 1024 -512| 597 -512| 597 -768| 938 -768| 938 -853| 85 -853"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

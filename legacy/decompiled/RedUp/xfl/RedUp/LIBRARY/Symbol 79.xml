@@ -1,0 +1,68 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 79" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 79" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#17188a" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 920 3800| 800 2660[ 680 1720 1600 1460| 1780 2540[ 1880 3420 2120 4260[ 2340 5100 1880 5220[ 1400 5360 1140 4920[ 920 4000 920 3800"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#2324d3" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 600 5660[ -380 2280 -360 980[ 920 -620 2160 260[ 1960 2380 2420 4160[ 2860 5940 1860 5980[ 880 5980 600 5660"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <RadialGradient focalPointRatio="0">
+                                                            <matrix>
+                                                                 <Matrix tx="-41.0" ty="351.0" a="0.445556640625" d="0.24322509765625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#000000" alpha="0.6627451" ratio="0.16470589"/>
+                                                            <GradientEntry color="#000000" alpha="0.0" ratio="0.7764706"/>
+                                                       </RadialGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 3440 4620[ 5180 5620 5180 7020[ 5180 8420 3440 9420[ 1680 10420 -820 10420[ -3300 10420 -5060 9420[ -6820 8420 -6820 7020[ -6820 5620 -5060 4620[ -3300 3620 -820 3620[ 1680 3620 3440 4620"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

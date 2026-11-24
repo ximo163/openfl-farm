@@ -1,0 +1,30 @@
+# swf 代码普查对账（2026-11-24 立门，help.swf 教训 issue #65）：
+# 全量普查 legacy/deploy 的 6309 个 swf，带交互代码的必须
+# 在 main_swfs 反编译名单或 tools/swf-code-baseline.json 登记账里，
+# 差集即红。「按引用形态把 swf 归为素材」漏掉内部 AS3 的错误（#30 两轮、
+# #65 一轮）从此在 PR 阶段现形，不再等真机踩到。纯 Python 无依赖，秒级。
+name: swf-code-audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: swf-code-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: 普查对账
+        run: python tools/swf_code_audit.py

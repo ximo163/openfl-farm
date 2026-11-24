@@ -1,0 +1,35 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 97" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 97" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <SolidColor color="#0099ff" alpha="1.0"/>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="40.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#ffffff"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="1" edges="! 4400 3040| 4180 3220| 4320 3280[ 6080 4740 6080 5300[ 5980 5960 5260 6040[ 4660 6040 3320 4520| 3180 4280| 2940 4520[ 1660 6040 1120 6040[ 400 5960 320 5260[ 320 4740 2000 3280[ 2060 3220 2100 3220| 1700 2820[ 320 1500 320 1020[ 400 420 1120 320[ 1560 320 3060 1880| 3200 2100| 3400 1840[ 4720 320 5260 320[ 5900 420 5980 1060[ 5980 1660 4400 3040"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

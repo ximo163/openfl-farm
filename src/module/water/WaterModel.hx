@@ -307,10 +307,13 @@ class WaterModel extends EventDispatcher {
 							"index": _loc3_._id,
 							"ownerId": _loc1_
 						}, this.onGetOutput, this.onNetError);
-						if (this._requestOutputRecord.get(_loc3_._id) == null) {
+						// 静态目标 null 不当 Int（CLAUDE.md 规则，MD5.hx 7cf75784 前科）：
+						// 判空走 Dynamic 局部，同 _locRec_ 的惯用法
+						var _locCur_:Dynamic = this._requestOutputRecord.get(_loc3_._id);
+						if (_locCur_ == null) {
 							this._requestOutputRecord.set(_loc3_._id, 1);
 						} else {
-							this._requestOutputRecord.set(_loc3_._id, As3.intOf(this._requestOutputRecord.get(_loc3_._id)) + 1);
+							this._requestOutputRecord.set(_loc3_._id, As3.intOf(_locCur_) + 1);
 						}
 					}
 				}

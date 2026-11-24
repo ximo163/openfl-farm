@@ -25,8 +25,16 @@ set -euo pipefail
 ffdec() { $FFDEC_CMD "$@"; }
 src=legacy/deploy/QFarmFlash/source/core/module
 # 主代码 swf（翻译依据）。新增活动主程序时往这里加。ui/ 下的四个功能 UI swf
-# （#30）带控制器 AS3 代码，一并反编译；条目可带目录前缀，输出按 basename
-# 扁平化到 legacy/decompiled/<名>/。
+# （#30）带控制器 AS3 代码，一并反编译；outswf/help.swf（#65）是新手引导，
+# 自带 6 个 fla 类（五页切换/按钮接线/closeEvent），openfl swf 库不执行其
+# ABC，须翻译；#66 三件（cards_v_1/quickshoot_v_0/WildShellNc_v_5）同族；
+# 2026-11-24 农场侧一次性收编 37 件（#68 前置）：#65 文本族（task/water/
+# levelUp/Fertilizer/plane/redUpBanner×2/RedUp/npc×8/cardgames×2）、#67
+# 考证件（gifts/farmui_full）、#68 待定级件（collect/插件×4/ArborDay×3/
+# 活动窗）。农场侧从此只剩 #58 帧脚本族（product/aswf/submodule/farmui2）
+# 与 baseline 留账件（孤儿/旧版/损坏）不在名单；新的农场侧带代码 swf 由
+# tools/swf_code_audit.py 门禁点名时进（见仓库 CLAUDE.md「资产」节）。
+# 条目可带目录前缀，输出按 basename 扁平化到 legacy/decompiled/<名>/。
 main_swfs=(
   happyfarm3_v_149.swf
   main3_v_221.swf
@@ -37,6 +45,47 @@ main_swfs=(
   ui/warehouse_v_23.swf
   ui/pool_v_13.swf
   ui/decorate_v_0.swf
+  ui/main/outswf/help.swf
+  ui/cards_v_1.swf
+  ui/quickshoot_v_0.swf
+  mc/farm/wild/WildShellNc_v_5.swf
+  collect/CollectingMain_v_3.swf
+  mc/levelup/levelUpUI_v_1.swf
+  plugin/FairyPlugin_v_21.swf
+  plugin/MailPromotionPlugin_v_3.swf
+  plugin/PromotionsPlugin_v_1.swf
+  plugin/WeekendPlugin_v_3.swf
+  ui/QDSeed_v_1.swf
+  ui/cardgames/CardsGameWindowActivity_v_0.swf
+  ui/cardgames/CardsGameWindow_v_0.swf
+  ui/dialogs/ArborDayActivityContext_v_0.swf
+  ui/dialogs/arborDayLv2PanelView_v_0.swf
+  ui/dialogs/arborDayMainPanelView_v_0.swf
+  ui/farm/houseKeeper_v_0.swf
+  ui/freegift_v_5.swf
+  ui/gifts_v_11.swf
+  ui/lite_ui_v_0.swf
+  ui/main/RedUp.swf
+  ui/main/farmui_full_v_40.swf
+  ui/main/redUpBannerNew_v_1.swf
+  ui/main/redUpBanner_v_2.swf
+  ui/main/task_v_2.swf
+  ui/monthEnd_v_5.swf
+  ui/npc/Halloween/HalloweenAwardWindow.swf
+  ui/npc/Halloween/HalloweenWindow.swf
+  ui/npc/ThanksGiving/ThanksGivingAwardWindow.swf
+  ui/npc/ThanksGiving/ThanksGivingWindow.swf
+  ui/npc/feedsNPC/feedsNPC_v_0.swf
+  ui/npc/midAutumn/midAutumnWindow.swf
+  ui/npc/midAutumn/midAutumnWindowPasture.swf
+  ui/npc/sendbless/sendblessWin_v_0.swf
+  ui/plane_v_0.swf
+  ui/recall_v_3.swf
+  ui/sellyouji_v_1.swf
+  ui/singleFes_v_0.swf
+  ui/stocks_v_2.swf
+  ui/tools/Fertilizer_v_7.swf
+  ui/water_ui_v_0.swf
 )
 count=0
 for name in "${main_swfs[@]}"; do

@@ -1,0 +1,429 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 94" linkageClassName="help0316_fla.page5_1" linkageExportForAS="true">
+     <timeline>
+          <DOMTimeline name="Symbol 94">
+               <layers>
+                    <DOMLayer name="Script Layer" color="#bb73b8">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <Actionscript>
+                                        <script>preButton.addEventListener(MouseEvent.CLICK,preButtonClick);
+closeButton2.addEventListener(MouseEvent.CLICK,closeButtonClick);
+</script>
+                                   </Actionscript>
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#adcd68">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" width="32.2" height="16.25" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="205.9" ty="236.95"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>礼包</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="宋体" fillColor="#0099ff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="宋体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#a3dc7a">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" width="32.2" height="16.25" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="205.9" ty="120.95"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>任务</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="宋体" fillColor="#0099ff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="宋体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#cb88cb">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 91" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="195.0" ty="172.0" a="0.0781456008553505" d="0.07791824638843536"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#cbcf26">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="221.85" ty="178.15" a="-0.0020294189453125" d="-0.0024261474609375" b="-0.006134033203125" c="0.007476806640625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#7d0b16" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#d51d39" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="2">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="223.5" ty="191.3" a="0.0" d="0.0" b="0.00738525390625" c="-0.0079803466796875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#d51d39" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#9b0d1b" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="3">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="212.95" ty="180.95" a="0.0029144287109375" d="0.003021240234375" b="0.0050811767578125" c="-0.0052490234375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#a41327" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#5e0912" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="4">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="209.3" ty="189.1" a="0.00689697265625" d="0.0073394775390625" b="-0.001861572265625" c="0.0019378662109375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#d51d39" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#760a15" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="5">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="212.3" ty="196.1" a="-9.46044921875E-4" d="-7.171630859375E-4" b="-0.003387451171875" c="0.002593994140625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#a41327" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#5e0912" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="6">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="231.45" ty="185.8" a="-0.0045623779296875" d="-0.007080078125" b="0.00262451171875" c="-0.0040740966796875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#d51d39" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#9b0d1b" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="7">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="231.45" ty="190.1" a="-0.00384521484375" d="-0.006591796875" b="0.0010223388671875" c="-0.00177001953125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#a41327" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#5e0912" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="8">
+                                                       <SolidColor color="#ef8821" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="9">
+                                                       <SolidColor color="#ae5804" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="10">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="126.15" ty="153.3" a="0.0" d="0.0" b="0.007171630859375" c="-0.001922607421875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#990000" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#b40000" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="11">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="110.5" ty="154.35" a="0.0" d="0.0" b="0.0077972412109375" c="-0.001739501953125"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#990000" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#b40000" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="12">
+                                                       <SolidColor color="#f99d16" alpha="1.0"/>
+                                                  </FillStyle>
+                                                  <FillStyle index="13">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="115.6" ty="169.5" a="0.0" d="0.0" b="0.013092041015625" c="-0.0029144287109375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#990000" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#b40000" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="14">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="141.85" ty="167.75" a="0.0" d="0.0" b="0.0120391845703125" c="-0.0032196044921875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#990000" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#b40000" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="15">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="207.5" ty="209.6" a="0.0" d="0.0" b="0.013092041015625" c="-0.0029144287109375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#990000" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#b40000" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                                  <FillStyle index="16">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="233.8" ty="207.85" a="0.0" d="0.0" b="0.0120391845703125" c="-0.0032196044921875"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#990000" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#b40000" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="1.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#c47809"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                                  <StrokeStyle index="2">
+                                                       <SolidStroke weight="1.0" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#990000"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                                  <StrokeStyle index="3">
+                                                       <SolidStroke weight="0.05" solidStyle="hairline" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#c47809"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                                  <StrokeStyle index="4">
+                                                       <SolidStroke weight="0.8" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#ffb600"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="9" fillStyle1="16" strokeStyle="2" edges="! 4621 3934| 4727 3887"/>
+                                                  <Edge fillStyle0="9" fillStyle1="8" strokeStyle="1" edges="! 4727 3887| 4864 3821"/>
+                                                  <Edge fillStyle0="9" fillStyle1="0" strokeStyle="1" edges="! 4864 3821| 4475 3665[ 4413 3643 4334 3665| 3934 3838"/>
+                                                  <Edge fillStyle0="9" fillStyle1="12" strokeStyle="1" edges="! 3934 3838| 4101 3905"/>
+                                                  <Edge fillStyle0="9" fillStyle1="15" strokeStyle="2" edges="! 4101 3905| 4182 3936"/>
+                                                  <Edge fillStyle0="9" fillStyle1="15" strokeStyle="3" edges="! 4182 3936| 4197 3942"/>
+                                                  <Edge fillStyle0="9" fillStyle1="12" strokeStyle="1" edges="! 4197 3942| 4373 4013"/>
+                                                  <Edge fillStyle0="9" fillStyle1="0" strokeStyle="0" edges="! 4373 4013| 4374 4014"/>
+                                                  <Edge fillStyle0="9" fillStyle1="12" strokeStyle="1" edges="! 4374 4014| 4376 4016| 4378 4016| 4379 4018| 4393 4018| 4394 4020| 4421 4020"/>
+                                                  <Edge fillStyle0="9" fillStyle1="8" strokeStyle="1" edges="! 4421 4020| 4431 4020| 4433 4018| 4441 4018| 4450 4014| 4451 4013| 4453 4013| 4455 4011| 4456 4011| 4621 3934"/>
+                                                  <Edge fillStyle0="16" fillStyle1="8" strokeStyle="2" edges="! 4621 3934| 4623 4453"/>
+                                                  <Edge fillStyle0="16" fillStyle1="0" strokeStyle="2" edges="! 4623 4453| 4727 4394"/>
+                                                  <Edge fillStyle0="16" fillStyle1="8" strokeStyle="2" edges="! 4727 4394| 4727 3887"/>
+                                                  <Edge fillStyle0="8" fillStyle1="0" strokeStyle="1" edges="! 4869 3823| 4869 3818| 4864 3821"/>
+                                                  <Edge fillStyle0="8" fillStyle1="8" strokeStyle="1" edges="! 4864 3821| 4869 3823"/>
+                                                  <Edge fillStyle0="0" fillStyle1="8" strokeStyle="1" edges="! 4869 3823| 4868 4315| 4866 4315| 4866 4318| 4864 4318| 4864 4322| 4862 4322| 4862 4323| 4856 4323[ 4792 4359 4727 4394"/>
+                                                  <Edge fillStyle0="0" fillStyle1="12" strokeStyle="1" edges="! 4373 4013| 4373 4014| 4374 4014"/>
+                                                  <Edge fillStyle0="0" fillStyle1="12" strokeStyle="1" edges="! 4421 4548| 4408 4548| 4406 4547| 4398 4547| 4396 4545| 4394 4545| 4393 4543| 4388 4543| 4386 4542| 4383 4542| 4197 4456"/>
+                                                  <Edge fillStyle0="0" fillStyle1="15" strokeStyle="2" edges="! 4197 4456| 4100 4411"/>
+                                                  <Edge fillStyle0="0" fillStyle1="12" strokeStyle="1" edges="! 4100 4411| 3955 4344| 3954 4344| 3950 4342| 3947 4337| 3947 4335| 3942 4213| 3942 4181| 3934 3838"/>
+                                                  <Edge fillStyle0="0" fillStyle1="8" strokeStyle="1" edges="! 4623 4453| 4460 4540| 4458 4540| 4456 4542| 4453 4542| 4450 4543| 4446 4543| 4443 4545| 4440 4545| 4440 4547| 4433 4547| 4431 4548| 4421 4548"/>
+                                                  <Edge fillStyle0="12" fillStyle1="8" strokeStyle="4" edges="! 4421 4548| 4421 4020"/>
+                                                  <Edge fillStyle0="12" fillStyle1="15" strokeStyle="2" edges="! 4100 4411| 4101 3905"/>
+                                                  <Edge fillStyle0="15" fillStyle1="12" strokeStyle="2" edges="! 4197 4456| 4197 3942"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#6540e7">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" width="409.9" height="16.25" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="18.0" ty="148.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>此外，我们还给你准备了大礼包，现在就去查收吧。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="宋体" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="宋体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7" color="#ce457f">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 88" centerPoint3DX="216.05" centerPoint3DY="94.0">
+                                             <matrix>
+                                                  <Matrix tx="190.1" ty="70.5"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 8" color="#266ff5">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" width="321.1" height="16.25" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="18.0" ty="47.0"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>可以接受小任务，会让你更加熟悉这个游戏。</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="宋体" fillColor="#333333"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="14" bitmapSize="280" face="宋体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 9" color="#a0c35e">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMDynamicText fontRenderingMode="device" width="72.95" height="18.5" renderAsHTML="true" isSelectable="false" lineType="multiline no wrap">
+                                             <matrix>
+                                                  <Matrix tx="187.85" ty="5.9"/>
+                                             </matrix>
+                                             <textRuns>
+                                                  <DOMTextRun>
+                                                       <characters>新手引导</characters>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="16" bitmapSize="320" face="宋体" fillColor="#ffffff"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                                  <DOMTextRun>
+                                                       <characters/>
+                                                       <textAttrs>
+                                                            <DOMTextAttrs alignment="left" rotation="true" indent="0.0" leftMargin="0.0" autoKern="false" lineSpacing="0.0" rightMargin="0.0" size="16" bitmapSize="320" face="宋体"/>
+                                                       </textAttrs>
+                                                  </DOMTextRun>
+                                             </textRuns>
+                                        </DOMDynamicText>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 10" color="#f35486">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 82" name="closeButton2" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="350.5" ty="260.7"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 11" color="#c68fcc">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 30" name="preButton" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="20.0" ty="265.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 12" color="#8e66dd">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 22" symbolType="graphic" loop="loop">
+                                             <matrix>
+                                                  <Matrix tx="0.0" ty="0.0"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

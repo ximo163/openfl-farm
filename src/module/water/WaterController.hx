@@ -363,8 +363,11 @@ class WaterController extends Controller {
 			_loc1_ = new WaterPool(this);
 			m_view = _loc1_;
 			if (m_module != null && m_module.container != null) {
-				m_view.x = 46 + 6 * ITEM_WIDTH / 2;
-				m_view.y = 320 + 4 * ITEM_HEIGHT / 2;
+				// 基类 m_view 是 Dynamic 字段，cpp 上 openfl 的 x/y get/set
+				// 属性不能 Dynamic 裸写（真机 Invalid field:x，#10 同族，2026-11-24
+				// debug 栈实锤本行）——经类型化局部（同一对象）写，值不变。
+				_loc1_.x = 46 + 6 * ITEM_WIDTH / 2;
+				_loc1_.y = 320 + 4 * ITEM_HEIGHT / 2;
 				m_module.container.addChild(m_view);
 			}
 			this.onInitialized(null);

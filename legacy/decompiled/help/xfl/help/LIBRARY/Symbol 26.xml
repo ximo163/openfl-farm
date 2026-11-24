@@ -1,0 +1,65 @@
+<DOMSymbolItem xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Symbol 26" symbolType="graphic">
+     <timeline>
+          <DOMTimeline name="Symbol 26" currentFrame="0">
+               <layers>
+                    <DOMLayer name="Layer 1">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="180.0" ty="180.0" a="-0.091552734375" d="-0.146484375"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#f4f7f7" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#c7fcfc" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <edges>
+                                                  <Edge fillStyle0="0" fillStyle1="1" strokeStyle="0" edges="! 5100 6000| 2100 3600| 5100 1200| 5100 6000"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2">
+                         <frames>
+                              <DOMFrame index="0" motionTweenScale="false" keyMode="8192">
+                                   <elements>
+                                        <DOMShape isFloating="true">
+                                             <fills>
+                                                  <FillStyle index="1">
+                                                       <LinearGradient>
+                                                            <matrix>
+                                                                 <Matrix tx="181.0" ty="180.0" a="0.0" d="0.0" b="0.2197265625" c="-0.2197265625"/>
+                                                            </matrix>
+                                                            <GradientEntry color="#00ccff" alpha="1.0" ratio="0.0"/>
+                                                            <GradientEntry color="#006699" alpha="1.0" ratio="1.0"/>
+                                                       </LinearGradient>
+                                                  </FillStyle>
+                                             </fills>
+                                             <strokes>
+                                                  <StrokeStyle index="1">
+                                                       <SolidStroke weight="20.0" pixelHinting="true" scaleMode="normal">
+                                                            <fill>
+                                                                 <SolidColor color="#ffffff"/>
+                                                            </fill>
+                                                       </SolidStroke>
+                                                  </StrokeStyle>
+                                             </strokes>
+                                             <edges>
+                                                  <Edge fillStyle0="1" fillStyle1="0" strokeStyle="1" edges="! 7200 2520[ 7200 1480 6460 740[ 5720 0 4660 0| 2540 0[ 1480 0 740 740[ 0 1480 0 2520| 0 4660[ 0 5720 740 6460[ 1480 7200 2540 7200| 4660 7200[ 5720 7200 6460 6460[ 7200 5720 7200 4660| 7200 2520"/>
+                                             </edges>
+                                        </DOMShape>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timeline>
+</DOMSymbolItem>

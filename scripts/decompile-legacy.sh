@@ -25,8 +25,10 @@ set -euo pipefail
 ffdec() { $FFDEC_CMD "$@"; }
 src=legacy/deploy/QFarmFlash/source/core/module
 # 主代码 swf（翻译依据）。新增活动主程序时往这里加。ui/ 下的四个功能 UI swf
-# （#30）带控制器 AS3 代码，一并反编译；条目可带目录前缀，输出按 basename
-# 扁平化到 legacy/decompiled/<名>/。
+# （#30）带控制器 AS3 代码，一并反编译；outswf/help.swf（#65）是新手引导，
+# 自带 6 个 fla 类（五页切换/按钮接线/closeEvent），openfl swf 库不执行其
+# ABC，须翻译；条目可带目录前缀，输出按 basename 扁平化到
+# legacy/decompiled/<名>/。
 main_swfs=(
   happyfarm3_v_149.swf
   main3_v_221.swf
@@ -37,6 +39,7 @@ main_swfs=(
   ui/warehouse_v_23.swf
   ui/pool_v_13.swf
   ui/decorate_v_0.swf
+  ui/main/outswf/help.swf
 )
 count=0
 for name in "${main_swfs[@]}"; do

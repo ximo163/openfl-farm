@@ -113,8 +113,8 @@
 - 默认参数、`arguments`、`...rest`：`function f(...args)` → `function f(args:Array<Dynamic>)`
   语义不同时标 `// PORT-NOTE:`。
 - **静态目标（Android/cpp）上 null 不能当 Int**：别写 `x == null`（x 是 Int）、
-  别把 null 赋给/传给 Int——eval 和 html5 容忍、android 编译直接红，而容器里
-  编不了 android，这类错只在 main 的 android CI 暴露。要「缺位」语义时判下标
+  别把 null 赋给/传给 Int——eval 和 html5 容忍、android 编译直接红；容器里编不了
+  android，但下方收工自检的 cpp typer 扫描能全量提前抓。要「缺位」语义时判下标
   范围，或读经 `Dynamic` 再判 null。
 - **禁止 Dynamic 接收者的字段裸写**（`clip.foo = x`，clip 是 Dynamic）：cpp 上
   按类字段表查找，openfl 没有该属性就抛 `Invalid field` 真机闪退；openfl 有的
@@ -123,6 +123,15 @@
   通道）；时间轴具名子件 → `As3.childOf` 取出再处理。收工前跑
   `python tools/scan_dyn_writes.py`，新增的 Dynamic 写逐个按上述分流（见
   handbook/lessons「素材剪辑动态属性」条）。
+- **收工与审查的机械自检（必跑，不是可选）**：`python tools/scan_dyn_writes.py`
+  与 cpp typer 全量 include 扫描——后者 recipe 在 handbook/lessons #18/#29 条，
+  固化脚本 `tools/scan_cpp_typer.sh`（issue #61 交付；分支上还没有就按 recipe
+  手动跑）。eval/html5/单测全绿不代表静态目标编得过：hxcpp 的 null-Int、
+  Dynamic 字符串键下标、Float→Int 全在这层现形（#37 的 WaterModel:310 漏网
+  即此，android CI 红 2.5 天才由 #60 修掉）。review 判 PR 时重跑这两条，
+  新增命中即驳回。扫描出的 **main 既有**错误只报告、不顺手修，但必须**当场
+  开 issue** 跟踪（归属 issue 已关闭就新开并把发现链路写全）——#44 曾把它
+  记进 lesson 后归给已关闭的 #37，无人承接：教训日志不是工单池。
 - 翻不过去（行为无法等价）的地方不要硬翻：`BLOCKED: <类名.方法名，卡在什么>`。
 
 ### 资产

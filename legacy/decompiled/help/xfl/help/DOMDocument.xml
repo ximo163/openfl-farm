@@ -1,0 +1,179 @@
+<DOMDocument xmlns="http://ns.adobe.com/xfl/2008/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" currentTimeline="1" xflVersion="2.2" creatorInfo="JPEXS Free Flash Decompiler" platform="Windows" versionInfo="Saved by JPEXS Free Flash Decompiler v.26.5.0" majorVersion="26.5.0" buildNumber="" nextSceneIdentifier="2" playOptionsPlayLoop="false" playOptionsPlayPages="false" playOptionsPlayFrameActions="false" autoSaveHasPrompted="true" backgroundColor="#ffffff" frameRate="12" width="1010" height="780">
+     <media>
+          <DOMBitmapItem name="Bitmap 19.png" sourceLastImported="1795526874" externalFileSize="1726" useImportedJPEGData="false" compressionType="lossless" originalCompressionType="lossless" quality="50" href="Bitmap 19.png" bitmapDataHRef="M 1 1795526874.dat" frameRight="940" frameBottom="960"/>
+          <DOMBitmapItem name="Bitmap 61.png" sourceLastImported="1795526874" externalFileSize="5654" originalCompressionType="lossless" quality="50" href="Bitmap 61.png" bitmapDataHRef="M 2 1795526874.dat" frameRight="960" frameBottom="940"/>
+     </media>
+     <symbols>
+          <Include href="Symbol 1.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 4.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 6.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 8.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 10.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 11.xml" itemIcon="0" loadImmediate="false"/>
+          <Include href="Symbol 17.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 18.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 21.xml" loadImmediate="false"/>
+          <Include href="Symbol 22.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 24.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 26.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 28.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 30.xml" itemIcon="0" loadImmediate="false"/>
+          <Include href="Symbol 35.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 36.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 37.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 38.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 39.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 40.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 41.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 45.xml" loadImmediate="false"/>
+          <Include href="Symbol 50.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 54.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 57.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 62.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 64.xml" loadImmediate="false"/>
+          <Include href="Symbol 74.xml" loadImmediate="false"/>
+          <Include href="Symbol 75.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 77.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 79.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 81.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 82.xml" itemIcon="0" loadImmediate="false"/>
+          <Include href="Symbol 85.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 86.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 87.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 88.xml" loadImmediate="false"/>
+          <Include href="Symbol 91.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 94.xml" loadImmediate="false"/>
+          <Include href="Symbol 95.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 96.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 97.xml" itemIcon="1" loadImmediate="false"/>
+          <Include href="Symbol 98.xml" itemIcon="0" loadImmediate="false"/>
+     </symbols>
+     <timelines>
+          <DOMTimeline name="Scene 1">
+               <layers>
+                    <DOMLayer name="Script Layer" color="#e3e11c">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <Actionscript>
+                                        <script>page1.visible = true;
+page2.visible = false;
+page3.visible = false;
+page4.visible = false;
+page5.visible = false;
+page1.addEventListener("nextButtonClick",nextClick);
+page2.addEventListener("nextButtonClick",nextClick);
+page3.addEventListener("nextButtonClick",nextClick);
+page4.addEventListener("nextButtonClick",nextClick);
+page5.addEventListener("nextButtonClick",nextClick);
+page1.addEventListener("preButtonClick",preClick);
+page2.addEventListener("preButtonClick",preClick);
+page3.addEventListener("preButtonClick",preClick);
+page4.addEventListener("preButtonClick",preClick);
+page5.addEventListener("preButtonClick",preClick);
+closeButton1.visible = false;
+</script>
+                                   </Actionscript>
+                                   <elements/>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 2" color="#fb06d6">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 98" name="closeButton1" symbolType="button">
+                                             <matrix>
+                                                  <Matrix tx="420.45" ty="6.95"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 3" color="#aa6bcf">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 21" name="page1" centerPoint3DX="242.5" centerPoint3DY="151.95">
+                                             <matrix>
+                                                  <Matrix tx="4.0" ty="1.05" a="1.0" d="0.999847412109375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 4" color="#e40ecb">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 45" name="page2" centerPoint3DX="245.4" centerPoint3DY="152.0">
+                                             <matrix>
+                                                  <Matrix tx="4.95" ty="1.0" a="1.0" d="0.999847412109375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 5" color="#aae09e">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 64" name="page3" centerPoint3DX="252.35" centerPoint3DY="152.0">
+                                             <matrix>
+                                                  <Matrix tx="4.95" ty="1.0" a="1.0" d="0.999847412109375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 6" color="#fb6ea0">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 74" name="page4" centerPoint3DX="249.7" centerPoint3DY="152.0">
+                                             <matrix>
+                                                  <Matrix tx="4.95" ty="1.0" a="1.0" d="0.999847412109375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+                    <DOMLayer name="Layer 7" color="#779ab8" current="true" isSelected="true">
+                         <frames>
+                              <DOMFrame index="0" keyMode="9728">
+                                   <elements>
+                                        <DOMSymbolInstance libraryItemName="Symbol 94" name="page5" centerPoint3DX="225.95" centerPoint3DY="152.0">
+                                             <matrix>
+                                                  <Matrix tx="4.95" ty="1.0" a="1.0" d="0.999847412109375"/>
+                                             </matrix>
+                                             <transformationPoint>
+                                                  <Point/>
+                                             </transformationPoint>
+                                        </DOMSymbolInstance>
+                                   </elements>
+                              </DOMFrame>
+                         </frames>
+                    </DOMLayer>
+               </layers>
+          </DOMTimeline>
+     </timelines>
+</DOMDocument>

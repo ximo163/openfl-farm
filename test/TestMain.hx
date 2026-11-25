@@ -366,6 +366,17 @@ class TestMain {
 		// 原样；读环境变量与合并点接线归 implement
 		runner.addCase(new tools.BootSmokeVerdictTest());
 		runner.addCase(new shim.SwfUrlBaseCppTest());
+		// issue #66：功能 UI swf 规格提取（write-tests 阶段，对缺失清单
+		// 失败）——cards_v_1/quickshoot_v_0/WildShellNc_v_5 三件并入规格：
+		// 三清单（cards-game-ui/quickshoot-ui/wild-shell-ui）顶层形状镜像
+		// #30、条目 path ↔ legacy/decompiled/<swf>/scripts/ 的 .as 全集双射
+		// （条条有出处、不漏报不多报）；swf-inventory 三件 code 块四键
+		// 对账；_index external 分组增三键（pull 回指 main3 侧反射入口）、
+		// total_classes 77→113、805 校验不动、moduleList 两行改道；
+		// mods ↔ spec/protocol.json entries.nc.mods（S1）可解或带 note
+		// （cgi_farm_login_draw 白名单外不可达须 note）；cross_module_
+		// imports 解析为既有模块名
+		runner.addCase(new FeatureUIModuleSpecsTest());
 		Report.create(runner);
 		runner.run();
 	}

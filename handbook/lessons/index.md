@@ -1581,3 +1581,26 @@
 - **haxelib 库名是 libhxcpp 不是 hxcpp**：hxcpp 4.x 在 NDK26/新工具链
   编不过，继任者改名 libhxcpp（6.0.0-rc.2，android.yml 已锁）；
   `haxelib list` 里也是 libhxcpp。冒烟脚本的环境检查按新名探。
+
+## 2026-11 · #67（考证件进 test/：import.hx 的正用——反射目标类的强制入编）
+
+- **测试经 `Type.resolveClass` 反射取的类，光放进 test/ 不等于进编译
+  图——零编译期引用时类整体不存在，反射恒 null**：#67 的考证结论落点
+  是纯 const 字符串类（test/Issue67TriageNotes.hx），验收测试用
+  `Type.resolveClass("Issue67TriageNotes")` 取（write-tests 阶段类不
+  存在，直接 import 会编译失败，只能反射）。implement 把类写出来后
+  断言仍全红、报「实际文本:（空）」——Haxe 只编译从 main 可达的
+  类型（src/shim/SymbolClass.hx:67 的 DCE 锚教训同病），`@:keep` 救
+  不了整体不进产物（4.3.6 --interp 实测：`@:keep` 加类加字段、
+  `-dce no`、`--macro Compiler.keep` 全部无效——类根本没被 type，
+  keep 是 DCE 阶段的保险不是 typing 阶段的牵引）。解法：classpath
+  根放 `import.hx` 写 `import Issue67TriageNotes;`——默认导入机制
+  对每个编译单元生效（不受目录边界限制：main 在子目录同样生效），
+  import 即构成 typing 牵引，类进编译图后反射可得。这是 import.hx
+  的**正用**（#56 教训是遮蔽滥用：import 优先级压同包同名类型，
+  制造永不编译的僵尸 stub；本条不遮蔽任何名字，只做牵引）。影响
+  面自查规矩：放之前全仓 grep 确认 `-cp test` 只出现在 test.hxml
+  （html5/cpp 生产编译不含 test/ classpath），否则牵引会泄漏进产物。
+- **块注释里写 glob 形态（`decompiled/*/scripts/`）＝注释提前闭合**：
+  `*/` 是结束符不看语境，`decompiled/<名>/scripts/` 这类写法才安全；
+  编译器报 `Expected }` 且行号指在注释内部时先查这个。

@@ -313,6 +313,18 @@ class TestMain {
 		runner.addCase(new tools.SceneShotPlanTest());
 		runner.addCase(new tools.MotionEnergyTest());
 		runner.addCase(new tools.SceneShotDiffTest());
+		// issue #61：cpp typer 全量扫描固化（write-tests 阶段，对 stub 失败）——
+		// 临时 hxml 变换纯逻辑（tools.CppTyperPlan：-main/-js 行删、html5 专属
+		// -D 按名删（#18 点名 + #18/#29「等」的 2026-11-25 实测补齐）、第 4 个
+		// 起 --macro 删、末尾追加 -cpp + include('', true, ['mx.core.mx_internal'],
+		// ['src'])，其余逐字透传；golden 两侧 = 实测判据绿的 debug.hxml/扫描
+		// hxml 快照）；haxe 输出判据（tools.CppTyperVerdict：判据尾巴＝末两个
+		// 非空行恰为 hxcpp 未装 + Build failed、命中＝定位行/引用链行/未知
+		// Error 行打全不截断不去重、无尾巴必红——0 输出 no-compilation 形态与
+		// 裸模块名形态（#29）都不许绿）。执行脚本 tools/scan_cpp_typer.sh
+		// （读 debug.hxml、mktemp、调 haxe）按 issue 走 implement 阶段
+		runner.addCase(new tools.CppTyperPlanTest());
+		runner.addCase(new tools.CppTyperVerdictTest());
 		Report.create(runner);
 		runner.run();
 	}

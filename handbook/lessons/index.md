@@ -1468,3 +1468,31 @@
   在库文件缺失时**仍退 0**（「library 指向不存在构建红」的旧结论不覆盖
   全缺场景），构建绿不等于资产在。防：跑门禁前 `ls assets/legacy | wc -l`
   一眼；挂死 + 孤 404 直接同步资产再来。
+
+## 2026-11 · #61（cpp typer 扫描固化：recipe 变成一条命令）
+
+- **扫描已固化，收工/审查不再靠 agent 自觉抄 recipe**：`bash
+  tools/scan_cpp_typer.sh` 一条命令跑 #18/#29 的全量 include 扫描（debug.hxml
+  缺失先自动 openfl build html5 生成）。行变换/判据本体在
+  tools.CppTyperPlan/CppTyperVerdict（契约 test/tools/CppTyper*Test.hx 钉死，
+  `haxe test.hxml` 跑），脚本侧胶水 tools.CppTyperScan.hx 由 bash 经
+  `haxe -cp tools --run` 拉起——bash 做不了行集变换与文本判据，**别在
+  shell 里复刻一份**（两份逻辑迟早漂移）。就位当日全量实跑：main 绿
+  （WaterModel:310 已由 #60 修，无其他既有红——无新工单）；注入式自检
+  （FS_02_1_2.hx 植入 `var i:Int = 0; if (i == null)`）红、移除绿，两段
+  输出贴 PR 说明。
+- **haxe 的配置文件只认 .hxml 后缀，mktemp 裸名直接 "Could not process
+  argument"**：临时扫描 hxml 放 `mktemp -d` 的工作目录里命名 scan.hxml；
+  `mktemp /tmp/xxx.XXXXXX` 生成的无后缀名 haxe 不当配置文件。这条红是
+  判据安全网接住的（Error: 前缀行＝命中、无尾巴）——形状外失败进不了
+  绿，顺带实测了 #29 那层「无尾巴即红」的网真兜得住。
+- **debug.hxml 有两种形状，都扫得绿，别拿 write-tests 的 fixture 对着
+  diff 慌**：资产已同步时 swf 处理器往 debug.hxml 加 `-cp export/
+  html5/haxe/_generated` 与裸 `swf.exporters.animate.AnimateLibrary` 行、
+  且无 disable_preloader_assets；assets/legacy 未同步时（库文件全缺、
+  构建仍退 0，见 #59 条）两者皆无、多出 `-D disable_preloader_assets=1`。
+  write-tests 的 golden fixture 是**无资产**形状（2026-11-25 容器实测）。
+  变换规则对这几行一律透传：_generated 目录实测不落地（classpath 指空、
+  haxe 不报错），裸类名行在 cpp 目标可编（swf 库本身支持 native），
+  include 限 ['src'] 不受影响——注入自检正是在**有资产**形状下逮住
+  src/FS_02_1_2.hx 的错，src 垫片类确在类型化、不被遮蔽。

@@ -385,10 +385,12 @@ class TestMain {
 		// plugins 节锚点、happyfarm3 FarmLite.as:366 lite_ui 预加载器硬引用、
 		// main3 module/recall 模块链）、行号级出处可核对、「未验证」必须带
 		// 卡点说明、五件未定位引用项与插件三兄弟的「零引用或链路」收口、
-		// freegift/monthEnd 版本漂移与窗口过期点名项。结论落点同 #67 先例：
-		// 17 件均已进 main_swfs 无 baseline 账可写，按 test/** append-only
-		// 落新文件 test/Issue68TriageNotes.hx（纯 const 字符串类，implement
-		// 新建即转绿）
+		// freegift/monthEnd 版本漂移与窗口过期点名项。结论落点：17 件均已进
+		// main_swfs 无 baseline 账可写；结论属研究交付物（非测试零件），按
+		// #56「stub 归树」规矩落 src/Issue68TriageNotes.hx（write-tests 阶段
+		// 已建 17 个空串 static var stub，implement 原地填结论即转绿——src/
+		// 不受 test/ append-only 约束，这避开了 #67 的 test/import.hx DCE
+		// 通道在 #68 不可用的死结）
 		runner.addCase(new Issue68TriageTest());
 		Report.create(runner);
 		runner.run();

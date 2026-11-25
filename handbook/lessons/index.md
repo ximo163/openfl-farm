@@ -1615,12 +1615,20 @@
   考证「某插件 swf 有没有引用」必须三层都查：配置条目（nc_addon plugins
   JSON）→ 宿主 proxy 类（main3 scripts/plugins/）→ 文件名直接命中；只有
   第一层是承重墙。PromotionsPlugin 连 proxy 类都不存在，是更死的一档。
-- **secondList 键的存在 ≠ 有消费方，版本漂移要双向核**：nc_addon secondList
-  是「键→URL」声明表，消费形态是 `Settings.getSecondUrl("键名")`——freegift
-  键（nc_addon.php:289）在 main3 全树 grep 不到任何调用方，是死键；且配置
-  指 freegift_v_6.swf 部署只有 v_5，即便有消费方也 404。「配置指 v_N、部署
-  是 v_M」的漂移核查必须两边都开文件清单核（monthEnd 同款：配置 v_8/部署
-  v_5），只看配置行会漏掉「加载必 404」这层非活跃证据。
+- **secondList 键的消费方可能在模块体内而不在宿主里——grep 范围必须覆盖
+  所有已反编译 swf**：nc_addon secondList 是「键→URL」声明表，消费形态是
+  `Settings.getSecondUrl("键名")`。freegift 键（nc_addon.php:289）在 main3
+  宿主全树 grep 不到调用方，曾据此误判「死键+零消费方」——实际消费方在
+  **gifts_v_11 模块体内**（FreeGiftView.as:299 getSecondUrl("freegift") +
+  :300 requestClass 加载 FREE_BG="freegiftBg"，符号就在 freegift_v_5 里）：
+  免费礼物模块的窗口背景素材经此键加载，是常驻活跃链路。教训两层：(1)
+  宿主反射加载的外部模块（Utils.getClass 取类、类体在模块 swf 内）会把
+  消费代码带出宿主 grep 范围，查「键有没有调用方」必须 grep **全部**
+  decompiled/<swf>/scripts/ 而不只是 main3/happyfarm3 宿主；(2) 自己前序
+  考证（#67 gifts）里就出现过的文件要优先纳入排查半径——漏掉自己引过的
+  模块是最低级漏查。漂移核查仍要双向核（配置 v_6/部署 v_5 → 请求 404），
+  但「键活文件死」与「死键+死文件」的定级结论形态完全不同：前者是活跃
+  模块素材依赖（同 recall 口径建议立项），后者才可冻结。
 - **同名线索跨端命中可能是伪命中，要读上下文再引**：Master2 FarmCommand.as
   的 `_recallTime` 看着像 recall 模块的牧场侧证据，读 :890-897 上下文是拍
   蚊子（killFly）ecode!=0 的重试计数器——变量名巧合。issue 原文引它作

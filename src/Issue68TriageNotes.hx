@@ -160,20 +160,31 @@ class Issue68TriageNotes {
 	// ui/freegift_v_5：nc_addon freegift 键族，配置指 v_6 部署是 v_5（漂移）
 	// 引用出处：nc_addon.php:289 secondList JSON
 	// `{"id":"freegift","src":"module/ui/freegift_v_6.swf"}`。
-	// 活跃判定双要素（issue 点名版本漂移待核）：(1) **漂移坐实**——配置指
-	// freegift_v_6.swf，部署包 module/ui/ 下只有 freegift_v_5.swf，无 v_6 文件；
-	// 即便有消费方，加载也是 404。(2) **消费方缺位**——main3 反编译全树 grep
-	// `getSecondUrl("freegift")` 零命中；secondList 键的消费形态是经
-	// Settings.getSecondUrl(id) 取址（对照 recall 键 RecallView.as:65 有消费），
-	// freegift 键无任何调用方。main3 module/FreeGift/ModuleFreeGift.as 是免费
-	// 礼物模块壳，但它走 Utils.getClass 反射外部模块（module.FreeGift.
-	// FreeGiftController 在 gifts_v_11 里，#67 已考证），与本 freegift 键族
-	// 无关——freegift≠gifts。两要素叠加 → 部署内不活跃（死键+死文件）。
-	// 本件内容：FreeGiftGetTip/FreeGiftSendTip/HallowExp/HallowThanks/HallowTick
-	// 等礼物赠送提示符号族（含万圣节外观件）。
-	// 定级建议：建议**冻结**（给所有者拍板）——配置漂移+零消费方，快照无路径
-	// 走到；若所有者要保真 secondList 全键族可改立项（按素材库翻译）。
-	public static var FREEGIFT_V_5:String = "引用出处：nc_addon.php:289 secondList JSON {\"id\":\"freegift\",\"src\":\"module/ui/freegift_v_6.swf\"}。活跃判定双要素：(1) 版本漂移坐实——配置指 freegift_v_6.swf，部署包 module/ui/ 下只有 freegift_v_5.swf 无 v_6；即便有消费方加载也是 404。(2) 消费方缺位——main3 反编译全树 grep getSecondUrl(\"freegift\") 零命中；secondList 键的消费形态是经 Settings.getSecondUrl(id) 取址（对照 recall 键 RecallView.as:65 有消费），freegift 键无任何调用方。main3 module/FreeGift/ModuleFreeGift.as 是免费礼物模块壳，但走 Utils.getClass 反射外部模块（module.FreeGift.FreeGiftController 在 gifts_v_11 里，issue #67 已考证），与本 freegift 键族无关——freegift≠gifts。两要素叠加→部署内不活跃（死键+死文件）。本件内容：FreeGiftGetTip/FreeGiftSendTip/HallowExp/HallowThanks/HallowTick/freeSendItem 等礼物赠送提示符号族（含万圣节外观件）。定级建议：建议冻结（给所有者拍板）——配置漂移+零消费方，快照无路径走到；若要保真 secondList 全键族可改立项（按素材库翻译）。";
+	// **消费链（真实存在）**：消费方不在 main3 宿主里，在 gifts_v_11 模块体内——
+	// gifts_v_11 scripts/module/FreeGift/FreeGiftView.as:299
+	// `Settings.getInstance().getSecondUrl("freegift")` 取址，:300 经
+	// `RSLManager.requestClass(FREE_BG, addWindowTimer, 该url)` 加载，
+	// FREE_BG = "freegiftBg"（FreeGiftModel.as:48）；createView() 是免费礼物
+	// 主窗的视图构建入口，:529 `Utils.getMaterial(FREE_BG)` 取出作窗口底。
+	// "freegiftBg" 符号就在本件内（decompiled/freegift_v_5/scripts/freegiftBg.as
+	// + symbolclass/symbols.csv 第 35 号导出）。即：免费礼物模块（gifts_v_11，
+	// #67 已考证为启动 1400ms 自动加载的现役常驻模块）的窗口背景素材经
+	// freegift 键加载本件 swf——freegift 键≠死键，它是 FreeGift 模块链的一环。
+	// 活跃判定双要素：(1) **键活**——消费链如上，gifts_v_11 手动入口
+	// （LeftSideToolBar.as:226-227）/自动加载链在快照里真实走到，createView()
+	// 执行时必发本件加载请求；(2) **文件死**——配置指 freegift_v_6.swf 部署
+	// 只有 v_5，请求必 404（requestClass 加载失败，FREE_BG 取不出、窗口
+	// 无背景素材，属原版部署的破损行为）。形态与 recall_v_3 对照：同为主流
+	// 模块的素材依赖（secondList 键→RSLManager→符号），差别只在 recall 键
+	// 无漂移、本键有漂移。
+	// 本件内容：freegiftBg（FreeGift 主窗底）+ FreeGiftGetTip/FreeGiftSendTip/
+	// HallowExp/HallowThanks/HallowTick/freeSendItem/freegiftError 等礼物赠送
+	// 提示符号族（含万圣节外观件）。
+	// 定级建议：**立项翻译**（给所有者拍板）——与 recall_v_3 同口径：main3
+	// 已注册活跃模块（gifts/FreeGift 族）的素材依赖，快照里请求真实发出；
+	// 「配置指 v_6 部署 v_5」的漂移导致的 404 本身就是要复刻的原版行为
+	// （窗口缺底），且漂移属配置-部署事实问题，不改变翻译必要性。
+	public static var FREEGIFT_V_5:String = "引用出处：nc_addon.php:289 secondList JSON {\"id\":\"freegift\",\"src\":\"module/ui/freegift_v_6.swf\"}。消费链（真实存在）：消费方不在 main3 宿主里，在 gifts_v_11 模块体内——gifts_v_11 scripts/module/FreeGift/FreeGiftView.as:299 Settings.getInstance().getSecondUrl(\"freegift\") 取址，FreeGiftView.as:300 经 RSLManager.requestClass(FREE_BG,addWindowTimer,该url) 加载，FREE_BG=\"freegiftBg\"（FreeGiftModel.as:48）；createView() 是免费礼物主窗的视图构建入口，FreeGiftView.as:529 Utils.getMaterial(FREE_BG) 取出作窗口底。\"freegiftBg\" 符号就在本件内（decompiled/freegift_v_5/scripts/freegiftBg.as + symbolclass/symbols.csv 35 号导出）。即：免费礼物模块（gifts_v_11，issue #67 已考证为启动 1400ms 自动加载的现役常驻模块）的窗口背景素材经 freegift 键加载本件 swf——freegift 键不是死键，它是 FreeGift 模块链的一环。活跃判定双要素：(1) 键活——消费链如上，gifts_v_11 手动入口（LeftSideToolBar.as:226-227）/自动加载链在快照里真实走到，createView() 执行时必发本件加载请求；(2) 文件死——配置指 freegift_v_6.swf 部署只有 freegift_v_5.swf，请求必 404（requestClass 加载失败，FREE_BG 取不出、窗口无背景素材，属原版部署的破损行为）。形态与 recall_v_3 对照：同为主流模块的素材依赖（secondList 键→RSLManager→符号），差别只在 recall 键无漂移、本键有漂移。本件内容：freegiftBg（FreeGift 主窗底）+ FreeGiftGetTip/FreeGiftSendTip/HallowExp/HallowThanks/HallowTick/freeSendItem/freegiftError 等礼物赠送提示符号族（含万圣节外观件）。定级建议：立项翻译（给所有者拍板）——与 recall_v_3 同口径：main3 已注册活跃模块（gifts/FreeGift 族）的素材依赖，快照里请求真实发出；「配置指 v_6 部署 v_5」的漂移导致的 404 本身就是要复刻的原版行为（窗口缺底），且漂移属配置-部署事实问题，不改变翻译必要性。";
 
 	// ui/monthEnd_v_5：nc_addon.php:121 指 monthEnd_v_8 部署只有 v_5（漂移），
 	// 窗口期 2012-7-20~8-13 已过期

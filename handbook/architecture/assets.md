@@ -51,7 +51,13 @@
   SymbolClass.attach 里，符号侧零额外代码）。**三个登记义务**：① 新符号 shim 必须同步加进
   `SymbolClass.dceAnchor` 数组（仅生产目标，`#if !eval`）——零引用的
   `@:keep` 类不进 `-dce full` 产物（见 lessons）；② 符号名小写开头的
-  （如 canPickIcon）类名大写 + `@:native("原名")` 回键；③ 库**首次**拉起
+  （如 canPickIcon）类名大写 + `@:native("原名")` 回键——**仅限「代码
+  直构/getMaterial 直查符号」的消费形态**；若符号是被**时间轴放置**、由
+  库实例化（AnimateSpriteSymbol.__createObject 经
+  SymbolUtils.formatClassName 把类名段首字母大写再 resolveClass），则
+  不加 @:native 才对——加了注册成小写原名、resolveClass 落 null、库静默
+  回退裸 MovieClip（help 的 5 个页类，#65 探针实证，详见 lessons）；
+  ③ 库**首次**拉起
   是异步窗口，构造器返回后立即对符号**子件**的写（显隐/定位）会被吞
   （时间轴还没挂上）——一律经 `SymbolClass.afterAttach(target, fn)`
   登记、attach 后重放（已挂上则立即执行）；写实例自身属性（name/

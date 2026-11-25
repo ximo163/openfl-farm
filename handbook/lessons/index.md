@@ -1496,3 +1496,45 @@
   haxe 不报错），裸类名行在 cpp 目标可编（swf 库本身支持 native），
   include 限 ['src'] 不受影响——注入自检正是在**有资产**形状下逮住
   src/FS_02_1_2.hx 的错，src 垫片类确在类型化、不被遮蔽。
+
+## 2026-11 · #65（help 引导翻译 implement：库实例化的命名键与 HTMLParser 换行洞）
+
+- **「时间轴放置」的符号类不加 @:native，加了大写名 resolveClass 落
+  null、库静默回退裸 MovieClip**：库实例化链是
+  AnimateSpriteSymbol.__createObject →
+  `Type.resolveClass(SymbolUtils.formatClassName(className))`，而
+  formatClassName 把**类名段首字母大写**（help0316_fla.page1_9 →
+  help0316_fla.Page1_9）。write-tests 按 Task 垫片 ② 惯例给 5 个页类加
+  `@:native("小写原名")`，注册键反而变成小写、大写名查空——根符号
+  MainTimeline 照样实例化（原文就大写开头），页全回退裸 MovieClip，
+  任何编译期症状都没有。防：符号的**消费形态**定命名键——代码直构/
+  getMaterial 直查小写符号名（Task1 族）→ ② @:native 回键；时间轴
+  PlaceObject 放置、库来 new（help 页类/文档类）→ 默认注册名（类名大
+  写）。实证靠 node 探针（run-openfl-node.js + release.hxml 同 defines
+  编译），resolveClass 大小写两个方向各探一遍即见分晓。
+- **openfl 9.5.2 HTMLParser 的 `</p>`/`</li>` 追加 "\n" 不入
+  TextFormatRange → TextEngine 布局断在中途**：HTMLParser.hx:128-133
+  关闭段标签时 `value += "\n"`（multiline），但只在
+  `start < segment.length` 才 push range（:137-144）——段尾 `</p>` 的
+  换行不在任何 range 里；TextEngine.setFormattedPositions 的循环走到
+  range 未覆盖的文本时 nextFormatRange 耗尽，:1184 打
+  "You found a bug in OpenFL's text code!" 并 break。help 的 41 个
+  DefineEditText 全是 `<p>…</p><p></p>` 双段形态，字字命中（node 探针
+  32 个实例化字段全 uncovered=2、逐字段一条告警）。修复走 issue 路径
+  b：把最后一个 range 的 end 补到 text.length（纯簿记，Flash 对文末空
+  段本就沿用前段格式），修一次即持久（range 是引擎状态，update 只读
+  不重建）。注意 TextEngine 的 `textFormatRanges` 是 **openfl.Vector
+  不是 Array**——裸 JS 下标/裸 length 全是 undefined，必须类型化访问。
+- **AnimateTimeline 会替翻译类喂好声明字段**：`#if !openfljs` 的
+  `__updateInstanceFields`（AnimateTimeline.hx:526-536）把
+  `Type.getInstanceFields` 的名字对子件 `name` 逐个回填——翻译类的
+  public var（page1..page5/closeButton1/nextButton/preButton/closeButton2）
+  不用胶水喂，PlaceObject 命名子件自动落位（探针实证 auto=true 全表）。
+  翻译「文档类/被时间轴放置的类」时字段照原文声明即可，接线胶水只剩
+  帧脚本等价调用。
+- **文字类告警在 node 可复现、可计数**：openfl 内部 Log 全走
+  console.warn，垫片环境拦 console.warn 数特定文案即得逐字段计数（32
+  字段 32 条，修复后 0）；textWidth 读取触发 __updateLayout，不需要
+  真渲染。真机 41 条对 32 个实例化字段的差额 = 9 个 DefineEditText 是
+  任何时间轴都没放置的死符号 + 部分字段多次布局重复计数——修完后同
+  根源全消，别按 41 去对表。

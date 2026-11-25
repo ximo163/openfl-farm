@@ -83,8 +83,14 @@ Timeline 已挂上之后（`addFrameScript` 在无 Timeline 的实例上静默�
 3. **补偿随符号接线**：符号 shim 建到哪条、消费点（getMaterial/new/
    getClass 反射）在哪，登记表就收到哪条。未接线的实义帧脚本（farmui1
    全族、farmui2 wild 系与 farmui2_fla 内部件、farmui_full 的
-   AddAnimation/lock_mc_46、Fertilizer CursorTool2x、help.swf——牧场批次）
-   不预登记，登记了也没人查表；符号立项时随符号补。
+   AddAnimation/lock_mc_46、Fertilizer CursorTool2x——牧场批次）不预登记，
+   登记了也没人查表；符号立项时随符号补。**例外 help.swf（#65 已完）**：
+   6 类方法体是翻页状态机 + 按钮转发，不是本表的原语形态可表达——走
+   **翻译类 + 显式接线**的路：`src/help0316_fla/` 1:1 翻译，
+   `shim/HelpGuideWiring.attach`（LocalSwfLoader.attachContent 按
+   libraryId=="help" 调）先五页 frame1 再根 frame1，不经本登记表。后面
+   再遇到「整类 ABC 都要行为」的库照此分派：原语够用进表、整类翻译走
+   接线胶水。
 4. **登记表钉死**：红测门（删表行必红）目前只有 issue 点名两例
    （FrameScriptCompensationTest）；批次 2 靠行内注释 + 清查报告钉出处。
    后续 write-tests 轮动到本表时，把行内注释的出处逐条升格为期望值

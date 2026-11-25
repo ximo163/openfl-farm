@@ -325,6 +325,20 @@ class TestMain {
 		// （读 debug.hxml、mktemp、调 haxe）按 issue 走 implement 阶段
 		runner.addCase(new tools.CppTyperPlanTest());
 		runner.addCase(new tools.CppTyperVerdictTest());
+		// issue #65：help.swf 新手引导（write-tests 阶段，对 stub 失败）——
+		// help0316_fla 六类纯面：MainTimeline.frame1 初态（仅 page1 可见 +
+		// closeButton1 隐藏）、next/pre 翻页矩阵（五页全隐后单页落点，
+		// 含 nextClick 无 page5 分支/preClick 无 page1 分支的全隐落空）、
+		// 连续翻页与全链点击（页类转发 → MainTimeline 翻页 → closeButton2
+		// 的 closeEvent bubbles=true 冒到根——WelcomeView 收尾链）、
+		// MainTimeline.closeButtonClick 的非冒泡 closeEvent（对照 page5 的
+		// bubbles=true，别抄错位）；页类 frame1 的按钮接线（CLICK → 裸串
+		// 事件转发恰一发、bubbles 极性、page5 closeEvent 冒泡到父级）。
+		// 接线胶水（content 驱动 5 页与按钮——具名子件/SymbolClass 取符号
+		// 按 implement 验证择一）与 41 个 DefineEditText 的文字渲染（cpp
+		// TextEngine，根因 B）按 issue 走 implement 阶段 + CI 门禁
+		runner.addCase(new help0316_fla.MainTimelineTest());
+		runner.addCase(new help0316_fla.PagesTest());
 		Report.create(runner);
 		runner.run();
 	}

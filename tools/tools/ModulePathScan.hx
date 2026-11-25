@@ -60,33 +60,67 @@ class ModulePathScan {
 	 * 白）；无 package 语句或 `package;`（空包）→ ""（根包）。`//` 行注
 	 * 释剔除后判（见类头）。 */
 	static public function parsePackage(lines:Array<String>):String {
-		throw new haxe.Exception("not implemented");
+		for (line in lines) {
+			var cut = line.indexOf("//");
+			var text = cut < 0 ? line : line.substring(0, cut);
+			if (PACKAGE_RE.match(text)) return PACKAGE_RE.matched(1);
+		}
+		return "";
 	}
 
 	/** 文件名 → 模块名：去 `.hx` 后缀（逐字；`.hx` 以外的后缀原样保留—
 	 * —扫描器侧只收 .hx，这里不防御）。传入的是 basename 还是全路径都行：
 	 * 只取最后一个 `/` 之后的段再剥后缀（目录名不进模块路径）。 */
 	static public function moduleNameOf(fileName:String):String {
-		throw new haxe.Exception("not implemented");
+		var base = fileName;
+		var slash = base.lastIndexOf("/");
+		if (slash >= 0) base = base.substring(slash + 1);
+		if (StringTools.endsWith(base, ".hx")) return base.substring(0, base.length - 3);
+		return base;
 	}
 
 	/** 模块路径拼装：包声明 + 文件名（根包时即文件名，无点前缀）。 */
 	static public function modulePathOf(pack:String, fileName:String):String {
-		throw new haxe.Exception("not implemented");
+		var name = moduleNameOf(fileName);
+		if (pack == null || pack == "") return name;
+		return pack + "." + name;
 	}
 
 	/** 全库查重：输入 entries 是 (path, lines) 对（path 是仓库相对路径
 	 * 原样进报告）。输出冲突组名单：只含文件数 >1 的模块路径；组内文件
 	 * 字典序、组间模块路径字典序（报告可 diff）。输入空/全零冲突 → []。 */
 	static public function findConflicts(entries:Array<ModuleEntry>):Array<ModuleConflict> {
-		throw new haxe.Exception("not implemented");
+		var byPath = new Map<String, Array<String>>();
+		for (e in entries) {
+			var mp = modulePathOf(parsePackage(e.lines), e.path);
+			if (!byPath.exists(mp)) byPath.set(mp, []);
+			byPath.get(mp).push(e.path);
+		}
+		var conflicts:Array<ModuleConflict> = [];
+		for (mp => files in byPath) {
+			if (files.length > 1) {
+				files.sort(Reflect.compare);
+				conflicts.push({modulePath: mp, files: files});
+			}
+		}
+		conflicts.sort(function(a:ModuleConflict, b:ModuleConflict):Int {
+			return Reflect.compare(a.modulePath, b.modulePath);
+		});
+		return conflicts;
 	}
 
 	/** 冲突组 → 人读报告行集（每组首行模块路径、随后每文件一行缩进列
 	 * 出——脚本侧拼报告时逐行打出；形状由测试钉死）。 */
 	static public function renderConflict(c:ModuleConflict):Array<String> {
-		throw new haxe.Exception("not implemented");
+		var lines = [c.modulePath + " —— " + c.files.length + " 个文件同模块路径："];
+		for (f in c.files) lines.push("  " + f);
+		return lines;
 	}
+
+	/** package 语句形态（类头）：行前空白 + package + 包名（可空，即
+	 * `package;`）+ 尾分号；分号后的行内注释已被剔除。EReg 刻意不用
+	 * 前瞻（eval 的 lookahead 退化坑，handbook/lessons #63），纯顺序匹配。 */
+	static final PACKAGE_RE = ~/^[ \t]*package[ \t]*([A-Za-z0-9_.]*)[ \t]*;/;
 }
 
 /** 扫描输入项：一个 .hx 文件的路径与行集。 */

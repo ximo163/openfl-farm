@@ -82,31 +82,52 @@ class TestStubScan {
 	static inline final EXEMPT_TIMELINE_DIFF:String = "test/tools/TimelineDiff.hx";
 
 	/** 单文件行扫描：lines 是行文本数组（按 \n 切好的），path 原样进命中
-	 * 三元组。命中判式四条件见类头（剔注释→字符串遮罩→语句位 throw 惯用
+	 * 三元组。命中判式四条件见类头（字符串遮罩→剔注释→语句位 throw 惯用
 	 * 语族→遮罩前逐字短语；大小写敏感）。行序保持输入序。一行只出一条命
 	 * 中（同行多处出现不重复计——行是报告粒度）。 */
 	static public function scanLines(lines:Array<String>, path:String):Array<StubHit> {
-		throw new haxe.Exception("not implemented");
+		var hits:Array<StubHit> = [];
+		for (i in 0...lines.length) {
+			if (lineIsStub(lines[i])) hits.push({path: path, line: i + 1, code: StringTools.trim(lines[i])});
+		}
+		return hits;
 	}
 
 	/** 当前生效的豁免清单（写死两条，出处逐条注明——// issue #70「豁免清
 	 * 单写死在脚本顶部、每项注明出处」）。返回**副本**（调用方改了不影响
 	 * 内部状态；就两条、无所谓性能）。 */
 	static public function exemptions():Array<Exemption> {
-		throw new haxe.Exception("not implemented");
+		return [
+			{
+				path: EXEMPT_TIMELINE_SPEC,
+				reason: "#56 僵尸 stub：write-tests attempt-1 留在 test/ 的骨架，implement 被 test/** append-only 驳回后靠 import.hx 遮蔽、不再被任何链加载——issue #70 迁移期豁免（清理该文件时同步删本条并改 TestStubScanTest 的豁免断言）"
+			},
+			{
+				path: EXEMPT_TIMELINE_DIFF,
+				reason: "#56 僵尸 stub（与 TimelineSpec 同批，import.hx 遮蔽先例）——issue #70 迁移期豁免"
+			}
+		];
 	}
 
 	/** 报告行拼装：`path:line 摘录` 单行（// issue #70 输出契约）。path
 	 * 含空格/行文本为空行之类都不做转义——人读报告不是机读协议。 */
 	static public function reportLine(hit:StubHit):String {
-		throw new haxe.Exception("not implemented");
+		return hit.path + ":" + hit.line + " " + hit.code;
 	}
 
 	/** 报告行逆向判读：一行文本是不是本门输出的报告行形态（`路径:行 摘录`
 	 * ——行号段是数字、路径段非空、摘录段任意）。机读回归用：测试对拍脚本
 	 * 输出时靠它分拣命中行与首尾说明行。 */
 	static public function isReportLine(line:String):Bool {
-		throw new haxe.Exception("not implemented");
+		if (line == null) return false;
+		var colon = line.indexOf(":");
+		if (colon <= 0) return false; // 无冒号，或路径段为空（":51 …"）
+		var rest = line.substring(colon + 1);
+		var digits = 0;
+		while (digits < rest.length && rest.charCodeAt(digits) >= "0".code && rest.charCodeAt(digits) <= "9".code) digits++;
+		if (digits == 0) return false; // 行号段非数字（首尾说明行的 " FAIL …" 形态在此拦下）
+		if (digits == rest.length) return true; // 摘录段空（"path:8"）
+		return rest.charCodeAt(digits) == " ".code;
 	}
 
 	/** 豁免消费：全集命中 → 滤后命中 + 豁免对账。path 与豁免条目**逐字相
@@ -116,7 +137,127 @@ class TestStubScan {
 	 * 已零命中——僵尸清理后豁免行忘删的检测面）；live 是仍在消费的。豁免
 	 * 文件里一条命中都没有时它整文件进 stale（不是逐行粒度）。 */
 	static public function exemptHits(allHits:Array<StubHit>, exemptions:Array<Exemption>):ExemptResult {
-		throw new haxe.Exception("not implemented");
+		var exempt = new Map<String, Bool>();
+		for (e in exemptions) exempt.set(e.path, true);
+		var hits:Array<StubHit> = [];
+		var consumed = new Map<String, Bool>();
+		for (h in allHits) {
+			if (exempt.exists(h.path)) consumed.set(h.path, true);
+			else hits.push(h);
+		}
+		var live:Array<Exemption> = [];
+		var stale:Array<Exemption> = [];
+		for (e in exemptions) {
+			if (consumed.exists(e.path)) live.push(e);
+			else stale.push(e);
+		}
+		return {hits: hits, live: live, stale: stale};
+	}
+
+	// ---- 判式内部（类头四条件的实现件；私有，不进公共 API） ----
+
+	/** 单行判式：四条件全部成立才命中。条件顺序有讲究——字符串遮罩必须
+	 * **先于**剔注释（类头条件 1/2）：遮罩与原文**等长**（转义对占两格），
+	 * 所以剔注释的截断位可以直接换算回原文用（条件 4 在遮罩前文本上判）。 */
+	static function lineIsStub(raw:String):Bool {
+		var masked = maskStrings(raw);
+		var cut = masked.indexOf("//"); // 遮罩后字符串内的 //（URL 字面量）已抹掉，截断位必在真注释上
+		var cutPos = cut < 0 ? raw.length : cut;
+		if (raw.substring(0, cutPos).indexOf(NEEDLE) < 0) return false; // 条件 4：遮罩前、截断位之前含逐字短语
+		return hasStatementThrow(cut < 0 ? masked : masked.substring(0, cut)); // 条件 3
+	}
+
+	/** 字符串遮罩（条件 1）：'…'/"…" 的内容逐字符换空白、只留定界引号，
+	 * 反斜杠转义对占两格——**保持与原文等长**（剔注释截断位可互换使用）。
+	 * 字符串未闭合（跨行/孤引号）时吃满到行尾，与逐行扫描的粒度一致。 */
+	static function maskStrings(s:String):String {
+		var buf = new StringBuf();
+		var i = 0;
+		var quote = -1; // 当前字符串的定界引号码；-1 = 不在字符串里
+		while (i < s.length) {
+			var c = s.charCodeAt(i);
+			if (quote < 0) {
+				if (c == '"'.code || c == "'".code) quote = c;
+				buf.addChar(c);
+				i++;
+			} else if (c == "\\".code && i + 1 < s.length) {
+				buf.add("  "); // 转义对占两格
+				i += 2;
+			} else if (c == quote) {
+				quote = -1;
+				buf.addChar(c);
+				i++;
+			} else {
+				buf.add(" ");
+				i++;
+			}
+		}
+		return buf.toString();
+	}
+
+	/** 语句位 throw 惯用语族（条件 3）：throw 前是白名单边界（行首/空白/
+	 * ;{}()=——反引号**不在**白名单，doc 注释里 ``throw "not implemented"``
+	 * 的引用形态靠它排除）、后是非标识符字符，且（空白不敏感）随 `"`（形态
+	 * 三）或 `new Error(` / `new haxe.Exception(`（形态一/二）。 */
+	static function hasStatementThrow(text:String):Bool {
+		var n = text.length;
+		var from = 0;
+		while (true) {
+			var idx = text.indexOf("throw", from);
+			if (idx < 0) return false;
+			var end = idx + 5; // "throw".length
+			if (statementBoundaryBefore(text, idx) && (end >= n || !isIdent(text.charCodeAt(end)))) {
+				var j = skipWs(text, end);
+				if (j < n && text.charCodeAt(j) == '"'.code) return true;
+				if (matchWord(text, j, "new")) {
+					var k = skipWs(text, j + 3);
+					if (matchWord(text, k, "Error")) {
+						var m = skipWs(text, k + 5);
+						if (m < n && text.charCodeAt(m) == "(".code) return true;
+					} else if (matchWord(text, k, "haxe")) {
+						var m = skipWs(text, k + 4);
+						if (m < n && text.charCodeAt(m) == ".".code) {
+							m = skipWs(text, m + 1);
+							if (matchWord(text, m, "Exception")) {
+								var e = skipWs(text, m + 9);
+								if (e < n && text.charCodeAt(e) == "(".code) return true;
+							}
+						}
+					}
+				}
+			}
+			from = idx + 1; // 同行第二个 throw 也要看（一行仍只出一条命中，见 scanLines）
+		}
+	}
+
+	/** throw 的左边界白名单：行首/空白/分号/花括号/括号/等号（类头条件 3
+	 * 的枚举集）。反引号、方括号等非标识符字符**故意不收**——收了就把
+	 * doc 注释/散文里反引号引用的惯用语当真 stub（误伤面大于捕获面）。 */
+	static function statementBoundaryBefore(text:String, idx:Int):Bool {
+		if (idx == 0) return true;
+		var c = text.charCodeAt(idx - 1);
+		return isWs(c) || c == ";".code || c == "{".code || c == "}".code || c == "(".code || c == ")".code || c == "=".code;
+	}
+
+	static function isWs(c:Int):Bool {
+		return c == " ".code || c == "\t".code || c == "\r".code || c == "\n".code;
+	}
+
+	static function isIdent(c:Int):Bool {
+		return (c >= "a".code && c <= "z".code) || (c >= "A".code && c <= "Z".code)
+			|| (c >= "0".code && c <= "9".code) || c == "_".code;
+	}
+
+	static function skipWs(text:String, i:Int):Int {
+		while (i < text.length && isWs(text.charCodeAt(i))) i++;
+		return i;
+	}
+
+	/** 词匹配：逐字相等且词尾是非标识符字符（`newError(` 里的 new 不算）。 */
+	static function matchWord(text:String, i:Int, word:String):Bool {
+		if (text.substr(i, word.length) != word) return false;
+		var after = i + word.length;
+		return after >= text.length || !isIdent(text.charCodeAt(after));
 	}
 }
 

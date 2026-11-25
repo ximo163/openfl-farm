@@ -378,6 +378,18 @@ class TestMain {
 		// 结论按 test/** append-only 落新文件 test/Issue67TriageNotes.hx
 		// （纯 const 字符串类，implement 新建即转绿）
 		runner.addCase(new SwfTriageBaselineTest());
+		// issue #68：农场侧 17 件无归属带代码 swf 加载链考证定级（write-tests
+		// 阶段，结论文件 test/Issue68TriageNotes.hx 不存在而失败）——研究任务
+		// 的验收门：17 件全覆盖（键集合恰 17、每件非空）、「引用出处 → 活跃/
+		// 非活跃 → 定级建议」要素齐全（nc_addon.php:121/:128/:288/:289 与
+		// plugins 节锚点、happyfarm3 FarmLite.as:366 lite_ui 预加载器硬引用、
+		// main3 module/recall 模块链）、行号级出处可核对、「未验证」必须带
+		// 卡点说明、五件未定位引用项与插件三兄弟的「零引用或链路」收口、
+		// freegift/monthEnd 版本漂移与窗口过期点名项。结论落点同 #67 先例：
+		// 17 件均已进 main_swfs 无 baseline 账可写，按 test/** append-only
+		// 落新文件 test/Issue68TriageNotes.hx（纯 const 字符串类，implement
+		// 新建即转绿）
+		runner.addCase(new Issue68TriageTest());
 		Report.create(runner);
 		runner.run();
 	}

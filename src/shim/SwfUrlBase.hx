@@ -69,4 +69,62 @@ class SwfUrlBase {
 		#end
 		return url;
 	}
+
+	// issue #64（cpp linux 启动冒烟）：linux 二进制的相对 *.php（mync.php/
+	// xml.php）需要指到 CI 后端——web 靠同源自动可达，cpp 二进制没有「源」。
+	// 环境变量 QFARM_BASE_URL 存在则作为基址覆盖（各目标通用、不存在时行为
+	// 不变，html5 同源路径不受影响）。读环境变量与接线（合并点）归 implement
+	// （issue 要求先读本文件解析逻辑再定）；本函数是归并后的纯逻辑：
+	// base 非空 + 相对 *.php → <base>/home/qqfarm/core/<原 url>；其余原样
+	// （与 AndroidBackend.rebase 同一部署事实：build.sh:40 source/core →
+	// www/home/qqfarm/core/）。base 尾部的 / 容忍（不产生双斜杠）。
+
+	// 环境变量名（// issue #64 A.2 原文钉死）：冒烟脚本（tools/cpp-boot-
+	// smoke.sh）设置侧与本类读取侧靠它对齐——两处各写一份字面量时错一个
+	// 字母冒烟就静默测不到后端路径，常量钉单点。implement 读环境变量时用
+	// 本常量，别另起字面量。
+	public static final BASE_URL_ENV:String = "QFARM_BASE_URL";
+
+	// 归并后的纯逻辑（读环境变量与调用点接线见文件头下补与 AndroidHttpRequest）。
+	// 匹配规则与 resolve 逐字同款：无 scheme、不以 / 或 # 开头、? 之前的路径以
+	// .php 结尾——只改写成 <base>/home/qqfarm/core/<原 url>，其余输入（base
+	// 空/null、绝对/根相对/锚点/非 php 相对、null url）原样不动（// issue #64
+	// A.2「不存在时行为不变」）
+	public static function resolveCpp(base:String, url:String):String {
+		if (url == null || base == null || base == "") {
+			return url;
+		}
+		var scheme:EReg = new EReg("^[a-zA-Z][a-zA-Z0-9+.-]*:", "");
+		if (scheme.match(url) || url.charAt(0) == "/" || url.charAt(0) == "#") {
+			return url;
+		}
+		var path:String = url;
+		var q:Int = url.indexOf("?");
+		if (q != -1) {
+			path = url.substr(0, q);
+		}
+		if (path.length >= 4 && path.substr(path.length - 4) == ".php") {
+			return joinCore(base) + url;
+		}
+		return url;
+	}
+
+	// base 尾部 / 容忍：有就不补，没有就补一个，再拼固定 core 路径
+	// （AndroidBackend.joinCore 同款，同一部署事实的第三份拷贝——build.sh:40
+	// source/core → www/home/qqfarm/core/）
+	static function joinCore(base:String):String {
+		var joined:String = base.charAt(base.length - 1) == "/" ? base : base + "/";
+		return joined + CORE_BASE;
+	}
+
+	// 环境变量读取点（sys 边界——单测只钉上面的纯逻辑；// issue #64 A.2）：
+	// QFARM_BASE_URL 存在则作为基址覆盖，不存在/空串返回 null（= 不改写）。
+	// 只编进 sys 目标（linux cpp 冒烟与本地 cpp 调试用）；html5 同源路径
+	// 不受影响（html5 根本不调用本函数——接线点按目标编译）
+	#if sys
+	public static function envBaseUrl():String {
+		var base:String = Sys.getEnv(BASE_URL_ENV);
+		return (base == null || base == "") ? null : base;
+	}
+	#end
 }

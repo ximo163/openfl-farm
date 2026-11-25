@@ -1560,3 +1560,24 @@
   也应该对齐**：同判式同 skip 注释行的双实现 diff 为空（2026-11-25 实
   测），说明「python 管写、Haxe 补读+基类」的镜像分层没有行为漂移；
   以后改判式必须两侧同步改，diff 非空即漂移。
+
+## 2026-11 · #64（cpp linux 启动冒烟：基址改写的三个落点）
+
+- **cpp 的 xml.php config 链不经 CGI 出口类——改写必须在 flashvar 注入
+  时就做完**：排查启动链 URL 时发现 config_url/config_data 走
+  CmdLoadFile → LoadManager 的**裸 URLLoader**（LoadManager.hx:202-211），
+  完全绕开 AndroidHttpRequest 的 send() 改写——android 能跑通全靠
+  FlashVars.inject 里把 config 三件提前改成绝对地址。linux 分支照此同
+  款接线（#elseif linux），别只改 CGI 出口就以为覆盖全链。防：新增
+  cpp 目标的基址支持时，先按「谁发出这个 URL」把启动链全走一遍——
+  裸 URLLoader/Loader 的 URL 来源（flashvar/Settings/运行时拼）决定
+  改写在哪个落点。
+- **`#if android` 与 `#if linux` 是互斥目标宏，不是嵌套**：openfl 构建
+  linux 桌面时 android 宏未定义（反之亦然），`#elseif linux` 分支在
+  android 上编译掉、在 linux 上启用——同一类的两个平台分支共存无
+  冲突（AndroidHttpRequest.send 实测）。但 `#if cpp` 会同时命中两者
+  （cpp 是 cpp 族的公共宏），要「只 linux 桌面」必须用 linux 而不是
+  cpp。
+- **haxelib 库名是 libhxcpp 不是 hxcpp**：hxcpp 4.x 在 NDK26/新工具链
+  编不过，继任者改名 libhxcpp（6.0.0-rc.2，android.yml 已锁）；
+  `haxelib list` 里也是 libhxcpp。冒烟脚本的环境检查按新名探。

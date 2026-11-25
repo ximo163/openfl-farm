@@ -50,9 +50,28 @@ import tools.SceneShotTypes.ShotSpec;
  * （nodeboot.mjs 顶部捕获），不进虚拟域。
  *
  * API（globalThis.__openflFarmVisual，全是纯函数 + 状态查询）：
- * - bindStage(stage)：绑舞台句柄，按 stage.frameRate 校正帧时长（未绑时缺省
- *   1000/24——Project.xml fps=24；stage 句柄在 Main 首帧才出现，首帧只能用
- *   缺省值，帧率不是 24 时早引导帧的步长会偏差，stats 里带出实际值可查）。
+ * - bindStage(stage)：绑舞台句柄，按 stage.frameRate 校正帧时长。实测 html5
+ *   运行时 stage.frameRate 报 60：openfl 的 Window 构造不消费 attributes.
+ *   frameRate（Project.xml 的 fps=24 到不了运行时），lime 的 framePeriod=-1
+ *   （不限帧、rAF 节流）、getFrameRate() 对 -1 恒报 60——泵步长取 1000/60
+ *   才是「每泵恰一帧」的运行时真值。
+ * - **确定性锚点（缺一不可，拆前先读 handbook/architecture/scenario-visual-gate.md
+ *   的证据链）**：其一，时钟冻结 + 网络静默才泵帧——交付只发生在驱动的 await
+ *   里（泵是同步 JS，二者不交错），应答处理器恒跑在未前进的虚拟时刻上；实测
+ *   引导各波请求全落在同一泵帧计数上（0/13/37，三跑逐条一致），虚拟时刻不是
+ *   泄漏面。其二，nodeboot 的 XHR 完成事件按 send 序 FIFO 放行（nodeboot.mjs
+ *   net.pending）——并发资产库的真实完成序跨跑会换序、处理器跑在同一冻结时刻
+ *   却换先后，实测跑出 bimodal 的截图指纹（三跑两同一分叉）；不排死游戏可见
+ *   的完成序，虚拟钟再准也没用。其三，钟基点钉死为常量（getTimer 归零、
+ *   Date 定 2026-01-01）——基点取真实时刻时，「几点钟跑的」会烤进任何读绝对
+ *   时刻的渲染路径（当前画面实测无此类消费者，这是关类不修 bug）。其四，
+ *   驱动在每次泵前置 200ms 真实静默窗（scenario.mjs REAL_IDLE_BEFORE_PUMP_MS）
+ *   ——泵间真实间隙里还有**不进任何计数**的真实异步收尾（Assets.loadLibrary
+ *   的 onComplete 链：字节经虚拟 XHR 有计数，其后的解析/挂树无计数），不设窗
+ *   它落第 k 泵前后是掷硬币，实测烤出 boot 末两族离散指纹（计数全同而像素
+ *   分叉）。Main 出生前同样照泵：Harness 的驱动句柄在 Main 第一个
+ *   ENTER_FRAME 才挂（markMainFirstFrame），「等句柄出现才泵」是死循环，
+ *   实测三次挂死两次。
  * - pump(n)/settle(n)：泵 n 帧（游戏时间 +n 帧）。
  * - shot()：截全舞台 → ShotImage 形状 {width, height, pixels}（RGBA 直色）。
  * - hash(img)：RenderHash.imageHash（#57 基线指纹同款）。
@@ -91,8 +110,9 @@ class ScenarioVisual {
 
 	/** 舞台句柄（bindStage 绑定；截图与帧率都从它来）。 */
 	static var stage:Dynamic = null;
-	/** 泵帧步长（毫秒）。缺省 1000/24（Project.xml fps=24），bindStage 校正。 */
-	static var frameStepMs:Float = 1000.0 / 24.0;
+	/** 泵帧步长（毫秒）。缺省 1000/60（运行时 stage.frameRate 实测报 60，见
+	 * 类头 bindStage 条），bindStage 校正。 */
+	static var frameStepMs:Float = 1000.0 / 60.0;
 	static var pumpedFrames:Int = 0;
 	static var timersFired:Int = 0;
 
@@ -120,6 +140,8 @@ class ScenarioVisual {
 			recordMatches: recordMatches,
 			specOf: specOf,
 			framesForMs: framesForMs,
+			pumpProbe: pumpProbe,
+			probeHash: probeHash,
 			stats: stats,
 		});
 	}
@@ -144,10 +166,14 @@ class ScenarioVisual {
 				dateCtor: Date,
 			};
 		})()");
-		var realPerfNow:Void->Float = js.Syntax.code("globalThis.__svReal.perfNow");
-		var realDateNow:Void->Float = js.Syntax.code("globalThis.__svReal.dateNow");
-		virtualBasePerf = realPerfNow();
-		virtualBaseDate = realDateNow();
+		// 基点钉死（#59）：原实现取真实当前时刻当虚拟钟基点，跨跑自带真实启动
+		// 时差——凡读绝对时刻的渲染路径（Date/getTimer 直读而非差值）都会把
+		// 「几点钟跑的」烤进画布。实测当前画面没有这类消费者（同配置 16 次跨
+		// 小时全同指纹），但门禁协议把这一类一次性关死，且 getTimer 归零更贴
+		// 近真实 Flash 语义（播放器启动起算）。基点为常量后，pumpedFrames 之外
+		// 的一切钟读数跨跑恒同。真实引用留在 __svReal 备排障对照。
+		virtualBasePerf = 0;
+		virtualBaseDate = 1767225600000.0; // 2026-01-01T00:00:00Z，整秒无小数尾
 		js.Syntax.code("(function(){
 			var virtualNow = {0};
 			var virtualDateMs = {1};
@@ -379,16 +405,80 @@ class ScenarioVisual {
 	// ---------------------------------------------------------------- 杂项
 
 	/** 把 Math.random 换成定种子 mulberry32（RenderProbe 同款，种子 0x57）：
-	 * 原版帧脚本里的随机行为照常执行，只是每次运行取同一序列。 */
+	 * 原版帧脚本里的随机行为照常执行，只是每次运行取同一序列。每次调用计
+	 * 数进 __svRandomCalls（排障探针用：序列漂移=有人多吃了随机数）。 */
 	static function installDeterministicRandom():Void {
 		js.Syntax.code("(function() {
 			var a = 0x57;
 			Math.random = function() {
+				globalThis.__svRandomCalls = (globalThis.__svRandomCalls || 0) + 1;
 				a |= 0; a = a + 0x6D2B79F5 | 0;
 				var t = Math.imul(a ^ a >>> 15, 1 | a);
 				t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
 				return ((t ^ t >>> 14) >>> 0) / 4294967296;
 			};
 		})()");
+	}
+
+	// ---------------------------------------------------------------- 探针
+
+	/** 排障探针（#59 确定性攻关）：逐帧泵 + 方差区子矩形指纹 + 累计触发数。
+	 * 两次运行的序列逐帧对比，第一个分叉帧 + 先动的是哪个计数器 = 泄漏通道。 */
+	/** 不泵帧的一次性探针（引导期逐轮用，#59 确定性攻关）。 */
+	static function probeHash(x0:Dynamic, y0:Dynamic, w:Dynamic, h:Dynamic):Dynamic {
+		var img:Dynamic = shot();
+		var X = Std.int(numOr(x0, 0));
+		var Y = Std.int(numOr(y0, 0));
+		var Wd = Std.int(numOr(w, 10));
+		var Ht = Std.int(numOr(h, 10));
+		var pixels:Array<Int> = [];
+		for (y in Y...(Y + Ht)) {
+			for (x in X...(X + Wd)) {
+				var idx = (Std.int(img.width) * y + x) * 4;
+				pixels.push(img.pixels[idx]);
+				pixels.push(img.pixels[idx + 1]);
+				pixels.push(img.pixels[idx + 2]);
+				pixels.push(img.pixels[idx + 3]);
+			}
+		}
+		var sub:ShotImage = {width: Wd, height: Ht, pixels: pixels};
+		return {
+			hash: RenderHash.imageHash(sub),
+			timers: timersFired,
+			rand: js.Syntax.code("globalThis.__svRandomCalls || 0"),
+			elapsed: virtualElapsed,
+		};
+	}
+
+	static function pumpProbe(frames:Dynamic, x0:Dynamic, y0:Dynamic, w:Dynamic, h:Dynamic):Array<Dynamic> {
+		var n = Std.int(numOr(frames, 100));
+		var X = Std.int(numOr(x0, 0));
+		var Y = Std.int(numOr(y0, 0));
+		var Wd = Std.int(numOr(w, 10));
+		var Ht = Std.int(numOr(h, 10));
+		var timers0 = timersFired;
+		var out:Array<Dynamic> = [];
+		for (i in 0...n) {
+			pump(1);
+			var img:Dynamic = shot();
+			var pixels:Array<Int> = [];
+			for (y in Y...(Y + Ht)) {
+				for (x in X...(X + Wd)) {
+					var idx = (Std.int(img.width) * y + x) * 4;
+					pixels.push(img.pixels[idx]);
+					pixels.push(img.pixels[idx + 1]);
+					pixels.push(img.pixels[idx + 2]);
+					pixels.push(img.pixels[idx + 3]);
+				}
+			}
+			var sub:ShotImage = {width: Wd, height: Ht, pixels: pixels};
+			out.push({
+				i: i,
+				hash: RenderHash.imageHash(sub),
+				t: timersFired - timers0,
+				rand: js.Syntax.code("globalThis.__svRandomCalls || 0"),
+			});
+		}
+		return out;
 	}
 }

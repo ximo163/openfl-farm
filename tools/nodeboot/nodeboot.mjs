@@ -263,7 +263,31 @@ globalThis.document = {
 // net 计数（--visual 驱动的引导协议用）：inFlight = 在途请求数，mutations =
 // 发送+完成的累计动作数——「泵帧只发生在网络静默时」要靠它判静默（一次
 // poll 窗口内发送又完成的请求对 inFlight 不可见，对 mutations 可见）。
-const net = { inFlight: 0, mutations: 0 };
+// FIFO 释放队列（#59 确定性攻关的根修）：并发请求的真实完成序由 node 本地
+// I/O 调度决定，跨跑会换序（实测 Crop_2_2/3.zip 一跑先一跑后）；应答处理器
+// 全跑在冻结的虚拟时刻上，内容不变、只有「谁先被游戏看见」在换——引导期
+// 并发资产库的 COMPLETE 处理器换序跑出了 bimodal 的截图指纹（连跑 3 次，
+// 两次全同、一次 enter/plant/water 带相位差）。修法：真实完成照旧落，但
+// 游戏可见的完成事件按 send 序 FIFO 放行——发得早的先让游戏看见。挂起的
+// 放行等到「没有更早的在途请求」才触发，放行是同步 drain，inFlight 归零
+// 时队列必然已清空（驱动的静默判定不受影响）。
+const net = { inFlight: 0, mutations: 0, recent: [], sendSeq: 0, inFlightSeqs: [], pending: [] };
+function queueRelease(xhr, fire) {
+  const i = net.inFlightSeqs.indexOf(xhr._seq);
+  if (i >= 0) net.inFlightSeqs.splice(i, 1);
+  net.pending.push({ seq: xhr._seq, fire });
+  drainPending();
+}
+function drainPending() {
+  while (net.pending.length) {
+    let minInFlight = Infinity;
+    for (const s of net.inFlightSeqs) if (s < minInFlight) minInFlight = s;
+    let bi = 0;
+    for (let i = 1; i < net.pending.length; i++) if (net.pending[i].seq < net.pending[bi].seq) bi = i;
+    if (net.pending[bi].seq > minInFlight) break; // 更早的还在途：压住不放
+    net.pending.splice(bi, 1)[0].fire();
+  }
+}
 class XMLHttpRequest {
   constructor() {
     this.readyState = 0;
@@ -283,11 +307,14 @@ class XMLHttpRequest {
   addEventListener(t, f) { (this._listeners[t] ||= []).push(f); }
   removeEventListener(t, f) { const l = this._listeners[t] || []; const i = l.indexOf(f); if (i >= 0) l.splice(i, 1); }
   _fire(t, ev) { ev = ev || {}; ev.type = t; ev.target = this; const h = this["on" + t]; if (h) h(ev); for (const f of this._listeners[t] || []) f(ev); }
-  _done() { if (!this._settled) { this._settled = true; net.inFlight--; net.mutations++; } }
+  _done() { if (!this._settled) { this._settled = true; net.inFlight--; net.mutations++; try { net.recent.push("done " + new URL(this._url).pathname); } catch { } } }
   send(body) {
     const u = new URL(this._url);
+    this._seq = ++net.sendSeq;
+    net.inFlightSeqs.push(this._seq);
     net.inFlight++;
     net.mutations++;
+    net.recent.push("send " + u.pathname + u.search);
     // 出网请求（http/https 且主机非本进程）：资产已全部本地化，离开本进程的
     // 请求在任何部署外环境都注定失败——CI web-smoke 记一条 console.error 的
     // 资源错。不真发：外网地址在本机可能连上（挂死不结算）也可能拒（看环境），
@@ -301,8 +328,12 @@ class XMLHttpRequest {
       console.log((new Error("出网请求来源")).stack.split("\n").slice(2, 14).join("\n"));
       missing.push(`off-origin ${this._url}`);
       // 真实 setTimeout：visual 模式下全局 setTimeout 是虚拟定时器（只在泵帧时
-      // 触发），错误事件挂进去会让引导协议永远等不到「在途清零」
-      realSetTimeout(() => { this._done(); this._fire("error", { message: "off-origin request" }); }, 1);
+      // 触发），错误事件挂进去会让引导协议永远等不到「在途清零」。完成事件
+      // 同样进 FIFO 队列（游戏可见序要定死，见 net 定义处的注释）
+      realSetTimeout(() => {
+        this._done();
+        queueRelease(this, () => this._fire("error", { message: "off-origin request" }));
+      }, 1);
       return;
     }
     const req = http.request({ hostname: u.hostname, port: u.port || PORT, path: u.pathname + u.search, method: this._method || "GET", headers: { "Content-Type": "application/x-www-form-urlencoded" } }, (up) => {
@@ -310,20 +341,27 @@ class XMLHttpRequest {
       up.on("data", (c) => chunks.push(c));
       up.on("end", () => {
         this._done();
-        this.status = up.statusCode || 0;
-        this.readyState = 4;
         const buf = Buffer.concat(chunks);
-        this.responseText = buf.toString("utf8");
-        if (this.responseType === "arraybuffer") {
-          this.response = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength);
-        } else {
-          this.response = this.responseText;
-        }
-        this._fire(up.statusCode >= 400 ? "error" : "load");
-        this._fire("readystatechange");
+        const status = up.statusCode || 0;
+        const text = buf.toString("utf8");
+        const ab = this.responseType === "arraybuffer"
+          ? buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength) : null;
+        // 状态字段（status/readyState/response*）与事件一起在放行闭包里落地：
+        // 有轮询 readyState 的调用方也只见定序后的可见序
+        queueRelease(this, () => {
+          this.status = status;
+          this.readyState = 4;
+          this.responseText = text;
+          this.response = ab != null ? ab : text;
+          this._fire(status >= 400 ? "error" : "load");
+          this._fire("readystatechange");
+        });
       });
     });
-    req.on("error", (e) => { this._done(); this._fire("error", { message: String(e) }); });
+    req.on("error", (e) => {
+      this._done();
+      queueRelease(this, () => this._fire("error", { message: String(e) }));
+    });
     if (body) req.write(body);
     req.end();
   }
@@ -462,6 +500,11 @@ if (!lime || !lime.embed) {
 }
 lime.embed("OpenflFarm", "openfl-content", 860, 500, { parameters: {} });
 
+// sleep 走真实 setTimeout（驱动自用时游戏钟是冻结的，虚拟 setTimeout 会
+// 永不归队）；定义须在下方 visual 分支的顶层 await drive() 之前——const 有
+// TDZ，top-level await 跑在模块求值尾部的初始化前面就炸了。
+const sleep = (ms) => new Promise((r) => realSetTimeout(r, ms));
+
 if (!visual) {
   // 就绪轮询：Main.hx 首帧设 __openflFarmReady（与 harness/smoke.mjs 同一标记）。
   // 就绪后不立即退：CI web-smoke 会再等 500ms 让画面渲染，启动尾部的异步加载
@@ -506,11 +549,8 @@ if (!visual) {
 // ---------------------------------------------------------------- 交互链驱动
 // settle 干净后接 --drive 的模块：跑在同一个 globalThis 里（OpenflFarm.js 经
 // runInThisContext 落进来，openfl_Lib/$hxClasses 等全可及）。驱动抛异常或超时
-// 都按 FAIL 退；正常结束打 PASS。
-// sleep 走真实 setTimeout（驱动自用时游戏钟是冻结的，虚拟 setTimeout 会
-// 永不归队）；ctx 附 realDateNow（驱动的等待计时同理由）与 net（引导协议
-// 的网络静默判定）。
-const sleep = (ms) => new Promise((r) => realSetTimeout(r, ms));
+// 都按 FAIL 退；正常结束打 PASS。ctx 附 realDateNow（驱动的等待计时走真实钟，
+// 同 sleep 的理由）与 net（引导协议的网络静默判定）。
 async function drive() {
   const driverWatch = realSetTimeout(() => {
     console.log(`[nodeboot] drive ${driveTimeoutSec}s 超时`);

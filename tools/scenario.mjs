@@ -18,6 +18,8 @@
 //     旧记录存在且带 visual 段时，跑完对它做视觉自回归判定（逐张哈希 +
 //     曲线逐点），红则退 1 且**不覆盖旧基线**（新鲜记录落 <out>.fresh.json 供
 //     检视）；--update-record 跳过比对直接重写基线（首次/有意重建用）。
+//     排障：SCENARIO_DUMP_SHOTS=<目录> 时每张快照另存原始 RGBA（两次跑的
+//     dump 逐像素比出漂移坐标；gitignore 外的临时目录用完即删）。
 //   node tools/scenario.mjs --self-check <scenario.json> [...]
 //     注入式自检（issue #59 完成标准 2）：正常跑（含视觉自回归判定）之外，
 //     驱动在首个 burst 检查点补一轮「冻住连拍」（不泵帧连拍 → 能量归零），
@@ -56,9 +58,11 @@
 //       // 拦截到的全部 mync mod 请求按发送顺序；启动期 user/getNotice、
 //       // farmlandstatus/getoutput 等额外请求照录、判定不计红
 //       "requests": [ { "mod": "...", "act": "...", "params": { "k": "v" } } ],
-//       // 视觉采集的环境指纹（协议漂移即红）：帧时长/泵帧数/采集常量/覆盖计数
-//       "visual": { "frameStepMs": 41.66…, "settleShot": 6, "settleBurstPre": 1,
-//                   "bootIdleStreak": 24, "pumpedFrames": <数>, "coverage": {...} },
+//       // 视觉采集的环境指纹（协议漂移即红）：帧时长/泵帧数/采集常量（含泵前置
+//       // 静默窗——它直接决定确定性，见 REAL_IDLE_BEFORE_PUMP_MS）/覆盖计数
+//       "visual": { "frameStepMs": 16.66…, "settleShot": 6, "settleBurstPre": 1,
+//                   "bootIdleStreak": 24, "realIdleBeforePumpMs": 200,
+//                   "pumpedFrames": <数>, "coverage": {...} },
 //       // --self-check 时的注入结论（正常跑不带）
 //       "selfCheck": { "step": "...", "pass": true, ... },
 //       "steps": [ { "name": "...", "pass": true, "failures": ["..."],
@@ -98,7 +102,7 @@
 // architecture/scenario-runner.md）。其余参数逐字照录。
 
 import { spawn, execFileSync } from "node:child_process";
-import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 
@@ -115,6 +119,15 @@ const STATE_TIMEOUT_MS = 10000; // 每步期望状态落地（应答处理完）
 // 视觉基线重录，和 #57 换哈希算法同权重）：
 const BOOT_POLL_MS = 25; // 引导轮询周期（真实毫秒；等网络交付用，不进游戏钟）
 const BOOT_IDLE_STREAK = 24; // 就绪 + 网络静默连续轮数（引导 settle：此后开始确定性泵帧）
+// 每次泵帧前的最小真实静默窗（#59 实证收敛）：泵是同步 JS，但泵与泵之间的真实
+// 间隙里仍可能有「不走红绿黄三计数」的真实异步收尾在跑（Assets.loadLibrary 的
+// onComplete 链——素材库字节经虚拟 XHR 交付后，解析/挂树/COMPLETE 都在真实
+// tick 上落地，无网络计数可观测）。窗不够大时它落在第 k 泵前还是后就是掷硬币，
+// 画布烤进两种离散状态（boot 末方差区两族指纹 2b77e3c8/59d6ed93，引导期逐泵
+// 探针实测计数全同而像素分叉）。窗下限要盖住解析/事件循环的真实时延——泵前置
+// 200ms 静默后，任何 ≤200ms 的真实异步收尾恒在「触发它的那泵」与「下一泵」之
+// 间落地，泵上的画面状态退化为泵计数的纯函数。
+const REAL_IDLE_BEFORE_PUMP_MS = 200;
 const SETTLE_SHOT_FRAMES = 6; // 单张检查点前置泵帧（应答后的动画走到的定格点）
 const SETTLE_BURST_PRE = 1; // 连拍检查点前置泵帧（渲染应答里刚生成的动画首帧）
 
@@ -402,33 +415,101 @@ async function drive(ctx) {
   const failures = [];
   const visual = globalThis.__openflFarmVisual || null;
   let selfCheckResult = null;
+  // SCENARIO_DUMP_SHOTS：每张快照另存原始 RGBA（排障用，见步骤 4 的注释）
+  const dumpDir = visual && process.env.SCENARIO_DUMP_SHOTS ? process.env.SCENARIO_DUMP_SHOTS : "";
+  if (dumpDir) mkdirSync(dumpDir, { recursive: true });
 
   // 视觉模式引导协议（#59 确定性虚拟钟的入口，规则见文件头「判定语义」）：
   // 时钟已冻结；真实等待在 sleep（真实毫秒）里发生，游戏无感。网络静默才泵
-  // 帧——交付只会发生在驱动的 await 里（泵是同步 JS，单线程下二者不交错）。
-  // 就绪 + BOOT_IDLE_STREAK 轮静默视为引导完成：此后游戏状态完全由泵帧计数
-  // 决定，真实耗时只影响墙钟不影响帧号。泵出的请求（网络静默被打破）自动
-  // 重置静默计数，不会出现「边等应答边泵」的竞态。
+  // 帧——交付只会发生在驱动的 await 里（泵是同步 JS，单线程下二者不交错），
+  // 应答处理器因此恒跑在未前进的虚拟时刻上。**Main 出生前也要泵**：Harness
+  // 的 __openflFarmDrive 句柄在 Main 的第一个 ENTER_FRAME 才挂（shim/Harness.hx
+  // markMainFirstFrame），而引导链（preloader 进度、xml 配装、Image src 载入）
+  // 有真需要帧/定时器推进的环节——「等句柄出现才泵」是死循环（句柄要靠泵才
+  // 出现），实测三次挂死两次。就绪 + BOOT_IDLE_STREAK 轮静默视为引导完成——
+  // 此后游戏状态完全由泵帧计数决定。泵出的请求（网络静默被打破）自动重置
+  // 静默计数，不会出现「边等应答边泵」的竞态。
   if (visual) {
     let streak = 0;
     let lastMuts = net.mutations;
+    let lastRecent = 0;
+    let rounds = 0;
+    let mainAt = -1;
+    let lastActivityAt = now(); // 最近一次网络动作/泵帧的真实时刻（静默窗起算点）
     while (!globalThis.__openflFarmReady || streak < BOOT_IDLE_STREAK) {
+      ++rounds;
       await sleep(BOOT_POLL_MS);
       const muts = net.mutations;
       if (net.inFlight > 0 || muts !== lastMuts) {
+        if (muts !== lastMuts) {
+          // 排障日志：每次网络动作落地时的泵帧计数。两次运行逐条对齐——分叉
+          // 的那条就是「真实投递时序写进游戏时刻」的泄漏点（#59 确定性攻关）
+          const acts = (net.recent || []).slice(lastRecent).join(" | ");
+          lastRecent = (net.recent || []).length;
+          log(`网络动作 #${muts} 于第 ${rounds} 轮（已泵 ${visual.stats().pumpedFrames} 帧，inFlight=${net.inFlight}）：${acts}`);
+        }
         lastMuts = muts;
+        lastActivityAt = now();
         streak = 0;
         continue;
       }
       lastMuts = muts;
-      // stage 句柄 Main 首帧才出现，出现即绑（bindStage 幂等；见
-      // tools/ScenarioVisual.hx 类头「首帧只能用缺省帧时长」的说明）
+      // 静默窗（见 REAL_IDLE_BEFORE_PUMP_MS 注释）：窗内只继续轮询，不泵——
+      // 真实异步收尾的落点就此从「第 k 泵前后掷硬币」变成「恒在第 k 泵后、
+      // 第 k+1 泵前」。轮数不进窗判定（streak 照旧只认网络静默）。
+      if (now() - lastActivityAt < REAL_IDLE_BEFORE_PUMP_MS) {
+        continue;
+      }
       const hd0 = globalThis.__openflFarmDrive;
-      if (hd0 && hd0.stage) visual.bindStage(hd0.stage);
+      if (hd0 && hd0.stage) {
+        if (mainAt < 0) {
+          mainAt = rounds;
+          log(`Main 于第 ${rounds} 轮出现`);
+        }
+        visual.bindStage(hd0.stage); // 幂等；首绑即校正帧时长（见 ScenarioVisual.hx）
+      }
       visual.pump(1);
+      lastActivityAt = now();
+      if (process.env.SCENARIO_PROBE) {
+        // 引导期逐泵探针：分叉的那一轮 = 泄漏发生的真实窗口（#59 确定性攻关）。
+        // Main 未生时 stage 未绑、探针抛错——跳过即可（画布还只有 preloader）
+        try {
+          const ph = visual.probeHash(280, 20, 84, 44);
+          log(`BPROBE r=${rounds} p=${visual.stats().pumpedFrames} h=${ph.hash} t=${ph.timers} rand=${ph.rand} m=${muts} e=${ph.elapsed.toFixed(2)}`);
+          // SCENARIO_PROBE_DUMP=<目录>：方差区原始像素按泵落盘（家族取证——
+          // 两家族各自的区域内容长什么样，逐像素比出差异的视觉成分）
+          if (process.env.SCENARIO_PROBE_DUMP) {
+            const img = visual.shot();
+            const PX = 280, PY = 20, PW = 84, PH = 44;
+            const rows = [];
+            for (let y = PY; y < PY + PH; y++) {
+              const row = [];
+              for (let x = PX; x < PX + PW; x++) {
+                const i = (img.width * y + x) * 4;
+                row.push(`${img.pixels[i]},${img.pixels[i + 1]},${img.pixels[i + 2]},${img.pixels[i + 3]}`);
+              }
+              rows.push(row.join(" "));
+            }
+            mkdirSync(process.env.SCENARIO_PROBE_DUMP, { recursive: true });
+            writeFileSync(join(process.env.SCENARIO_PROBE_DUMP, `p${visual.stats().pumpedFrames}.txt`),
+              rows.join("\n") + "\n");
+          }
+        } catch { }
+      }
       streak = globalThis.__openflFarmReady && net.mutations === muts ? streak + 1 : 0;
+      if (rounds % 400 === 0) {
+        log(`引导 ${rounds} 轮仍未完成：inFlight=${net.inFlight} muts=${muts} ready=${globalThis.__openflFarmReady} pumped=${visual.stats().pumpedFrames}`);
+      }
     }
     log(`引导完成：就绪 + 网络静默 ${BOOT_IDLE_STREAK} 轮（boot 已泵 ${visual.stats().pumpedFrames} 帧，帧时长 ${visual.stats().frameStepMs}ms）`);
+    if (process.env.SCENARIO_PROBE) {
+      // 排障探针（#59 确定性攻关）：逐帧泵 + 方差区指纹 + 计数器序列，
+      // 两次运行的 PROBE 行逐帧 diff，第一个分叉帧即泄漏起点。帧数独立开关：
+      // SCENARIO_PROBE 的值同时会被当帧数用（=1 就只探 1 帧），引导期 BPROBE
+      // 只想开启时用 SCENARIO_PROBE_FRAMES 控制帧数、SCENARIO_PROBE 写 on。
+      const seq = visual.pumpProbe(Number(process.env.SCENARIO_PROBE_FRAMES) || Number(process.env.SCENARIO_PROBE) || 300, 280, 20, 84, 44);
+      log(`PROBE ${JSON.stringify(seq)}`);
+    }
   }
 
   const hd = globalThis.__openflFarmDrive;
@@ -457,6 +538,26 @@ async function drive(ctx) {
     return 1;
   }
   const model = () => landsView.m_controller.m_model;
+  if (process.env.SCENARIO_DUMP_TREE && visual) {
+    // 排障钩子（#59 确定性攻关）：打印与「截图方差区」（实测 enter 快照
+    // x[284-359] y[26-60] 一带）相交的显示对象——跨跑换相位的到底是哪个
+    let shown = 0;
+    walk(stage, (o) => {
+      try {
+        if (typeof o.getBounds !== "function" && typeof o.get_bounds !== "function") return;
+        // openfl js 产物的方法名：DisplayObject.getBounds 是驼峰（实测 bundle 里
+        // get_bounds 0 处、getBounds 51 处），自家类的 getter 仍是蛇形
+        const b = (typeof o.getBounds === "function" ? o.getBounds(stage) : o.get_bounds(stage));
+        if (b == null || Number.isNaN(b.x)) return;
+        const hit = !(b.x > 364 || b.y > 64 || b.x + b.width < 280 || b.y + b.height < 22);
+        if (!hit && shown >= 12 && !process.env.SCENARIO_DUMP_TREE_ALL) return;
+        shown++;
+        log(`TREE ${o.__class__ && o.__class__.__name__} name=${String(o.name)}` +
+          ` bounds=[${b.x.toFixed(1)},${b.y.toFixed(1)},${(b.x + b.width).toFixed(1)},${(b.y + b.height).toFixed(1)}]` +
+          ` alpha=${o.alpha} visible=${o.visible}${hit ? " HIT" : ""}`);
+      } catch { /* 无 bounds/未上树的跳过 */ }
+    }, 0);
+  }
   const cursorCtrl = () => landsView.m_controller.m_module.get_app().get_farmView().get_cursorCtrl();
   const landOf = (i) => landsView.m_items.find((it) => it.get_index() === i);
   const clickLand = (land) => {
@@ -565,14 +666,23 @@ async function drive(ctx) {
     }
     // 4. 视觉检查点（#59）：按声明的拍法采（screenshot 单张 / burst 连拍，
     //    拍法解析错按步失败处理）。记录只带指纹与曲线；帧像素留在进程内只
-    //    供自检注入用（compareBurst 的像素级比对也因此只在进程内做）
+    //    供自检注入用（compareBurst 的像素级比对也因此只在进程内做）。
+    //    SCENARIO_DUMP_SHOTS=<目录> 时每张另存原始 RGBA（排障用：两次跑的
+    //    dump 逐像素比出漂移坐标，不入库）
     let visualSection = null;
+    let dumpIdx = 0;
+    const dumpShot = (img) => {
+      if (!dumpDir) return;
+      writeFileSync(join(dumpDir, `${steps.length}-${step.name}.${dumpIdx++}.rgba`),
+        Buffer.from(img.pixels));
+    };
     if (visual) {
       try {
         const spec = visual.specOf(step.checkpoint);
         visual.settle(spec.kind === "burst" ? SETTLE_BURST_PRE : SETTLE_SHOT_FRAMES);
         if (spec.kind === "screenshot") {
           const img = visual.shot();
+          dumpShot(img);
           visualSection = {
             kind: "screenshot", intervalMs: 0, count: 1,
             frames: [{ hash: visual.hash(img), width: img.width, height: img.height }],
@@ -581,6 +691,7 @@ async function drive(ctx) {
         } else {
           const per = visual.framesForMs(spec.intervalMs);
           const b = visual.burst(spec.count, per);
+          for (const f of b.frames) dumpShot(f);
           visualSection = {
             kind: "burst", intervalMs: spec.intervalMs, count: spec.count,
             frames: b.frames.map((f) => ({ hash: visual.hash(f), width: f.width, height: f.height })),
@@ -640,6 +751,7 @@ async function drive(ctx) {
       settleShot: SETTLE_SHOT_FRAMES,
       settleBurstPre: SETTLE_BURST_PRE,
       bootIdleStreak: BOOT_IDLE_STREAK,
+      realIdleBeforePumpMs: REAL_IDLE_BEFORE_PUMP_MS,
       pumpedFrames: st.pumpedFrames,
       coverage: {
         png: st.png, jpg: st.jpg, decodeFail: st.decodeFail,
@@ -695,8 +807,10 @@ async function cmdRun(args, selfCheckFlag) {
   const outPath = resolve(argOf(args, "--out",
     join(dirname(scenarioPath), `${scenario.name}.record.json`)));
   // 新鲜记录先落 <out>.fresh.json：全绿才搬进 <out>——有红的时候基线不动
-  //（自回归的旧基线是诊断材料），新鲜记录留在 fresh 供检视
+  //（自回归的旧基线是诊断材料），新鲜记录留在 fresh 供检视。child 超时/崩了
+  // 没落盘时，先删陈货再跑——上次跑剩下的 fresh 不能冒充本次（判绿假阴）
   const freshPath = `${outPath}.fresh.json`;
+  if (existsSync(freshPath)) rmSync(freshPath);
   console.log(`[scenario] run：${scenarioPath} → ${outPath}${selfCheck ? "（--self-check）" : ""}`);
   // 视觉引导模块（#59）：先编后跑（nodeboot --visual 在游戏 bundle 前执行它，
   // 顺序语义见 nodeboot.mjs 的 --visual 说明；haxe 失败 = 基建坏，退 2）
@@ -775,11 +889,15 @@ async function cmdRun(args, selfCheckFlag) {
   }
   for (const e of visualErrs) console.log(`[scenario] FAIL(视觉) ${e}`);
   const green = code === 0 && judgeErrs.length === 0 && visualErrs.length === 0;
-  if (green) {
+  // --self-check 是门禁有牙的元验证（记录里多 selfCheck 段），不是基线采集——
+  // 绿了也不落盘，基线保持普通跑的干净形态
+  if (green && !selfCheck) {
     if (existsSync(freshPath)) renameSync(freshPath, outPath);
     console.log(`[scenario] 基线已落盘：${outPath}`);
   } else if (existsSync(freshPath)) {
-    console.log(`[scenario] 基线未动（有红）：新鲜记录留在 ${freshPath}`);
+    console.log(selfCheck
+      ? `[scenario] 自检绿：新鲜记录留在 ${freshPath}（自检不落基线）`
+      : `[scenario] 基线未动（有红）：新鲜记录留在 ${freshPath}`);
   }
   return green ? 0 : 1;
 }
@@ -800,9 +918,17 @@ function cmdDiff(args) {
 // nodeboot.mjs，跳过）
 const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
-  const [sub, ...rest] = process.argv.slice(2);
+  let argv = process.argv.slice(2);
+  // --self-check 可作首参短打（完成标准 2 的验牙入口，等价 run --self-check）
+  let selfCheck = false;
+  if (argv[0] === "--self-check") {
+    selfCheck = true;
+    argv = argv.slice(1);
+    if (argv[0] === "run") argv = argv.slice(1);
+  }
+  const [sub, ...rest] = argv;
   let code = 1;
-  if (sub === "run" && rest[0]) code = await cmdRun(rest);
+  if (sub === "run" && rest[0]) code = await cmdRun(rest, selfCheck);
   else if (sub === "diff" && rest[0] && rest[1]) code = cmdDiff(rest);
   else usage();
   process.exit(code);

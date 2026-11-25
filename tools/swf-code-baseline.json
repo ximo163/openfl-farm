@@ -38,7 +38,7 @@
     },
     {
       "pattern": "source/core/module/mc/main/*",
-      "reason": "牧场侧 UI/功能件：farmui1_v_42/farmui2_v_44/commonui_v_12（mc_main.php:21-23 清单）、upgrade_v_1、updateDen×2、windows/flopGift×2+nokia、outswf/help.swf（牧场 help，Master2 OutSwf/HelpWindow.as 加载）。牧场批次的前置：开工时这些进 main_swfs 或专项立项",
+      "reason": "牧场侧 UI/功能件：farmui1_v_42/farmui2_v_44/commonui_v_12（mc_main.php:21-23 清单）、upgrade_v_1、updateDen×2、windows/flopGift×2+nokia、outswf/help.swf（牧场 help，Master2 OutSwf/HelpWindow.as 加载）。issue #67 考证（2026-11-25）：farmui1_v_42 农场侧不用——nc_main.php 全文无 farmui1（农场 material 仅 farmui_full_v_40/farmui2_v_58/water_ui_v_0 三件，nc_main.php:11-13）、main3_v_221 及全部在册 decompiled/scripts 零硬引用、src 符号 shim 无一绑 farmui1；定级建议归牧场批次（农场侧排查排除了单独定级的唯一理由），完整结论见 test/Issue67TriageNotes.hx。牧场批次的前置：开工时这些进 main_swfs 或专项立项",
       "tracked": "牧场批次"
     }
   ],

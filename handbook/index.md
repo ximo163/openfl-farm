@@ -29,6 +29,7 @@
 | 资产渲染对拍门禁（T2：逐资产截图哈希对拍、tools/RenderGate.mjs、node 软画布通道、自回归基线与换源口） | [architecture/render-gate.md](architecture/render-gate.md) | 拍点/基线契约 `tools/tools/*.hx` + `test/tools/*Test.hx`；通道钩子 `tools/SoftCanvas.hx`/`DecodingImage.hx` |
 | 场景视觉对拍门禁（T1：整场景操作驱动截图/连拍/能量曲线，tools/scenario.mjs 视觉节、ScenarioVisual 虚拟钟与确定性引导协议——动协议前必读其证据链） | [architecture/scenario-visual-gate.md](architecture/scenario-visual-gate.md) | 通道复用 #57 软画布；协议常量两侧同构进 `tools/scenarios/plant.record.json` 视觉环境指纹 |
 | 帧脚本清查与补偿（资产 swf 的 addFrameScript/frameN 在 openfl 侧复原：FrameScriptCompensation 登记表 + SymbolClass/LocalSwfLoader 接线、FrameScriptAudit 清查器） | [architecture/frame-scripts.md](architecture/frame-scripts.md) | `decompiled farmui_full farmui2 lite_ui Fertilizer water_ui` 的 `<类>.as`（swf 未反编译时 ABC 清查 op 流）；机制出处 `haxelib swf` AnimateLibraryExporter/AnimateTimeline |
+| cpp 目标基址改写与启动冒烟（QFARM_BASE_URL、tools/cpp-boot-smoke.sh、三断言判定 BootSmokeVerdict） | [architecture/net.md](architecture/net.md)（cpp 目标的基址改写节） | `src/shim/SwfUrlBase.hx`、`src/shim/FlashVars.hx`、`src/shim/AndroidHttpRequest.hx` |
 | 环境、工具、反直觉的坑 | [lessons/index.md](lessons/index.md) | — |
 
 还没有页面的子系统：翻译完成时由实现 agent 建页并在表里加一行。

@@ -25,6 +25,9 @@ import openfl.display.LoaderInfo;
  *   config_data/config_addon 的相对 xml.php 在这里改写成局域网后端绝对地址
  *   （shim.AndroidBackend；CGI 出口的同类改写在 shim.AndroidHttpRequest——
  *   那边的 URL 是运行时拼的，flashvar 里改不到）。
+ * - linux cpp 分支（// issue #64）：同 android 没有「源」，基址从环境变量
+ *   QFARM_BASE_URL（SwfUrlBase.BASE_URL_ENV）读，存在则同款改写 config 三件；
+ *   不存在（本地无后端调试）行为不变。html5 不受影响（编译分支隔离）。
  */
 class FlashVars {
 	public static function inject(loaderInfo:LoaderInfo):Void {
@@ -116,6 +119,13 @@ class FlashVars {
 		Reflect.setField(vars, "config_url", AndroidBackend.rebase(backend, Reflect.field(vars, "config_url")));
 		Reflect.setField(vars, "config_data", AndroidBackend.rebase(backend, Reflect.field(vars, "config_data")));
 		Reflect.setField(vars, "config_addon", AndroidBackend.rebase(backend, Reflect.field(vars, "config_addon")));
+		#elseif linux
+		// linux cpp（// issue #64）：QFARM_BASE_URL 存在则 config 三件同款改写到
+		// CI 后端；不存在 resolveCpp 原样透传（行为不变）
+		var cppBase:String = SwfUrlBase.envBaseUrl();
+		Reflect.setField(vars, "config_url", SwfUrlBase.resolveCpp(cppBase, Reflect.field(vars, "config_url")));
+		Reflect.setField(vars, "config_data", SwfUrlBase.resolveCpp(cppBase, Reflect.field(vars, "config_data")));
+		Reflect.setField(vars, "config_addon", SwfUrlBase.resolveCpp(cppBase, Reflect.field(vars, "config_addon")));
 		#end
 
 		var params = loaderInfo.parameters;

@@ -39,14 +39,58 @@ package tools;
  * 只调静态入口判纯逻辑；返回 BootVerdict typedef（键名见下，测试按键断言）。
  */
 class BootSmokeVerdict {
+	// issue #64 断言 c 的三标记，逐字子串匹配（hxcpp debug 输出原样含这些
+	// 字面量，行内嵌入也算——「出现即红，不逐字整行」）：Invalid field
+	// 是 cpp 的 Reflect/裸字段写崩消息头；Uncaught exception 是 hxcpp 未
+	// 捕获异常头；Called from 是 HXCPP_STACK_TRACE（debug 配置编入）的
+	// 栈帧行——有栈即红（主断言）
+	private static final MARKERS:Array<String> = ["Invalid field", "Uncaught exception", "Called from"];
+
+	private static final TAIL_LINES:Int = 80; // issue #64 失败输出节：「tail 最后 80 行日志进 CI 控制台」
+
 	/** 判冒烟三断言（契约见类头）。 */
 	static public function judge(backendUp:Bool, processAlive:Bool, log:String):BootVerdict {
-		throw new haxe.Exception("not implemented");
+		var crashedLines:Array<String> = [];
+		if (log != null) {
+			for (line in log.split("\n")) {
+				for (marker in MARKERS) {
+					if (line.indexOf(marker) != -1) {
+						crashedLines.push(line); // 证据行整行原样保留，不截断
+						break; // 一行含多个标记只记一次
+					}
+				}
+			}
+		}
+		// 归账顺序（// issue #64 验收节）：后端没起是环境失败，账记
+		// backendDown——processDied/crashedLines 的采集照实填（都是事实），
+		// 但报文案时 backendDown 优先（「报『后端没起』而不是让 app 红背锅」
+		// 由 bash 侧按 backendDown 择文案）
+		var backendDown:Bool = !backendUp;
+		var processDied:Bool = !processAlive;
+		return {
+			pass: backendUp && processAlive && crashedLines.length == 0,
+			backendDown: backendDown,
+			processDied: processDied,
+			crashedLines: crashedLines
+		};
 	}
 
 	/** log 末 80 行（失败输出规格；契约见类头）。 */
 	static public function tail(log:String):Array<String> {
-		throw new haxe.Exception("not implemented");
+		if (log == null || log == "") {
+			return [];
+		}
+		var lines:Array<String> = log.split("\n");
+		// unix tail 行语义：末行尾换行切出的空串不是一行（真实落盘日志末行
+		// 都有尾换行——// issue #64「tail 最后 80 行」的 bash 对应物就是
+		// tail -80，行语义对齐）
+		if (lines.length > 0 && lines[lines.length - 1] == "") {
+			lines.pop();
+		}
+		if (lines.length > TAIL_LINES) {
+			lines = lines.slice(lines.length - TAIL_LINES);
+		}
+		return lines;
 	}
 }
 

@@ -267,9 +267,12 @@ class Issue68TriageTest {
 	/** freegift_v_5：issue 原文「nc_addon freegift 键族；配置指 v_6、
 	 *  部署是 v_5（版本漂移待核）」。事实锚点（已核）：nc_addon.php:289
 	 *  `{"id":"freegift", "src":"module/ui/freegift_v_6.swf"}` secondList 键；
-	 *  部署包 ui/ 下只有 freegift_v_5.swf 无 v_6；且 main3 grep 不到
-	 *  getSecondUrl("freegift") 调用方（freegift≠gifts，gifts 是 FreeGift
-	 *  Module 另案）。漂移 + 无调用方是活跃判定核心。 */
+	 *  部署包 ui/ 下只有 freegift_v_5.swf 无 v_6。真实消费链在 gifts_v_11
+	 *  模块体内（decompiled gifts_v_11 scripts/module/FreeGift/FreeGiftView
+	 *  .as:299 getSecondUrl("freegift") + :300 requestClass(FREE_BG) +
+	 *  FreeGiftModel.as:48 FREE_BG="freegiftBg"，符号在 freegift_v_5
+	 *  symbolclass）——grep 宿主 main3 搜不到是范围错觉（#68 lessons）。
+	 *  漂移（v_6→404「键活文件死」）是活跃判定的文件侧要素。 */
 	public function test_freegift_note_has_version_drift_verdict() {
 		var note = notes().get("FREEGIFT_V_5") ?? "";
 		assertContains(note, [

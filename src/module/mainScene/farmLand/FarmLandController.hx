@@ -547,9 +547,13 @@ class FarmLandController extends Controller {
 			if (As3.truthy(Reflect.field(data, "gold"))) {
 				_loc3_ = "金牌土地升级成功!";
 			}
+			// issue #63：基类 m_view 是 Dynamic，cpp 上 .stage 读静默 null
+			// （get/set 属性不在物理字段表）——改经 typed view getter
+			// （m_view 由 initialze 的 `new FarmLandsView(this)` 装配，同一
+			// 对象；FarmLandController.as:613 `"parent": m_view.stage` 原值不变）
 			openFloat(Consts.FLOAT_TYPE_TEXTTIP, {
 				"text": _loc3_,
-				"parent": m_view.stage
+				"parent": view.stage
 			});
 			model.updateLandData(As3.intOf(Reflect.field(data, "place")), As3.intOf(Reflect.field(data, "output")), As3.intOf(Reflect.field(data, "leavings")), As3.intOf(Reflect.field(data, "min")), _loc2_, As3.truthy(Reflect.field(data, "gold")) ? 1 : 0);
 		});

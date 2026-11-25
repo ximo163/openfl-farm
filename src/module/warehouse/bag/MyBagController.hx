@@ -83,7 +83,10 @@ class MyBagController extends Controller {
 		if (this.model != null) {
 			this.model.dirty = true;
 		}
-		if (As3.truthy(this.m_view) && As3.truthy(this.m_view.visible)) {
+		// issue #63：基类 m_view 是 Dynamic，cpp 上 .visible 读静默 null
+		// （get/set 属性不在物理字段表）——改经 typed view getter（同一对象，
+		// visible 原值不变，as:79 `Boolean(m_view) && Boolean(m_view.visible)`）
+		if (As3.truthy(this.view) && As3.truthy(this.view.visible)) {
 			if (this._buyType == Consts.ITEM_TYPE_FISH || this._buyType == Consts.ITEM_TYPE_SEED) {
 				this.model.reload();
 			}

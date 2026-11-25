@@ -55,9 +55,10 @@ nodeboot 会 404 到永远不就绪）。
 - **记录固定 6 条请求（#59 确定性协议修复后）**：user/run、getNotice、三个
   操作，加 `cgi_fish_index`（水模块入场初始化所发，legacy 原样无 act——
   详见 [scenario-visual-gate.md 的盲区节](scenario-visual-gate.md)）。判定
-  对它不红：非 farmlandstatus，子序列判定容夹带；它同
-  `ScenarioRunnerContractTest.hx:503` 的「非空 mod/act」形状门冲突，属
-  NEEDS-TESTS 待测试侧 visit，勿在记录上动手脚。
+  对它不红：非 farmlandstatus，子序列判定容夹带；形状门也已改对（#59
+  write-tests visit）：act 非空、但 legacy 整名 dispatch 条目容缺位，
+  整名集从 `spec/protocol.json` 的 `dispatch_query` 无 `act=` 推导（无 mod
+  兼具两形态），其余 mod 丢 act 照样红。
 
 ## 基线格式与两个非显然的约定
 

@@ -113,8 +113,12 @@ node tools/scenario.mjs diff a.record.json b.record.json          # 两份记录
   loadFishes`）在录制窗内跑通，发 `mync.php?mod=cgi_fish_index`——
   legacy 原样**无 act**（`ServerServices.as:157`、`nc/mod/cgi_fish_index.php`）。
   协议修复前这条真实异步链死在录制收尾前、两代旧基线都没录到；
-  `ScenarioRunnerContractTest.hx:503` 的「每条请求有非空 mod/act」是在
-  5 请求年代冻结的，现对忠实记录单点红（4860/4861）。**别**用过滤请求/
-  合成 act/压掉模块救绿——那是在改原版行为迁就过时前提；处置走 #37 的
-  NEEDS-TESTS 先例（water.md「测试前提冲突」）：证据链交测试侧 visit 改
-  形状门（如容许 cgi_* 无 act）。
+  `ScenarioRunnerContractTest.hx` 的「每条请求有非空 mod/act」形状门是在
+  5 请求年代冻结的，曾对忠实记录单点红（4860/4861）。**别**用过滤请求/
+  合成 act/压掉模块救绿——那是在改原版行为迁就过时前提；已按 #37 的
+  NEEDS-TESTS 先例（water.md「测试前提冲突」）由 write-tests visit 改对：
+  形状门改「mod 非空 + act 非空、除非 mod 是 legacy 整名 dispatch 条目」，
+  整名集从 `spec/protocol.json` 的 `dispatch_query` 无 `act=` 推导
+  （mync.php:176-177 dispatch act 可选、$mod_list 整名条目 :131），另加
+  一门钉死记录里 cgi_fish_index 恰好一条、act 是空串——防有人给记录
+  补假 act 字面救绿。

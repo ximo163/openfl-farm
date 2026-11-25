@@ -66,14 +66,19 @@ import openfl.text._internal.TextEngine;
  *    递归的 walk 到按钮就停，必须特判遍历 upState/overState/downState/
  *    hitTestState（真按钮 hitTest 是纯 shape 无文字，但修复方向点名
  *    四态都遍历，防御同族 swf）。
- * 2. 修复必须改到「attach 后第一个 ENTER_FRAME」一次性重放（盲区二）：
- *    attachContent 时刻树上还没有页时间轴子件（真机 41 条 = 修复在
- *    真实流一条未生效；node 探针当年验证的是探针自己手工触发布局的
- *    顺序，不是 LocalSwfLoader 真实加载流的顺序）。重放挂在 attach
- *    收到的 content 根时间轴上：真机帧相位（Stage.__processPhase）是
- *    ENTER_FRAME 派发 → __enterFrame 时间轴推进 → render 布局，重放
- *    落在首帧渲染前；且帧内挂载的字段还有后半段相位能修好。只放一次
- *    即自摘——page5 的 88 号三帧轮换无文字，后续帧没有补漏面，常驻
+ * 2. 修复时点两级（盲区二，node 真实流探针闭合——issue 验收 4 第一条
+ *    交付物 tools/HelpRealFlowProbe.hx 的实证）：**布局的真正首次发生点
+ *    不在渲染帧，而在加载完成路径里**——openfl 9.5.2 Loader_onComplete
+ *    （Loader.hx:783-784）为补 contentLoaderInfo.width/height 读
+ *    content.width/content.height，递归量测整棵子树、逐字段触发
+ *    __updateLayout 真实布局。attach 挂在 Loader_onComplete 之后的任何
+ *    修复都已晚（洞已告警、布局组已残缺，range 簿记补上也救不回——这
+ *    就是 issue「显示不对称的注记」缺的那一环）。所以接线侧
+ *    （LocalSwfLoader.attachContent）把本 attach 调到 Loader_onComplete
+ *    **之前**：量测走到的都是补过洞的 range。attach 后第一个
+ *    ENTER_FRAME 的一次性重放仍保留（真机帧相位 ENTER_FRAME 派发 →
+ *    时间轴推进 → render，重放落在首帧渲染前）兜「帧内挂载/帧脚本翻开
+ *    的页」形态；只放一次即自摘——page5 的 88 号三帧轮换无文字，常驻
  *    监听是白挂。同族先例 Harness.markMainFirstFrame 的 once 自摘法。
  */
 @:access(help0316_fla.MainTimeline)

@@ -1,0 +1,447 @@
+{
+ "button_states": {
+  "11": {
+   "down": 9,
+   "over": 7,
+   "up": 5
+  },
+  "30": {
+   "down": 29,
+   "over": 27,
+   "up": 25
+  },
+  "82": {
+   "down": 80,
+   "over": 78,
+   "up": 76
+  }
+ },
+ "fields": {
+  "13": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">商店</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "14": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">背包</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "15": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">土地</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "16": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">恭喜你成为一个农场主，快开始种植各种蔬菜和水果吧！</font></p><p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">先到 <font color=\"#cc0000\"><b>商店</b><b> </b></font>买种子，买好之后，打开 <font color=\"#cc0000\"><b>背包</b><b> </b></font>将种子种到 <font color=\"#cc0000\"><b>农田</b><b> </b></font>里就</font></p><p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">可以了。</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "23": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#ffffff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>新手引导</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "25": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>上一页</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "27": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>上一页</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "29": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>上一页</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "3": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#ffffff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>新手引导</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "31": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">作物有<font color=\"#cc0000\"><b>发芽</b></font>、<font color=\"#cc0000\"><b>小叶子</b></font>、<font color=\"#cc0000\"><b>大叶子</b></font>、<font color=\"#cc0000\"><b>开花</b></font>、<font color=\"#cc0000\"><b>成熟</b></font>这五个生长阶段（少数</font></p><p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">作物不会开花）。</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "32": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">发芽</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "33": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">小叶子</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "34": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">大叶子</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "42": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">开花</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "43": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">成熟</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "44": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\"><b>例：草莓的五个阶段</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "46": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#ffffff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>新手引导</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "47": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">用 <font color=\"#cc0000\"><b>水壶</b></font>、<font color=\"#cc0000\"><b>杀虫剂</b></font>、<font color=\"#cc0000\"><b>除草剂</b><b> </b></font>好好照顾作物，不然健康值下降，对产</font></p><p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">量会有影响。</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "48": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">作物成熟以后，记得<font color=\"#cc0000\"><b>收</b></font>进<font color=\"#cc0000\"><b>仓库</b></font>，卖出仓库里的果实就可以获得金币。</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "49": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">干燥土地</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "5": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>下一页</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "51": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">虫害</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "53": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">杂草</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "55": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">除草剂</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "56": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">水壶</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "58": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">杀虫剂</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "59": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">收获</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "60": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">仓库</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "65": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#ffffff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>新手引导</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "7": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>下一页</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "71": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"Times New Roman\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\"> <font face=\"宋体\">经<font face=\"MS PMincho\">常到好友</font>农场<font face=\"MS PMincho\">里</font>逛逛<font face=\"MS PMincho\">，</font>帮<font face=\"MS PMincho\">好友</font>浇浇<font face=\"MS PMincho\">水、</font>杀杀<font face=\"MS PMincho\">虫、除除草，也可以</font></font></font></p><p align=\"left\"><font face=\"Times New Roman\" size=\"14\" color=\"#cc0000\" letterSpacing=\"0.000000\" kerning=\"0\"><b>“</b><font face=\"MS PMincho\"><b>摘取</b></font><b>”</b><font face=\"MS PMincho\" color=\"#333333\">点果<font face=\"宋体\">实</font>哦！</font></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "72": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">摘取</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "76": {
+   "fontHeight": 240,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"12\" color=\"#ffffff\" letterSpacing=\"0.000000\" kerning=\"0\">我明白了</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "78": {
+   "fontHeight": 240,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"12\" color=\"#ffffff\" letterSpacing=\"0.000000\" kerning=\"0\">我明白了</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "80": {
+   "fontHeight": 240,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"12\" color=\"#003366\" letterSpacing=\"0.000000\" kerning=\"0\">我明白了</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "83": {
+   "fontHeight": 320,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"16\" color=\"#ffffff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>新手引导</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "84": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">可以接受小任务，会让你更加熟悉这个游戏。</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "89": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#333333\" letterSpacing=\"0.000000\" kerning=\"0\">此外，我们还给你准备了大礼包，现在就去查收吧。</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "9": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\"><b>下一页</b></font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "92": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">任务</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  },
+  "93": {
+   "fontHeight": 280,
+   "hasText": true,
+   "html": "<p align=\"left\"><font face=\"宋体\" size=\"14\" color=\"#0099ff\" letterSpacing=\"0.000000\" kerning=\"0\">礼包</font></p><p align=\"left\"></p>",
+   "isHtml": true,
+   "multiline": true,
+   "wordWrap": false
+  }
+ },
+ "pageOrder": [
+  21,
+  45,
+  64,
+  74,
+  94
+ ],
+ "pages": {
+  "21": {
+   "buttons": [
+    11
+   ],
+   "nested": [],
+   "texts": [
+    3,
+    13,
+    14,
+    15,
+    16
+   ]
+  },
+  "45": {
+   "buttons": [
+    11,
+    30
+   ],
+   "nested": [],
+   "texts": [
+    23,
+    31,
+    32,
+    33,
+    34,
+    42,
+    43,
+    44
+   ]
+  },
+  "64": {
+   "buttons": [
+    11,
+    30
+   ],
+   "nested": [],
+   "texts": [
+    46,
+    47,
+    48,
+    49,
+    51,
+    53,
+    55,
+    56,
+    58,
+    59,
+    60
+   ]
+  },
+  "74": {
+   "buttons": [
+    11,
+    30
+   ],
+   "nested": [],
+   "texts": [
+    65,
+    71,
+    72
+   ]
+  },
+  "88": {
+   "buttons": [],
+   "nested": [],
+   "texts": []
+  },
+  "94": {
+   "buttons": [
+    30,
+    82
+   ],
+   "nested": [
+    88
+   ],
+   "texts": [
+    83,
+    84,
+    89,
+    92,
+    93
+   ]
+  }
+ },
+ "root": {
+  "buttons": [
+   98
+  ]
+ },
+ "source": "legacy/decompiled/help/swf.xml — DefineEditTextTag initialText；放置账来自时间轴：主时间轴 PlaceObject2（page1..page5/closeButton1）与 DefineSpriteTag 21/45/64/74/94 subTags 的 PlaceObject2；按钮状态账来自 DefineButton2Tag BUTTONRECORD buttonStateUp/Over/Down/HitTest"
+}

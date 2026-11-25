@@ -1455,3 +1455,16 @@
   门禁恢复出新请求先查 legacy 出处再定性，是原版行为就**别**动记录（过滤/
   合成 act/压模块全是造假或改行为）；冻结测试与 legacy 冲突走 NEEDS-TESTS
   （#37 先例：water.md「测试前提冲突」），把证据链写全交测试侧 visit 裁决。
+- **`--self-check` 短打入口曾是死的，改 CLI 前先实测文档里的每种形态**：
+  `--self-check <scenario.json>`（usage() 和本页文档写的等价短打）实际落
+  `usage()` 退 1——原解析剥掉随后的 `run` 后仍要求 sub==="run"，两种写法
+  只有 `run <scenario> --self-check` 活着。attempt 2 修为无 run 时补回
+  `run`（tools/scenario.mjs CLI 块）。防：文档承诺的入口逐形态真跑一遍，
+  「run 参数里带 flag」和「flag 打头」两条路不是一个解析分支。
+- **assets/legacy 未同步时视觉门禁的挂死形态**：引导循环静默（无「N 轮
+  仍未完成」日志——泵后 %400 打点在挂死路径不可达）直到 `drive 240s 超时`、
+  fresh 记录缺失，外加旧条目记的孤条 `/lite_ui_v_0?数字` 404（见 #8
+  条「新工作区 nodeboot 永不就绪」——根因同一条）。`openfl build html5`
+  在库文件缺失时**仍退 0**（「library 指向不存在构建红」的旧结论不覆盖
+  全缺场景），构建绿不等于资产在。防：跑门禁前 `ls assets/legacy | wc -l`
+  一眼；挂死 + 孤 404 直接同步资产再来。

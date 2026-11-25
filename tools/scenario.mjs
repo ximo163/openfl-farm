@@ -874,6 +874,9 @@ async function cmdRun(args, selfCheckFlag) {
       visualErrs = cmp.errs;
       report = cmp.report;
     }
+  } else if (!fresh) {
+    // 驱动没落 fresh（崩了/超时，见上面的 FAIL(复验) 记录不可读）——别再误报
+    // 「无旧基线」，旧基线在不在跟 fresh 缺失是两回事
   } else {
     console.log(updateRecord
       ? "[scenario] --update-record：跳过比对，直接重立基线"
@@ -919,12 +922,14 @@ function cmdDiff(args) {
 const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 if (isMain) {
   let argv = process.argv.slice(2);
-  // --self-check 可作首参短打（完成标准 2 的验牙入口，等价 run --self-check）
+  // --self-check 可作首参短打（完成标准 2 的验牙入口，等价 run --self-check）。
+  // 只剥随后的 run 不够：usage() 文档的「--self-check <scenario.json>」形态
+  // 会把场景路径当 sub 命令落 usage 退 1（实测复现）——无 run 时补回 run
   let selfCheck = false;
   if (argv[0] === "--self-check") {
     selfCheck = true;
     argv = argv.slice(1);
-    if (argv[0] === "run") argv = argv.slice(1);
+    if (argv[0] !== "run") argv = ["run", ...argv];
   }
   const [sub, ...rest] = argv;
   let code = 1;

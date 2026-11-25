@@ -28,10 +28,29 @@ import utest.Assert;
  *      legacy/decompiled/<swf>/scripts/ 的 .as 全集双射（每类恰一册，
  *      不多报不漏报），class 字段与 path 互推。
  *
- *   2. spec/swf-inventory.json 三件增补 code 块（#30 同款四键，见该文件
- *      shop_v_7 等条目）：{decompiled:"legacy/decompiled/<swf>/",
- *      symbol_class:<文档类>, classes:<类数>, module_spec:<清单路径>}——
- *      「scripts 类数与 module_spec 全类覆盖对账」。
+ *   2. spec/swf-inventory.json 三件增补 code 块。形态出处是 commit
+ *      84c203bb（#30 的交付形态），不是当前文件——#30 给 shop_v_7 /
+ *      warehouse_v_23 / pool_v_13 / decorate_v_0 四件写的 code 块已被
+ *      399a5faa（2026-11-24 13:29，github-actions「反编译主代码 swf +
+ *      资产清单」）的 CI 再生成整体抹掉，当前文件没有任何条目带 code
+ *      块，排障别去现文件找 shop_v_7。84c203bb 形态五键：{decompiled:
+ *      "legacy/decompiled/<swf>/", symbol_class:<文档类>, classes:<类数>,
+ *      module_spec:<清单路径>, note:<说明>}，note 文案「scripts 类数与
+ *      module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类」；本门
+ *      断言钉前四个结构键，note 是说明文字不钉内容。
+ *      ⚠ 已知不稳定形态，风险链如实记下（未来红了照此定位，别再考古）：
+ *      scripts/swf-inventory.py:115 用 json.dump 从零全量重写该文件，
+ *      无任何合并/保留逻辑（scripts/ 人只读）；legacy-decompile.yml 由
+ *      legacy/deploy/recompile-trigger 的 push 触发
+ *      （.github/workflows/legacy-decompile.yml:11-12）。extract 按本门
+ *      为三件手工恢复 84c203bb 形态、本门转绿之后，任何后续前置触发的
+ *      重生成都会把它们再抹一次（issue #66「边界」已预告牧场批次前置），
+ *      届时本门在 main 上无责变红——先查最近一次「反编译主代码 swf +
+ *      资产清单」CI commit 是否又抹了 code 块，#30 四件正是这样死的
+ *      （399a5faa 之后因无测试而无人察觉）。「生成器不保留手写 code
+ *      块」的缺口须随本 issue 报给 spec/脚本所有者（scripts/ 人管），
+ *      由人决定改生成器合并逻辑还是换存放位置；人裁决前按 84c203bb
+ *      形态验收。
  *
  *   3. spec/modules/_index.json external 分组沿用 #30 的设计：805 校验
  *      不动（counts_check.total==805、sum_equals_805，功能 swf 另计），
@@ -49,6 +68,12 @@ import utest.Assert;
  *      Test:432 同款）；解不到 protocol 的必须带 note 说明不可达
  *      （farm-shop-ui 的 cgi_farm_tool_vip 先例：mync.php $mod_list 白名单
  *      外、无输出）。
+ *      口径镜像 #30 四清单：mods 只收命令路由型调用（CommandDefs/
+ *      CmdBeastDefs → ServerServices/BeastAPI 的 mod 通道）；swf 内直连
+ *      网关的非命令调用不入 mods、按 deviations 流程另行登记——
+ *      quickshoot 的照片上传 POST（QuickShootController.as:223-232，
+ *      URLLoader 直连 _saveQuickShootUrl）即此形态，EXPECTED 表不收
+ *      它不算漏报（#30 对直连 URLLoader/信标/window.open 零登记同款）。
  *
  *   5. cross_module_imports 值解析为既有模块名（spec/modules/<名>.json 的
  *      module 字段；farm-shop-ui 全部值如此，无悬空名）。
@@ -341,8 +366,10 @@ class FeatureUIModuleSpecsTest {
 	// ------------------------------------------------------------------
 	// 交付物 2：swf-inventory code 块
 
-	// 三件在 spec/swf-inventory.json 的条目带 #30 同款 code 四键，类数与
-	// 清单对账、module_spec 指回真实存在的清单文件
+	// 三件在 spec/swf-inventory.json 的条目带 code 块，形态出处 commit
+	// 84c203bb（#30 的交付；399a5faa CI 再生成后当前文件已无 code 块先例
+	// 可查，抹除链见类头注释交付物 2），类数与清单对账、module_spec 指回
+	// 真实存在的清单文件
 	public function test_swf_inventory_code_blocks_reconcile_three_swfs() {
 		var inventory = loadJson(INVENTORY_PATH, "swf-inventory");
 		Assert.notNull(inventory, "spec/swf-inventory.json 可加载（既有交付物）");
@@ -371,16 +398,16 @@ class FeatureUIModuleSpecsTest {
 				continue;
 			}
 			var code:Dynamic = Reflect.field(row, "code");
-			Assert.notNull(code, '${e.inventoryPath} 带 code 块（#30 同款：功能 UI 代码 swf 增补，shop_v_7 等四件先例）');
+			Assert.notNull(code, '${e.inventoryPath} 带 code 块（形态出处 commit 84c203bb——#30 的交付形态；当前文件经 399a5faa CI 再生成已无 code 块先例，抹除链见类头注释交付物 2）');
 			if (code == null) {
 				continue;
 			}
-			Assert.equals("legacy/decompiled/" + e.swf + "/", Std.string(Reflect.field(code, "decompiled")), '${e.inventoryPath} code.decompiled 指反编译产物目录（#30 四件同值形态）');
+			Assert.equals("legacy/decompiled/" + e.swf + "/", Std.string(Reflect.field(code, "decompiled")), '${e.inventoryPath} code.decompiled 指反编译产物目录（84c203bb 四件同值形态）');
 			Assert.equals(e.symbolClass, Std.string(Reflect.field(code, "symbol_class")), '${e.inventoryPath} code.symbol_class==${e.symbolClass}（${e.decompiledDir}/symbolclass/symbols.csv 仅 frame0 一个导出）');
 			var counts:Dynamic = Reflect.field(spec, "counts");
 			Assert.notNull(counts, '${e.file} counts 在（前置对账用）');
 			if (counts != null) {
-				Assert.equals(asInt(Reflect.field(counts, "classes")), asInt(Reflect.field(code, "classes")), '${e.inventoryPath} code.classes 与 ${e.file} counts.classes 对账（#30 note：「scripts 类数与 module_spec 全类覆盖对账」）');
+				Assert.equals(asInt(Reflect.field(counts, "classes")), asInt(Reflect.field(code, "classes")), '${e.inventoryPath} code.classes 与 ${e.file} counts.classes 对账（84c203bb 的 note 文案：「scripts 类数与 module_spec 全类覆盖对账」）');
 			}
 			var moduleSpec = Std.string(Reflect.field(code, "module_spec"));
 			Assert.equals(e.file, moduleSpec, '${e.inventoryPath} code.module_spec==${e.file}');
@@ -477,9 +504,9 @@ class FeatureUIModuleSpecsTest {
 		if (recon == null) {
 			return;
 		}
-		var cases:Array<{url:String, name:String, src:String}> = [
-			{url: "module/ui/quickshoot_v_0.swf", name: "quickshoot-ui", src: "nc_main.php:20 Quick Shoot Module"},
-			{url: "module/ui/cards_v_1.swf", name: "cards-game-ui", src: "nc_main.php:21 Cards Module"}
+		var cases:Array<{url:String, name:String, src:String, sourceRef:String}> = [
+			{url: "module/ui/quickshoot_v_0.swf", name: "quickshoot-ui", src: "nc_main.php:20 Quick Shoot Module", sourceRef: "nc_main.php:20"},
+			{url: "module/ui/cards_v_1.swf", name: "cards-game-ui", src: "nc_main.php:21 Cards Module", sourceRef: "nc_main.php:21"}
 		];
 		for (c in cases) {
 			var row:Dynamic = null;
@@ -495,6 +522,7 @@ class FeatureUIModuleSpecsTest {
 			}
 			var disposition = Std.string(Reflect.field(row, "disposition"));
 			Assert.isTrue(disposition.indexOf(c.name) >= 0, '${c.url} 的 disposition 指向 ${c.name} 清单（现状「不入类清单：activities 砍除模块的 UI（UI swf 未反编译、不移植）」随本 issue 反编译+提取失效，#30 的 Shop/Pool 行形态是「farm-shop-ui（25 类）」）');
+			Assert.isTrue(Std.string(Reflect.field(row, "source")).indexOf(c.sourceRef) >= 0, '${c.url} 的 source 仍含 ${c.sourceRef}（issue #66 要什么 3：「nc_main.php:20/:21 仍是 source」，改道只改 disposition 的去向）');
 		}
 	}
 

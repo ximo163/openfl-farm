@@ -14,6 +14,17 @@
 一致」）——参考库换源口见下节。场景范围：`tools/scenarios/*.json`（当前
 plant 一个：进场→种→浇→收）。
 
+场景扩容的排队方向（issue #59 实现方向，窗口场景未随本 issue 落地、留作
+后续）：跟农场已合并的功能走——shop/warehouse/pool/decorate 窗口
+（#46-49）、引导 #52、升级 #53。每个新场景三件套缺一不可，缺哪件先补
+哪件：①`tools/nodeboot/fixtures/` 的应答数据（现状只有 farmlandstatus/
+user 一族，窗口类 mod 如 cgi_shop_list 没有应答会回落 user_run 整包、
+窗口渲染不可判）；②开窗的执行器原语（scenario.mjs `actions` 词表，开窗
+路径的 legacy 出处写进动作注释）；③检查点期望值的 legacy 出处（请求
+参数/状态字段逐条标注，规矩同 plant）。加新场景只增判定不放水（issue #59
+边界）；新开异步链/新资产库可能动摇确定性协议，重建基线后连跑数次验稳
+（见「确定性协议」节）。
+
 | 文件 | 内容 |
 |---|---|
 | `tools/scenario.mjs` | 编排 CLI（在 T-something 运行器上扩出视觉检查点）：`run`（跑场景出记录、对基线判红）、`run --self-check` / `--self-check`（注入自检）、`diff`（两份记录离线复验）。视觉部分：引导协议（本页「确定性协议」）、检查点采集（screenshot/burst）、能量曲线、基线对比整份判红 |

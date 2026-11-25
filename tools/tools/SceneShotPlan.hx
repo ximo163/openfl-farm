@@ -30,11 +30,77 @@ import tools.SceneShotTypes.StepSpec;
 class SceneShotPlan {
 	/** checkpoint（场景声明解析后的对象）的视觉声明 → 拍法（语义见类头）。 */
 	static public function specOfCheckpoint(checkpoint:Dynamic):ShotSpec {
-		throw new haxe.Exception("not implemented");
+		var hasScreenshot = false;
+		var hasBurst = false;
+		if (checkpoint != null && Reflect.isObject(checkpoint) && !Std.isOfType(checkpoint, Array)) {
+			hasScreenshot = Reflect.hasField(checkpoint, "screenshot");
+			hasBurst = Reflect.hasField(checkpoint, "burst");
+		}
+		if (hasScreenshot && hasBurst) {
+			throw new haxe.Exception("二义声明：checkpoint 同时给了 screenshot 与 burst（单张走 screenshot、连拍走 burst，声明不该有两读）");
+		}
+		if (hasScreenshot) {
+			var v:Dynamic = Reflect.field(checkpoint, "screenshot");
+			if (v != true) {
+				throw new haxe.Exception('screenshot 声明的值必须为 true（收到 ${Std.string(v)}：显式声明必须可用，错值静默落回默认会让「想要连拍写成错键」悄悄丢判定）');
+			}
+			return {kind: "screenshot", intervalMs: 0, count: 1};
+		}
+		if (hasBurst) {
+			var burst:Dynamic = Reflect.field(checkpoint, "burst");
+			if (burst == null || !Reflect.isObject(burst) || Std.isOfType(burst, Array)) {
+				throw new haxe.Exception("连拍声明 burst 必须是对象 {intervalMs, count}（收到 " + Std.string(burst) + "）");
+			}
+			var intervalMs:Dynamic = Reflect.field(burst, "intervalMs");
+			var count:Dynamic = Reflect.field(burst, "count");
+			if (!isIntValue(intervalMs)) {
+				throw new haxe.Exception('连拍声明 burst.intervalMs 必须是整数（收到 ${Std.string(intervalMs)}）');
+			}
+			if (!isIntValue(count)) {
+				throw new haxe.Exception('连拍声明 burst.count 必须是整数（收到 ${Std.string(count)}）');
+			}
+			if (intervalMs < 1) {
+				throw new haxe.Exception('连拍声明 burst.intervalMs 必须 ≥ 1（收到 ${intervalMs}：同频率连拍的间隔必须为正）');
+			}
+			if (count < 2) {
+				throw new haxe.Exception('连拍声明 burst.count 必须 ≥ 2（收到 ${count}：能量曲线至少要一个相邻对，单张语义走 screenshot）');
+			}
+			return {kind: "burst", intervalMs: intervalMs, count: count};
+		}
+		// 未声明的默认单张（含 checkpoint 为 null / 无视觉键——既有场景不加键也在视觉门里）
+		return {kind: "screenshot", intervalMs: 0, count: 1};
 	}
 
 	/** 场景（tools/scenarios/<name>.json 的解析结果）→ 逐步拍法，按步序。 */
 	static public function specsOfScenario(scenario:Dynamic):Array<StepSpec> {
-		throw new haxe.Exception("not implemented");
+		var steps:Dynamic = scenario == null ? null : Reflect.field(scenario, "steps");
+		if (steps == null) {
+			return [];
+		}
+		var out:Array<StepSpec> = [];
+		var n:Int = steps.length;
+		for (i in 0...n) {
+			var step:Dynamic = steps[i];
+			// 步内声明错误原样上抛（先炸，不静默跳步——跳步丢的是判定）
+			out.push({step: Std.string(Reflect.field(step, "name")), spec: specOfCheckpoint(Reflect.field(step, "checkpoint"))});
+		}
+		return out;
+	}
+
+	/** 数值积分判定（跨目标一致）：eval 上 Int/Float 分家、js 上同为 number——
+	 * 两条目标语义合并成「是数且积分」：字符串/布尔/null 都不是，2.5 不是，
+	 * 2 是。js 的 JSON.parse 出来的整数与浮点都进 Float 分支积分再判。 */
+	static function isIntValue(v:Dynamic):Bool {
+		if (v == null || Std.isOfType(v, String) || Std.isOfType(v, Bool)) {
+			return false;
+		}
+		if (Std.isOfType(v, Int) && !Std.isOfType(v, Float)) {
+			return true; // eval 的真 Int
+		}
+		if (Std.isOfType(v, Float)) {
+			var f:Float = cast v;
+			return Math.floor(f) == f; // js 的 number（含 JSON 浮点）积分再判
+		}
+		return false;
 	}
 }

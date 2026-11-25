@@ -36,17 +36,55 @@ class SceneShotDiff {
 	/** 两份记录的能量曲线 diff（语义见类头）。tol 为曲线逐点计数容差
 	 * （缺省 0 严格）。 */
 	static public function diffCurves(baseline:Array<Int>, current:Array<Int>, ?tol:Int):CurveDiff {
-		throw new haxe.Exception("not implemented");
+		var a:Array<Int> = baseline == null ? [] : baseline; // null 视为空（装载缺省）
+		var b:Array<Int> = current == null ? [] : current;
+		if (a.length != b.length) {
+			// 张数不齐（曲线长度 = 帧数 - 1）：哨兵红，容差不救
+			return {pass: false, lengthMismatch: true, maxDelta: -1, divergedAt: -1};
+		}
+		var limit:Int = tol == null ? 0 : tol;
+		var maxDelta = 0;
+		var divergedAt = -1;
+		for (i in 0...a.length) {
+			var d:Int = a[i] - b[i];
+			if (d < 0) d = -d;
+			if (d > maxDelta) maxDelta = d; // 量级如实记（含被容忍的）
+			if (d > limit && divergedAt < 0) divergedAt = i; // 首个超容差点（边界含：≤ 容忍）
+		}
+		return {pass: divergedAt < 0, lengthMismatch: false, maxDelta: maxDelta, divergedAt: divergedAt};
 	}
 
 	/** 连拍两级判定（语义见类头）。tol 为逐张像素容差（同时决定能量
 	 * 计数），curveTol 为曲线逐点容差。 */
 	static public function compareBurst(baseline:Array<ShotImage>, current:Array<ShotImage>, ?tol:Tolerance, ?curveTol:Int):BurstDiff {
-		throw new haxe.Exception("not implemented");
+		var baseFrames:Array<ShotImage> = baseline == null ? [] : baseline;
+		var curFrames:Array<ShotImage> = current == null ? [] : current;
+		// 第一级：逐张容差 diff，帧号对齐（同频率连拍的下标即时间对齐）；
+		// 张数不齐只比公共前缀（缺拍由曲线长度哨兵 + recordMatches 对齐门判红）
+		var frames:Array<RenderTypes.ShotDiff> = [];
+		var frameFails = 0;
+		var common = baseFrames.length < curFrames.length ? baseFrames.length : curFrames.length;
+		for (i in 0...common) {
+			var d = PixelDiff.compare(baseFrames[i], curFrames[i], tol);
+			frames.push(d);
+			if (!d.pass) frameFails++;
+		}
+		// 第二级：两侧各自能量曲线再 diff（curveTol 与帧容差独立）
+		var curveBaseline = MotionEnergy.curve(baseFrames, tol);
+		var curveCurrent = MotionEnergy.curve(curFrames, tol);
+		var curve = diffCurves(curveBaseline, curveCurrent, curveTol);
+		return {
+			pass: frameFails == 0 && curve.pass,
+			frames: frames,
+			frameFails: frameFails,
+			curveBaseline: curveBaseline,
+			curveCurrent: curveCurrent,
+			curve: curve
+		};
 	}
 
 	/** 连拍记录与声明的对齐门（语义见类头）。 */
 	static public function recordMatches(spec:ShotSpec, frameCount:Int, curveLength:Int):Bool {
-		throw new haxe.Exception("not implemented");
+		return frameCount == spec.count && curveLength == spec.count - 1;
 	}
 }

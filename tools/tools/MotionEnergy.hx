@@ -25,6 +25,20 @@ import tools.RenderTypes.Tolerance;
 class MotionEnergy {
 	/** 连拍帧序列 → 能量曲线（语义见类头）。tol 只用 perPixel（见类头）。 */
 	static public function curve(frames:Array<ShotImage>, ?tol:Tolerance):Array<Int> {
-		throw new haxe.Exception("not implemented");
+		if (frames == null || frames.length <= 1) {
+			return []; // 帧数 ≤ 1 无相邻对（含 null/空序列）
+		}
+		var out:Array<Int> = [];
+		for (i in 0...frames.length - 1) {
+			var a:ShotImage = frames[i];
+			var b:ShotImage = frames[i + 1];
+			if (a.width != b.width || a.height != b.height) {
+				throw new haxe.Exception('相邻帧尺寸不一致：第 ${i} 帧 ${a.width}x${a.height} vs 第 ${i + 1} 帧 '
+					+ '${b.width}x${b.height}（连拍序列须同尺寸截图，尺寸漂移是采集侧数据错）');
+			}
+			// 点 = 该相邻对的容差像素 diff 计数（PixelDiff.differing，不另造第二套）
+			out.push(PixelDiff.compare(a, b, tol).differing);
+		}
+		return out;
 	}
 }

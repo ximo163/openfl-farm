@@ -352,6 +352,20 @@ class TestMain {
 		// 配/已知名单兜底与 scan_dyn_writes.py 脚本侧接线按 issue 走
 		// implement 阶段
 		runner.addCase(new tools.BaseFieldScanTest());
+		// issue #64：cpp linux 启动冒烟（write-tests 阶段，对 stub 失败）——
+		// 冒烟断言判定纯逻辑（tools.BootSmokeVerdict）：三断言全过才绿
+		// （后端探活先行/15 秒进程存活/日志无 Invalid field+Uncaught
+		// exception+Called from 三标记）、「后端没起」归账不冒充 app 红、
+		// red 样例形态（Invalid field:x + Called from WaterController::
+		// initialze 两行证据原序原样）、失败输出 tail 末 80 行边界含与
+		// 单行不截断。xvfb 起二进制/kill -0/curl 后端/timeout 兜底与
+		// tools/cpp-boot-smoke.sh 脚本侧接线按 issue 走 implement 阶段。
+		// 环境变量基址入口纯逻辑（shim.SwfUrlBase.resolveCpp）：
+		// QFARM_BASE_URL 非空 + 相对 *.php → <base>/home/qqfarm/core/<url>
+		// （build.sh:40 部署事实），base 缺位行为不变、绝对/根相对/非 php
+		// 原样；读环境变量与合并点接线归 implement
+		runner.addCase(new tools.BootSmokeVerdictTest());
+		runner.addCase(new shim.SwfUrlBaseCppTest());
 		Report.create(runner);
 		runner.run();
 	}

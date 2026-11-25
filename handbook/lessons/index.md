@@ -1341,3 +1341,67 @@
   黑像素兜底，计数进报告不静默；104 张 jpg 资产的采样面因此是假的——
   这正是「自回归模式先立、换源后保真」的动机之一（真 Flash 参考侧没有
   这个盲区）。
+
+## 2026-11 · #58（帧脚本清查 write-tests：帧归属以字节码为准、多对单调用）
+
+- **帧脚本的帧归属别信转述（issue 文本、PORT-NOTE），字节码才是准数**：
+  farmui_full MaoPaoFlag 构造器实为 `addFrameScript(0, frame1, 23,
+  frame24)` 且 frame1 是**空方法**——`infoTxt.text = talkInfo; stop()`
+  两句都在 frame24。但 issue #58 文本和两处 PORT-NOTE
+  （widgets/LandTalkTip.hx:61「帧脚本 frame1 读 talkInfo」、src/MaoPaoFlag.hx:7
+  「frame1 脚本做 infoTxt.text = talkInfo、frame24 stop」）全写成 frame1
+  填文本。FFDec 的 AS3 文本本身没错（MaoPaoFlag.as:20-28 与 ABC 同源），
+  错的是转述层。坑点：这个 swf 不在 CI 反编译五 swf 内时人不会翻 FFDec
+  文本，只看 haxelib swf 转出的 scriptSource（JS 转译，帧号语义又隔着
+  0/1 基）——两头都容易抄错。防：帧号/动作归属进补偿表或门禁前，先用
+  format 3.7.0 dump 构造器和 frameN 体核对（test/tools/
+  FrameScriptSurveyTest.hx 的 fixtures 就是模板：op 序列逐字抄，含第二个
+  OThis 这种「看着多余」的接收者）。同一符号跨 swf 版本还会分叉：
+  farmui1 的同名 MaoPaoFlag frame1 是 `talkInfo = ""`（实义），数据必须
+  按 (libraryId, symbol) 取，不能按符号名全局合并。
+- **mxmlc 把多对 (帧, 方法) 合成单次 addFrameScript 调用**：两对 =
+  4 实参一次调（`addFrameScript(0, frame1, 23, frame24)`），只按
+  「实参恒为 2」写的抽取器会把 MaoPaoFlag 报成无绑定。且各 swf 编译期
+  取方法形态不同（FindPropStrict+GetProp / OGetLex / OThis+GetProp 三型
+  实测并存）。防：按实参个数切窗口、偶奇位配对，三型都进 fixtures；
+  帧号换算 0 基实参 → 1 基帧号，与方法名 frameN 的 N 互证。
+
+
+## 2026-11 · #58（帧脚本补偿 implement：接线时序、进帧即重跑、跨库同名分叉）
+
+- **addFrameScript 的接线必须在 bind 之后，先挂会被 scriptSource 整体
+  顶掉**：openfl `Timeline.__attachMovieClip` 在 `scripts` 数组非空时
+  重建 `__frameScripts`（html5 上 scriptSource 转出的 scripts 恒非空），
+  bind 前挂的补偿帧脚本全灭；绑完再挂则 `__addFrameScript` 同帧 set，
+  把跑不动的 scriptSource 残骸顶掉、不双跑。防：补偿只在
+  `SymbolClass.attach`/`bindRoot`/`LocalSwfLoader.attachContent`（都在
+  Timeline 挂上之后）调；别在符号 shim 构造器 super() 后立刻挂。时间轴
+  已挂上的早退分支重复登记幂等（同帧 set）。
+- **帧脚本里 gotoAndStop(N)，openfl 会重跑目标帧自己的帧脚本**：
+  `Timeline.__goto` 置 `__lastFrameScriptEval = -1` 后
+  `__evaluateFrameScripts(N)`——与 Flash「进帧即跑帧脚本」同序。所以
+  PackageTab 页签闭包 `gotoAndStop(2)` 会连带执行 frame2 的脚本（重挂
+  btnSeed/btnFish 监听 + stop），监听器逐次累积是**原版行为**，补偿
+  动作原语逐句建模、不合并去重。帧脚本执行时该帧子件已实例化
+  （`__evaluateFrameScripts` 先 `__updateSymbol`），As3.childOf 取得到
+  具名子件。
+- **帧标签先 dump 再登记 gotoAndPlay(标签)**：openfl
+  `__resolveFrameReference` 标签不存在直接抛 ArgumentError #2109——
+  补偿若引用错标签，跑起来是运行期红不是静默。FarmLoading "loop"（帧
+  23）/GiftIcon "GiftMove"（帧 3）都靠 `php tools/dump_swf.php` 核对
+  FrameLabel tag 后才进登记表。
+- **同符号跨库帧脚本会分叉，登记表键必须 (libraryId, symbolKey)**：
+  MaoPaoFlag 在 farmui_full 的 frame1 是空体，在 farmui1（牧场侧库）的
+  frame1 是 `talkInfo = ""`（实义）。按符号名全局合并会张冠李戴；查表/
+  清查都以 (库, 符号) 为单位（write-tests 阶段已立此规，本批 32 条
+  in-use 登记沿用）。
+
+- **implement 阶段别往 test/TestMain.hx 加注册行（append-only 门）**：
+  `test/**` 对 implement 是「只许新增文件、现有文件一个字不动」——
+  attempt-1 给 `FrameScriptCompensationInUseTest` 补注册行（沿用 #8 时代
+  「implement 阶段新增测试文件只能由本阶段注册」的旧例）被整单驳回，
+  连带已写好的测试文件成僵尸（`-main TestMain` 只编译可达类，注册不进
+  去的测试文件永不编译）。新测试的注册通道只有 write-tests 阶段；implement
+  的钉板需求要么进 write-tests 已注册的用例（其断言覆盖的范围内），要么
+  行内注释 + PR 报告钉出处（#58 批次 2 的 32 条登记如此，见
+  architecture/frame-scripts.md 登记纪律 4）。

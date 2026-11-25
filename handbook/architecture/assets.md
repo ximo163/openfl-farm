@@ -44,7 +44,11 @@
   swf 的 SymbolClass 把导出符号绑到同名 AS3 类，视图 `new Farmland_Lite()`
   直构带时间轴；openfl 只有 `Assets.getMovieClip` 实例化才挂时间轴。同
   名 Haxe 类（`@:keep`）构造器里补 `SymbolClass.bind(this, 库id, 符号名)`
-  挂回。**三个登记义务**：① 新符号 shim 必须同步加进
+  挂回。**绑定的符号可能带帧脚本**（原类构造器 addFrameScript 登记的
+  frameN 方法体——stop/gotoAndPlay/自摘/挂监听一族，本地化管线不生效）：
+  新符号 shim 建完先按 [frame-scripts.md](frame-scripts.md) 的登记纪律
+  跑清查、按需进 `shim/FrameScriptCompensation` 登记表（接线在
+  SymbolClass.attach 里，符号侧零额外代码）。**三个登记义务**：① 新符号 shim 必须同步加进
   `SymbolClass.dceAnchor` 数组（仅生产目标，`#if !eval`）——零引用的
   `@:keep` 类不进 `-dce full` 产物（见 lessons）；② 符号名小写开头的
   （如 canPickIcon）类名大写 + `@:native("原名")` 回键；③ 库**首次**拉起

@@ -168,3 +168,12 @@ source/core/module/ui/main/redUpBanner_v_2.swf
 # RequestErrorWindow.onImageLoaded `new _loc1_(270,125)` 构造 BitmapData
 # shim src/RequestError*.hx）：
 source/core/module/ui/main/RequestError_2.swf
+#
+# 升级红地动画（issue #58）：RedUp.swf（nc_data.php:37 secondList id="redup"
+# → module/ui/main/RedUp.swf）。主时间轴 134 帧，末帧帧脚本
+# dispatchEvent(new Event("end"))（RedUp_fla.MainTimeline.as:16-19），
+# FarmLandsView.playUpgradeRed 的 "end" 监听收尾依赖它——本地化管线丢帧
+# 脚本，复原走 shim/FrameScriptCompensation（根时间轴 symbolKey 空串）。
+# swf 在 scripts/decompile-legacy.sh 的 main_swfs 名单内（ABC 已进
+# legacy/decompiled/RedUp/），按素材库入库不违反 swf-code-audit 门禁：
+source/core/module/ui/main/RedUp.swf

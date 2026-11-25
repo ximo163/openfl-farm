@@ -584,8 +584,9 @@ class FarmLandsView extends Sprite {
 		this.showPickIcon(_loc2_);
 	}
 
-	// FarmLandsView.as:651-726（"end" 事件是升级动画时间轴帧脚本发的，
-	// openfl 动画运行时同样沿事件名冒泡；data["red"]/["black"]/["gold"] 由
+	// FarmLandsView.as:651-726（"end" 事件由升级动画（RedUp.swf）主时间轴末帧
+	// 帧脚本派发——本地化管线丢帧脚本，openfl 侧复原走 shim/
+	// FrameScriptCompensation（#58）；data["red"]/["black"]/["gold"] 由
 	// FarmLandController 升级装载完成回调构造，均为真 Boolean，== true 照翻）
 	public function playUpgradeRed(param1:Int, param2:Sprite, param3:Dynamic):Void {
 		var fi:LandItemRender = null;

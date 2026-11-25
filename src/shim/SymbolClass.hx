@@ -349,11 +349,22 @@ class SymbolClass {
 		if (Std.isOfType(target, MovieClip)) {
 			var mc:MovieClip = cast target;
 			if (@:privateAccess mc.__timeline != null) {
+				// 已挂时间轴（库实例化进来 / 同库第二只起）：帧脚本补偿仍要
+				// 登记——Timeline.__addFrameScript 同帧是 set，重复登记幂等；
+				// 首见即挂上，不依赖首次路径
+				FrameScriptCompensation.attach(mc, libraryId, symbolName);
 				return;
 			}
 		}
 		if (!library.bind(symbolName, target)) {
 			trace("SymbolClass: 符号不存在 " + libraryId + ":" + symbolName);
+		}
+		// #58 帧脚本补偿：bind 成功即时间轴已挂（MovieClip 路径），按登记表
+		// 回挂 openfl 侧帧脚本（本地化管线把 scriptSource 丢了/跑不动，见
+		// shim/FrameScriptCompensation 头注）；SimpleButton 目标无时间轴，
+		// addFrameScript 本就是无操作，恒可安全调用
+		if (Std.isOfType(target, MovieClip)) {
+			FrameScriptCompensation.attach(cast target, libraryId, symbolName);
 		}
 #end
 	}
@@ -440,6 +451,8 @@ class SymbolClass {
 		trace("SymbolClass: eval 目标无库 " + libraryId + ":(root)");
 #else
 		if (@:privateAccess target.__timeline != null) {
+			// 同款幂等登记（见 attach 的早退分支）
+			FrameScriptCompensation.attach(target, libraryId, "");
 			return;
 		}
 		var library:AssetLibrary = cast Assets.getLibrary(libraryId);
@@ -450,6 +463,9 @@ class SymbolClass {
 		if (Std.isOfType(library, AnimateLibrary)) {
 			var animate:AnimateLibrary = cast library;
 			@:privateAccess animate.root.__initObject(animate, target);
+			// 根符号无 SymbolClass 名，导出器不给 scriptSource——帧脚本补偿
+			// 查表登记（#58，symbolKey 空串 = 根时间轴）
+			FrameScriptCompensation.attach(target, libraryId, "");
 		} else {
 			trace("SymbolClass: 非 AnimateLibrary，无法绑根 " + libraryId);
 		}

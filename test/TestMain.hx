@@ -286,6 +286,21 @@ class TestMain {
 		runner.addCase(new tools.RenderHashTest());
 		runner.addCase(new tools.BaselineFileTest());
 		runner.addCase(new tools.RenderDiffTest());
+		// issue #58：帧脚本清查与补偿（write-tests 阶段，对 stub 失败）——
+		// 清查器纯逻辑（tools.FrameScriptSurvey：构造器 op 流 → addFrameScript
+		// 登记表（多对单调用、四种方法取法形态、0 基实参 → 1 基帧号）、
+		// frameN 方法体空体判定（剥 OThis/OScope/调试 op 后无行为 op；未映射
+		// op 按实义不猜））；补偿登记表（shim.FrameScriptCompensation：已知
+		// 实义帧脚本的 (库, 符号, 帧, 动作) 查表——MaoPaoFlag frame24 文本+
+		// stop、RedUp 主轴 frame134 派发 "end"，空体/无脚本键不虚造；注入
+		// 自检即删表必红）；RedUp 入库门（UpgradeAnimLibrariesTest：URL 映射
+		// RedUp 库名 + libraries.xml + legacy-assets.txt 三不变式，implement
+		// 把 swf 入库后转绿）。真工具的 swf → FrameScriptOp 解码（format 3.7.0，
+		// DumpAbcMethod 先例）与 SymbolClass.afterAttach / LocalSwfLoader 接线
+		// 按 issue 走 implement 阶段
+		runner.addCase(new tools.FrameScriptSurveyTest());
+		runner.addCase(new shim.FrameScriptCompensationTest());
+		runner.addCase(new UpgradeAnimLibrariesTest());
 		Report.create(runner);
 		runner.run();
 	}

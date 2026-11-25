@@ -1604,3 +1604,45 @@
 - **块注释里写 glob 形态（`decompiled/*/scripts/`）＝注释提前闭合**：
   `*/` 是结束符不看语境，`decompiled/<名>/scripts/` 这类写法才安全；
   编译器报 `Expected }` 且行号指在注释内部时先查这个。
+
+## 2026-11 · #68（17 件无归属带代码 swf 加载链考证）
+
+- **插件框架是「proxy 在宿主、载荷在外部 swf」两段式，两段要分开查引用**：
+  plugin 三兄弟（MailPromotion/Promotions/Weekend）文件名在配置与反编译里零
+  命中，但 main3 scripts/plugins/ 里 MailPromotionProxy/WeekendSalePluginProxy
+  的 proxy 类**存在**——宿主侧挂载点活着不代表链路活：PluginManager.as:45
+  纯配置驱动遍历，nc_addon.php plugins JSON 没有对应条目，proxy 永不实例化。
+  考证「某插件 swf 有没有引用」必须三层都查：配置条目（nc_addon plugins
+  JSON）→ 宿主 proxy 类（main3 scripts/plugins/）→ 文件名直接命中；只有
+  第一层是承重墙。PromotionsPlugin 连 proxy 类都不存在，是更死的一档。
+- **secondList 键的消费方可能在模块体内而不在宿主里——grep 范围必须覆盖
+  所有已反编译 swf**：nc_addon secondList 是「键→URL」声明表，消费形态是
+  `Settings.getSecondUrl("键名")`。freegift 键（nc_addon.php:289）在 main3
+  宿主全树 grep 不到调用方，曾据此误判「死键+零消费方」——实际消费方在
+  **gifts_v_11 模块体内**（FreeGiftView.as:299 getSecondUrl("freegift") +
+  :300 requestClass 加载 FREE_BG="freegiftBg"，符号就在 freegift_v_5 里）：
+  免费礼物模块的窗口背景素材经此键加载，是常驻活跃链路。教训两层：(1)
+  宿主反射加载的外部模块（Utils.getClass 取类、类体在模块 swf 内）会把
+  消费代码带出宿主 grep 范围，查「键有没有调用方」必须 grep **全部**
+  decompiled/<swf>/scripts/ 而不只是 main3/happyfarm3 宿主；(2) 自己前序
+  考证（#67 gifts）里就出现过的文件要优先纳入排查半径——漏掉自己引过的
+  模块是最低级漏查。漂移核查仍要双向核（配置 v_6/部署 v_5 → 请求 404），
+  但「键活文件死」与「死键+死文件」的定级结论形态完全不同：前者是活跃
+  模块素材依赖（同 recall 口径建议立项），后者才可冻结。
+- **同名线索跨端命中可能是伪命中，要读上下文再引**：Master2 FarmCommand.as
+  的 `_recallTime` 看着像 recall 模块的牧场侧证据，读 :890-897 上下文是拍
+  蚊子（killFly）ecode!=0 的重试计数器——变量名巧合。issue 原文引它作
+  「recall 命中」是误引，考证的责任之一就是排除这种干扰线索并写明排除
+  理由。防：grep 命中后必须读命中行的上下文语义，名字相似不等于同一功能。
+- **协议注册在案 ≠ 客户端有调用方**：singleFes/houseKeeper 两件在 main3 有
+  CMD_SINGLE_FES/CMD_HOUSE_KEEPER 常量定义 + ServerServices cmdMap 注册，
+  但反编译全树除这两处外零命中——协议层是死注册（调用方已拆除）；houseKeeper
+  更彻底：PHP 侧 cgi_farm_housekeeper.php mod 文件本身不存在。考证「零引用」
+  时要把这种「残迹链」写明（注册行号 + 调用方缺位 + 后端 mod 缺位），
+  否则下一个人会误以为链路活着。
+- **配置驱动的活动/插件，「快照里走不到」与「链路死」要分开表态**：
+  collecting 的窗口（expire 2050）对快照 serverTime 为真、但 gray 黄钻门
+  把 uid1（vip='[]' → yellowstatus=0）挡在门外——链路本身完整活跃，只是
+  快照帐户口径不走；这与 monthEnd 的「窗口过期+版本漂移双死」本质不同。
+  活跃判定要分层：时间窗（serverTime 比对）/ 开关（gray、fairy、zhaohuiOpen）
+  / 漂移（配置版本 vs 部署版本）/ 消费方存在性，逐层表态再合并结论。

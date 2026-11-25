@@ -57,6 +57,20 @@ task_update 应答回显的是**刚完成的旧任务**且 taskFlag=2（待领�
   映射入库。引导结束靠 swf 内部派发 `"closeEvent"` 字符串事件（非
   Event 常量），onGuideFinished 里 removeEventListener 用的也是裸串——
   别「顺手」换成常量。
+- **help 库自带的 6 类还是 stub**（issue #65 write-tests 落，
+  `src/help0316_fla/`）：help.swf 的 SymbolClass 绑 6 类（文档类
+  MainTimeline + page1_9/page2_8/page3_7/page4_5/page5_1，#65 根因 A——
+  swf 自带 AS3，openfl 只渲染时间轴不执行 ABC）。契约由
+  test/help0316_fla/ 钉死：五页 visible 翻页矩阵、按钮 CLICK → 裸串转发，
+  其中 **page5_1 的 closeButtonClick 是 `new Event("closeEvent", true)`——
+  bubbles=true 是全引导唯一冒泡点**，content 上 WelcomeView 的监听
+  → onGuideFinished 收尾链全靠它，翻译时实参别丢（根上的
+  MainTimeline.closeButtonClick 同名事件不带 bubbles，两处极性相反）。
+  页类名小写开头 → 大写 + `@:native` 回键（同上条 Task 垫片的 ② 法）。
+  帧脚本等价执行（frame1 接线）由 shim 接线胶水显式调用——
+  addFrameScript 在无 Timeline 实例上静默丢弃（FrameScriptCompensation
+  头注同证）。41 个 DefineEditText 的文字渲染是 #65 根因 B（openfl
+  TextEngine 在 cpp 的 bug），归 implement + 真机验收，单测不覆盖。
 - 冒烟必经：uid=1 fixture `"welcome":1` → StartupData._welcome==true →
   showNewGuide 在 CI web-smoke 一定执行，help 库缺声明就是 404 红叉。
 

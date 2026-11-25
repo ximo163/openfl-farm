@@ -34,7 +34,8 @@ class Issue67TriageNotes {
 	 *    MSG_SHOW_FREEGIFT（openIndex 1/0）；Main.as:369-371 qzone 外链
 	 *    actiontype=freegift → dispatch MSG_SHOW_FREEGIFT（openIndex 1）。
 	 *
-	 *  【活跃判定】链路活着、写路径死：
+	 *  【活跃判定】链路活着、写路径死、autopop 强弹子链死（2012 窗口
+	 *  过期）：
 	 *  - 读路径活：nc_addon.php:229-258 freegifts 表 25 项，visible="1"
 	 *    恰 8 项（id 18-25，nc_addon.php:249-257，全是「七夕」外观的妙恋
 	 *    系列，外观档期注释见 nc_addon.php:115 freeGiftTime "8.20 — 9.3"
@@ -47,6 +48,27 @@ class Issue67TriageNotes {
 	 *    net/ServerServices.as:167 CMD_FREE_GIFT，FreeGiftView.as:354 的
 	 *    送礼调用）**不在** mync.php 白名单（:100-170 全文核对无此项）——
 	 *    本部署的 PHP 会拒发，送礼操作不可达。即「能看能收不能送」。
+	 *  - 活动窗口核对（issue 点名项「活动窗口是否过期」）：nc_addon.php
+	 *    :114 `<freeGiftAutopop>8/20/2012-9/3/2012 23:59:59</
+	 *    freeGiftAutopop>`（注释原文「免费礼物的强弹」）是**功能性日期
+	 *    门**——它门控 main3 LeftSideToolBar.as:397-432
+	 *    checkFreeGiftAutoPop() 整条强弹子链：:417 读该配置、:422 按
+	 *    "-" 拆出起止日期、:425-428 与 CommonData.serverTime 比对，
+	 *    **不在窗口内直接 return**；窗内才执行 :430 图标动画
+	 *    freeIcon.showAnimation() + :431 发 AUTO_POP（CommandDefs.as:268，
+	 *    mod=cgi_fetch_strategy_rules，mync.php:157 白名单内）请示
+	 *    bit_flag，回调 bit_flag==true 时 :414 openFreeGift() 自动弹窗。
+	 *    本部署 snapshot 固定基线 serverTime=1794915896（initialized.sql
+	 *    :5718 uchome_qqfarm_nc.healthMode、tools/nodeboot/fixtures/
+	 *    mync-user-run.json:18/:25-26 同一值）≈ 2026-11-17，远在
+	 *    2012-09-03 窗外——**强弹子链在本部署必死**（永不执行
+	 *    showAnimation/永不发 AUTO_POP）。相邻的 :115 freeGiftTime
+	 *    "8.20 — 9.3" 则是**纯展示串**——唯一消费点 gifts_v_11
+	 *    FreeGiftView.as:537 把它原样写进窗口 time 文本框，无日期门
+	 *    作用。手动点击入口（LeftSideToolBar.as:226-227 CLICK →
+	 *    openFreeGift() :139-151，无日期门）与 1400ms 自动加载链不受影响，
+	 *    故总判定仍是「链路活着」——死的是 autopop 强弹子链与送礼写
+	 *    路径，活的是手动入口与收礼读路径。
 	 *  - GiftWindow 分工（issue 疑点）：main3 common/view/window/
 	 *    GiftWindow.as（注册名 WINDOW_NAME_GIFT，FarmStage.as:100）是
 	 *    **静态礼包展示窗**—— FarmLandModel.as:909 农田操作结果里带
@@ -66,7 +88,7 @@ class Issue67TriageNotes {
 	 *  若所有者认为写路径死=功能半残不值一译，可降级 baseline 登记冻结，
 	 *  但它已在 main_swfs（匹配口径），冻结需要把它移出 main_swfs=改
 	 *  口径，与 issue #67 边界冲突，故不推荐。 */
-	public static var GIFTS_V_11:String = "【gifts_v_11.swf 考证结论（issue #67，2026-11-25）】引用出处：nc_main.php:22 `<module name=\"FreeGift Module\" url=\"$url/module/ui/gifts_v_11.swf\"/>`（URL 表配置 key，异步加载模块）；模块桩是 main3 module/FreeGift/ModuleFreeGift.as（非 ModuleGifts，main3 无此类），ModuleFreeGift.as:23 `Utils.getClass(\"module.FreeGift.FreeGiftController\")` 反射取控制器、类体在 gifts_v_11.swf 内（decompiled/gifts_v_11/scripts/module/FreeGift/FreeGiftController.as 等 13 类）；加载触发 FarmApplication.as:1049 loadLater([MSG_LOAD_FREEGIFT,MSG_SHOW_FREEGIFT]) + :1076-1078 setTimeout 1400ms 自动 dispatch MSG_LOAD_FREEGIFT（无须用户操作）；用户入口 LeftSideToolBar.as:143/:147（openIndex 1/0）与 Main.as:369-371（qzone 外链 actiontype=freegift）。活跃判定：链路活着、写路径死——读路径活：nc_addon.php:228-258 freegifts 表 25 项 visible=\"1\" 恰 8 项（id 18-25，七夕妙恋系列，:115/:248 外观档期注释），SetPage.as:99 按 visible==\"0\" 过滤后仍有余量；cgi_farm_request_count/list/gift_recv 在 mync.php:146/:149/:150 白名单内。写路径死：cgi_farm_request_gift_send（ServerServices.as:167 CMD_FREE_GIFT）不在 mync.php 白名单——本部署 PHP 拒发，送礼不可达，「能看能收不能送」。GiftWindow 分工：main3 common/view/window/GiftWindow.as 是静态礼包展示窗（FarmLandModel.as:909 掉落结果 → FarmLandController.as:1069 弹出，440×330 标题「礼包」），gifts_v_11 是好友间收发礼物流程窗（选礼→选友→发送/回执），两者名字相近零共享。定级建议：立项翻译——链路现役自动加载、读路径真实可达，送礼写路径死不改变翻译必要性（要复刻的正是「按钮可点请求被拒」的原版行为）；decompile-legacy.sh:66 已在册反编译，立项=开模块翻译 issue 按 shop/warehouse/pool/decorate 同族先例译 module.FreeGift 族。备选否案（不推荐）：降 baseline 冻结须移出 main_swfs=改匹配口径，与 issue #67 边界冲突。";
+	public static var GIFTS_V_11:String = "【gifts_v_11.swf 考证结论（issue #67，2026-11-25）】引用出处：nc_main.php:22 `<module name=\"FreeGift Module\" url=\"$url/module/ui/gifts_v_11.swf\"/>`（URL 表配置 key，异步加载模块）；模块桩是 main3 module/FreeGift/ModuleFreeGift.as（非 ModuleGifts，main3 无此类），ModuleFreeGift.as:23 `Utils.getClass(\"module.FreeGift.FreeGiftController\")` 反射取控制器、类体在 gifts_v_11.swf 内（decompiled/gifts_v_11/scripts/module/FreeGift/FreeGiftController.as 等 13 类）；加载触发 FarmApplication.as:1049 loadLater([MSG_LOAD_FREEGIFT,MSG_SHOW_FREEGIFT]) + :1076-1078 setTimeout 1400ms 自动 dispatch MSG_LOAD_FREEGIFT（无须用户操作）；用户入口 LeftSideToolBar.as:143/:147（openIndex 1/0）与 Main.as:369-371（qzone 外链 actiontype=freegift）。活跃判定：链路活着、写路径死、autopop 强弹子链死（2012 窗口过期）——读路径活：nc_addon.php:228-258 freegifts 表 25 项 visible=\"1\" 恰 8 项（id 18-25，七夕妙恋系列，:115/:248 外观档期注释），SetPage.as:99 按 visible==\"0\" 过滤后仍有余量；cgi_farm_request_count/list/gift_recv 在 mync.php:146/:149/:150 白名单内。写路径死：cgi_farm_request_gift_send（ServerServices.as:167 CMD_FREE_GIFT）不在 mync.php 白名单——本部署 PHP 拒发，送礼不可达，「能看能收不能送」。活动窗口核对（issue 点名项）：nc_addon.php:114 freeGiftAutopop \"8/20/2012-9/3/2012 23:59:59\"（注释「免费礼物的强弹」）是功能性日期门——门控 LeftSideToolBar.as:397-432 checkFreeGiftAutoPop() 整条强弹子链：:417 读配置、:422 拆起止日期、:425-428 与 serverTime 比对不在窗内直接 return，窗内才执行 :430 freeIcon.showAnimation() 图标动画 + :431 发 AUTO_POP（CommandDefs.as:268，mod=cgi_fetch_strategy_rules，mync.php:157 白名单内）请示 bit_flag，bit_flag==true 回调里 :414 openFreeGift() 自动弹窗；snapshot 固定基线 serverTime=1794915896（initialized.sql:5718 healthMode、tools/nodeboot/fixtures/mync-user-run.json:18 同值）≈2026-11-17 远在窗外——强弹子链在本部署必死（永不执行动画/永不发 AUTO_POP）。相邻 :115 freeGiftTime \"8.20 — 9.3\" 是纯展示串，唯一消费点 gifts_v_11 FreeGiftView.as:537 原样写进窗口 time 文本框无日期门作用。手动点击入口（LeftSideToolBar.as:226-227 CLICK → openFreeGift() :139-151）无日期门不受影响，故总判定链路活着——死的是 autopop 强弹子链与送礼写路径，活的是手动入口与收礼读路径。GiftWindow 分工：main3 common/view/window/GiftWindow.as 是静态礼包展示窗（FarmLandModel.as:909 掉落结果 → FarmLandController.as:1069 弹出，440×330 标题「礼包」），gifts_v_11 是好友间收发礼物流程窗（选礼→选友→发送/回执），两者名字相近零共享。定级建议：立项翻译——链路现役自动加载、手动入口与读路径真实可达，送礼写路径死与 autopop 子链死不改变翻译必要性（要复刻的正是「按钮可点请求被拒、强弹比对日期后静默 return」的原版行为）；decompile-legacy.sh:66 已在册反编译，立项=开模块翻译 issue 按 shop/warehouse/pool/decorate 同族先例译 module.FreeGift 族。备选否案（不推荐）：降 baseline 冻结须移出 main_swfs=改匹配口径，与 issue #67 边界冲突。";
 
 	/** ---------------- farmui_full_v_40.swf（207 DoABC / ABC 89KB）----------------
 	 *
@@ -79,24 +101,34 @@ class Issue67TriageNotes {
 	 *  new MaoPaoFlag()），符号宿主才是本库。
 	 *
 	 *  【207 DoABC 定性】逐类核过（legacy/decompiled/farmui_full_v_40/
-	 *  scripts/ 207 个 .as 全量扫）：206/207 是纯 stub——构造体仅
-	 *  super()（+帧脚本族的 addFrameScript 登记）之外零逻辑、零业务方法；
-	 *  其中 190 件带 [Embed(source="/_assets/assets.swf", ...)] 标记，即
-	 *  Flash IDE 为库符号自动生成的空壳关联类，「量级异常」是 IDE stub
-	 *  涨量，不是隐藏的半个模块。成分分布：com/qzone/qui/skins/ 38 件
-	 *  qui 皮肤空壳、com/qzone/ui/ 10 件地块皮肤（FarmlandS/G 系）空壳、
-	 *  顶层 155 件按钮/图标/光标/底板符号壳。例外与活代码只有两类：
-	 *  - 帧脚本族 18 件（构造器 addFrameScript 登记）：11 件 frame1=stop()
-	 *    同型（光标族 CursorHand/CursorHoe/CursorWater/CursorHook/
-	 *    CursorPesticide/CursorInsect/CursorWeed/CursorOneClickHand +
-	 *    AddAnimation/AddHealth/SellLockIcon/lock_mc_46——CursorArrow
-	 *    两帧各 stop）、MaoPaoFlag.as:17 addFrameScript(0,frame1,23,
+	 *  scripts/ 207 个 .as 全量扫，2026-11-25 按文件逐一复查）：189/207
+	 *  是纯空壳 stub——构造体仅 super()、零帧脚本、零方法、零逻辑；其中
+	 *  172 件带 [Embed(source="/_assets/assets.swf", ...)] 标记，即
+	 *  Flash IDE 为库符号自动生成的空壳关联类，另 17 件是不带 Embed 的
+	 *  SimpleButton 纯按钮壳（CameraButton/OneClickHand/Renewal/
+	 *  ToolArrow/ToolBox/ToolHand/ToolHoe/ToolHook/ToolInsect/ToolPack/
+	 *  ToolPesticide/ToolTheft/ToolUpRed/ToolWater/ToolWeed/ToolZoomIn/
+	 *  ToolZoomOut——extends SimpleButton 不需要 Embed，故无标记）。
+	 *  「量级异常」是 IDE 空壳涨量，不是隐藏的半个模块。成分分布：
+	 *  com/qzone/qui/skins/ 38 件 qui 皮肤空壳、com/qzone/ui/ 13 件
+	 *  （含 red/ 4 件）地块皮肤空壳、顶层 155 件按钮/图标/光标/底板符号
+	 *  壳与活代码件、farmui_full_1_fla/ 1 件。其余 18 件全部带
+	 *  addFrameScript 登记（注意 18 件全部也带 [Embed]——两个集合
+	 *  不互斥，Embed 总数 190 = 172 纯壳 + 18 帧脚本件），即帧脚本族，
+	 *  行为分三档：
+	 *  - 12 件纯 stop 壳：frame1=stop() 同型 11 件（光标族 CursorHand/
+	 *    CursorHoe/CursorWater/CursorHook/CursorPesticide/CursorInsect/
+	 *    CursorWeed/CursorOneClickHand + AddAnimation/AddHealth/
+	 *    SellLockIcon）+ farmui_full_1_fla/lock_mc_46 同型，CursorArrow
+	 *    是双帧变体（frame1/frame2 各 stop）；
+	 *  - 3 件时间轴行为件：MaoPaoFlag.as addFrameScript(0,frame1,23,
 	 *    frame24) frame24=infoTxt.text=talkInfo+stop、FarmLoading.as
 	 *    frame48=gotoAndPlay("loop") 加载环回绕、GiftIcon.as frame42=
-	 *    gotoAndPlay("GiftMove")、CursorArrow 双帧 stop；
-	 *  - 唯一带监听的 PackageTab.as（背包三页签：btnSeed/btnTool/btnFish
-	 *    CLICK → gotoAndStop + dispatchEvent("seed"/"tool"/"fish")）；
-	 *  - 唯一带业务方法的 FarmInfoPlus.as（setInfo/setStep7/setOutput 等
+	 *    gotoAndPlay("GiftMove")；
+	 *  - 2 件真活代码（在 18 件帧脚本族之内，不是额外的）：PackageTab.as
+	 *    唯一带监听（背包三页签 btnSeed/btnTool/btnFish CLICK →
+	 *    gotoAndStop + dispatchEvent("seed"/"tool"/"fish")）、
+	 *    FarmInfoPlus.as 唯一带业务方法（setInfo/setStep7/setOutput 等
 	 *    地块信息提示版面，main3 LandInfoTip.as:50 经 getMaterial 反射
 	 *    构造消费）。
 	 *  这些活代码与 main3 的衔接已经是事实：src/shim/
@@ -116,14 +148,14 @@ class Issue67TriageNotes {
 	 *
 	 *  【定级建议】**归 #58 帧脚本族跟踪，不单独立项**（等价于「维持现状
 	 *  + 挂账」：素材库身份不变，18 件帧脚本的补偿登记随 #58 批次逐件
-	 *  补齐——FrameScriptCompensation 已开端；206 件 stub 无行为可译，
+	 *  补齐——FrameScriptCompensation 已开端；189 件纯空壳无行为可译，
 	 *  符号 shim 按需随各模块消费点抄录——已在做）。理由：它不是功能
 	 *  swf（无控制器代码），「立项翻译」没有可译对象；它已在 main_swfs
 	 *  （decompile-legacy.sh:69，为帧脚本清查与符号考证提供反编译产物），
 	 *  baseline 无账可写也不必入账。若所有者要对账形式上更显式，可在
 	 *  baseline 增补一条说明性 entry——但那属于改匹配口径，issue #67
 	 *  边界禁止，故建议就是挂 #58。 */
-	public static var FARMUI_FULL_V_40:String = "【farmui_full_v_40.swf 考证结论（issue #67，2026-11-25）】引用出处：nc_main.php:11 `<material url=\"$url/module/ui/main/farmui_full_v_40.swf\" statusText=\"加载UI素材...\"/>`——main 模块 material 素材预载（URL 表配置 key，非代码硬引用；main3 反编译全文 grep 无文件名硬引用，消费走符号名 getMaterial/直接 new）。207 DoABC 定性（逐类核过 decompiled/farmui_full_v_40/scripts/ 207 类）：206/207 纯 stub（构造体仅 super()+addFrameScript 登记，190 件带 [Embed] 标记=Flash IDE 库符号自动空壳，「量级异常」是 IDE stub 涨量不是隐藏的半个模块）；活代码只两类——帧脚本族 18 件 addFrameScript（11 件 frame1=stop() 同型光标族/特效、MaoPaoFlag frame24 写文本+stop、FarmLoading frame48 gotoAndPlay(\"loop\") 回绕、GiftIcon frame42 循环、CursorArrow 双帧 stop）+ 唯一带监听的 PackageTab（背包三页签 CLICK → gotoAndStop+dispatch）+ 唯一带业务方法的 FarmInfoPlus（地块信息提示版面，LandInfoTip.as:50 getMaterial 消费）。衔接已是事实：src/shim/FrameScriptCompensation.hx（#58）已登记 MaoPaoFlag frame24 补偿，src/ 40+ 符号 shim 已 SymbolClass 绑定消费。farmui2_v_58 关系：nc_main.php:11-12 相邻两行同族素材预载姊妹库，帧脚本同源同病，farmui2 在 baseline tracked=\"#58\"；farmui_full 是全量 UI 符号库、farmui2 是后补增量，都非功能模块（无控制器/模型/网络请求）。活跃判定：活跃素材库，启动必加载，符号被 main3 全面消费。定级建议：归 #58 帧脚本族跟踪不单独立项——无功能代码可立项（stub 无行为可译），18 件帧脚本补偿随 #58 批次逐件补齐（已开端），符号 shim 按需随模块消费点抄录（已在做）；decompile-legacy.sh:69 在册为清查提供产物，baseline 入账/增补 entry 均属改匹配口径为 issue #67 边界所禁。";
+	public static var FARMUI_FULL_V_40:String = "【farmui_full_v_40.swf 考证结论（issue #67，2026-11-25）】引用出处：nc_main.php:11 `<material url=\"$url/module/ui/main/farmui_full_v_40.swf\" statusText=\"加载UI素材...\"/>`——main 模块 material 素材预载（URL 表配置 key，非代码硬引用；main3 反编译全文 grep 无文件名硬引用，消费走符号名 getMaterial/直接 new）。207 DoABC 定性（逐类核过 decompiled/farmui_full_v_40/scripts/ 207 类）：189/207 纯空壳 stub——172 件带 [Embed] 标记的 Flash IDE 库符号自动空壳 + 17 件不带 Embed 的 SimpleButton 纯按钮壳（Tool*/CameraButton/OneClickHand/Renewal 族，extends SimpleButton 无需 Embed），构造体仅 super()、零帧脚本零方法；其余 18 件全部带 addFrameScript 登记即帧脚本族（18 件同时也带 [Embed]——两集合不互斥，Embed 总数 190=172+18），行为分三档：12 件纯 stop 壳（frame1=stop() 同型光标族/特效 11 件 + lock_mc_46，CursorArrow 双帧各 stop 变体）、3 件时间轴行为件（MaoPaoFlag frame24 写文本+stop、FarmLoading frame48 gotoAndPlay(\"loop\") 回绕、GiftIcon frame42 循环）、2 件真活代码在帧脚本族之内——唯一带监听的 PackageTab（背包三页签 CLICK → gotoAndStop+dispatch）与唯一带业务方法的 FarmInfoPlus（地块信息提示版面，LandInfoTip.as:50 getMaterial 消费）。「量级异常」是 IDE 空壳涨量不是隐藏的半个模块。衔接已是事实：src/shim/FrameScriptCompensation.hx（#58）已登记 MaoPaoFlag frame24 补偿，src/ 40+ 符号 shim 已 SymbolClass 绑定消费。farmui2_v_58 关系：nc_main.php:11-12 相邻两行同族素材预载姊妹库，帧脚本同源同病，farmui2 在 baseline tracked=\"#58\"；farmui_full 是全量 UI 符号库、farmui2 是后补增量，都非功能模块（无控制器/模型/网络请求）。活跃判定：活跃素材库，启动必加载，符号被 main3 全面消费。定级建议：归 #58 帧脚本族跟踪不单独立项——无功能代码可立项（189 件纯空壳无行为可译），18 件帧脚本补偿随 #58 批次逐件补齐（已开端），符号 shim 按需随模块消费点抄录（已在做）；decompile-legacy.sh:69 在册为清查提供产物，baseline 入账/增补 entry 均属改匹配口径为 issue #67 边界所禁。";
 
 	/** ---------------- farmui1_v_42.swf（110 类 / ABC 17.4KB）----------------
 	 *

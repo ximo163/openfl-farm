@@ -366,6 +366,18 @@ class TestMain {
 		// 原样；读环境变量与合并点接线归 implement
 		runner.addCase(new tools.BootSmokeVerdictTest());
 		runner.addCase(new shim.SwfUrlBaseCppTest());
+		// issue #67：普查待分诊桶三件（gifts_v_11/farmui_full_v_40/farmui1_v_42）
+		// 加载链考证定级（write-tests 阶段，结论文件不存在/family reason 占位
+		// 而失败）——研究任务的验收门：三件各自的「引用出处 → 活跃/非活跃 →
+		// 定级建议」结论要素（nc_main.php:22/:11 与 mc_main.php:21 引用行、
+		// ModuleFreeGift 反射链、freegifts visible 表与 gift_send 白名单缺位、
+		// farmui_full 207 DoABC 的 stub/帧脚本族定性与 #58 对齐、farmui1
+		// 农场侧排查结论）、「未验证」必须带卡点说明、baseline 匹配口径不动。
+		// 考证结论的落点：farmui1 写进 mc/main/* 族 reason（issue 点名更新
+		// 的唯一在账条目）；gifts/farmui_full 已在 main_swfs 无账可写，
+		// 结论按 test/** append-only 落新文件 test/Issue67TriageNotes.hx
+		// （纯 const 字符串类，implement 新建即转绿）
+		runner.addCase(new SwfTriageBaselineTest());
 		Report.create(runner);
 		runner.run();
 	}

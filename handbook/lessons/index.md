@@ -1535,9 +1535,47 @@
 - **文字类告警在 node 可复现、可计数**：openfl 内部 Log 全走
   console.warn，垫片环境拦 console.warn 数特定文案即得逐字段计数（32
   字段 32 条，修复后 0）；textWidth 读取触发 __updateLayout，不需要
-  真渲染。真机 41 条对 32 个实例化字段的差额 = 9 个 DefineEditText 是
-  任何时间轴都没放置的死符号 + 部分字段多次布局重复计数——修完后同
-  根源全消，别按 41 去对表。
+  真渲染。真机 41 条告警的真实账（**#77 2026-11-25 更正，本条原判
+  「9 个死符号+重复计数」系误判**）：= 32 个页直挂字段 + 9 个
+  **SimpleButton 状态内字段**（下一页 5/7/9、上一页 25/27/29、我明白了
+  76/78/80，DefineButton2 的 up/over/down 态各一份），各告警一次——
+  9 个不是死符号：swf 库 AnimateButtonSymbol.__createObject 经
+  SimpleButton.__constructor 静态钩子把四态子件建出来，真实例化真参与
+  布局（原版 Flash 按钮文字就是渲染的），只是挂在按钮状态子树里、不在
+  页直挂子树上，当年 node 探针只数页子树才漏了它们。且探针的「修复后
+  0 命中」验证的是探针手工触发 textWidth 的顺序（修复先于布局），不是
+  LocalSwfLoader 真实加载流的顺序——真机 attachContent 时刻页时间轴
+  子件还没上树，attach 时刻的一遍修复在真实流里一条都不生效。防：
+  (1) 「符号有没有实例化」要沿库实例化链（__constructor 钩子/四态子件）
+  核实到显示对象类型，PLACE 记录不是唯一实例化通道；(2) 验证修复有效
+  性必须走真实加载流（真帧推进），探针手工触发布局的顺序不代表真机
+  相位（ENTER_FRAME 派发 → __enterFrame 时间轴推进 → render 布局）。
+
+## 2026-11 · #77（help 文字修复的两个盲区：SimpleButton 状态子树 + ENTER_FRAME 重放）
+
+- **swf 资产的「字段账」必须含 DefineButton2 状态子树**：BUTTONRECORD
+  的 up/over/down 态放文字（help 三按钮族：每按钮三态各一份
+  DefineEditText）时，这些字段**在页直挂子树上不可见**——SimpleButton
+  不是 DisplayObjectContainer，任何「遍历容器找 TextField」的 walk 到
+  按钮就停。修复/审计类 walk 遇 SimpleButton 必须特判下钻
+  upState/overState/downState/hitTestState（四态是公共属性，可空、可非
+  容器——默认构造的 SimpleButton upState 是裸 DisplayObject、over/down
+  为 null，判空判容器缺一不可）。help 的 hitTest 真按钮是纯 shape 无
+  文字，但下钻四态比三态更防御（同族 swf 不保证同款形态）。
+- **swf 时间轴子件在 attach/complete 回调时刻可能还没上树——修复类
+  胶水要挂「attach 后第一个 ENTER_FRAME」一次性重放**：真实加载流里
+  attachContent 回调早于页时间轴子件挂载（真机 41 条告警实证：attach
+  时刻的修复在真实流一条未生效）。重放挂在 attach 收到的 content 根
+  时间轴上、放一次即自摘（once 自引写法同 Harness.markMainFirstFrame），
+  落在首帧渲染前（帧相位 ENTER_FRAME 派发 → __enterFrame → render）。
+  attach 时刻仍保留一遍修复兜「树已齐」的序（幂等补洞，两轮无叠加）。
+  防：「修复已挂上」≠「修复在真实流生效」——加载链任何依赖显示树
+  完备性的胶水，验收必须走真库真帧推进，不许用探针手工触发布局代替。
+- **openfl 自带诊断开关 `-D openfl_trace_text_layout_groups`**
+  （TextEngine.hx:1746-1750）：逐组打 LG line,w,h,x,y,"text",start,end，
+  真机 logcat 一眼对账每个字段的组态——文字渲染类问题先上诊断构建
+  定位断点在哪一环（内容组存不存在/被没被渲染），比纯推演布局循环
+  快。
 
 ## 2026-11 · #63（基类 Dynamic 字段盲区补扫：名单装配的污染边界）
 

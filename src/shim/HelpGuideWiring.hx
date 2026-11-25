@@ -6,8 +6,11 @@ import help0316_fla.Page2_8;
 import help0316_fla.Page3_7;
 import help0316_fla.Page4_5;
 import help0316_fla.Page5_1;
+import openfl.display.DisplayObject;
 import openfl.display.DisplayObjectContainer;
 import openfl.display.MovieClip;
+import openfl.display.SimpleButton;
+import openfl.events.Event;
 import openfl.text.TextField;
 import openfl.text._internal.TextEngine;
 
@@ -48,10 +51,30 @@ import openfl.text._internal.TextEngine;
  *
  * 范围按 issue 边界只挂在 help 库（LocalSwfLoader.attachContent 里按
  * libraryId=="help" 调用），同族 swf 的同款 HTMLParser 缺口不在此扩散。
- * help 全库仅根时间轴 1 帧、五页各 1 帧、唯一多帧符号 88 是三张 shape 的
- * 轮换（无文字）——附着时树上的 TextField 集合即全集，一次性修复完备，
- * 无需后续帧补漏（9 个 DefineEditText 是从未被任何时间轴放置的死符号，
- * 永不实例化、也不渲染）。
+ *
+ * #77 真机复验（2026-11-25，#75 合并后的 APK）收口两个盲区——41 个字段
+ * 全部仍在告警，修复在真实加载流一条都没生效：
+ *
+ * 1. walk 必须下钻 SimpleButton 状态子树（盲区一）：41 = 32 页直挂 +
+ *    **9 个 DefineButton2 状态字段**（下一页 5/7/9、上一页 25/27/29、
+ *    我明白了 76/78/80，各按钮 up/over/down 态各一份）。#75 教训条说它们
+ *    「任何时间轴都没放置、永不实例化」是误判：swf 库
+ *    AnimateButtonSymbol.__createObject 经 SimpleButton.__constructor
+ *    静态钩子把状态子件建出来（openfl 9.5.2 SimpleButton.hx 构造器消费
+ *    钩子）——这 9 个字段真实例化、真参与布局（原版 Flash 里按钮文字
+ *    就是渲染的）。SimpleButton 不是 DisplayObjectContainer，只在容器上
+ *    递归的 walk 到按钮就停，必须特判遍历 upState/overState/downState/
+ *    hitTestState（真按钮 hitTest 是纯 shape 无文字，但修复方向点名
+ *    四态都遍历，防御同族 swf）。
+ * 2. 修复必须改到「attach 后第一个 ENTER_FRAME」一次性重放（盲区二）：
+ *    attachContent 时刻树上还没有页时间轴子件（真机 41 条 = 修复在
+ *    真实流一条未生效；node 探针当年验证的是探针自己手工触发布局的
+ *    顺序，不是 LocalSwfLoader 真实加载流的顺序）。重放挂在 attach
+ *    收到的 content 根时间轴上：真机帧相位（Stage.__processPhase）是
+ *    ENTER_FRAME 派发 → __enterFrame 时间轴推进 → render 布局，重放
+ *    落在首帧渲染前；且帧内挂载的字段还有后半段相位能修好。只放一次
+ *    即自摘——page5 的 88 号三帧轮换无文字，后续帧没有补漏面，常驻
+ *    监听是白挂。同族先例 Harness.markMainFirstFrame 的 once 自摘法。
  */
 @:access(help0316_fla.MainTimeline)
 @:access(help0316_fla.Page1_9)
@@ -86,33 +109,58 @@ class HelpGuideWiring {
 			}
 			mt.frame1();
 		}
-		// 2. DefineEditText 的 range 补洞（见类头注 2）
+		// 2. DefineEditText 的 range 补洞（见类头注 2）：attach 时刻走一遍
+		//    兜「附着时已齐」的序（#75 探针验证的形态），再挂一次性重放兜
+		//    真实流（盲区二——attach 后第一个 ENTER_FRAME 自摘，why 见头注）
 		repairTextRanges(content);
+		var once:Event->Void = null;
+		once = function(param1:Event):Void {
+			content.removeEventListener(Event.ENTER_FRAME, once);
+			repairTextRanges(content);
+		};
+		content.addEventListener(Event.ENTER_FRAME, once);
 	}
 
 	// 树上每个 TextField：textFormatRanges（openfl.Vector，非 Array——裸
 	// 下标/裸 length 在 js 上是 undefined，cpp 上更没有裸通道，必须类型化
 	// 访问）最后一个 range 的 end 补到 text.length。HTMLParser 产物 range
-	// 顺序无缝，唯一的洞就是文末换行，一次补齐
+	// 顺序无缝，唯一的洞就是文末换行，一次补齐。重复跑幂等（last.end 已
+	// 到位的条件不命中），attach 时刻 + 重放两轮无叠加效应
 	private static function repairTextRanges(container:DisplayObjectContainer):Void {
 		for (i in 0...container.numChildren) {
-			var child = container.getChildAt(i);
-			if (Std.isOfType(child, TextField)) {
-				var tf:TextField = cast child;
-				var engine:TextEngine = tf.__textEngine;
-				var ranges = engine.textFormatRanges;
-				if (ranges != null && ranges.length > 0 && engine.text != null) {
-					var last = ranges[ranges.length - 1];
-					if (last.end < engine.text.length) {
-						last.end = engine.text.length;
-						// 布局还没首跑（htmlText 置位后本就是脏的），这里再
-						// 置一次兜「附着前已有测量」的极端序
-						tf.__layoutDirty = true;
-					}
+			repairChild(container.getChildAt(i));
+		}
+	}
+
+	// 盲区一的分流（见类头注 #77-1）：TextField 补洞；SimpleButton 不是容器
+	// 但状态子件真实例化真参与布局，四态（是容器就）继续走；普通容器递归。
+	// 状态态的判空/判容器边界：默认构造的 SimpleButton upState 是裸
+	// DisplayObject（非容器，走不到递归）、over/down 是 null，都须无操作通过
+	private static function repairChild(child:DisplayObject):Void {
+		if (child == null) {
+			return;
+		}
+		if (Std.isOfType(child, TextField)) {
+			var tf:TextField = cast child;
+			var engine:TextEngine = tf.__textEngine;
+			var ranges = engine.textFormatRanges;
+			if (ranges != null && ranges.length > 0 && engine.text != null) {
+				var last = ranges[ranges.length - 1];
+				if (last.end < engine.text.length) {
+					last.end = engine.text.length;
+					// 布局还没首跑（htmlText 置位后本就是脏的），这里再
+					// 置一次兜「附着前已有测量」的极端序
+					tf.__layoutDirty = true;
 				}
-			} else if (Std.isOfType(child, DisplayObjectContainer)) {
-				repairTextRanges(cast child);
 			}
+		} else if (Std.isOfType(child, SimpleButton)) {
+			var btn:SimpleButton = cast child;
+			repairChild(btn.upState);
+			repairChild(btn.overState);
+			repairChild(btn.downState);
+			repairChild(btn.hitTestState);
+		} else if (Std.isOfType(child, DisplayObjectContainer)) {
+			repairTextRanges(cast child);
 		}
 	}
 }

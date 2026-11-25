@@ -7,9 +7,10 @@
 
 新版（openfl html5）侧的端到端行为对拍：声明式场景（操作步骤 + 每步检查点）
 在构建产物上真跑一遍，录检查点请求序列与界面状态，输出自录基线记录；diff
-模式对比两份记录、指出第一处不一致。**不做**渲染比对（那是逐资产/场景比对
-门禁的事），也**不含**原版（Ruffle）侧执行器——那在受保护的 `harness/`，
-由人配套（见文末）。
+模式对比两份记录、指出第一处不一致。**整场景的画面比对（截图/连拍/能量
+曲线）归 [#59 的视觉节](scenario-visual-gate.md)**——同一份 scenario.mjs 与
+记录格式扩展出来的视觉检查点，本页只讲请求/状态这半边；**也不含**原版
+（Ruffle）侧执行器——那在受保护的 `harness/`，由人配套（见文末）。
 
 | 文件 | 内容 |
 |---|---|
@@ -51,6 +52,13 @@ nodeboot 会 404 到永远不就绪）。
 - farmlandstatus 操作 act 整份记录恰好场景声明的次数；记录里的 farmlandstatus
   act 只容场景操作 + 启动期 getoutput——出现 scarify 之类 = 运行器多驱动了
   一步，判红。
+- **记录固定 6 条请求（#59 确定性协议修复后）**：user/run、getNotice、三个
+  操作，加 `cgi_fish_index`（水模块入场初始化所发，legacy 原样无 act——
+  详见 [scenario-visual-gate.md 的盲区节](scenario-visual-gate.md)）。判定
+  对它不红：非 farmlandstatus，子序列判定容夹带；形状门也已改对（#59
+  write-tests visit）：act 非空、但 legacy 整名 dispatch 条目容缺位，
+  整名集从 `spec/protocol.json` 的 `dispatch_query` 无 `act=` 推导（无 mod
+  兼具两形态），其余 mod 丢 act 照样红。
 
 ## 基线格式与两个非显然的约定
 

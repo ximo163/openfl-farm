@@ -42,7 +42,11 @@ import utest.Assert;
  *   plant.record.json = {
  *     "scenario": "plant",
  *     // 拦截到的全部 mync mod 请求按发送顺序（mod/act 取 URL 查询、params 取
- *     // POST body 字面）；启动期 getoutput 等额外请求照录、判定不计红
+ *     // POST body 字面）；启动期 getoutput 等额外请求照录、判定不计红；整名
+ *     // dispatch 条目（mync.php:176-177 dispatch 拼 mod+'_'+act、act 可选，
+ *     // $mod_list 整名条目如 :131 'cgi_fish_index'）URL 字面无 act——act 照录
+ *     // 为空串，不得为形状门合成 act（#59 起水模块入场初始化发的 cgi_fish_index
+ *     // 即此形态，spec/protocol.json:3574 query="mod=cgi_fish_index"）
  *     "requests": [ { "mod": "...", "act": "...", "params": { "<k>": "<v>" } } ],
  *     // 通过/失败清单 + 检查点时刻实测状态
  *     "steps": [ { "name": "...", "pass": true,
@@ -57,8 +61,9 @@ import utest.Assert;
  * 期望值出处（断言处随消息再标一次）：
  *   - mod 序列（「请求序列与 mync.php 的 mod 定义一致」）：mync.php $mod_list
  *     'user_run' :94（访问农场）、'farmlandstatus_planting' :41、
- *     'farmlandstatus_water' :46、'farmlandstatus_harvest' :39；dispatch 拼
- *     mod+'_'+act 走白名单 mync.php:175-183。逐 mod 的 dispatch_query 与参数
+ *     'farmlandstatus_water' :46、'farmlandstatus_harvest' :39、
+ *     'cgi_fish_index' :131（整名条目：dispatch 不拼 act，URL 无 act）；
+ *     dispatch 拼 mod+'_'+act 走白名单 mync.php:175-183（act 可选，:176-177）。逐 mod 的 dispatch_query 与参数
  *     规格以 spec/protocol.json（issue #14 的 S1 协议清单，人审过；CLAUDE.md
  *     依据优先级 spec 高于反编译）。
  *   - 地块数值（「参数以 legacy/snapshot uid=1 为准」）：legacy/snapshot/
@@ -279,6 +284,38 @@ class ScenarioRunnerContractTest {
 		return n;
 	}
 
+	// legacy 整名 dispatch 的 mod 集——这些 mod 的请求 URL 字面无 act、记录里
+	// act 照录空串（合法缺位，形状门容它）。出处：mync.php:176-177 dispatch 拼
+	// $mod_name = mod .'_' .act（act 空则不拼）后对 $mod_list 匹配，整名条目如
+	// :131 'cgi_fish_index'；整名与否以 spec/protocol.json entries.nc.mods.
+	// <mod>.dispatch_query 无 "act=" 判定（S1 人审提取，CLAUDE.md 优先级
+	// spec > 反编译；两形态互斥，无 mod 兼具两种 dispatch_query）。spec 读不
+	// 到时返回空集——形状门随之收紧变红，不放水
+	static function wholeNameDispatchMods():Array<String> {
+		var out:Array<String> = [];
+		var protocol = loadJson(PROTOCOL_PATH, "S1 协议清单");
+		if (protocol == null) {
+			return out;
+		}
+		var mods:Dynamic = Reflect.field(Reflect.field(Reflect.field(protocol, "entries"), "nc"), "mods");
+		if (mods == null) {
+			return out;
+		}
+		for (key in Reflect.fields(mods)) {
+			var dq:Array<String> = cast Reflect.field(Reflect.field(mods, key), "dispatch_query");
+			if (dq == null) {
+				continue;
+			}
+			for (q in dq) {
+				if (q.indexOf("act=") < 0) {
+					out.push(key);
+					break;
+				}
+			}
+		}
+		return out;
+	}
+
 	// 期望请求（mod/act + 期望参数逐键字面相等）是否被 record 条目满足；
 	// 额外键是 body 的公共参数（tName/fName 等），不参与判定
 	static function matchReq(entry:Dynamic, expMod:String, expAct:String, expParams:Dynamic):Bool {
@@ -496,11 +533,27 @@ class ScenarioRunnerContractTest {
 		}
 		Assert.isTrue(reqs.length >= STEP_REQUESTS.length, '基线至少录到四个检查点请求，got ${reqs.length}');
 
-		// 形状：mod/act 非空字符串；params 值一律字符串（POST body 的 k=v 字面）
+		// 形状：mod 非空；act 非空，除非 mod 是 legacy 整名 dispatch 条目（URL
+		// 字面无 act，act 照录空串）；params 值一律字符串（POST body 的 k=v 字面）
+		// changed for #59: 原门「每条请求有非空 mod/act」是 5 请求年代冻结的前提
+		// （那时水模块入场链死在录制窗前、从未被录到）；#59 确定性协议修复后该
+		// 链在录制窗内跑通，类头契约「全部 mync 请求照录」要求忠实含
+		// mod=cgi_fish_index 无 act 的条目。legacy 原样：mync.php:176-177
+		// dispatch 拼 mod+'_'+act 且 act 可选、$mod_list 整名条目 :131
+		// 'cgi_fish_index'；spec/protocol.json:3574 client query 字面
+		// "mod=cgi_fish_index"（ServerServices.as:157）。整名集从 spec 的
+		// dispatch_query 推导（无 "act=" 即整名），其余 mod 仍要求非空 act——
+		// farmlandstatus 丢了 act 照样红，门不放水
+		var wholeName = wholeNameDispatchMods();
 		for (r in reqs) {
-			var mod = Std.string(Reflect.field(r, "mod"));
-			var act = Std.string(Reflect.field(r, "act"));
-			Assert.isTrue(mod.length > 0 && act.length > 0, "每条请求有非空 mod/act（mod/act 取 URL 查询）");
+			// 键缺失时 Std.string(null)=="null"（长度 4）会悄悄过非空门，先归一
+			var modRaw = Reflect.field(r, "mod");
+			var mod = modRaw == null ? "" : Std.string(modRaw);
+			var actRaw = Reflect.field(r, "act");
+			var act = actRaw == null ? "" : Std.string(actRaw);
+			Assert.isTrue(mod.length > 0, "每条请求有非空 mod（mync.php:176 dispatch 以 mod 起拼模块名）");
+			Assert.isTrue(act.length > 0 || wholeName.indexOf(mod) >= 0,
+				'act 非空，除非 mod 是 legacy 整名 dispatch 条目（protocol.json dispatch_query 无 act=；mync.php:131/:176-177），got mod=${mod}');
 			var params:Dynamic = Reflect.field(r, "params");
 			Assert.notNull(params, "每条请求有 params 对象（可为空对象）");
 			if (params == null) {
@@ -553,6 +606,49 @@ class ScenarioRunnerContractTest {
 			}
 			cursor = found + 1;
 		}
+	}
+
+	// changed for #59（新增门）：整名 dispatch 请求照录、不合成 act。#59 确定性
+	// 协议（泵前置真实静默窗）让水模块入场初始化链（FarmApplication.startup
+	// 500ms → MSG_LOAD_WATER → WaterController 装配 → checkWhiteList →
+	// loadFishes）在录制窗内跑通，发 CMD_GET_FISHES：URL 字面 mod=cgi_fish_index
+	// 无 act（spec/protocol.json:3574，ServerServices.as:157）。基线须忠实含该
+	// 条目且 act 为空串——给记录补假 act 字面来过形状门 = 改原版行为迁就过时
+	// 前提，判红
+	public function test_record_whole_name_dispatch_request_recorded_without_act() {
+		var record = recordJson();
+		Assert.notNull(record, "自录基线可加载（issue #17 交付物）");
+		if (record == null) {
+			return;
+		}
+		var reqs:Array<Dynamic> = cast Reflect.field(record, "requests");
+		Assert.notNull(reqs, "基线 requests 是数组（拦截记录的全部 mync mod 请求，issue #17）");
+		if (reqs == null) {
+			return;
+		}
+		// 整名集推导自 spec，先证推导不退化成全容：cgi_fish_index 在集内
+		// （dispatch_query "mod=cgi_fish_index" 无 act，protocol.json:3508/:3574；
+		// mync.php:131 整名条目 + :176-177 act 可选），拆名 mod（farmlandstatus/
+		// user 的 dispatch_query 带 act=）不在
+		var wholeName = wholeNameDispatchMods();
+		Assert.isTrue(wholeName.indexOf("cgi_fish_index") >= 0,
+			'cgi_fish_index 在整名集（protocol.json cgi_fish_index.dispatch_query="mod=cgi_fish_index" 无 act=；mync.php:131 + :176-177）');
+		Assert.isTrue(wholeName.indexOf("farmlandstatus") < 0,
+			'farmlandstatus 不在整名集（dispatch_query "mod=farmlandstatus&act=planting" 带 act=，protocol.json）');
+		Assert.isTrue(wholeName.indexOf("user") < 0,
+			'user 不在整名集（dispatch_query "mod=user&act=run" 带 act=，protocol.json）');
+		// 忠实记录：入场初始化恰好一条 cgi_fish_index，act 是空串
+		var n = 0;
+		for (r in reqs) {
+			if (Std.string(Reflect.field(r, "mod")) == "cgi_fish_index") {
+				var actRaw = Reflect.field(r, "act");
+				Assert.equals("", actRaw == null ? "" : Std.string(actRaw),
+					'cgi_fish_index 的 act 是空串（URL 查询字面无 act，照录不合成；spec/protocol.json:3574 query="mod=cgi_fish_index"）');
+				n++;
+			}
+		}
+		Assert.equals(1, n,
+			'基线恰好 1 条 cgi_fish_index（水模块入场初始化发一次，#59 确定性协议后记录固定 6 请求之一），got ${n}');
 	}
 
 	// 基线的判定清单：每步 pass==true（全绿退出）+ 检查点时刻的实测状态逐字段

@@ -14,11 +14,21 @@ class SoftCanvasElement {
 	@:allow(SoftCanvasContext)
 	private var ctx:SoftCanvasContext;
 
-	/** DOM 分支偶有 canvas.style.width=… 赋值；收下但不消费。 */
+	/** DOM 分支的 canvas.style：吸收一切赋值与方法调用。lime 全量 embed
+	 * （HTML5Window 构造）会 style.setProperty("-webkit-transform",…) 和
+	 * style.width=… ——全是浏览器合成层提示，软画布没有消费方，但缺方法
+	 * 会让 embed 直接 TypeError（#57 探针自管 DOM 没走到这条路，#59 的
+	 * nodeboot --visual 走 lime.embed 全路径踩中）。 */
 	public var style:Dynamic;
 
 	public function new() {
-		style = {};
+		style = js.Syntax.code("(function() {
+			var store = {};
+			return new Proxy(store, {
+				get: function(t, k) { return k in t ? t[k] : function() {}; },
+				set: function(t, k, v) { t[k] = v; return true; },
+			});
+		})()");
 		ctx = new SoftCanvasContext(this, false);
 		ctx.resize(300, 150); // 规范默认尺寸
 		#if js

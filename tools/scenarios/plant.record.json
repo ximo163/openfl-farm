@@ -38,6 +38,14 @@
       }
     },
     {
+      "mod": "cgi_fish_index",
+      "act": "",
+      "params": {
+        "uIdx": "1",
+        "ownerId": "1"
+      }
+    },
+    {
       "mod": "farmlandstatus",
       "act": "harvest",
       "params": {
@@ -49,6 +57,21 @@
       }
     }
   ],
+  "visual": {
+    "frameStepMs": 16.666666666666668,
+    "settleShot": 6,
+    "settleBurstPre": 1,
+    "bootIdleStreak": 24,
+    "realIdleBeforePumpMs": 200,
+    "pumpedFrames": 140,
+    "coverage": {
+      "png": 78,
+      "jpg": 54,
+      "decodeFail": [],
+      "fillTextCalls": 75,
+      "fallbackImageSources": 0
+    }
+  },
   "steps": [
     {
       "name": "enter",
@@ -67,6 +90,19 @@
             "humidity": 0
           }
         }
+      },
+      "visual": {
+        "kind": "screenshot",
+        "intervalMs": 0,
+        "count": 1,
+        "frames": [
+          {
+            "hash": "cfccad5331082d164a2f60139cfa1eae",
+            "width": 860,
+            "height": 500
+          }
+        ],
+        "curve": []
       }
     },
     {
@@ -81,6 +117,19 @@
             "humidity": 1
           }
         }
+      },
+      "visual": {
+        "kind": "screenshot",
+        "intervalMs": 0,
+        "count": 1,
+        "frames": [
+          {
+            "hash": "204c3f774eb8f32edca5e8bfe71f54ee",
+            "width": 860,
+            "height": 500
+          }
+        ],
+        "curve": []
       }
     },
     {
@@ -95,6 +144,19 @@
             "humidity": 1
           }
         }
+      },
+      "visual": {
+        "kind": "screenshot",
+        "intervalMs": 0,
+        "count": 1,
+        "frames": [
+          {
+            "hash": "4f7927426e29f3e62124425308f7db12",
+            "width": 860,
+            "height": 500
+          }
+        ],
+        "curve": []
       }
     },
     {
@@ -109,6 +171,62 @@
             "humidity": 1
           }
         }
+      },
+      "visual": {
+        "kind": "burst",
+        "intervalMs": 200,
+        "count": 8,
+        "frames": [
+          {
+            "hash": "fd16abe2822b3ab538b90408750ca01b",
+            "width": 860,
+            "height": 500
+          },
+          {
+            "hash": "ac26b5ff03dcd9d23751978733b954f2",
+            "width": 860,
+            "height": 500
+          },
+          {
+            "hash": "db3a3645e502c034e73daa1988aa51aa",
+            "width": 860,
+            "height": 500
+          },
+          {
+            "hash": "bc08bb1ffd0fe9f1e226b5f187016af2",
+            "width": 860,
+            "height": 500
+          },
+          {
+            "hash": "582d32f00b73a2ebb73d4af99b8f5544",
+            "width": 860,
+            "height": 500
+          },
+          {
+            "hash": "db3a3645e502c034e73daa1988aa51aa",
+            "width": 860,
+            "height": 500
+          },
+          {
+            "hash": "28abcc9009912341a45e949c9982161e",
+            "width": 860,
+            "height": 500
+          },
+          {
+            "hash": "c771a3ce125191fcbaf722e972757275",
+            "width": 860,
+            "height": 500
+          }
+        ],
+        "curve": [
+          3773,
+          1722,
+          218,
+          271,
+          271,
+          449,
+          2371
+        ]
       }
     }
   ]

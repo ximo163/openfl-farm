@@ -1,6 +1,6 @@
 {
   "name": "plant",
-  "desc": "V3 种植场景（issue #17）：进农场→种→浇→收。数据取 legacy/snapshot uid=1（land4 空地播种、land2 唯一干旱地浇水、land0 唯一成熟白萝卜收获）；期望请求与 mync.php $mod_list 的 mod 定义一致，参数值按 uid=1 快照可推（出处在 test/ScenarioRunnerContractTest.hx 逐条标注）。场景声明是判定输入、基线记录是判定输出，两侧同构（tools/scenario.mjs 头注的格式契约）。",
+  "desc": "V3 种植场景（issue #17）：进农场→种→浇→收。数据取 legacy/snapshot uid=1（land4 空地播种、land2 唯一干旱地浇水、land0 唯一成熟白萝卜收获）；期望请求与 mync.php $mod_list 的 mod 定义一致，参数值按 uid=1 快照可推（出处在 test/ScenarioRunnerContractTest.hx 逐条标注）。场景声明是判定输入、基线记录是判定输出，两侧同构（tools/scenario.mjs 头注的格式契约）。issue #59 加视觉检查点：每步单张截图、收获步连拍（爆金币动画的运动能量曲线）。",
   "steps": [
     {
       "name": "enter",
@@ -15,7 +15,8 @@
             "0": { "cId": 2, "cropStatus": 6 },
             "2": { "cId": 2, "humidity": 0 }
           }
-        }
+        },
+        "screenshot": true
       }
     },
     {
@@ -30,7 +31,8 @@
           "lands": {
             "4": { "cId": 2 }
           }
-        }
+        },
+        "screenshot": true
       }
     },
     {
@@ -45,12 +47,13 @@
           "lands": {
             "2": { "humidity": 1 }
           }
-        }
+        },
+        "screenshot": true
       }
     },
     {
       "name": "harvest",
-      "desc": "收：点工具条「收获」（ToolBar TOOLS 表 TOOL_HAND=1）→ 点成熟地 0（harvest.php:23-26 守卫 b==6 且 m>=1，uid=1 仅 land0 b=6 m=16）。白萝卜 maturingTime=1 → 应答 b=7（harvest.php:50-53），echo :94-95 status.cropStatus=7 落地。",
+      "desc": "收：点工具条「收获」（ToolBar TOOLS 表 TOOL_HAND=1）→ 点成熟地 0（harvest.php:23-26 守卫 b==6 且 m>=1，uid=1 仅 land0 b=6 m=16）。白萝卜 maturingTime=1 → 应答 b=7（harvest.php:50-53），echo :94-95 status.cropStatus=7 落地。视觉检查点连拍（#59）：应答触发 FarmLandsView.onHarvestData:523 openFloat（:505-511 选 FLOAT_TYPE_HA/HAP）→ HarvestAnimation（收获飘字：苗图 + 金色 +16、ENTER_FRAME 缓升 easingY 0.2，HarvestAnimation.hx:55-64 自 59 收敛到 0 以下自关）——帧驱动动画，虚拟泵每轮恰走一帧（运行时 stage.frameRate 实测报 60，见 ScenarioVisual.hx 类头），连拍 8 张×200ms（间隔泵 12 帧，framesForMs(200)=12）覆盖整段上浮，能量曲线>0 即「在动」，冻住注入归零必须红。",
       "action": { "type": "clickLand", "place": 0, "clickTool": { "index": 1 } },
       "checkpoint": {
         "requests": [
@@ -60,7 +63,8 @@
           "lands": {
             "0": { "cropStatus": 7 }
           }
-        }
+        },
+        "burst": { "intervalMs": 200, "count": 8 }
       }
     }
   ]

@@ -1405,3 +1405,66 @@
   的钉板需求要么进 write-tests 已注册的用例（其断言覆盖的范围内），要么
   行内注释 + PR 报告钉出处（#58 批次 2 的 32 条登记如此，见
   architecture/frame-scripts.md 登记纪律 4）。
+
+## 2026-11 · #59（T1 场景视觉对拍：确定性引导协议攻关）
+
+- **「两次运行字节相同」是协议叠出来的，node 的默认行为不含它**：自回归
+  视觉门禁红在「同配置两次跑指纹不同」时，别先怀疑画布——先对齐协议五层
+  （虚拟钟冻结+基点钉死、泵帧只在网络静默、FIFO 释放、泵前置真实静默窗、
+  引导 settle），见 architecture/scenario-visual-gate.md 的证据链。攻关期
+  的排除法花掉大半天：XML 渲染 md5 同、时间轴波位量化同、虚拟定时器/随机
+  计数同、请求完成序 FIFO 同，最后逐泵探针（`SCENARIO_PROBE`）把分叉钉到
+  「主程序出生时像素已两族、计数全同」——泄漏在**泵间真实间隙里的无计数
+  真实异步**（`Assets.loadLibrary().onComplete` 收尾链：字节经虚拟 XHR 有
+  计数，其后的解析/挂树/COMPLETE 在真实 tick 上无计数），落第 k 泵前后是
+  掷硬币，boot 末烤进离散两族指纹（2b77e3c8/59d6ed93）。修法不是猎那条
+  通道本身，是泵前置 200ms 真实静默窗——把「≤窗长的任何真实收尾」钉死在
+  相邻两泵之间，画面退化为泵计数的纯函数。
+- **计数器全同而像素分叉 = 泵间真实间隙泄漏，逐泵探针是定位工具**：给
+  引导循环加 env 门控的逐泵 `probeHash`（区域指纹 + timersFired/随机计数/
+  mutations），两次运行逐行 diff，第一条分叉行就是泄漏窗。本案例分叉在
+  探针可见的第一泵（主程序出生）——探针前泵序号照打（p=16）才能看出
+  「分叉早于可见区」。注意探针本身有真实开销，会改变竞态概率（攻关期
+  探针跑 13:1 分族、无探针 2:2）——取证时以指纹族对应关系为准（两族
+  哈希跨协议恒同），别把「探针下稳定」当「已修」。
+- **`net.recent` 的 done 是真实完成时刻，不是 FIFO 释放时刻**：nodeboot
+  的释放队列（queueRelease/drainPending）按发送序 fire，但 `recent` 日志
+  在 `_done`（真实完成）打点——FIFO 跑里 done 次序乱**不代表** FIFO 失效，
+  判定要看 fire 时刻的泵计数（驱动 `网络动作` 行带「已泵 N 帧」）。对着
+  done 序列调 FIFO 是南辕北辙，攻关期在这上面空转过一轮。
+- **环境变量的值会被当数字用（SCENARIO_PROBE=1 → 探针只跑 1 帧）**：
+  布尔语义的 env 开关别复用值当参数——`Number(env) || 300` 遇上 `=1` 静默
+  变 1。参数另开 env（SCENARIO_PROBE_FRAMES），开关位写 `on`。
+- **openfl js 产物的 DisplayObject 方法是驼峰，移植自家类才是蛇形**：
+  探针里 `o.get_bounds(stage)` 一个都取不到——bundle 里 `get_bounds` 0 处、
+  `getBounds` 51 处。跨界（openfl 类 vs 移植类）反射取方法先两种名都试。
+- **Haxe 推导式 `[for (x) e1; e2; e3]` 只产出最后一个表达式**：想一次
+  push 多个值就得写显式循环逐个 `pixels.push`（pumpProbe 的 RGBA 四通道
+  就栽在这上面——推导式只见 alpha 通道）。
+- **等 `__openflFarmDrive` 句柄出现才泵帧是必死循环**：句柄在主程序第一
+  个 ENTER_FRAME 才挂（shim/Harness markMainFirstFrame），而 lime 帧循环
+  本身跑在虚拟 setTimeout 上——不泵就没有帧、没有帧就没有句柄。引导期
+  Main 出生前照泵（实测三次挂死两次才钉死的结论）。
+- **修好确定性协议会让从未录到的原版行为现形，冻结核对着它过时**：泵前
+  200ms 真实静默窗让 `Assets.loadLibrary` 的收尾链在录制窗内落地——水模块
+  入场初始化（`FarmApplication.startup` 500ms 派 `MSG_LOAD_WATER`）一路
+  跑通并发了 `cgi_fish_index`（legacy 原样无 act：`ServerServices.as:157`、
+  `nc/mod/cgi_fish_index.php`）。旧协议下这条链死在录制收尾前，两代旧基线
+  都没录到，write-tests 便对着 5 请求宇宙冻了「每条请求有非空 mod/act」
+  （`ScenarioRunnerContractTest.hx:503`）——现在对忠实记录单点红。防：
+  门禁恢复出新请求先查 legacy 出处再定性，是原版行为就**别**动记录（过滤/
+  合成 act/压模块全是造假或改行为）；冻结测试与 legacy 冲突走 NEEDS-TESTS
+  （#37 先例：water.md「测试前提冲突」），把证据链写全交测试侧 visit 裁决。
+- **`--self-check` 短打入口曾是死的，改 CLI 前先实测文档里的每种形态**：
+  `--self-check <scenario.json>`（usage() 和本页文档写的等价短打）实际落
+  `usage()` 退 1——原解析剥掉随后的 `run` 后仍要求 sub==="run"，两种写法
+  只有 `run <scenario> --self-check` 活着。attempt 2 修为无 run 时补回
+  `run`（tools/scenario.mjs CLI 块）。防：文档承诺的入口逐形态真跑一遍，
+  「run 参数里带 flag」和「flag 打头」两条路不是一个解析分支。
+- **assets/legacy 未同步时视觉门禁的挂死形态**：引导循环静默（无「N 轮
+  仍未完成」日志——泵后 %400 打点在挂死路径不可达）直到 `drive 240s 超时`、
+  fresh 记录缺失，外加旧条目记的孤条 `/lite_ui_v_0?数字` 404（见 #8
+  条「新工作区 nodeboot 永不就绪」——根因同一条）。`openfl build html5`
+  在库文件缺失时**仍退 0**（「library 指向不存在构建红」的旧结论不覆盖
+  全缺场景），构建绿不等于资产在。防：跑门禁前 `ls assets/legacy | wc -l`
+  一眼；挂死 + 孤 404 直接同步资产再来。

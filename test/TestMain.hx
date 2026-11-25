@@ -301,6 +301,18 @@ class TestMain {
 		runner.addCase(new tools.FrameScriptSurveyTest());
 		runner.addCase(new shim.FrameScriptCompensationTest());
 		runner.addCase(new UpgradeAnimLibrariesTest());
+		// issue #59：T1 视觉升级——场景视觉对拍（write-tests 阶段，对 stub
+		// 失败）——连拍规格判定纯逻辑（tools.SceneShotPlan：检查点
+		// screenshot/burst 声明解析与校验、未声明的默认单张、场景级逐步
+		// 拍法）；能量曲线计算（tools.MotionEnergy：相邻帧像素变化量时间
+		// 序列＝PixelDiff.differing 计数语义、冻住全零、尺寸/长度数据错先
+		// 炸）；两级判定（tools.SceneShotDiff：逐张容差 diff＋曲线 diff、
+		// 长度不齐哨兵红、记录与声明对齐门 recordMatches）。截图通道
+		// （复用 #57 探路结论）、场景清单补视觉检查点、基线生成/重建按
+		// issue 走 implement 阶段
+		runner.addCase(new tools.SceneShotPlanTest());
+		runner.addCase(new tools.MotionEnergyTest());
+		runner.addCase(new tools.SceneShotDiffTest());
 		Report.create(runner);
 		runner.run();
 	}

@@ -339,6 +339,19 @@ class TestMain {
 		// TextEngine，根因 B）按 issue 走 implement 阶段 + CI 门禁
 		runner.addCase(new help0316_fla.MainTimelineTest());
 		runner.addCase(new help0316_fla.PagesTest());
+		// issue #63：基类 m_view/m_model（Dynamic）读写盲区补扫（write-tests
+		// 阶段，对 stub 失败）——scan_dyn_writes 基类扩展纯逻辑
+		// （tools.DynWriteScan）：collect 基类 Dynamic 字段收集（m_view/
+		// m_model 收、m_module 非 Dynamic 不收，出处 framework/base/
+		// Controller.hx:12-14）、基类字段读/写命中形态矩阵（write `=<非=>`/
+		// read 其余字段接触/this. 前缀/对象字面量值位；null 判、对字段本身
+		// 赋值、方法调用、cast 不命中）、#62 回归锚点（527fdc0a^ 修复前
+		// WaterController.hx:366 m_view.x 必中、527fdc0a 修复后零基类命中——
+		// issue 验收原文样例，fixture 为两版 git 原样快照）、既有写检测
+		// 通道保留（局部 Dynamic 变量字段写不受影响）。extends 链跨文件装
+		// 配/已知名单兜底与 scan_dyn_writes.py 脚本侧接线按 issue 走
+		// implement 阶段
+		runner.addCase(new tools.BaseFieldScanTest());
 		Report.create(runner);
 		runner.run();
 	}

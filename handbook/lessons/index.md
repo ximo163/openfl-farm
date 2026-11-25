@@ -1395,3 +1395,13 @@
   frame1 是 `talkInfo = ""`（实义）。按符号名全局合并会张冠李戴；查表/
   清查都以 (库, 符号) 为单位（write-tests 阶段已立此规，本批 32 条
   in-use 登记沿用）。
+
+- **implement 阶段别往 test/TestMain.hx 加注册行（append-only 门）**：
+  `test/**` 对 implement 是「只许新增文件、现有文件一个字不动」——
+  attempt-1 给 `FrameScriptCompensationInUseTest` 补注册行（沿用 #8 时代
+  「implement 阶段新增测试文件只能由本阶段注册」的旧例）被整单驳回，
+  连带已写好的测试文件成僵尸（`-main TestMain` 只编译可达类，注册不进
+  去的测试文件永不编译）。新测试的注册通道只有 write-tests 阶段；implement
+  的钉板需求要么进 write-tests 已注册的用例（其断言覆盖的范围内），要么
+  行内注释 + PR 报告钉出处（#58 批次 2 的 32 条登记如此，见
+  architecture/frame-scripts.md 登记纪律 4）。

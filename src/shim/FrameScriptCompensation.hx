@@ -31,11 +31,16 @@ import openfl.text.TextField;
 // SymbolClass.afterAttach（符号绑定场景）或 LocalSwfLoader content
 // （根时间轴场景）之后。
 //
-// 表内容逐条出自 legacy 字节码（DoABC2 构造器 + frameN 方法体，出处注释
-// 在 test/shim/FrameScriptCompensationTest.hx 与
-// test/shim/FrameScriptCompensationInUseTest.hx）。空体脚本不登记——
-// frame1 只有 return 的类（FarmInfoPlus 等）本来就无行为可补，
-// src/FarmInfoPlus.hx:14-16 的「空体不译」先例同款。
+// 表内容逐条出自 legacy 字节码（DoABC2 构造器 + frameN 方法体）。出处写在
+// 下方每条登记的行内注释（可指到反编译 .as 的写行号；swf 未反编译的
+// farmui2 写 tools/FrameScriptAudit 的清查 op 流）；红测钉死的门只有两条
+// issue 点名例（test/shim/FrameScriptCompensationTest.hx——删 MaoPaoFlag/
+// RedUp 任一登记或改帧号/动作即红）；清查批次 2 的 32 条没有红测——
+// test/TestMain.hx 对 implement 是 append-only（2026-11-25 #58 attempt-1
+// 改它加注册行被整单驳回，新测试文件注册不进 main 编译不了），出处靠
+// 行内注释 + PR 说明的清查报告钉住，下一轮 write-tests 可补红测。空体
+// 脚本不登记——frame1 只有 return 的类（FarmInfoPlus 等）本来就无行为
+// 可补，src/FarmInfoPlus.hx:14-16 的「空体不译」先例同款。
 
 /** 一条补偿登记：libraryId 是 libraries.xml 的库 id；symbolKey 是符号
  *  导出名，空串 = 主时间轴（T3 约定，tools/TimelineTypes）；frame 是
@@ -76,17 +81,17 @@ enum FrameScriptAction {
 }
 
 class FrameScriptCompensation {
-	/** 登记表（出处逐条见 test/shim/FrameScriptCompensationTest.hx 与
-	 *  test/shim/FrameScriptCompensationInUseTest.hx 的期望值注释；空体不
-	 *  登记）。前两条是 issue #58 点名的已知三例之二；收获动画第三例无
-	 *  登记：nc_data.php 挂 "h" 槽的三个 isAnimation 作物（158/168/334）
-	 *  的 *_movie.swf 不在部署包，字节码无从提取，不虚造（原版跑这份部
-	 *  署包同样加载不到，收尾走 HarvestAnimationCustom 已译的 IO_ERROR →
-	 *  close 路径）。其余各条是清查器（tools/FrameScriptAudit）扫出的实
-	 *  义帧脚本里**已在移植代码里构造的符号**（消费点逐条见 InUse 测试
-	 *  注释）；未被构造的符号（farmui1 全族、farmui2 的 wild 系、
-	 *  Fertilizer 的 CursorTool2x、help.swf）无补偿通道需求，待符号
-	 *  shim 立项时随符号补，处置见 PR 报告。 */
+	/** 登记表（出处逐条见下方行内注释；红测门只有 issue 点名两例，见类头注）。
+	 *  前两条是 issue #58 点名的已知三例之二；收获动画第三例无登记：
+	 *  nc_data.php 挂 "h" 槽的三个 isAnimation 作物（158/168/334）的
+	 *  *_movie.swf 不在部署包，字节码无从提取，不虚造（原版跑这份部署包
+	 *  同样加载不到，收尾走 HarvestAnimationCustom 已译的 IO_ERROR →
+	 *  close 路径）。其余 32 条是清查器（tools/FrameScriptAudit）扫出的实
+	 *  义帧脚本里**已在移植代码里构造的符号**（消费点逐条见行内注释）；
+	 *  未被构造的符号（farmui1 全族、farmui2 的 wild 系/farmui2_fla 内部
+	 *  件、farmui_full 的 AddAnimation/lock_mc_46、Fertilizer 的
+	 *  CursorTool2x、help.swf——牧场/后续模块批次）无补偿通道需求，登记
+	 *  了也没人查表，符号立项时随符号补，全量分处置见 PR 说明的清查报告。 */
 	static final entries:Array<FrameScriptEntry> = [
 		{
 			// farmui_full_v_40.swf DoABC2 MaoPaoFlag 构造器 addFrameScript(0,
@@ -110,7 +115,7 @@ class FrameScriptCompensation {
 		// legacy/decompiled/farmui_full_v_40/scripts/<类>.as）====
 		{
 			// AddHealth.as:15 addFrameScript(0,frame1)；frame1 = stop()。
-			// 消费点 common/view/floating/AddHealthAnimation.hx:26
+			// 消费点 common/view/floating/AddHealthAnimation.hx:27
 			libraryId: "farmui_full_v_40",
 			symbolKey: "AddHealth",
 			frame: 1,
@@ -118,7 +123,7 @@ class FrameScriptCompensation {
 		},
 		{
 			// CursorArrow.as:15 addFrameScript(0,frame1,1,frame2)；两帧各
-			// stop()。消费点 module/FarmStage.hx:138-146（光标注册表）
+			// stop()。消费点 module/FarmStage.hx:149-163（光标注册表）
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorArrow",
 			frame: 1,
@@ -133,28 +138,28 @@ class FrameScriptCompensation {
 		},
 		{
 			// CursorHand.as:15 addFrameScript(0,frame1)；frame1 = stop()。
-			// 消费点 FarmStage.hx:138-146
+			// 消费点 FarmStage.hx:149-163
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorHand",
 			frame: 1,
 			actions: [Stop]
 		},
 		{
-			// CursorHoe.as:15；frame1 = stop()。消费点 FarmStage.hx:138-146
+			// CursorHoe.as:15；frame1 = stop()。消费点 FarmStage.hx:149-163
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorHoe",
 			frame: 1,
 			actions: [Stop]
 		},
 		{
-			// CursorHook.as:15；frame1 = stop()。消费点 FarmStage.hx:138-146
+			// CursorHook.as:15；frame1 = stop()。消费点 FarmStage.hx:149-163
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorHook",
 			frame: 1,
 			actions: [Stop]
 		},
 		{
-			// CursorInsect.as:15；frame1 = stop()。消费点 FarmStage.hx:138-146
+			// CursorInsect.as:15；frame1 = stop()。消费点 FarmStage.hx:149-163
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorInsect",
 			frame: 1,
@@ -162,7 +167,7 @@ class FrameScriptCompensation {
 		},
 		{
 			// CursorOneClickHand.as:15；frame1 = stop()。消费点
-			// FarmStage.hx:138-146
+			// FarmStage.hx:149-163
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorOneClickHand",
 			frame: 1,
@@ -170,21 +175,21 @@ class FrameScriptCompensation {
 		},
 		{
 			// CursorPesticide.as:15；frame1 = stop()。消费点
-			// FarmStage.hx:138-146
+			// FarmStage.hx:149-163
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorPesticide",
 			frame: 1,
 			actions: [Stop]
 		},
 		{
-			// CursorWater.as:15；frame1 = stop()。消费点 FarmStage.hx:138-146
+			// CursorWater.as:15；frame1 = stop()。消费点 FarmStage.hx:149-163
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorWater",
 			frame: 1,
 			actions: [Stop]
 		},
 		{
-			// CursorWeed.as:15；frame1 = stop()。消费点 FarmStage.hx:138-146
+			// CursorWeed.as:15；frame1 = stop()。消费点 FarmStage.hx:149-163
 			libraryId: "farmui_full_v_40",
 			symbolKey: "CursorWeed",
 			frame: 1,
@@ -268,7 +273,7 @@ class FrameScriptCompensation {
 		{
 			// ABC 清查：ctor addFrameScript(299, frame300)；frame300 =
 			// stop()（停在末帧空帧，闪完定住）。消费点
-			// module/uitools/UIController.hx:614
+			// module/uitools/UIController.hx:615
 			libraryId: "farmui2_v_58",
 			symbolKey: "newIconTip",
 			frame: 300,

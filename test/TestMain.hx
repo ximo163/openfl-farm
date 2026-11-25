@@ -301,12 +301,6 @@ class TestMain {
 		runner.addCase(new tools.FrameScriptSurveyTest());
 		runner.addCase(new shim.FrameScriptCompensationTest());
 		runner.addCase(new UpgradeAnimLibrariesTest());
-		// issue #58 implement 批次 2（清查器扫出的实义帧脚本里已构造符号
-		// 的登记表钉死——光标 stop、加载环 "loop" 回跳、GiftIcon "GiftMove"
-		// 循环、水花/喂食特效 15 帧自摘、PackageTab 页签帧脚本闭包、
-		// newIconTip 定住；出处/消费点逐行注释；删表行必红；未接线符号
-		// （wild 系/CursorTool2x/AddAnimation）保持 []）
-		runner.addCase(new shim.FrameScriptCompensationInUseTest());
 		Report.create(runner);
 		runner.run();
 	}

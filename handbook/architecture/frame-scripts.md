@@ -31,11 +31,16 @@ openfl 侧（swf 3.4.0 的 AnimateLibraryExporter/AnimateTimeline，容器内
   `SetText` / `GotoAndPlay` / `GotoAndStop` / `RemoveSelf` /
   `AddClickListener`）——**只列已登记方法体里实际出现的形态**，新形态
   须先扩枚举（带字节码出处）再登记，不得并入近似原语。
-- 表内容逐条出自 legacy 字节码（出处注释在两个测试的期望值处：
-  `test/shim/FrameScriptCompensationTest.hx` 已知三例之二、
-  `test/shim/FrameScriptCompensationInUseTest.hx` 清查批次 2）。**空体
-  不登记**（frame1 只有 return 的类无行为可补，FarmInfoPlus 先例）；
-  不虚造（收获动画第三例：`*_movie.swf` 不在部署包，无字节码）。
+- 表内容逐条出自 legacy 字节码，出处分两层：**issue 点名两例**（MaoPaoFlag
+  frame24、RedUp 主轴 frame134）的红测门在
+  `test/shim/FrameScriptCompensationTest.hx`（删登记/改帧号/改动作必红）；
+  **清查批次 2 的 32 条**出处写在登记表行内注释（可指到反编译 `.as` 的写
+  行号，swf 未反编译的 farmui2 写 FrameScriptAudit 的 op 流）+ PR 说明的
+  清查报告——`test/TestMain.hx` 对 implement 是 append-only，新测试文件
+  注册不进 main 永不编译（#56/#58 attempt 各被驳回一次），下一轮
+  write-tests 把它们补进红测。**空体不登记**（frame1 只有 return 的类无
+  行为可补，FarmInfoPlus 先例）；不虚造（收获动画第三例：`*_movie.swf`
+  不在部署包，无字节码）。
 
 **接线 `attach(target, libraryId, symbolKey)`**：查表后按原 0 基实参
 `target.addFrameScript(frame - 1, …)` 回挂。调用点只有两处，都在
@@ -77,10 +82,15 @@ Timeline 已挂上之后（`addFrameScript` 在无 Timeline 的实例上静默�
    写 ABC 清查 op 流；两边都没有的不登记（BLOCKED 级）。
 3. **补偿随符号接线**：符号 shim 建到哪条、消费点（getMaterial/new/
    getClass 反射）在哪，登记表就收到哪条。未接线的实义帧脚本（farmui1
-   全族、farmui2 wild 系、Fertilizer CursorTool2x、help.swf——牧场批次）
+   全族、farmui2 wild 系与 farmui2_fla 内部件、farmui_full 的
+   AddAnimation/lock_mc_46、Fertilizer CursorTool2x、help.swf——牧场批次）
    不预登记，登记了也没人查表；符号立项时随符号补。
-4. **登记表双向钉死**：每条登记都要有对应期望值测试（删表行必红），
-   出处写在期望值上方注释（CLAUDE.md 测试规则）。
+4. **登记表钉死**：红测门（删表行必红）目前只有 issue 点名两例
+   （FrameScriptCompensationTest）；批次 2 靠行内注释 + 清查报告钉出处。
+   后续 write-tests 轮动到本表时，把行内注释的出处逐条升格为期望值
+   断言（出处写在期望值上方注释，CLAUDE.md 测试规则）。implement 阶段
+   别试往 `test/TestMain.hx` 加注册行——append-only 门直接整单驳回
+   （#58 attempt-1，2026-11-25）。
 
 ## 分工（别踩别人的田）
 

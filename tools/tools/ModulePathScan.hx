@@ -5,7 +5,7 @@ package tools;
  * 段为 stub，契约由 test/tools/ModulePathScanTest.hx 钉死，implement 原
  * 地填充）。
  *
- * 为什么这门存在：-cp tools 之后（test.hxml:24 起）test/、tools/、src/
+ * 为什么这门存在：-cp tools 之后（test.hxml:23 起）test/、tools/、src/
  * 三棵树共享包空间，Haxe 对跨 classpath 的**同名模块静默按 -cp 顺序取先
  * 者**——不报错（// issue #70 交付物 2）。import.hx 事件证明这种遮蔽能
  * 同时骗过 agent、review 和 verify；69 资产门禁的 test/tools/import.hx

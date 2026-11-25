@@ -10,8 +10,9 @@ import tools.ModulePathScan.ModuleEntry;
  * tools.ModulePathScan（契约由 test/tools/ModulePathScanTest.hx 钉死，
  * `haxe test.hxml` 跑）；本类只做「收 test/ tools/ src/ 三棵树的 .hx →
  * 喂 (path, lines) 对 → 打报告」（DynWriteScanRun 先例）。python 壳
- * tools/scan_module_paths.py 拉起本类（issue 接线命令
- * `python tools/scan_module_paths.py`，判式单源——#63 双实现漂移教训）。
+ * tools/scan_module_paths.py 拉起本类（接线片段用 `python3`——agent 容器
+ * 无 `python` 别名——见 handbook/architecture/test-tree-gates.md；判式
+ * 单源——#63 双实现漂移教训）。
  *
  * 扫描面：test/、tools/、src/ 三棵树的**全部** .hx（含 test/fixtures/ 的
  * 快照件——它们在 -cp test 的包空间里，同名即真遮蔽，不豁免）。模块路

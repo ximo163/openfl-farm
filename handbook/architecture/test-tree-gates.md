@@ -35,6 +35,10 @@ DynWriteScan/scan_dyn_writes 双实现要「两侧同步改、diff 非空即漂�
 - 扫描面：`test/**` 全部 .hx（含 test/fixtures/ 快照件）。命中判式四条件
   在 TestStubScan 类头（字符串遮罩→剔 `//` 注释→语句位 throw 惯用语族→
   遮罩前逐字短语），行为由测试钉死，此处不展开。
+- 已知误报边界（不修，启发式收窄的代价，review round 1 知悉即可）：needle
+  出现在同行更早的字符串里、同行又另有无关业务 throw 的病态行（如
+  `var a = "not implemented"; throw new Error(b);`）条件 4 会命中——当前
+  全树零此形态，真出现时再收窄判式。
 - 豁免（迁移期，写死在 `TestStubScan.exemptions()`，每条注明出处）：
   #56 的两个僵尸 stub 文件。按**文件路径逐字**豁免；清单不引入通用白名单
   机制。
@@ -61,18 +65,32 @@ DynWriteScan/scan_dyn_writes 双实现要「两侧同步改、diff 非空即漂�
 
 ## 接线现状（人管）
 
-`.orchestrator/pipeline.yaml` 在受保护路径里（agent 不可写），两道门进
-write-tests/implement 的 verify 由人接线：
+两道门进 write-tests/implement 的 verify 要改 `.orchestrator/pipeline.yaml`，
+该文件 agent 不可写。**依据是阶段合同，不是 pipeline.yaml 自身**——保护有
+两层，issue #70 的「checks 行 agent 可写」断言只核实了配置层：
+
+- 配置层：四份流水线 yaml（pipeline/chore/plan/spec）的 `protected:` 清单
+  都不含 `.orchestrator/`（review round 1 核实过，属实）。
+- 合同层：编排器运行时组装进每个 agent 阶段提示词的 Rules 节**另硬编码
+  保护 `.orchestrator/`、`.claude/`、`.mcp.json`**（三家都不在任何 yaml
+  里），并声明「违反的 attempt 在一切开始前被拒」——implement 阶段合同
+  的保护清单里 `.orchestrator/` 排第一个。
+
+两层冲突以合同层为准：#70 的接线交付物因此以 BLOCKED 收场，由所有者裁决
+（人按下片段接线，或把 `.orchestrator/` 从合同层保护清单放开后重跑）。
+片段命令必须 `python3`——agent 容器没有 `python` 别名（只有
+`/usr/bin/python3`），照 `python` 接线 verify 直接 127（review round 1
+驳回点之一）：
 
 ```yaml
   # suites 追加：
-  test-stub-scan: { cmd: "python tools/scan_test_stubs.py", timeout: 1m }
-  module-path-scan: { cmd: "python tools/scan_module_paths.py", timeout: 1m }
+  test-stub-scan: { cmd: "python3 tools/scan_test_stubs.py", timeout: 1m }
+  module-path-scan: { cmd: "python3 tools/scan_module_paths.py", timeout: 1m }
   # 两个 stage 的 verify 列表各加：test-stub-scan、module-path-scan
 ```
 
-接线前 agent 收工自检可直接跑 `python tools/scan_test_stubs.py` /
-`python tools/scan_module_paths.py`（容器无 `python` 别名时 `python3`）。
+接线前 agent 收工自检可直接跑 `python3 tools/scan_test_stubs.py` /
+`python3 tools/scan_module_paths.py`。
 
 ## 坑
 

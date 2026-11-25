@@ -9,9 +9,10 @@ import tools.TestStubScan.StubHit;
  * 告、exit 码。判式本体与豁免清单在 tools.TestStubScan（契约由
  * test/tools/TestStubScanTest.hx 钉死，`haxe test.hxml` 跑）；本类只做
  * 「收 test/**.hx → 逐文件喂行集 → 豁免消费 → 打报告」（DynWriteScanRun
- * 先例）。python 壳 tools/scan_test_stubs.py 拉起本类——issue 接线命令
- * `python tools/scan_test_stubs.py`，判式单源、python 半边零重复（#63
- * 双实现「改判式必须两侧同步改」的教训不再吃一遍）。
+ * 先例）。python 壳 tools/scan_test_stubs.py 拉起本类——接线片段用
+ * `python3`（agent 容器无 `python` 别名），见
+ * handbook/architecture/test-tree-gates.md；判式单源、python 半边零重复
+ * （#63 双实现「改判式必须两侧同步改」的教训不再吃一遍）。
  *
  * 输出形状（机读分拣面，TestStubScan.isReportLine 据此分拣命中行与说明
  * 行）：命中/豁免行 = reportLine 的 `path:line 摘录`；说明行一律

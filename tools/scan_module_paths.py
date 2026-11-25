@@ -16,7 +16,8 @@ ModulePathScanRun.hx（脚本侧胶水，DynWriteScanRun 先例）。本壳只�
 （#63 教训：双实现改判式必须两侧同步改，diff 非空即漂移）。
 
 用法（仓库任意 cwd）：python tools/scan_module_paths.py
-（容器里无 `python` 别名时用 `python3`；CI 接线命令见 issue #70）
+（容器里无 `python` 别名时用 `python3`；接线片段见
+handbook/architecture/test-tree-gates.md）
 退出码：0 = 三棵树模块路径零重复；1 = 有冲突组（判式半边编译失败时 haxe
 同样退非零——门跑不起来＝不放行）；2 = 环境错（haxe 不在、缺树）。
 """

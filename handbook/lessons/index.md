@@ -1667,3 +1667,24 @@
   叙事注释就写不了这个惯用语了）。白名单（行首/空白/;{}()=）钉死「语句
   位」的枚举语义；宁可漏掉未来某种怪异前缀，不可误伤文档（#70 的
   test_no_hit_idiom_quoted_in_doc_comment 锚点）。
+
+## 2026-11 · #70 收尾（接线交付物 BLOCKED：两层保护与容器解释器名）
+
+- **「X 对 agent 可写」不能只对 pipeline yaml 的 protected 清单断言——
+  阶段合同另有一层硬编码保护**：issue #70 写「pipeline.yaml 的 checks 行
+  是 agent 可写」，四份流水线 yaml（pipeline/chore/plan/spec）的
+  protected 清单确实都不含 `.orchestrator/`（配置层核实无误）；但编排器
+  运行时组装进每个 agent 阶段提示词的 Rules 节又硬编码保护
+  `.orchestrator/`、`.claude/`、`.mcp.json`，并声明「违反的 attempt 在
+  一切开始前被拒」——attempt 1 的手册页把「受保护路径」写成了无出处断言
+  被 review 驳回（review 只看得到 yaml 层），而按 issue 授权直接改 yaml
+  又会撞合同层。两层冲突时合同层赢：接线交付物以 BLOCKED 收场，由所有者
+  裁决（人按下片段接线，或把 `.orchestrator/` 从合同层放开重跑）。防：
+  断言可写性前先看自己 prompt 的 Rules 节（每个 agent 都有一份）；合同层
+  与配置层打架时不静默改判归属，显式抛给所有者。
+- **给人和 CI 写的命令行要用容器里真实存在的解释器名**：接线片段照 issue
+  原文写 `python tools/scan_test_stubs.py`，agent 容器只有
+  `/usr/bin/python3`（`python` → command not found），人照片段接线 verify
+  直接 127（review round 1 驳回点之一）。防：片段/文档里给人和 CI 的
+  可执行命令一律 `python3`；python 壳 docstring 的「容器无 `python`
+  别名」注记是事实出处。

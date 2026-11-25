@@ -17,7 +17,8 @@ TestStubScanRun.hx（脚本侧胶水，DynWriteScanRun 先例）。本壳只锚�
 （#63 教训：双实现改判式必须两侧同步改，diff 非空即漂移）。
 
 用法（仓库任意 cwd）：python tools/scan_test_stubs.py
-（容器里无 `python` 别名时用 `python3`；CI 接线命令见 issue #70）
+（容器里无 `python` 别名时用 `python3`；接线片段见
+handbook/architecture/test-tree-gates.md）
 退出码：0 = 净命中 0 且无失锚豁免；1 = 有净命中/失锚豁免（判式半边编译
 失败时 haxe 同样退非零——门跑不起来＝不放行，失败方向一致）；2 = 环境
 错（haxe 不在、test/ 缺失）。

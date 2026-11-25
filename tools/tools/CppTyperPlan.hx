@@ -7,8 +7,9 @@ package tools;
  * 职责：把 `export/html5/haxe/debug.hxml` 的行变换成 cpp typer 扫描 hxml
  * 的行。脚本侧（tools/scan_cpp_typer.sh）负责读 debug.hxml、mktemp 出
  * -cpp 目录、把返回行 join("\n") 写临时 hxml、调 haxe、按判据收尾——本
- * 类只做行集变换：规则命中的行删、末尾追加两行，其余逐字透传（空行、
- * 尾随空格不清洗不重排——golden 两侧 fixture 都带尾换行切出的空行）。
+ * 类只做行集变换：规则命中的行删、末尾追加两行，其余逐字透传（中间的
+ * 空行也是合法行文本，透传不清洗；输入输出都是「行文本数组」，文件尾
+ * 换行的切分/补写归脚本侧——读时 split 后 pop 尾空行再喂进来）。
  *
  * recipe 出处（固化时别偏离，脚本头注同钉）：
  * - lessons #18：起点 debug.hxml 的 classpath 与**前三个** `--macro`

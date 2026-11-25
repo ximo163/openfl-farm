@@ -17,13 +17,15 @@ import utest.Assert;
  *   html5/haxe/debug.hxml 原样快照（openfl 9.5.2 html5 模板产出，尾随
  *   空格的 -main 行也在）；期望输出 = 该输入按 recipe 变换出的扫描
  *   hxml——正是实跑后判据绿的那一份（cpp-typer-pass-output.txt 是它的
- *   haxe 输出）。-cpp 取当时实跑的目录 /tmp/cppscan-c。
+ *   haxe 输出）。-cpp 取当时实跑的目录 /tmp/cppscan-c。两侧都以「行
+ *   文本数组」喂给被测（29 行 − 删 13 行（-main、-js 与 11 条 html5 专属 -D，其中 -D html5 出现两次）+ 追加 2 行 = 18 行，
+ *   差集已逐行核对＝恰 recipe 删改集，见下方各断言）。
  * - 注入式自检红面（在 src/FS_02_1_2.hx:14 植入 var i:Int = 0; if
  *   (i == null)，issue #61 完成标准 2 同款）：实跑输出捕获在
  *   cpp-typer-hits-output.txt，由 CppTyperVerdictTest 消费——证明这份
  *   golden hxml 的 include 真把无引用的 src 散类拉进了类型化（FS_02_1_2
  *   无任何引用者，只有 include 扫得到它）。
- * - html5 专属 -D 名单的「等」（html5/web/openfl-html5/lime-howlerjs/
+ * - html5 专属 -D 名单的「等」（html5×2/web/openfl-html5/lime-howlerjs/
  *   lime-canvas）：2026-11-25 容器实测，被测类头引 lime 源行；非专属
  *   -D 保留名单（版本号/lime-threads/disable_preloader_assets）同实测
  *   （golden 里同款行）。
@@ -37,9 +39,14 @@ class CppTyperPlanTest {
 	static final CPP_OUT:String = "/tmp/cppscan-c";
 
 	static function fixtureLines(path:String):Array<String> {
-		// 与脚本侧行切法一致：按 \n 切，尾换行留下的空行原样保留（变换
-		// 契约是透传不清洗，golden 两侧同形才可比）
-		return File.getContent(path).split("\n");
+		// 行文本数组约定（与脚本侧行切法一致）：按 \n 切后去掉尾换行切出的
+		// 空行——被测的输入输出都是「行文本」，文件的尾换行处理归脚本侧
+		// （读时同款 pop、写时 join + 换行）。中间的空行是合法行文本，
+		// 透传不清洗（golden 两侧均无中间空行，透传断言见
+		// test_transform_passes_unmatched_lines_through_verbatim）。
+		var lines = File.getContent(path).split("\n");
+		if (lines.length > 0 && lines[lines.length - 1] == "") lines.pop();
+		return lines;
 	}
 
 	// ---- golden：真实 debug.hxml → 实跑判据绿的扫描 hxml ----

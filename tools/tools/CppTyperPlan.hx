@@ -1,8 +1,8 @@
 package tools;
 
 /**
- * issue #61 cpp typer 全量扫描——临时 hxml 生成（write-tests 阶段为 stub，
- * 契约由 test/tools/CppTyperPlanTest.hx 钉死，implement 原地填充）。
+ * issue #61 cpp typer 全量扫描——临时 hxml 生成（契约由
+ * test/tools/CppTyperPlanTest.hx 钉死）。
  *
  * 职责：把 `export/html5/haxe/debug.hxml` 的行变换成 cpp typer 扫描 hxml
  * 的行。脚本侧（tools/scan_cpp_typer.sh）负责读 debug.hxml、mktemp 出
@@ -45,8 +45,62 @@ package tools;
  * lime-threads、disable_preloader_assets、`--remap flash:openfl`、-debug。
  */
 class CppTyperPlan {
+	/** issue #61 点名的 5 个 + #18「等」实测补齐的 5 个（出处见类头）。 */
+	static final HTML5_ONLY_DEFINES:Array<String> = [
+		"html5", "web", "openfl-html5", "lime-html5", "lime-webgl",
+		"lime-dom", "lime-canvas", "lime-howlerjs", "howlerjs", "no-compilation",
+	];
+
+	/** 保留的 --macro 上限（recipe「前三个 bootstrap」）。 */
+	static final BOOTSTRAP_MACROS:Int = 3;
+
 	/** debug.hxml 的行（含尾换行切出的空行）→ 扫描 hxml 的行（契约见类头）。 */
 	static public function transform(sourceLines:Array<String>, cppOutDir:String):Array<String> {
-		throw new haxe.Exception("not implemented");
+		var out:Array<String> = [];
+		var macroCount = 0;
+		for (line in sourceLines) {
+			var token = argToken(line);
+			// 规则 1/2：入口行、-js 后端输出行（输出旗标换成 -cpp）
+			if (token == "-main" || token == "-js") continue;
+			// 规则 3：html5 专属 -D（名字匹配取 = 前）
+			if (token == "-D" && HTML5_ONLY_DEFINES.indexOf(defineName(line)) >= 0) continue;
+			// 规则 4：第 4 个及以后的 --macro（bootstrap 只留前三个）
+			if (token == "--macro") {
+				macroCount++;
+				if (macroCount > BOOTSTRAP_MACROS) continue;
+			}
+			out.push(line);
+		}
+		// 规则 5：追加行固定在末尾，-cpp 先、include 后
+		out.push("-cpp " + cppOutDir);
+		out.push("--macro include('', true, ['mx.core.mx_internal'], ['src'])");
+		return out;
+	}
+
+	/** 行首参数（到首个空白为止）：「精确匹配」按它判，不吃前缀。 */
+	static function argToken(line:String):String {
+		var cut = line.length;
+		for (i in 0...line.length) {
+			var c = line.charCodeAt(i);
+			if (c == " ".code || c == "\t".code) {
+				cut = i;
+				break;
+			}
+		}
+		return line.substr(0, cut);
+	}
+
+	/** `-D name[=value]` 的 name：= 前的一段（`-D html5=1` 与 `-D html5` 同名）。 */
+	static function defineName(line:String):String {
+		var rest = StringTools.ltrim(line.substr(2));
+		var end = rest.length;
+		for (i in 0...rest.length) {
+			var c = rest.charCodeAt(i);
+			if (c == "=".code || c == " ".code || c == "\t".code) {
+				end = i;
+				break;
+			}
+		}
+		return rest.substr(0, end);
 	}
 }

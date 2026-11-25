@@ -1,8 +1,8 @@
 package tools;
 
 /**
- * issue #61 cpp typer 全量扫描——haxe 输出判据（write-tests 阶段为 stub，
- * 契约由 test/tools/CppTyperVerdictTest.hx 钉死，implement 原地填充）。
+ * issue #61 cpp typer 全量扫描——haxe 输出判据（契约由
+ * test/tools/CppTyperVerdictTest.hx 钉死）。
  *
  * 输入：脚本侧合并捕获的 haxe stdout+stderr 文本（typer 错误与尾巴两行走
  * stderr、Build.xml 回显行走 stdout——脚本侧 2>&1 合并后喂进来；只判文本
@@ -28,9 +28,48 @@ package tools;
  *   必然红；hits 只决定「报告打哪几行」。
  */
 class CppTyperVerdict {
+	/** 判据尾巴两常量（hxcpp 未装 → Build failed；#18/#44 实测形状）。 */
+	static inline final TAIL_HXCPP:String = "Error: Library hxcpp is not installed";
+	static inline final TAIL_BUILD_FAILED:String = "Error: Build failed";
+
+	/** haxe 错误定位行 `路径:行: characters a-b : 消息`（引用链行同形态，一并计）。 */
+	static final LOCATER:EReg = ~/^(.+):[0-9]+: characters [0-9]+-[0-9]+ : /;
+
 	/** 判 haxe 合并输出 → 判定结果（契约见类头）。 */
 	static public function judge(output:String):Verdict {
-		throw new haxe.Exception("not implemented");
+		var lines = output.split("\n");
+
+		// 尾巴按末两个非空行取：尾随空行不算内容；尾巴之后还有非空行时，
+		// 末两个非空行必不是尾巴两常量，「末尾只剩」的形状自然不成立
+		var last = -1;
+		var secondLast = -1;
+		for (i in 0...lines.length) {
+			if (StringTools.trim(lines[i]) != "") {
+				secondLast = last;
+				last = i;
+			}
+		}
+		var tailFound = secondLast >= 0
+			&& StringTools.trim(lines[secondLast]) == TAIL_HXCPP
+			&& StringTools.trim(lines[last]) == TAIL_BUILD_FAILED;
+
+		// 命中行与尾巴无关地全量收：位置行/引用链行按形态计，Error: 前缀行
+		// 排除尾巴两常量（孤零零的常量行不是定位行，见 test_judge_build_
+		// failed_alone_is_not_tail）。原序原样保留（haxe 同错两遍不去重）
+		var hits:Array<String> = [];
+		for (line in lines) {
+			if (StringTools.trim(line) == "") continue;
+			if (LOCATER.match(line)) {
+				hits.push(line);
+				continue;
+			}
+			var t = StringTools.trim(line);
+			if (StringTools.startsWith(t, "Error: ") && t != TAIL_HXCPP && t != TAIL_BUILD_FAILED) {
+				hits.push(line);
+			}
+		}
+
+		return { pass: tailFound && hits.length == 0, tailFound: tailFound, hits: hits };
 	}
 }
 

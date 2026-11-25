@@ -2,8 +2,8 @@ package tools;
 
 /**
  * issue #63 基类 Dynamic 字段盲区补扫——scan_dyn_writes 的 Haxe 纯逻辑镜像
- * + 基类扩展（write-tests 阶段 stub，函数体 not implemented；契约由
- * test/tools/BaseFieldScanTest.hx 钉死，implement 原地填充）。
+ * + 基类扩展（write-tests 阶段 stub，契约由 test/tools/BaseFieldScanTest.hx
+ * 钉死，implement 原地填充）。
  *
  * 为什么存在：tools/scan_dyn_writes.py 只追踪**局部变量与本文件声明**的
  * Dynamic 生产者，不追踪基类继承的 Dynamic 字段（m_view/m_model 家族）——
@@ -61,15 +61,147 @@ package tools;
  * 中面，不钉跨文件装配（扫描器脚本侧的接线按 issue 走 implement）。
  */
 class DynWriteScan {
+	// —— 判式与 scan_dyn_writes.py 同构（正则文本逐字对齐，Haxe EReg 的
+	// lookahead/全局 matchSub 已 probe 实证，2026-11-25）——
+
+	/** 返回 Dynamic 的生产者（接收者上的一切字段写都算动态）。 */
+	static final PRODUCER_SRC = "(Utils\\.getMaterial|Reflect\\.field|Reflect\\.getProperty|"
+		+ "As3\\.childOf|As3\\.getProperty)\\s*\\(";
+
+	/** var x:Dynamic / private var x:Dynamic（局部与类字段都收）。 */
+	static var DECL_DYN:EReg = ~/\bvar\s+([A-Za-z_][A-Za-z0-9_]*)\s*:\s*Dynamic\b/g;
+
+	/** var x:Array<Dynamic>。 */
+	static var DECL_ARR_DYN:EReg = ~/\bvar\s+([A-Za-z_][A-Za-z0-9_]*)\s*:\s*Array<Dynamic>/g;
+
+	/** x = <producer>(...)（含 var x = ...）：本行起视为动态。 */
+	static var ASSIGN_PRODUCER:EReg = null;
+
+	/** 字段写：x.prop = / x[i].prop = / x["k"].prop =（==、>= 等由 (?![=>]) 排除）。 */
+	static var FIELD_WRITE:EReg = ~/([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\.([A-Za-z_][A-Za-z0-9_]*)\s*=(?![=>])/g;
+
+	/** collect 用：行首 var 声明（private/public 前缀不扣格）的 Dynamic 类字段。
+	 * `_locN` 反编译临时名排除——它们是函数体内局部不是类字段（行首缩进
+	 * 更深）， Window 一族基类源码里若混进 `_locN:Dynamic` 收进名单会把全库
+	 * 同名局部变量全染成命中（2026-11-25 实测并集污染 2200+ 行，教训已进
+	 * handbook/lessons）。 */
+	static var BASE_DECL:EReg = ~/^\s*(?:(?:private|public|protected|static|final)\s+)*var\s+([A-Za-z_][A-Za-z0-9_]*)\s*:\s*Dynamic\b/;
+
+	static function assignProducerRe():EReg {
+		if (ASSIGN_PRODUCER == null) {
+			ASSIGN_PRODUCER = new EReg("\\b(?:var\\s+)?([A-Za-z_][A-Za-z0-9_]*)\\s*=\\s*[^;=\\n]*" + PRODUCER_SRC, "g");
+		}
+		return ASSIGN_PRODUCER;
+	}
+
+	static function foreachMatch(re:EReg, text:String, f:String->Int->Void):Void {
+		var pos = 0;
+		while (pos <= text.length && re.matchSub(text, pos)) {
+			var p = re.matchedPos();
+			var end = p.pos + p.len;
+			f(re.matched(1), p.pos);
+			pos = end > pos ? end : pos + 1; // 零宽命中防死循环
+		}
+	}
+
+	/** prop 匹配结束后行内余尾分类：第一非空白字符定形态。
+	 * 返回 null = 不命中面（方法调用）；否则 "write"/"read"。 */
+	static function classifyTail(line:String, from:Int):String {
+		var i = from;
+		while (i < line.length) {
+			var c = line.charAt(i);
+			if (c == " " || c == "\t") {
+				i++;
+				continue;
+			}
+			if (c == "(") return null; // 方法调用
+			if (c == "=") {
+				var n = i + 1 < line.length ? line.charAt(i + 1) : "";
+				if (n == "=" || n == ">") return "read"; // ==/>= 比较，仍是读
+				return "write";
+			}
+			return "read";
+		}
+		return "read"; // 行尾收尾（`var s = m_view.stage` 无分号形态同 read）
+	}
+
 	/** 单文件基类 Dynamic 字段收集（契约见类头条 1）。 */
 	static public function collect(lines:Array<String>):Map<String, Bool> {
-		throw new haxe.Exception("not implemented");
+		var out = new Map<String, Bool>();
+		var locN = ~/^_loc[0-9]+_$/;
+		for (line in lines) {
+			var stripped = StringTools.trim(line);
+			if (StringTools.startsWith(stripped, "//") || StringTools.startsWith(stripped, "*")) continue;
+			if (BASE_DECL.match(line)) {
+				var name = BASE_DECL.matched(1);
+				if (!locN.match(name)) out.set(name, true);
+			}
+		}
+		return out;
 	}
 
 	/** 单文件行扫描（契约见类头条 2）。baseFields 为 collect 产出的名单
 	 * （键=字段名）；path 原样回填 hit。 */
 	static public function scanLines(lines:Array<String>, baseFields:Map<String, Bool>, path:String):Array<DynHit> {
-		throw new haxe.Exception("not implemented");
+		var hits:Array<DynHit> = [];
+		var dynVars = new Map<String, Bool>();
+		var assignRe = assignProducerRe();
+		for (i in 0...lines.length) {
+			var line = lines[i];
+			var stripped = StringTools.trim(line);
+			var lineNo = i + 1;
+			if (StringTools.startsWith(stripped, "//") || StringTools.startsWith(stripped, "*")) continue;
+
+			// —— 既有写检测通道（scan_dyn_writes.py 同构，原样保留）——
+			foreachMatch(DECL_DYN, line, function(name, _) dynVars.set(name, true));
+			foreachMatch(DECL_ARR_DYN, line, function(name, _) dynVars.set(name, true));
+			foreachMatch(assignRe, line, function(name, _) dynVars.set(name, true));
+			// EReg matched(n) 在一次 match 内多组取值：FIELD_WRITE 的 prop 是组 3，
+			// foreachMatch 只给组 1，这里手开循环
+			var pos = 0;
+			while (pos <= line.length && FIELD_WRITE.matchSub(line, pos)) {
+				var p = FIELD_WRITE.matchedPos();
+				var v = FIELD_WRITE.matched(1);
+				var prop = FIELD_WRITE.matched(3);
+				if (dynVars.exists(v)) {
+					hits.push({path: path, line: lineNo, variable: v, prop: prop, kind: "write", code: stripped});
+				}
+				pos = p.pos + p.len > pos ? p.pos + p.len : pos + 1;
+			}
+
+			// —— 基类继承 Dynamic 字段的读/写命中（issue #63 补盲区）——
+			// 接收者形态：裸 <名> 或 this.<名>（词边界防 m_viewXxx 类前缀误吞）；
+			// 写字段 `prop =`（==/>= 由 (?![=>]) 排除——同 FIELD_WRITE 判式），
+			// 其余字段接触一律 read（条件位/var 初始化/对象字面量值位同族，
+			// cpp 上全是静默 null 偏差）；方法调用（prop 后紧跟 `(`）与裸字段
+			// 接触（无 .prop 段）不在命中面。
+			for (name in baseFields.keys()) {
+				// 形态判式：prop 完整吃进 ident 后按**行内余尾**分类——eval EReg
+				// 的 lookahead 退化成右截断匹配（嵌套 lookahead 更乱，2026-11-25
+				// probe 实证），不能靠 lookahead 分流：prop 后第一非空字符
+				//   `(`           → 方法调用，不命中（issue 只钉字段读/写）；
+				//   `=`+非 `=`/`>` → 写字段（kind "write"；==/>= 是比较 read）；
+				//   其余           → 读字段（kind "read"——条件位/var 初始化/对象
+				//                    字面量值位同族，cpp 上全是静默 null 偏差）。
+				// 裸字段接触（无 .prop 段：`m_view == null`、`m_view = x`、
+				// `addChild(m_view)`、`cast(m_view, T)`）形态上根本不进匹配。
+				var touchRe = new EReg("(?:this\\.)?" + name + "\\.([A-Za-z_][A-Za-z0-9_]*)", "g");
+				var tp = 0;
+				while (tp <= line.length && touchRe.matchSub(line, tp)) {
+					var p = touchRe.matchedPos();
+					var prop = touchRe.matched(1);
+					var kind = classifyTail(line, p.pos + p.len);
+					if (kind != null) {
+						hits.push({path: path, line: lineNo, variable: name, prop: prop, kind: kind, code: stripped});
+					}
+					tp = p.pos + p.len > tp ? p.pos + p.len : tp + 1;
+				}
+			}
+		}
+		// 输出排序确定性：行号升序、行内命中位序（构造顺序即扫描顺序，同
+		// python 版的行优先次序）；既有通道与基类通道同行交错时按追加序，
+		// 四元组本身不含序依赖——测试按 (line, var, prop) 定位，无形状约束
+		return hits;
 	}
 }
 

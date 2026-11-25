@@ -96,6 +96,13 @@ class LocalSwfLoader extends Loader {
 		// 主轴末帧 dispatchEvent("end")）查表回挂，库无登记则无操作
 		if (Std.isOfType(content, MovieClip)) {
 			FrameScriptCompensation.attach(cast(content, MovieClip), libraryId, "");
+			// #65 help.swf 帧脚本等价 + DefineEditText 文字修复：help 自带完整
+			// AS3（非 #58 那种原语帧脚本），已 1:1 翻译成 help0316_fla 类，
+			// 等价执行/文字 range 补洞归 HelpGuideWiring（why 见其头注；只按
+			// help 库挂，不向同族 swf 扩散）
+			if (libraryId == "help") {
+				HelpGuideWiring.attach(cast(content, MovieClip));
+			}
 		}
 	}
 }

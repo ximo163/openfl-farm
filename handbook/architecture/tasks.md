@@ -57,20 +57,29 @@ task_update 应答回显的是**刚完成的旧任务**且 taskFlag=2（待领�
   映射入库。引导结束靠 swf 内部派发 `"closeEvent"` 字符串事件（非
   Event 常量），onGuideFinished 里 removeEventListener 用的也是裸串——
   别「顺手」换成常量。
-- **help 库自带的 6 类还是 stub**（issue #65 write-tests 落，
+- **help 库自带的 6 类已翻译 + 接线**（issue #65 implement 落，
   `src/help0316_fla/`）：help.swf 的 SymbolClass 绑 6 类（文档类
   MainTimeline + page1_9/page2_8/page3_7/page4_5/page5_1，#65 根因 A——
-  swf 自带 AS3，openfl 只渲染时间轴不执行 ABC）。契约由
-  test/help0316_fla/ 钉死：五页 visible 翻页矩阵、按钮 CLICK → 裸串转发，
-  其中 **page5_1 的 closeButtonClick 是 `new Event("closeEvent", true)`——
-  bubbles=true 是全引导唯一冒泡点**，content 上 WelcomeView 的监听
-  → onGuideFinished 收尾链全靠它，翻译时实参别丢（根上的
+  swf 自带 AS3，openfl 只渲染时间轴不执行 ABC），方法体已按反编译原文
+  逐字翻译。契约由 test/help0316_fla/ 钉死：五页 visible 翻页矩阵、按钮
+  CLICK → 裸串转发，其中 **page5_1 的 closeButtonClick 是
+  `new Event("closeEvent", true)`——bubbles=true 是全引导唯一冒泡点**，
+  content 上 WelcomeView 的监听 → onGuideFinished 收尾链全靠它（根上的
   MainTimeline.closeButtonClick 同名事件不带 bubbles，两处极性相反）。
-  页类名小写开头 → 大写 + `@:native` 回键（同上条 Task 垫片的 ② 法）。
-  帧脚本等价执行（frame1 接线）由 shim 接线胶水显式调用——
-  addFrameScript 在无 Timeline 实例上静默丢弃（FrameScriptCompensation
-  头注同证）。41 个 DefineEditText 的文字渲染是 #65 根因 B（openfl
-  TextEngine 在 cpp 的 bug），归 implement + 真机验收，单测不覆盖。
+  **页类名小写开头 → Haxe 大写类名、不加 @:native**（write-tests 曾按
+  Task 垫片的 ② 法加 `@:native("小写原名")`，implement 探针证伪撤掉：
+  库实例化走 `SymbolUtils.formatClassName`——类名段**首字母大写**——
+  resolveClass，恰等于 Haxe 默认注册名；@:native 把注册键改成小写原名
+  反而让 resolveClass 落 null、库静默回退裸 MovieClip，翻译类永不实例
+  化。② @:native 只适用于 ExportAssets 小写符号名直查（getMaterial(
+  "task1") 一类）。帧脚本等价执行（frame1 接线）与 41 个 DefineEditText
+  的文字修复都归 `shim/HelpGuideWiring.hx`，由
+  LocalSwfLoader.attachContent 按 libraryId=="help" 挂（addFrameScript
+  在无 Timeline 实例上静默丢弃，FrameScriptCompensation 头注同证）；
+  文字根因 B 是 openfl 9.5.2 HTMLParser 的 `</p>` 换行不入 range
+  （见 lessons #65 条），修复走 issue 路径 b（range 簿记补洞，不动文字
+  内容/格式，无 deviations 项）。41 个字段里 32 个被五页帧 1 引用（树
+  上全集、一次修复完备），9 个是死符号永不实例化。
 - 冒烟必经：uid=1 fixture `"welcome":1` → StartupData._welcome==true →
   showNewGuide 在 CI web-smoke 一定执行，help 库缺声明就是 404 红叉。
 

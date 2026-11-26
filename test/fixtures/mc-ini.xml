@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	牧场 INI 合并配置 fixture（issue #87 write-tests）：mcloader 运行时把
+	mc_data 的 <animals> 并入 mc_main 主配置（FarmWorld.as:227 appendChild），
+	mc_card 的 <cards> 同理。本文件的元素/属性按部署包真实下发抄录：
+	- postUrl/folder/version/openControl/security：
+	  legacy/deploy/QFarmFlash/source/core/source/xml/mod/mc_main.php:8-22
+	  （$url 按生产形态实例化为 http://appimg.qq.com/mc——addPrefix 的
+	  appimg 替换链依赖该域名字面，GetCropID.as:211-219）
+	- animal 1001（鸡）：mc_data.php:5575-5601 全文抄录（childNum 20、
+	  house 窝、sound 1、u 个、product 鸡蛋、无 v 属性——getAnimalV 的
+	  `|| ""` 空串分支；nextText/nextTime 六档 14400,14400,129600,15,
+	  21585,158400）
+	- animal 1083（白玉猴）：mc_data.php isActivity 唯一样本（isActivity=1、
+	  isProductActivity=1——getActivity 双分支的 true 侧；1001 无该属性
+	  充当 false 侧）
+	- animal 1502（牛）：mc_data.php（v="1" 非空样本——getAnimalV 非空
+	  分支与 getAnimalURL 的 ?v= 拼接；house 棚、sound 1、childNum 12、
+	  u 瓶、product 牛奶；nextTime 六档 32400,32400,216000,15,43185,280800）
+	- cards 2001/2002：mc_card.php:8-9（isLock=1/0 两样本，src 的 $url
+	  实例化同上）
+	- openControl 六项：mc_main.php:12-17 逐字（harvestall 的 time 小时表、
+	  sprice 的日期窗、wild 带 openexp、pack open=false）
+	- warehouse/product：GetCropID.getProductTip 读
+	  _xml.warehouse.product.(@id==val).tip（GetCropID.as:366-376）；
+	  mc_data.php:5699 的 <warehouse /> 在部署包里是空元素（产品提示
+	  由运行期 addon 或下发更新并入）——tip 存在性由源码证实，文本值
+	  无 legacy 出处，仅作解析通路钉
+	- game/record：GetCropID.getGameRecord 读 _xml.game.record[0]
+	  （GetCropID.as:588-596）；mc_data/mc_main 均无此元素，存在性
+	  由源码证实，值无 legacy 出处，仅作解析通路钉
+	注意：className 属性在部署包全部 299 个 animal 条目上不存在
+	（mc_data.php 全文件 grep 零命中）——idToLibName 在生产上恒空串，
+	fixture 不虚造该属性，测试钉空串分支。
+-->
+<main>
+	<postUrl url="http://appimg.qq.com/mc/mymc.php?mod=" commonFarm="http://appimg.qq.com/mc/mymc.php?mod=" commonNc="http://appimg.qq.com/mc/mync.php?mod=" url_pengyou="http://pyimg.qq.com/mc/mymc.php?mod=" commonFarm_pengyou="http://pyimg.qq.com/mc/mymc.php?mod=" commonNc_pengyou="http://pyimg.qq.com/mc/mync.php?mod=" fbRequest="gb_buy" cftRequest="gb_buy" verifyRequest="shop_verify"/>
+	<folder url="http://appimg.qq.com/mc/module/mc/"/>
+	<version value="" loginurl="http://i.qzone.qq.com/" language=""/>
+	<openControl>
+		<item name="tool" open="true"/>
+		<item name="pack" open="false"/>
+		<item name="quickshoot" open="true" openlv="1"/>
+		<item name="harvestall" open="true" openlv="7" time="5|6|7|8|9|10|12|13|19|20|21|22"/>
+		<item name="sprice" open="true" openlv="0" time="5/1/2010 15:00|5/13/2010 15:00"/>
+		<item name="wild" open="true" openlv="1" openexp="0"/>
+	</openControl>
+	<security host="127.0.0.1" port="3333"/>
+	<animals>
+		<animal childNum="20" house="窝" id="1001" name="鸡" price="700" product="鸡蛋" sf="0" sound="1" u="个">
+			<nextText value="幼仔,成长期,生产期,生产期,待产期,收获期"/>
+			<nextTime value="14400,14400,129600,15,21585,158400"/>
+			<tip>鸡（英文：chicken）是家禽之一。</tip>
+			<info>
+				<l>鸡是人类饲养最普遍的家禽之一。</l>
+				<l>咖啡奶可补钙质。</l>
+			</info>
+		</animal>
+		<animal childNum="8" desc="" house="窝" id="1083" isActivity="1" isProductActivity="1" isvip="0" name="白玉猴" price="1200" product="白玉羽毛" sf="0" sound="0" u="只" v="0">
+			<nextText value="幼仔,成长期,生产期,生产期,待产期,收获期"/>
+			<nextTime value="14400,14400,129600,15,21585,158400"/>
+			<tip>白玉猴</tip>
+			<info>
+				<l>白玉猴提示一</l>
+			</info>
+		</animal>
+		<animal childNum="12" house="棚" id="1502" name="牛" price="3000" product="牛奶" sf="0" sound="1" u="瓶" v="1">
+			<nextText value="幼仔,成长期,生产期,生产期,待产期,收获期"/>
+			<nextTime value="32400,32400,216000,15,43185,280800"/>
+			<tip>牛（英文：cow）是草食性反刍家畜。</tip>
+			<info>
+				<l>牛在中国文化中是勤力的象征。</l>
+				<l>樱桃是补铁的上佳食品。</l>
+			</info>
+		</animal>
+	</animals>
+	<cards>
+		<card id="2001" isLock="1" name="圣诞老人卡" src="http://appimg.qq.com/mc/module/ui/allcards/Card_2001.swf"/>
+		<card id="2002" isLock="0" name="圣诞树卡" src="http://appimg.qq.com/mc/module/ui/allcards/Card_2002.swf"/>
+	</cards>
+	<warehouse>
+		<product id="1001"><tip>鸡蛋的产品提示</tip></product>
+	</warehouse>
+	<game>
+		<record>3</record>
+	</game>
+</main>

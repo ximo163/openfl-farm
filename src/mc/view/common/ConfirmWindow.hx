@@ -12,22 +12,51 @@ import common.MaterialLib;
  */
 @:keep
 class ConfirmWindow extends BaseWindow {
+	// ConfirmWindow.as:18-32
 	private var _confirmFn:Dynamic;
+	private var cancelButton:com.minutes.ui.control.LipiButton;
+	private var confirmButton:com.minutes.ui.control.LipiButton;
+	private var errorText:openfl.text.TextField;
+	private var alertText:openfl.text.TextField;
 	private var _cancelFn:Dynamic;
 	private var _confirmEnable:Bool = true;
 
+	// ConfirmWindow.as:34-54（ctor 原文即完整：尺寸/窗名/mode + alertText
+	// 装配逐字——#19 stub 漏了 alertText 段，#87 补全）
 	public function new(param1:Float = 360) {
 		super();
-		width = param1;
+		this.width = param1;
 		height = 320;
 		titleIMG = MaterialLib.getInstance().getClass("AlertWindowTitle");
 		windowName = "ConfirmWindow";
 		mode = true;
+		this.alertText = new openfl.text.TextField();
+		this.alertText.selectable = false;
+		var _loc2_:openfl.text.TextFormat = new openfl.text.TextFormat("Verdana", 14, 8999699, null, null, null, null, null, openfl.text.TextFormatAlign.CENTER);
+		_loc2_.leading = 8;
+		this.alertText.defaultTextFormat = _loc2_;
+		this.alertText.width = width - 60;
+		this.alertText.x = (width - this.alertText.width) / 2;
+		this.alertText.y = 170;
+		this.alertText.wordWrap = true;
+		this.alertText.multiline = true;
+		this.alertText.autoSize = openfl.text.TextFieldAutoSize.CENTER;
+		this.alertText.htmlText = "";
+		addChild(this.alertText);
 	}
 
-	// ConfirmWindow.as:71
+	// ConfirmWindow.as:71-123（按钮/图标装配——真身随 implement）
 	override public function init(param1:openfl.geom.Rectangle = null):Void {
-		super.init(param1);
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// ConfirmWindow.as:66-70（width 覆写联动 alertText.width——原文即完整）
+	override private function set_width(param1:Float):Float {
+		super.set_width(param1);
+		if (this.alertText != null) {
+			this.alertText.width = param1 - 60;
+		}
+		return param1;
 	}
 
 	// ConfirmWindow.as:123/（data：{"text":...}）

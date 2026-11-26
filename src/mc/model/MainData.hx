@@ -156,4 +156,114 @@ class MainData extends EventDispatcher {
 	public function gradeToExp(param1:Int):UInt {
 		return 100 * param1 * (param1 + 1);
 	}
+
+	// —— issue #87 补面（网络/数据片充真身需要的成员；签名逐字取自
+	// 反编译原文，方法体除已注明的 trivial 实现外随 implement 充真身）——
+
+	// MainData.as:26-156 事件名常量（本组为测试与派发断言所引）
+	public static final HOST_CHANGE:String = "hostChange";
+	public static final CURRENT_USER_CHANGE:String = "currentUserChange";
+	public static final FRIEND_CHANGE:String = "friendChange";
+	public static final SESSION_TIMEOUT:String = "sessionTimeout";
+	public static final ANIMAL_SHOUHUO:String = "animalShouhuo";
+
+	// MainData.as:180（模块舞台标记，FloatingLayer 读写）
+	public static var Stage:String = "farm";
+
+	// MainData.as:188
+	private var _sessionTimeout:String = "";
+
+	// MainData.as:206/232
+	private var _searchFriendValue:String = "";
+
+	// MainData.as:343-346（getKey2：SHA1(serverTime)）
+	public static function getKey2():String {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:859-885（getAnimalNum 窝/棚容量档位表）
+	public function getAnimalNum(param1:Float, param2:String):Float {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:893-896（expToGrade 反解公式）
+	public function expToGrade(param1:UInt):Int {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:491-506（showFriendSum 分页 ceil）
+	public var showFriendSum(get, never):Int;
+
+	private function get_showFriendSum():Int {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:1376-1379（friendPageNum 恒 10）
+	public var friendPageNum(get, never):Int;
+
+	private function get_friendPageNum():Int {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:1336-1341（filterFriendList：userName 正则过滤 +
+	// qzone 时并入 uin 过滤 + uniq 去重）
+	public var filterFriendList(get, never):Array<Dynamic>;
+
+	private function get_filterFriendList():Array<Dynamic> {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:626-629/940-943（searchFriendValue 存取——原文
+	// setter 无派发，纯赋值）
+	public var searchFriendValue(get, set):String;
+
+	private function get_searchFriendValue():String {
+		return this._searchFriendValue;
+	}
+
+	private function set_searchFriendValue(param1:String):String {
+		this._searchFriendValue = param1;
+		return param1;
+	}
+
+	// MainData.as:898-905（hostFid：qzone 取 uin，否则 uId）
+	public var hostFid(get, never):String;
+
+	private function get_hostFid():String {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:1243-1250（currentFid：qzone 取 currentUserUin，
+	// 否则 currentUserId）
+	public var currentFid(get, never):String;
+
+	private function get_currentFid():String {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:1286-1291/:1380-1384（sessionTimeout 存取——setter
+	// 派发 SESSION_TIMEOUT）
+	public var sessionTimeout(get, set):String;
+
+	private function get_sessionTimeout():String {
+		return this._sessionTimeout;
+	}
+
+	private function set_sessionTimeout(param1:String):String {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainData.as:485-489/:839-842（animalShouHuoIndex 存取——setter
+	// 派发 ANIMAL_SHOUHUO）
+	private var _animalShouHuoIndex:Int;
+
+	public var animalShouHuoIndex(get, set):Int;
+
+	private function get_animalShouHuoIndex():Int {
+		return this._animalShouHuoIndex;
+	}
+
+	private function set_animalShouHuoIndex(param1:Int):Int {
+		throw new openfl.errors.Error("not implemented");
+	}
 }

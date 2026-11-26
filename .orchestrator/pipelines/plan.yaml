@@ -18,5 +18,8 @@ stages:
     # 无人值守下不留未校准的短板。
     max_turns: 200
     timeout: 90m
-    attempts: 3
-    escalate: { after: 2, models: [strong2] }
+    # attempts/escalate 不写也写不得：编排器校验把 plan 阶段上的这两个键当
+    # ConfigError 拒绝（orchestrator-agent internal/pipeline/project.go 的
+    # planNoEffectProblems，其 issue #32）——plan 阶段永远走默认 3 次尝试
+    # （AttemptsOr），用尽转 needs-human，没有 escalate 通道。2026-11-26
+    # #22 首跑即 invalid 才发现；这两个键从骨架（ce776324）起就一直无效。

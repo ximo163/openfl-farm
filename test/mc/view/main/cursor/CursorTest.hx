@@ -13,8 +13,9 @@ import utest.Assert;
  * —— useSystem :28-40（true → cursorName "system"、false → "customize"，
  * 经 ViewControl 派 CursorEvent.USE_TYPE）；setCursor :67-80（派
  * CursorEvent.CURSOR 带 cursorName/cursorArgument；cursorArgument.type
- * 是字符串 "7" 时补派 Event("animalStop")，否则 "animalMov"——type 是
- * 字符串比较，数 7 不中）；setCursorForAPI :47-60（派 CursorEvent.API
+ * 松等命中 "7" 时补派 Event("animalStop")，否则 "animalMov"——原文
+ * `cursorArgument["type"] == "7"` 是 Dynamic 松等，翻译走 As3.eqString
+ * 见 lessons #8）；setCursorForAPI :47-60（派 CursorEvent.API
  * 带 cursorName/cursorArgument/materialName）；delaySetCursor :62-65
  * （setTimeout 80ms——异步面不在单测）；setAPICurosr :42-45 是
  * setCursorForAPI 的拼写错误别名（原文如此，逐字照译）。
@@ -89,13 +90,17 @@ class CursorTest {
 	}
 
 	// cursorArgument.type=="7"（字符串）→ animalStop；否则 animalMov
-	// （:74-79——字符串比较，type 是数 7 时走 animalMov）
+	// （:74-79）。原文是 `cursorArgument["type"] == "7"`——Dynamic 与
+	// 字符串字面量比较走 AS3 松等（`7 == "7"` 为真），翻译一律
+	// As3.eqString（handbook/lessons #8 条，#8 曾五处现形）。**不写
+	// {type: 7} 数值用例**：正解翻译下它派 animalStop，但数值命中是
+	// 松等机制的边角语义、字符串 "7" 才是协议下发形态，钉住反而把
+	// review 焦点引离主路径——松等转换本身由 eqString 的既有测试
+	// （test/shim/As3Test.hx）负责
 	public function test_setCursor_animal_stop_mov_gate() {
 		Cursor.setCursor("x", {type: "7"});
 		Assert.equals("animalStop", plainEvents[plainEvents.length - 1]);
 		Cursor.setCursor("x", {type: "1"});
-		Assert.equals("animalMov", plainEvents[plainEvents.length - 1]);
-		Cursor.setCursor("x", {type: 7}); // 数 7 != 字符串 "7"
 		Assert.equals("animalMov", plainEvents[plainEvents.length - 1]);
 		Cursor.setCursor("x", null); // null argument → else 分支
 		Assert.equals("animalMov", plainEvents[plainEvents.length - 1]);

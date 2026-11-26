@@ -96,7 +96,7 @@ class MainDataTest {
 		Assert.equals(expect, MainData.getKey2());
 	}
 
-	// friendPageNum 恒 10（:1376-1379）
+	// friendPageNum 恒 10（:1354-1357）
 	public function test_friendPageNum_is_10() {
 		Assert.equals(10, md.friendPageNum);
 	}

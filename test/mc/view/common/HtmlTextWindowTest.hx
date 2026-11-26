@@ -15,6 +15,9 @@ import utest.Assert;
  * textHeight/2)-13；type==2||6 装确定钮（addButton(okLabel,"ButtonOrange",
  * 68,25)）、type==4||6 装取消钮）；closeHandler :47-51（先 _closeFn(_detail)
  * 后 super——确定钮把 _detail 置 OK 再关）。
+ *
+ * **本组与 AlertWindowTest 同红于 LipiPanel eval #2024**（见该文件类头
+ * 注 1——ctor 撞库底座缺陷，implement/库底座修正后才通）。
  */
 @:access(mc.view.common.HtmlTextWindow)
 class HtmlTextWindowTest {

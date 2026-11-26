@@ -16,11 +16,23 @@ import utest.Assert;
  * height=alertText.height+alertText.y+70、confirmButton.y=height-50）。
  *
  * **本组当前红于两道独立闸门，均属 write-tests 期可接受失败形态**：
- * 1. ctor 撞 LipiPanel 的 eval `#2024`（LipiPanel.hx initPanel 末段把
- *    `_titleIMG`/`_closeButton` 等子件加进 contentPane、误配成自加自——
- *    容器内实测 `new LipiPanel()`/`new AlertWindow()` 同崩 Error #2024，
- *    属 main 既有 LipiUI 库底座缺陷、#86 交付面，非 #87 逻辑；
- *    write-tests 职责不含修库、留 implement/库底座修正）；
+ * 1. ctor 撞 LipiPanel 的 eval `#2024`——**main 既有库底座缺陷（#86
+ *    交付面 e4544067），机制已实证定位**：initPanel 的
+ *    `super.addChild(this._contentPane)`（LipiPanel.hx:102/111/120 三处）
+ *    在 Haxe 只上溯方法体、`this` 不变——openfl 9.5.2 原生 addChild
+ *    一行转发 `addChildAt(child, numChildren)`，而 addChildAt 被
+ *    LipiPanel 自身覆写（:75-80 重定向进 _contentPane），于是
+ *    contentPane 被加进 contentPane 自身、构造即抛
+ *    `Error #2024: An object cannot be added as a child of itself`。
+ *    eval 最小复现：`new com.minutes.ui.core.LipiPanel()` 裸构造即崩
+ *    （write-tests visit 3 容器实测）。AS3 原版无此问题——super 通道
+ *    在 AVM2 不经 public 覆写派发。**#87 implement 无法修复**（缺陷在
+ *    #86 库底座、不在本片 57 类范围），已按 CLAUDE.md 机械自检规矩
+ *    报告待开 issue 跟踪（write-tests 容器无 GitHub 写凭证，发现链路
+ *    全录于此）；与 lessons #86 节 initPanel 条目是同区域两个独立坑
+ *    （那条管 private 名碰撞，这条管重定向覆写与 super 通道互锁）。
+ *    窗口族四组测试（本组/ConfirmWindow/HtmlTextWindow/ValidateCodeWindow）
+ *    转绿以库底座修正为前提。
  * 2. implement 充真身后 init 的素材通道需假域注入——getMaterial
  *   （"SuccessIcon"/"ErrorIcon"）原文**无 null 守卫**（:84-85 直取即读
  *   .x/.y），素材缺失即 NPE。support/MaterialFakes 假域注入让两个符号

@@ -414,6 +414,20 @@ class TestMain {
 		// stub 在 tools/tools/ 归树），读文件/写回/接线归 implement 与人裁
 		// 决的脚本侧
 		runner.addCase(new tools.SwfInventoryMergeTest());
+		// issue #94：T2/T3 门禁接线（write-tests 阶段，对 stub 失败）——
+		// CI wrapper 判定纯逻辑（tools.CiGatesVerdict）：退出码分流（0 绿/
+		// 1 红/2 基建坏、未声明码归基建、基建坏也判 CI 红但行里标注「gate
+		// 基建问题非渲染回归」）、两闸独立不拖累（一闸基建坏不埋另一闸
+		// 红行；基建坏不吐陈旧报告红行）、报告红行提取进 step 日志（T2
+		// 拍点键三形 + T3 跑偏行 + 资产错误行；降级/通过/统计行不进）、
+		// 红≠一律修的豁免面（登记条目按闸按清单路径整串匹配、错误行不可
+		// 豁免、看不见红的 exit 1 照红、报告红行压过退出码绿）。豁免
+		// 登记表（tools.GateExemptions）：farmui1_v_42@T3 偏差候选带裁决
+		// 记录（T3 唯一诚实红，豁免后全量对拍出绿）。wrapper 跑双闸/读
+		// 报告/两闸 --self-check 同跑或省略理由、.github/ 人管线按 issue
+		// 走 implement 阶段 + 人
+		runner.addCase(new tools.CiGatesVerdictTest());
+		runner.addCase(new tools.GateExemptionsTest());
 		Report.create(runner);
 		runner.run();
 	}

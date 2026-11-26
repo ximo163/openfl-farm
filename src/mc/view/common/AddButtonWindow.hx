@@ -20,8 +20,8 @@ class AddButtonWindow extends BaseWindow {
 	}
 
 	// AddButtonWindow.as:53
-	override public function init():Void {
-		super.init();
+	override public function init(param1:openfl.geom.Rectangle = null):Void {
+		super.init(param1);
 	}
 
 	// AddButtonWindow.as:101（addButton 11 参全默认，返回 LipiButton）

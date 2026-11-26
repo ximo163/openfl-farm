@@ -134,6 +134,9 @@ class SymbolClass {
 				com.qzone.qui.skins.TabSkin, com.qzone.qui.skins.TabSelectedSkin,
 				com.qzone.qui.skins.RadioButtonSkin, com.qzone.qui.skins.RadioButtonSelectedSkin,
 				com.qzone.qui.skins.PanelSkin, com.qzone.qui.skins.PanelControlBarSkin, com.qzone.qui.skins.PanelCloseButton,
+				// #86 牧场库底座：CheckBox 双态皮肤（CheckBoxDefaultSkin 皮肤表
+				// 静态引用，符号本体零外部引用，锚进来）
+				com.qzone.qui.skins.CheckBoxSkin, com.qzone.qui.skins.CheckBoxSelectedSkin,
 				TabBg, TabDefault, TabSelected, WindowBg, CloseButton, DataLoading_mc,
 				// #18 升级弹窗：Update.* 面板符号（LevelUpWindow/LandRender/
 				// SeedItemRender 经 Utils.getMaterial 反射构造；landPanel/

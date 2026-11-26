@@ -87,3 +87,33 @@
 - 当前已入库的库和每个库的来源依据，看 `libraries.xml` 和
   `assets/legacy-assets.txt` 里的分组注释（V1 样本 / V2 加载链 / V3a
   启动链 / V3b 作物分档 + 场景装饰 / V3c 收获飘字苗图）。
+
+## 音效（#86 R12 探针结论：时间轴 StartSound 全链缺位，但牧场音频不依赖它）
+
+**openfl 侧时间轴音效三链全缺**（haxelib swf 3.4.0 + openfl 9.5.2 源码核实）：
+
+1. `SWFTimelineContainer.processTag`（:375-401）没有 TagStartSound 分支——
+   解析即丢；
+2. `AnimateLibraryExporter.addSound`（:1054-1074）函数体整体注释掉、返回
+   null——就算标签进了时间轴也不导出；
+3. `AnimateFrame` 模型只有 labels/objects/script/scriptSource 四面，openfl
+   9.5.2 的 Timeline/MovieClip 零音效引用——运行期无消费通道。
+
+**但牧场 89 个音效 swf 全员零 StartSound 标签**（
+`legacy/deploy/QFarmFlash/source/core/module/mc/main/sound/animal/{1,2}/sXXXX.swf`，
+1/ 33 个 + 2/ 56 个，probe 逐文件清点）：每个文件的 tag 构成为
+DefineSound（MP3 11025Hz 16bit mono）×1 + SymbolClass（`Sound_1_<cId>`/
+`Sound_2_<cId>` → char#1）+ DoABC + 空 SoundStreamHead2。**消费是纯代码
+通道**：`ShopSeedWindow`（mc/view/main/window/shop/ShopSeedWindow.as:520/
+:789）先 `MaterialLib.getClass("Sound_2_"+cId)` 探测，未载则裸 Loader 加载
+`main/sound/animal/{1,2}/s<cId>.swf`，COMPLETE 后 push applicationDomain，
+`getMaterial("Sound_X_"+cId) as Sound` 实例化再 `.play()`——符号即声音，
+**不经过时间轴**。
+
+结论：StartSound 缺位**不阻塞**牧场音频翻译（#89/#91 的音效播放可以照译
+原调用形态）；真正的缺口是 **DefineSound 资产在本地化管线里整体被丢**
+（exporter 不导出任何声音资产，库里没有 Sound 符号可绑）——音效 swf 入库
+后 `getMaterial` 拿不到 Sound 类。这属于管线能力缺口，登记由人裁决（
+候选方向：swf 库补 DefineSound 导出、或 shim 通道按 id 直接播 MP3 字节），
+**不要自行发明播放通道**（R12 裁决口径）。MaterialLib 本体不在 Master2
+（mcloader_v_53 加载链提供，见 pasture spec 外部依赖节），属后续模块。

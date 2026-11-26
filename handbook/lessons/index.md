@@ -1791,3 +1791,33 @@
   测试绿不代表别处能跑（#37 null-Int 同族）。本仓库这套判定类只上 eval
   （test.hxml --interp + `haxe --run`），但锚点纪律顺手就有，别给未来
   搬目标的人埋雷（CiGatesVerdict.assetOf 的写法）。
+
+## 2026-11 · #86（牧场私有底座库：LipiUI 充真身 + 第三方库/Flex 资产类）
+
+- **AS3 的 private 方法不进继承虚表，Haxe 的进**——这是两语言私有语义
+  最阴的差异，LipiPanel.init 实踩：AS3 里 LipiPanel 私有 init(Rectangle)
+  与 mc 窗口族自立的零参 public init()（WindowLayer 首开钩子）同名无
+  冲突；Haxe 里私有方法**照样虚拟派发**（eval 实证：父类构造器
+  `this.init()` 落进子类覆写——PostWindow.init 在 width/windowName 赋值
+  前的构造期误跑、首开再跑一遍，双重建子件）。且 Haxe private 不豁免
+  override 检查：子类同名不同签名直接编译红（cpp typer 扫描的
+  `overrides parent class with different or incomplete type` 现形——eval
+  倒是能编过，因为……其实 eval 也红，只是该片窗口链此前全 stub 没充
+  真身不触发）。等价方案：本体搬进**无原版成员同名**的私有助手
+  （initPanel），构造器改调助手（永不覆写 = AS3 静态绑定）；原方法名
+  留委托壳，覆写链签名强制对齐（调用方全零参时加默认形参即不可见）。
+  防：翻译遇到「父类 private 方法 + 子类族另有同名方法」时，先查父类
+  构造器/内部调用点——有就必踩，照 initPanel 模式处理并写 PORT-NOTE。
+- **eval 的 Dynamic `<` 比较不做数值转换**（AS3 做）：`"" < 1` 在 AS3
+  是 true（Number("")==0），eval 恒 false——NumbericStepper 的空串
+  clamp-to-min 分支直接掉线（单测实证）。含 `*` 形参参与大小比较的
+  翻译，比较旁路一个 AS3 Number() 转换语义的助手（compareNumber：
+  ""→0、非数值串→NaN、Bool→0/1）。`Math.isNaN("")` 同样 eval true /
+  AS3 false——AS3 isNaN 先 Number 转换，shim.As3.isNaN 已收。
+- **ByteArray endian 不钉就错**：AS3 缺省 BIG_ENDIAN，openfl 非 flash
+  目标随系统序（x86/eval 小端）——SHA1 的 readInt/writeInt 哈希全错
+  之前没有任何编译/测试警报。凡 ByteArray 多字节读写（哈希/编码/协议
+  全家），构造点显式 `endian = Endian.BIG_ENDIAN`。
+- **int 字面量超 positive-int 域的写负值等价**（2400959708 →
+  -1894007588，Int32 环绕）——MD5.hx 既有先例，SHA1 同套常量又踩一遍；
+  哈夫曼/哈希/加密族翻译时先扫一遍十进制大字面量。

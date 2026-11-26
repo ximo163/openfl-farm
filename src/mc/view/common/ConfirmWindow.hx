@@ -26,8 +26,8 @@ class ConfirmWindow extends BaseWindow {
 	}
 
 	// ConfirmWindow.as:71
-	override public function init():Void {
-		super.init();
+	override public function init(param1:openfl.geom.Rectangle = null):Void {
+		super.init(param1);
 	}
 
 	// ConfirmWindow.as:123/（data：{"text":...}）

@@ -76,8 +76,11 @@ class BaseWindow extends LipiPanel {
 	// BaseWindow.as:77
 	public function removeAll():Void {}
 
-	// BaseWindow.as:89
-	public function init():Void {}
+	// BaseWindow.as:89（`override`+Rectangle 形参为 Haxe 覆写检查所加——AS3 里
+	// LipiPanel.init 是 private 不进虚表、本方法是族内自立的新方法；Haxe 同名
+	// 强制成覆写链，签名须对齐。调用方全部零参，形参不可见。语义等价通道
+	// 见 LipiPanel.init 行 PORT-NOTE；本 stub 真身归牧场「窗口框架」后续片）
+	override public function init(param1:openfl.geom.Rectangle = null):Void {}
 
 	// BaseWindow.as:93/118
 	public var data(get, set):Dynamic;

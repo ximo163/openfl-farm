@@ -11,7 +11,7 @@ import openfl.utils.ByteArray;
  */
 @:keep
 class LipiUtil {
-	public function LipiUtil() {}
+	public function new() {}
 
 	// LipiUtil.as:16-19
 	public static function randRange(param1:Float, param2:Float):Float {

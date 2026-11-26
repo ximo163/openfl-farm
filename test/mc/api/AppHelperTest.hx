@@ -9,6 +9,11 @@ import utest.Assert;
  * mc.api.AppHelper 纯逻辑（issue #87 write-tests，对 stub 失败）：弹窗居中
  * 数学、禁用滤镜矩阵、sendRequest/registerNetCommand 的命令表。
  *
+ * 结构注记：utest 在 eval 目标上 setup/teardown 抛异常会让 handler 永不完成
+ * （整个测试进程死等——GameProxyTest 同款），所以 `new AppHelper()`（stub
+ * ctor 掷 not implemented）放各用例方法体内而不放 setup；implement 充真身
+ * 后构造不掷，路径照旧。
+ *
  * 期望值出处：legacy/decompiled/Master2_v_142/scripts/mc/api/AppHelper.as
  * —— centerPopUp :31-41（x=stage.stageWidth/2-width/2、y=stageHeight/2-
  * height/2、y<0 钳 0）；getDisableFilter :43-50（懒建单例、矩阵
@@ -24,16 +29,11 @@ import utest.Assert;
  */
 @:access(mc.api.AppHelper)
 class AppHelperTest {
-	var helper:AppHelper;
-
 	public function new() {}
-
-	function setup() {
-		helper = new AppHelper();
-	}
 
 	// 禁用滤镜矩阵（AppHelper.as:43-50）：懒建 + 矩阵逐字
 	public function test_disable_filter_matrix() {
+		var helper = new AppHelper();
 		var filters = helper.getDisableFilter();
 		Assert.equals(1, filters.length);
 		var cmf:ColorMatrixFilter = cast filters[0];
@@ -50,6 +50,7 @@ class AppHelperTest {
 
 	// 命令表注册与查询（:76-80/:93-96）：registerNetCommand 后 _cmds 可查
 	public function test_register_net_command() {
+		var helper = new AppHelper();
 		helper.registerNetCommand(1, "cgi_enter");
 		helper.registerNetCommand(2, "cgi_steal");
 		Assert.equals("cgi_enter", helper._cmds[1]);
@@ -58,6 +59,7 @@ class AppHelperTest {
 
 	// hidePopUp（:82-91）：有 parent 移除、无 parent 不炸、null 不炸
 	public function test_hidePopUp_parent_gate() {
+		var helper = new AppHelper();
 		var parent = new Sprite();
 		var child = new Sprite();
 		helper.hidePopUp(null); // null 不炸
@@ -82,6 +84,7 @@ class AppHelperTest {
 	// 真值断言由 implement 期截获形态补；stub 期该方法掷
 	// not implemented，调用本身即失败信号
 	public function test_sendRequest_returns_true() {
+		var helper = new AppHelper();
 		helper.registerNetCommand(1, "cgi_enter");
 		Assert.equals("cgi_enter", helper._cmds[1]); // 注册面可钉；true 语义备录
 	}

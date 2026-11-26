@@ -13,10 +13,15 @@ import openfl.utils.ByteArray;
  * legacy/decompiled/Master2_v_142/scripts/com/adobe/crypto/SHA1.as。
  *
  * 真身落码时的两个坑（测试已钉，别「修正」它们）：
- * - hashBlocks 用默认字节序的 ByteArray.writeInt 写散列字（:121-125）——
- *   AS3 ByteArray 默认小端，digest/hashToBase64 取到的字节序因此是逐字
- *   反转的小端序，与常规 SHA1 工具的 digest 字节序不同（hash()/hashBytes
- *   经 readInt+toHex 往返后十六进制仍为规范值）；
+ * - hashBlocks 用默认字节序的 ByteArray.writeInt 写散列字（:121-125），
+ *   而 AS3 ByteArray 缺省 BIG_ENDIAN（Adobe 官方文档）——原版 digest/
+ *   hashToBase64 因此是标准摘要字节序 / 常规 base64(digest)（测试钉的即
+ *   这组大端值）。openfl 非 Flash 目标 ByteArray 缺省随系统序
+ *   （ByteArray.hx defaultEndian 初始化为系统序，eval/x86 落小端），照抄
+ *   new ByteArray() + writeInt 会落小端、测试红——真身须显式钉大端
+ *   （如 :120 建后设 endian = Endian.BIG_ENDIAN，标 // PORT-NOTE: AS3
+ *   缺省序）；hash()/hashBytes() 走 readInt + IntUtil.toHex 往返，与
+ *   字节序无关；
  * - createBlocksFromString 按字符 charCodeAt & 255 取字节（:141），非
  *   ASCII 走 UTF-16 码元截断而非 UTF-8 展开。
  */

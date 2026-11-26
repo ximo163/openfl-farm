@@ -6,27 +6,33 @@ import utest.Assert;
 
 /**
  * SHA1 纯逻辑（issue #86 牧场库底座，第三方库片）：hash/hashBytes/
- * hashToBase64 三入口、digest 静态副本的小端字节序、hashBytes 的 position
- * 保存还原。
+ * hashToBase64 三入口、digest 静态副本的标准（大端）字节序、hashBytes 的
+ * position 保存还原。
  *
  * 出处：legacy/decompiled/Master2_v_142/scripts/com/adobe/crypto/SHA1.as
  * （createBlocksFromByteArray :17-34（position 保存 :19/还原 :32、readByte
  * :27）；hashBlocks :70-131（writeInt 写散列字 :121-125、digest 副本
  * :127-129）；createBlocksFromString :133-147（charCodeAt & 255 :141）；
- * hashBytes :149-154；hash :156-161；hashToBase64 :163-180（:173
+ * hashBytes :149-154；hash :156-161；hashToBase64 :163-180（:169-175
  * readUnsignedByte 逐字节 + :177-179 Base64Encoder））。
  *
  * 期望值推导：该实现是标准 SHA1（:79-83 的 h0-h4 初值与 :53-68 的轮常数
  * 即 RFC 3174 的 0x5A827999/0x6ED9EBA1/0x8F1BBCDC/0xCA62C1D6），ASCII 期望
  * 值即标准测试向量（"abc"→a9993e36… 为 RFC 3174 附录 A.2 的官方向量），
- * 并用独立实现（python hashlib）对同一输入求值交叉核对；非 ASCII 的
- * "é" 行按 :141 的 charCodeAt & 255 语义对单字节 233 求值（sha1(0xE9)）。
- * 字节序注意：hashBlocks 用默认字节序（AS3 ByteArray 缺省小端）writeInt
- * 写散列字（:121-125），所以 digest 与 hashToBase64 的字节流是逐字反转的
- * 小端序——与常规工具 base64(digest) 不同（对拍值：base64.b64encode(
- * hashlib.sha1(b"abc").digest()) = "qZk+…"，本类给 "Nj6Z…"，:173 从
- * writeInt 写出的 ByteArray 原样取字节）。期望串按 AS3 逐操作仿真
- * （struct.pack('<5I') + RFC 4648 base64）求值。
+ * 并用独立实现（python hashlib/base64）对同一输入求值交叉核对；非 ASCII
+ * 的 "é" 行按 :141 的 charCodeAt & 255 语义对单字节 233 求值（sha1(0xE9)）。
+ *
+ * 字节序：hashBlocks 用默认字节序的 ByteArray.writeInt 写散列字
+ * （:121-125），而 AS3 ByteArray 缺省 BIG_ENDIAN（Adobe 官方文档
+ * flash/utils/ByteArray 的 endian：「The default value is
+ * Endian.BIG_ENDIAN」；openfl ByteArray 的 defaultEndian 文档注释同证：
+ * Flash/AIR 目标恒为 BIG_ENDIAN）——原版 digest 的字节流就是标准摘要序
+ * （"abc" → a9 99 3e 36 …），hashToBase64 的值即常规 base64(digest)
+ * （对拍 python base64.b64encode(hashlib.sha1(b"abc").digest()) = "qZk+…"）。
+ * openfl 非 Flash 目标 ByteArray 缺省随系统序（ByteArray.hx defaultEndian
+ * 初始化为系统序，eval/x86 落小端）——这是平台差异不是原版行为：implement
+ * 真身须显式钉大端（// PORT-NOTE:），未登记偏差不得与原版相异；
+ * hash()/hashBytes() 走 readInt + IntUtil.toHex 往返，与字节序无关。
  */
 class SHA1Test {
 	public function new() {}
@@ -38,7 +44,7 @@ class SHA1Test {
 		var cases:Array<{input:String, expect:String}> = [
 			{input: "", expect: "da39a3ee5e6b4b0d3255bfef95601890afd80709"},
 			{input: "abc", expect: "a9993e364706816aba3e25717850c26c9cd0d89d"}, // RFC 3174 A.2 官方向量
-			{input: "Hello", expect: "f7ff9e8b7bb2f09f70a5f5d84db7dd0e9934c9c6"},
+			{input: "Hello", expect: "f7ff9e8b7bb2e09b70a35a5d785e0cc5d9d0abf0"},
 			{input: "The quick brown fox jumps over the lazy dog", expect: "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12"},
 			{input: StringTools.rpad("", "a", 55), expect: "c1c8bbdc22796e28c0e15163d20899b65621d65a"}, // 55B：0x80 恰进本块尾
 			{input: StringTools.rpad("", "a", 56), expect: "c2db330f6083854c99d4b5bfb6e8f29f201be699"}, // 56B：0x80 逼出第二块
@@ -79,25 +85,27 @@ class SHA1Test {
 		Assert.equals("1599e9fa41ec68c80230491902786bee889f5bcb", SHA1.hashBytes(ba));
 	}
 
-	// :127-129 + :121-125：digest 是最近一次散列的 20 字节副本、position 0；
-	// 字节序是默认小端的 writeInt 字序（a9993e36 字写为 36 3e 99 a9 …）
-	public function test_digest_is_little_endian_word_copy() {
+	// :127-129 + :121-125：digest 是最近一次散列的 20 字节副本、position 0。
+	// 字节序按 AS3 缺省 BIG_ENDIAN 的 writeInt 字序落字——a9993e36 字写为
+	// a9 99 3e 36 …，与常规工具的 sha1 摘要字节序一致（推导见类头「字节序」）
+	public function test_digest_is_big_endian_word_copy() {
 		SHA1.hash("abc");
 		var d = SHA1.digest;
 		Assert.notNull(d);
 		Assert.equals(20, d.length);
 		Assert.equals(0, d.position);
 		var bytes:Array<Int> = [for (i in 0...20) d.readUnsignedByte()];
-		Assert.same([0x36, 0x3e, 0x99, 0xa9, 0x6a, 0x81, 0x06, 0x47, 0x71, 0x25, 0x3e, 0xba, 0x6c, 0xc2, 0x50, 0x78, 0x9d, 0xd0, 0xd8, 0x9c], bytes);
+		Assert.same([0xa9, 0x99, 0x3e, 0x36, 0x47, 0x06, 0x81, 0x6a, 0xba, 0x3e, 0x25, 0x71, 0x78, 0x50, 0xc2, 0x6c, 0x9c, 0xd0, 0xd8, 0x9d], bytes);
 		Assert.equals(20, d.position); // 读到底
 	}
 
-	// :163-180：hashToBase64 按 :173 从 writeInt 写出的 ByteArray 逐字节取，
-	// 所以编码的是小端字序的散列字节流（非标准 base64(digest)）；20 字节 →
-	// 28 字符（Base64Encoder insertNewLines 缺省开，但 28 < 76 无换行）
-	public function test_hashToBase64_encodes_little_endian_digest() {
-		Assert.equals("Nj6ZqWkBBkdxJT66bMJQeJ3Y0Jw=", SHA1.hashToBase64("abc"));
-		Assert.equals("xuHUL/woLXrhnoTtOed2uxLrkxs=", SHA1.hashToBase64("The quick brown fox jumps over the lazy dog"));
-		Assert.equals("7qM52g1La17vv1UykBhglQkH2K8=", SHA1.hashToBase64(""));
+	// :163-180：hashToBase64 把 :121-125 writeInt 写出的 ByteArray 按 :169-175
+	// readUnsignedByte 逐字节取字符再编码——字节序即 AS3 缺省大端，所以值与
+	// 常规工具的 base64(digest) 一致（python b64encode 对拍，见类头「字节序」）；
+	// 28 字符 < 76，Base64Encoder 的 insertNewLines 缺省开也不压换行
+	public function test_hashToBase64_matches_standard_digest_base64() {
+		Assert.equals("qZk+NkcGgWq6PiVxeFDCbJzQ2J0=", SHA1.hashToBase64("abc"));
+		Assert.equals("L9ThxnotKPzthJ7hu3bnORuT6xI=", SHA1.hashToBase64("The quick brown fox jumps over the lazy dog"));
+		Assert.equals("2jmj7l5rSw0yVb/vlWAYkK/YBwk=", SHA1.hashToBase64(""));
 	}
 }

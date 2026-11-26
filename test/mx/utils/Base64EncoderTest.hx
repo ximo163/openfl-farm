@@ -10,7 +10,8 @@ import utest.Assert;
  *
  * 出处：legacy/decompiled/Master2_v_142/scripts/mx/utils/Base64Encoder.as
  * （常量 :8/:10/:12；ctor reset :28-32；flush :34-43；reset :50-59；
- * encodeBytes :61-85（position 保存 :67/还原 :84、窗口尾 :74）；
+ * encodeBytes :61-85（position 保存 :67/还原 :84、窗口界 :70 的
+ * param3 绝对下标、窗口尾 :74）；
  * encode :87-108（charCodeAt :96、窗口尾提前成块 :98）；
  * encodeBlock :110-144（buffer 翻档 :112-117、字母表写入 :118-131、
  * '=' 逃逸 :126/:134、换行 :136-143）；encodeUTFBytes :146-152；
@@ -18,8 +19,9 @@ import utest.Assert;
  *
  * 期望值推导：按 SHA1.as 同款反编译算法定义的 Base64（RFC 4648 字母表，
  * :16 的 ALPHABET_CHAR_CODES 即标准表），期望串由独立实现
- * （python base64 + 对 :98/:136-143 逐条仿真的字节级核对）对同一输入求值
- * 得出；「窗口尾提前成块」意味着 encode() 返回时填充 '=' 已进 buffers。
+ * （python base64 + 对 :70/:74/:94/:98/:112-143 逐条仿真的字节级核对）
+ * 对同一输入求值得出；「窗口尾提前成块」意味着 encode() 返回时填充 '='
+ * 已进 buffers。
  *
  * 覆盖边界说明：encodeUTFBytes（:146-152）整条通道不进单测——它经
  * ByteArray.writeUTFBytes 建 UTF-8 字节，而 openfl ByteArray 在 eval 目标
@@ -149,14 +151,21 @@ class Base64EncoderTest {
 		Assert.equals("", enc.flush());
 	}
 
-	// :61-85：encodeBytes 的窗口（param2 起 param3 长）+ :67/:84 的 position
-	// 保存还原——调用前后 position 不动，内容仍从 offset 0 读。字节经
-	// AsciiBytes（见类头 eval 边界说明）建造
+	// :61-85：encodeBytes 的窗口界是 :70 的 while(_loc5_ < param3)、_loc5_
+	// 初值=param2（:69）——起点 param2 与终点 param3 都是「绝对下标」，与
+	// encode() 的 :94 param2+param3 窗口模型不同：offset=3/length=2 时
+	// 3 < 2 一次都不进循环 → flush 为空串，不是 [3, 3+2) 的 "lo"；真取
+	// "lo" 得用窗口 [3, 5)。:67/:84 的 position 保存还原不受窗口空否影响。
+	// 字节经 AsciiBytes（见类头 eval 边界说明）建造
 	public function test_encodeBytes_window_and_position_preserved() {
 		var ba = AsciiBytes.of("Hello");
 		ba.position = 2; // 故意停在半中腰
 		var enc = new Base64Encoder();
-		enc.encodeBytes(ba, 3, 2); // "lo"
+		enc.encodeBytes(ba, 3, 2); // 窗口 [3, 2) 为空 → 不成任何块
+		Assert.equals(2, ba.position); // :67/:84 还原
+		Assert.equals("", enc.flush());
+
+		enc.encodeBytes(ba, 3, 5); // 窗口 [3, 5) = "lo"
 		Assert.equals(2, ba.position); // :67/:84 还原
 		Assert.equals("bG8=", enc.flush());
 
@@ -165,25 +174,29 @@ class Base64EncoderTest {
 		Assert.equals("SGVsbG8=", enc.flush());
 	}
 
-	// :112-117 + :154-168：32767 的 buffer 上限翻档——24576 字节 = 8192 块
-	// （输出 32768 字符）+ 每 19 块一个换行（8192 = 431×19 + 3，共 431 个
-	// 换行）。结构断言（总长/去换行串/头/尾/换行数）而不落 33k 字面量。
+	// :112-117 + :154-168：32767 的 buffer 上限翻档——drain 逐档拼回，翻档
+	// 不得丢块/错序。buffer 按「项数」计且 :140 的换行也 push 进同一 buffer
+	// （insertNewLines 缺省开：每 19 块 76 字符多 1 项），第 8087 块进场时
+	// 上一档已积 4×8086+425=32769 项 ≥ 32767、翻第二档；即便按「每块纯 4
+	// 项、不计换行」的口径，24579 字节 = 8193 块也达 8193×4=32772 > 32767，
+	// 两种口径都真正跨档。8193 恰为 3 的倍数：无填充尾块。结构断言（总长/
+	// 去换行串/头/尾/换行数）而不落 33k 字面量。
 	public function test_multi_buffer_drain_across_MAX_BUFFER_SIZE() {
 		var enc = new Base64Encoder();
-		enc.encode(StringTools.rpad("", "A", 24576));
+		enc.encode(StringTools.rpad("", "A", 24579)); // 8193 个整块
 		var result = enc.flush();
 		var qufb19 = StringTools.rpad("", "QUFB", 76);
 
-		Assert.equals(33199, result.length); // 8192×4 + 431
-		Assert.equals(StringTools.rpad("", "QUFB", 32768), result.split("\n").join("")); // 内容完整不丢块
+		Assert.equals(33203, result.length); // 8193×4 + 431 换行
+		Assert.equals(StringTools.rpad("", "QUFB", 32772), result.split("\n").join("")); // 内容完整不丢块
 		Assert.equals(qufb19 + "\n", result.substr(0, 77)); // 头 76 字符 + 换行
-		Assert.equals("QUFBQUFBQUFB", result.substr(result.length - 12)); // 尾 3 块（8192%19=3）
+		Assert.equals(StringTools.rpad("", "QUFB", 16), result.substr(result.length - 16)); // 尾 4 块（8193%19：最后换行在 8189 块后）
 		var newlines = 0;
 		for (i in 0...result.length) {
 			if (result.charCodeAt(i) == 10) {
 				newlines++;
 			}
 		}
-		Assert.equals(431, newlines);
+		Assert.equals(431, newlines); // floor(8193/19) = 431
 	}
 }

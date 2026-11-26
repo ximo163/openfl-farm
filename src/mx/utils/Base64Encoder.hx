@@ -10,10 +10,17 @@ import openfl.utils.ByteArray;
  * legacy/decompiled/Master2_v_142/scripts/mx/utils/Base64Encoder.as。
  *
  * 按位语义注意（implement 落真身时的坑，测试已钉）：
- * - encode 的窗口尾提前成块（:98 `param2 + param3 - _loc4_ == 1`）——
+ * - encodeBytes 的窗口界是 :70 的 while(_loc5_ < param3)（_loc5_ 初值
+ *   =param2，:69）——起点/终点都是绝对下标，与 encode() 的 :94
+ *   param2+param3 窗口模型不同，param3 ≤ param2 的窗口一次都不读
+ *   （测试钉 encodeBytes(ba,3,2) → 空）；别「修正」成 param2+param3；
+ * - encode() 的窗口尾提前成块（:98 `param2 + param3 - _loc4_ == 1`）——
  *   encode() 返回时尾块已带 '=' 填充进 buffers，flush() 只是 drain+reset；
  * - encodeBlock 的换行（:136-143）每 4 字符推进 _line，恰到 76 时压入
  *   newLine（:10，int 类型，静态可改）；
+ * - encodeBlock 的 buffer 翻档（:112-117）按 buffer 项数计（≥ 32767），
+ *   :140 的换行也 push 进同一 buffer——insertNewLines 开时每 19 块
+ *   76 字符多 1 项，第 8087 块起翻第二档（测试用 24579 字节跨档）；
  * - drain()（:154-168）清空 buffers 后重开一个空 buffer（:165-167），
  *   但不动 _count/_line。
  */

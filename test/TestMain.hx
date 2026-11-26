@@ -431,10 +431,12 @@ class TestMain {
 		// issue #86：牧场库底座（write-tests 阶段，对 stub 失败）——LipiUI
 		// 组件库/第三方库/Flex 资产类四件纯逻辑面：Base64Encoder（编码块
 		// 数学、窗口尾提前成块、76 字符换行与 newLine 静态、drain/reset/
-		// flush 流转、encodeBytes 的 position 保存还原、32767 buffer 翻档
-		// 结构断言）；SHA1（三入口、ASCII==标准向量、charCodeAt 码元面、
-		// digest 小端字序副本、hashToBase64 与常规 base64(digest) 相异、
-		// hashBytes position 保存还原）；NumbericStepper 步进边界（min/max/
+		// flush 流转、encodeBytes 的 :70 绝对下标窗口与 position 保存还原、
+		// 32767 buffer 翻档结构断言）；SHA1（三入口、ASCII==标准向量、
+		// charCodeAt 码元面、digest 标准（大端）字节序副本、hashToBase64
+		// == 常规 base64(digest)——AS3 ByteArray 缺省 BIG_ENDIAN，openfl
+		// 平台差异由 implement 显式钉大端、hashBytes position 保存还原）；
+		// NumbericStepper 步进边界（min/max/
 		// NaN 钳制与 :58 选区分支、updateSpinBtns 钮位翻转、disable 三分支
 		// 位标志、滚轮/点击步进出界钳回、numTextChange 双派发、focusOut
 		// 拉回）；SimpleCollection（bg 首装/换装层级与尺寸写透、width/

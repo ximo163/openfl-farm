@@ -1,13 +1,12 @@
 package mc.view.main.cursor;
 
+import common.MaterialLib;
 import openfl.display.MovieClip;
-import openfl.errors.Error;
 
 /**
- * mc.view.main.cursor.Cursor_Theft —— Cursor_Theft.as 的签名面 stub（原类
- * 27 loc，issue #87「光标」片充真身）。偷窃光标：ctor 取 "CursorHoe" 素材
- * 挂树，click 时 _cursor.gotoAndPlay(2)。成员签名逐字取自反编译原文，
- * 方法体随 implement 充真身。
+ * mc.view.main.cursor.Cursor_Theft —— Cursor_Theft.as 逐句对应（issue #87
+ * 「光标」片真身）。偷窃光标：ctor 取 "CursorHoe" 素材挂树，click 时
+ * _cursor.gotoAndPlay(2)。
  * legacy/decompiled/Master2_v_142/scripts/mc/view/main/cursor/Cursor_Theft.as。
  */
 @:keep
@@ -15,14 +14,17 @@ class Cursor_Theft extends BaseCursor {
 	// Cursor_Theft.as:9
 	private var _cursor:MovieClip;
 
-	// Cursor_Theft.as:11-18（ctor 读 MaterialLib 素材——有依赖副作用，入 stub 掷）
+	// Cursor_Theft.as:11-18
 	public function new() {
 		super();
-		throw new Error("not implemented");
+		this._cursor = cast MaterialLib.getInstance().getMaterial("CursorHoe");
+		this._cursor.cacheAsBitmap = true;
+		addChild(this._cursor);
+		this.cacheAsBitmap = true;
 	}
 
 	// Cursor_Theft.as:20-23
 	override public function click():Void {
-		throw new Error("not implemented");
+		this._cursor.gotoAndPlay(2);
 	}
 }

@@ -3,10 +3,9 @@ package mc.model;
 import openfl.events.EventDispatcher;
 
 /**
- * mc.model.TaskData —— TaskData.as 的签名面 stub（原类 67 loc，issue #87
- * 「数据」片充真身）。牧场任务数据单例：currentTask 缺省
- * {taskId:1, taskFlag:2}（TaskData.as:20-23）、TASK_MAX 9。成员签名逐字
- * 取自反编译原文，方法体随 implement 充真身。
+ * mc.model.TaskData —— TaskData.as 逐句对应（issue #87「数据」片充真身）。
+ * 牧场任务数据单例：currentTask 缺省 {taskId:1, taskFlag:2}
+ * （TaskData.as:20-23）、TASK_MAX 9。
  * legacy/decompiled/Master2_v_142/scripts/mc/model/TaskData.as。
  */
 @:keep
@@ -27,10 +26,12 @@ class TaskData extends EventDispatcher {
 		"taskFlag": 2
 	};
 
-	// TaskData.as:25-33（单例守卫——原文构造器即完整实现）
+	// TaskData.as:25-33（单例守卫——原文构造器即完整实现。
+	// PORT-NOTE(cpp)：同 MData——super() 前移到守卫外，Haxe/cpp 要求
+	// super 全路径先调；EventDispatcher ctor 无副作用，语义等价）
 	public function new() {
+		super();
 		if (instance == null) {
-			super();
 			return;
 		}
 		throw new openfl.errors.Error("实例化单例类出错-TaskData");
@@ -52,7 +53,9 @@ class TaskData extends EventDispatcher {
 	}
 
 	private function set_updata(param1:Dynamic):Dynamic {
-		throw new openfl.errors.Error("not implemented");
+		this._updata = param1;
+		dispatchEvent(new ModelEvent(TaskData.COMPLETE));
+		return param1;
 	}
 
 	// TaskData.as:50-54/:61-64（currentTask 存取——setter 派发
@@ -64,6 +67,8 @@ class TaskData extends EventDispatcher {
 	}
 
 	private function set_currentTask(param1:Dynamic):Dynamic {
-		throw new openfl.errors.Error("not implemented");
+		this._currentTask = param1;
+		dispatchEvent(new ModelEvent(TaskData.TASKDATA_CHANGE));
+		return param1;
 	}
 }

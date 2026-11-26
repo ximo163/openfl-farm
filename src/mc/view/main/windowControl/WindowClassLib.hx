@@ -1,13 +1,13 @@
 package mc.view.main.windowControl;
 
-import openfl.errors.Error;
-
 /**
- * mc.view.main.WindowControl.WindowClassLib —— WindowClassLib.as 的签名面
- * stub（原类 26 loc，issue #87「窗口框架」片充真身）。窗类名→Class 的
- * 懒注册表：register/getClass 静态通道，_lib 首次 register 时才建。
+ * mc.view.main.windowControl.WindowClassLib —— WindowClassLib.as 逐句对应
+ * （issue #87「窗口框架」片）。窗类名→Class 的懒注册表：register/getClass
+ * 静态通道，_lib 首次 register 时才建；getClass 键缺失时下标返
+ * undefined→null。
  * legacy/decompiled/Master2_v_142/scripts/mc/view/main/WindowControl/WindowClassLib.as。
- * （AS3 包段 WindowControl → Haxe windowControl，同目录 WControl 先例。）
+ * PORT-NOTE(命名)：原包 `mc.view.main.WindowControl` 首字母大写，Haxe 包段
+ * 必须小写开头，落 `windowControl`（WControl 同款先例，deviations 候选）。
  */
 @:keep
 class WindowClassLib {
@@ -19,11 +19,17 @@ class WindowClassLib {
 
 	// WindowClassLib.as:13-20
 	public static function getClass(param1:String):Class<Dynamic> {
-		throw new Error("not implemented");
+		if (_lib == null) {
+			return null;
+		}
+		return Reflect.field(_lib, param1);
 	}
 
 	// WindowClassLib.as:22-25
 	public static function register(param1:String, param2:Class<Dynamic>):Void {
-		throw new Error("not implemented");
+		if (_lib == null) {
+			_lib = {};
+		}
+		Reflect.setField(_lib, param1, param2);
 	}
 }

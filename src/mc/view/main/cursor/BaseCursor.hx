@@ -1,13 +1,14 @@
 package mc.view.main.cursor;
 
 import openfl.display.Sprite;
-import openfl.errors.Error;
+import openfl.filters.ColorMatrixFilter;
+import openfl.filters.GlowFilter;
 
 /**
- * mc.view.main.cursor.BaseCursor —— BaseCursor.as 的签名面 stub（原类 53 loc，
- * issue #87「光标」片充真身）。光标基类：cursorArgument 存取、click/down/up
- * 空钩子、setCursorFilter 套 GlowFilter(13434624,1,10,10)+1.1 亮度矩阵、
- * cancelCursorFilter 清空。成员签名逐字取自反编译原文。
+ * mc.view.main.cursor.BaseCursor —— BaseCursor.as 逐句对应（issue #87「光标」
+ * 片真身）。光标基类：cursorArgument 存取、click/down/up 空钩子、
+ * setCursorFilter 套 GlowFilter(13434624,1,10,10)+1.1 亮度矩阵、
+ * cancelCursorFilter 清空滤镜。
  * legacy/decompiled/Master2_v_142/scripts/mc/view/main/cursor/BaseCursor.as。
  */
 @:keep
@@ -20,10 +21,10 @@ class BaseCursor extends Sprite implements IBaseCursor {
 		super();
 	}
 
-	// BaseCursor.as:17-19（空钩子——原文即空体，入 stub 不掷）
+	// BaseCursor.as:17-19（空钩子——原文即空体）
 	public function down():Void {}
 
-	// BaseCursor.as:21-24/:49-52（cursorArgument 存取——原文即完整，入 stub）
+	// BaseCursor.as:21-24/:49-52（cursorArgument 存取）
 	public var cursorArgument(get, set):Dynamic;
 
 	private function set_cursorArgument(param1:Dynamic):Dynamic {
@@ -41,13 +42,18 @@ class BaseCursor extends Sprite implements IBaseCursor {
 	// BaseCursor.as:30-32（空钩子）
 	public function up():Void {}
 
-	// BaseCursor.as:34-42
+	// BaseCursor.as:34-42（concat 逐段拼出 4×5 亮度矩阵，视觉参数逐字照抄）
 	public function setCursorFilter():Void {
-		throw new Error("not implemented");
+		var _loc1_:Array<Dynamic> = new Array<Dynamic>();
+		_loc1_ = _loc1_.concat([1.1, 0, 0, 0, 0]);
+		_loc1_ = _loc1_.concat([0, 1.1, 0, 0, 0]);
+		_loc1_ = _loc1_.concat([0, 0, 1.1, 0, 0]);
+		_loc1_ = _loc1_.concat([0, 0, 0, 1, 0]);
+		this.filters = [new GlowFilter(13434624, 1, 10, 10), new ColorMatrixFilter(cast _loc1_)];
 	}
 
 	// BaseCursor.as:44-47
 	public function cancelCursorFilter():Void {
-		throw new Error("not implemented");
+		this.filters = null;
 	}
 }

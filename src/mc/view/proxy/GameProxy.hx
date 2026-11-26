@@ -6,11 +6,10 @@ import openfl.events.EventDispatcher;
 import openfl.events.IEventDispatcher;
 
 /**
- * mc.view.proxy.GameProxy —— GameProxy.as 的签名面 stub（原类 78 loc，
- * issue #87「代理」片充真身）。游戏代理单例：parameters/npcLand/iniData
- * 三静态载荷，host/currentUser 属性对，currentUser 换主派
- * CURRENT_USER_CHANGE；me 按 currentUser/host 的 uId 比对出Boolean。
- * 成员签名逐字取自反编译原文，方法体随 implement 充真身。
+ * mc.view.proxy.GameProxy —— GameProxy.as 逐句对应（issue #87「代理」片）。
+ * 游戏代理单例：parameters/npcLand/iniData 三静态载荷，host/currentUser
+ * 属性对，currentUser 换主派 CURRENT_USER_CHANGE；me 按 currentUser/host
+ * 的 uId 比对出 Boolean。
  * legacy/decompiled/Master2_v_142/scripts/mc/view/proxy/GameProxy.as。
  *
  * PORT-NOTE(XML)：AS3 XML 类型在 Haxe 无等价物，iniData 落 Dynamic——
@@ -60,16 +59,23 @@ class GameProxy extends EventDispatcher {
 		return this._host;
 	}
 
-	// GameProxy.as:49-60（me：currentUser/host 双非空且 uId 不同则 false——
-	// 真值表逻辑归 implement，入 stub 掷）
+	// GameProxy.as:49-60（me：currentUser/host 双非空且 uId 不同才 false。
+	// 原文 `currentUser["uId"] != host["uId"]`：uId 同源同型（下发 JSON 的
+	// 字串），AS3 宽松 != 落严格比较等价——裸比形态同 MainData.hx me 先例）
 	public var me(get, never):Bool;
 
 	private function get_me():Bool {
-		throw new Error("not implemented");
+		var _loc1_:Bool = true;
+		if (this.currentUser != null && this.host != null) {
+			if (Reflect.field(this.currentUser, "uId") != Reflect.field(this.host, "uId")) {
+				_loc1_ = false;
+			}
+		}
+		return _loc1_;
 	}
 
-	// GameProxy.as:62-65（getter 原文即纯字段返回，入 stub 不掷）
-	// GameProxy.as:72-76（setter 派 CURRENT_USER_CHANGE——超出纯赋值，入 stub 掷）
+	// GameProxy.as:62-65
+	// GameProxy.as:72-76（setter 赋值 + 派 CURRENT_USER_CHANGE）
 	public var currentUser(get, set):Dynamic;
 
 	private function get_currentUser():Dynamic {
@@ -77,6 +83,8 @@ class GameProxy extends EventDispatcher {
 	}
 
 	private function set_currentUser(param1:Dynamic):Dynamic {
-		throw new Error("not implemented");
+		this._currentUser = param1;
+		dispatchEvent(new openfl.events.Event(GameProxy.CURRENT_USER_CHANGE));
+		return param1;
 	}
 }

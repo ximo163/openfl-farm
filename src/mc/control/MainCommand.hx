@@ -40,4 +40,34 @@ class MainCommand extends EventDispatcher {
 
 	// MainCommand.as:1373（getMarkListFromJs(param1:Function, param2:String="0")）
 	public function getMarkListFromJs(param1:Dynamic, param2:String = "0"):Void {}
+
+	// MainCommand.as:3832-3841（showWin(param1:String="cdkey")——issue #87
+	// FRequest 应答闭包的 validateCode 分支编译链需要签名；体随牧场片充真身）
+	public function showWin(param1:String = "cdkey"):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:1517（run()——issue #87 InitLoading.linkClick 的
+	// "reload" 分支编译链需要签名；体随牧场片充真身）
+	public function run():Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:1782（register()——issue #87 InitLoading.linkClick
+	// 的 "noreg" 分支编译链需要签名；体随牧场片充真身）
+	public function register():Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3091（userReload()——issue #87 UserChanging.linkClick
+	// 编译链需要签名；体随牧场片充真身）
+	public function userReload():Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:581（validateCode(param1:String)——issue #87
+	// ValidateCodeWindow.confirmFn 编译链需要签名；体随牧场片充真身）
+	public function validateCode(param1:String):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
 }

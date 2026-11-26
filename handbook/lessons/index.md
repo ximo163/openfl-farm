@@ -1821,3 +1821,38 @@
 - **int 字面量超 positive-int 域的写负值等价**（2400959708 →
   -1894007588，Int32 环绕）——MD5.hx 既有先例，SHA1 同套常量又踩一遍；
   哈夫曼/哈希/加密族翻译时先扫一遍十进制大字面量。
+
+## 2026-11 · #87（牧场网络与数据层）
+
+- **AVM2 的 super 调用静态绑定，openfl/Haxe 的 super.addChild 会再虚拟
+  派发**——LipiPanel.initPanel 实踩：`super.addChild(_contentPane)` 在
+  AVM2 直进 DisplayObjectContainer 原生实现；openfl 9.5.2 的 addChild
+  方法体是一行 `addChildAt(child, numChildren)` **虚拟**调用，Haxe
+  super 只上溯方法体、this 不变——重派进本类 addChildAt 覆写（
+  LipiContainer 系重定向进 _contentPane）→ `_contentPane` 自加，构造即
+  抛 Error #2024，`new LipiPanel()` 裸构造都活不了。修法
+  `super.addChildAt(x, super.numChildren)`：super.addChildAt 直进父类
+  方法体不再二次派发（eval 探针实证），索引取 super.numChildren（本类
+  get_numChildren 覆写已重定向成 _contentPane 的，不能用）。防：翻译
+  「覆写了 addChild/addChildAt 的容器类」里的 super.addChild 一律改写；
+  已实证未排的同构地雷：LipiContainer.hx:148/157/161/386（probe：
+  `new LipiContainer()` 同样抛 #2024）。
+- **FFDec 输出隐藏 int 槽位的隐式强转，期望值的类型语义以字节码为准**：
+  HList.setChildPosition 的 `_loc1_:int`——center 公式
+  `(100-119)/2 = -9.5` 在 FFDec 文本里像 float 运算，但 ABC 字节码在
+  OpDiv 后紧跟 OToInt（convert_i，ToInt32 向零截断）才 OSetReg(1)，
+  落 **-9**；循环累加 `+width+gap` 同样 OToInt（三处实证）。write-tests
+  按 FFDec 文本写了 -9.5/30.5/70.5 期望，与原版行为矛盾。防：凡是
+  `var x:int` 接收算术结果的反编译行，浮点期望值都要怀疑——用
+  tools/DumpAbcMethod.hx retarget 目标类直读字节码（#20/#42 先例），
+  OToInt/OToNumber 的位置才是类型真相。
+- **Type.createEmptyInstance 不跑字段初始化器**（FarmLiteTest 早有
+  「先归位」注释同款认知，#87 再实证）：`var count:Int = 0` 的 0 不落，
+  读出 null，`count++` 掷 `Invalid operation: null + 1`（eval）。测试
+  替身（support/Recording*）的计数器语义要活过空实例构造，只能写
+  (get,set) 属性 + Null backing 惰性归零——write-tests 期漏此形态的
+  替身对 implement 是不可修的死结（test/ append-only），属测试侧缺陷。
+- **`haxe test.hxml` 全绿依赖测试构造顺序的别当缺陷修**：AppHelperTest
+  单跑报 "Cannot call null"——FRequest.as:153 原版就不守卫地调
+  CommonData.getKey 动态函数槽（生产启动链先赋值）；全套件里前序测试
+  赋过值所以绿。 faithful 翻译就该这样，别加守卫。

@@ -1714,3 +1714,47 @@
   快照帐户口径不走；这与 monthEnd 的「窗口过期+版本漂移双死」本质不同。
   活跃判定要分层：时间窗（serverTime 比对）/ 开关（gray、fairy、zhaohuiOpen）
   / 漂移（配置版本 vs 部署版本）/ 消费方存在性，逐层表态再合并结论。
+
+## 2026-11 · #70（机器门收口：判式单源与门禁判式的两个形状坑）
+
+- **门禁判式钉在 Haxe 半边、python 只做壳，不再养双实现**：#63 的
+  DynWriteScan/scan_dyn_writes 双实现要「两侧同步改、输出逐字节对齐」地
+  养着（改判式忘了另一半＝门禁与测试各说各话）；#70 起机器门定型为三层
+  ——判式（纯逻辑，utest 钉死）+ *Run.hx 胶水（走目录/exit 码，DynWriteScanRun
+  先例）+ python 壳（subprocess 拉起 haxe、透传退出码）。判式只有一份，
+  python 半边改不了行为；haxe 侧编不过时门同样退非零（门跑不起来＝不放
+  行，失败方向一致，不用特意区分）。
+- **源码行级判式里，字符串遮罩必须先于剔 `//` 注释、且要与原文等长**：
+  先剔注释会把 URL 字面量（"http://x"）里的 `//` 当注释起点，截掉后面的
+  真代码——这种顺序错造成的是**漏报**不是误报，门禁静默放行，比误报危险
+  得多。等长遮罩（字符串内容逐字符换空白、转义对占两格）让截断位可以在
+  遮罩前/后文本上互换使用（#70 的条件 4「遮罩前逐字短语」就靠它）。
+- **「非标识符边界」不能当 throw 语句位的判据，得用白名单**：doc 注释/
+  散文里 `` `throw "not implemented"` `` 的反引号引用形态，「throw 前是
+  任意非标识符字符」的宽判式会把它当真 stub（误伤面大于捕获面——正常
+  叙事注释就写不了这个惯用语了）。白名单（行首/空白/;{}()=）钉死「语句
+  位」的枚举语义；宁可漏掉未来某种怪异前缀，不可误伤文档（#70 的
+  test_no_hit_idiom_quoted_in_doc_comment 锚点）。
+
+## 2026-11 · #70 收尾（接线交付物 BLOCKED：两层保护与容器解释器名）
+
+- **「X 对 agent 可写」不能只对 pipeline yaml 的 protected 清单断言——
+  阶段合同另有一层硬编码保护**：issue #70 写「pipeline.yaml 的 checks 行
+  是 agent 可写」，四份流水线 yaml（pipeline/chore/plan/spec）的
+  protected 清单确实都不含 `.orchestrator/`（配置层核实无误）；但编排器
+  运行时组装进每个 agent 阶段提示词的 Rules 节又硬编码保护
+  `.orchestrator/`、`.claude/`、`.mcp.json`，并声明「违反的 attempt 在
+  一切开始前被拒」——attempt 1 的手册页把「受保护路径」写成了无出处断言
+  被 review 驳回（review 只看得到 yaml 层），而按 issue 授权直接改 yaml
+  又会撞合同层。两层冲突时合同层赢：接线交付物以 BLOCKED 收场，由所有者
+  裁决——**已裁决落地：2026-11-26 人直接把接线写进 main（commit
+  `f830e635`，suites 注释里记了这段），两门在 write-tests/implement 的
+  verify 生效，无需再动 pipeline.yaml**。防：
+  断言可写性前先看自己 prompt 的 Rules 节（每个 agent 都有一份）；合同层
+  与配置层打架时不静默改判归属，显式抛给所有者。
+- **给人和 CI 写的命令行要用容器里真实存在的解释器名**：接线片段照 issue
+  原文写 `python tools/scan_test_stubs.py`，agent 容器只有
+  `/usr/bin/python3`（`python` → command not found），人照片段接线 verify
+  直接 127（review round 1 驳回点之一）。防：片段/文档里给人和 CI 的
+  可执行命令一律 `python3`；python 壳 docstring 的「容器无 `python`
+  别名」注记是事实出处。

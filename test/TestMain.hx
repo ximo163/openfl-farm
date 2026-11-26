@@ -390,6 +390,13 @@ class TestMain {
 		// 归树规矩落 src/Issue68TriageNotes.hx（write-tests 建空串 stub，
 		// implement 原地填即转绿——src/ 不受 test/** append-only 约束）
 		runner.addCase(new Issue68TriageTest());
+		// issue #70：机器门收口两件——test/** 禁 throw-stub 扫描（#56 僵尸
+		// stub 归树规矩的差集报警）与跨树重复模块路径扫描（-cp tools 后
+		// 三棵树共享包空间的静默遮蔽枚举）。write-tests 阶段对 stub 失败；
+		// 被测是纯逻辑（行集→命中/冲突），走目录/exit 码/接线归 implement
+		// 的脚本侧（tools/scan_test_stubs.py / scan_module_paths.py）
+		runner.addCase(new tools.TestStubScanTest());
+		runner.addCase(new tools.ModulePathScanTest());
 		// issue #77：新手引导真机文字残留（#65 后续，write-tests 阶段，对
 		// 带盲区的现行 HelpGuideWiring 失败）——range 补洞的两个盲区：
 		// walk 下钻 SimpleButton 四态子树（9 个 DefineEditText 真例化在按钮

@@ -18,9 +18,9 @@ import utest.Assert;
  *   push 触发再生成（至今已改 6 次）。
  * - 死亡证据：#30 的手写 code 块（84c203bb 交付形态，五键 decompiled/
  *   symbol_class/classes/module_spec/note）被 399a5faa（2026-11-24 CI
- *   再生成）整体抹掉；当前 main 的 swf-inventory.json 6290 条无一带
- *   code 块（本文件 test_current_main_inventory_has_no_code_blocks 锁死
- *   此事实）。
+ *   再生成）整体抹掉；#83 时「无一带 code 块」是事故现状，#85（2026-11-26
+ *   合并）正当写入三条后此现状过期——在库锁已改为钉「在册手写块存活」
+ *   （test_main_inventory_handwritten_code_blocks_survive）。
  * - 修复方向：issue 决策点 a（推荐）原文「重写前读旧文件，同 path 条
  *   目保留手写键（如 code），新生成条目无手写键则照常输出」「基线出
  *   账（baseline）等机器生成部分不受影响」。
@@ -322,32 +322,46 @@ class SwfInventoryMergeTest {
 	// ------------------------------------------------------------------
 	// 在库事实锁（issue #83 动机节的证据钉死在测试里）
 
-	function test_current_main_inventory_has_no_code_blocks() {
-		// // issue #83 动机节原文：「当前 main 的 swf-inventory.json
-		// 6290 条无一带 code 块（全量查证）」——write-tests 阶段此断言
-		// 在 main 上为真；它钉住的是「再生成事故后的现状」，不随本
-		// issue 的修复而改变（修复后手写块恢复时本断言需要按
-		// 「changed for #83」更新——但本阶段它必须成立，否则动机事实
-		// 链对不上）
+	function test_main_inventory_handwritten_code_blocks_survive() {
+		// // issue #83 锁的「changed for #83」维护点（2026-11-26 触发）：
+		// 原断言「无一带 code 块」钉的是再生成事故后的过渡现状，原锁注释
+		// 自己写了「修复后手写块恢复时本断言需要更新」——#85（#66 规格提取）
+		// 正当写入三条手写 code 块，过渡现状过期、preflight 被锁死（#86 开跑
+		// 43 秒即死）。新锁钉活体事实：在册手写块必须存活——被再生成抹掉
+		// （399a5faa 同型事故）时本测试红，这是 #83「死了无人察觉」的门在
+		// test 层的落点；再生成回路的完整对账归 #95。
 		if (!sys.FileSystem.exists("spec/swf-inventory.json")) {
-			Assert.fail("spec/swf-inventory.json 不在仓（清单缺失，动机事实无法核对）");
+			Assert.fail("spec/swf-inventory.json 不在仓（清单缺失，存活锁无法核对）");
 			return;
 		}
 		var doc:Dynamic = haxe.Json.parse(File.getContent("spec/swf-inventory.json"));
 		var entries:Array<Dynamic> = cast Reflect.field(doc, "swfs");
 		Assert.notNull(entries);
 		if (entries == null) return;
-		var coded = 0;
+		var byPath = new Map<String, Dynamic>();
 		for (e in entries) {
-			if (Reflect.hasField(e, "code")) coded++;
+			var p:Dynamic = Reflect.field(e, "path");
+			if (Std.isOfType(p, String)) byPath.set(cast p, e);
 		}
-		Assert.equals(0, coded, "当前 spec/swf-inventory.json 无一带 code 块（issue #83 动机节全量查证结论；#30 四块已被 399a5faa 抹掉）");
+		// // issue #85 在册三条（2026-11-26 合并，出处 spec/modules/
+		// {cards-game-ui,quickshoot-ui,wild-shell-ui}.json 的 code 块交付；
+		// #30 四条随 #95 恢复后在此清单追加）
+		var known = ["module/ui/cards_v_1.swf", "module/ui/quickshoot_v_0.swf", "module/mc/farm/wild/WildShellNc_v_5.swf"];
+		for (p in known) {
+			var e = byPath.get(p);
+			Assert.notNull(e, "在册手写块宿主 " + p + " 缺失（再生成把条目删了？）");
+			if (e == null) continue;
+			Assert.isTrue(Reflect.hasField(e, "code"), p + " 的手写 code 块被抹掉——399a5faa 同型事故，#95 接线未落地前再生成必踩");
+		}
 	}
 
-	function test_main_inventory_has_6290_entries_with_machine_keys_only() {
-		// // issue #83 动机节的规模事实 + 机器键闭集的在库锚定：现行
-		// 清单每条目的键集 ⊆ 机器键闭集（判式闭集与生成器产出对齐的
-		// 活锚——生成器加了新机器键本测试红，提醒同步 MACHINE_KEYS）
+	function test_main_inventory_entries_have_machine_keys_and_consistent_count() {
+		// // issue #83 锁的姊妹维护点（2026-11-26 与存活锁同改）：原断言
+		// 「键集 ⊆ 机器键闭集 + 硬编码 6290 条」把两个过渡事实当不变量——
+		// 手写键回归（#85 三块）与清单扩容（下一次 main_swfs 扩名单）都会
+		// 正当打破它。新锁钉耐久不变量：每条目带全机器键、顶层 count 与
+		// 条目数自洽。生成器键面漂移的提醒不再走本测试（preflight 红会锁死
+		// 所有任务，不是通知通道）——归 #95 的再生成对账门。
 		if (!sys.FileSystem.exists("spec/swf-inventory.json")) {
 			Assert.fail("spec/swf-inventory.json 不在仓");
 			return;
@@ -356,12 +370,13 @@ class SwfInventoryMergeTest {
 		var entries:Array<Dynamic> = cast Reflect.field(doc, "swfs");
 		Assert.notNull(entries);
 		if (entries == null) return;
-		Assert.equals(6290, entries.length, "清单 6290 条（issue #83 动机节全量查证数）");
-		var machineKeys = ["path", "bytes", "category", "fps", "frames", "stage", "unparsed"];
+		Assert.equals(entries.length, Reflect.field(doc, "count"), "顶层 count 与 swfs 条目数自洽");
 		for (e in entries) {
-			for (k in Reflect.fields(e)) {
-				Assert.isTrue(machineKeys.indexOf(k) >= 0, '现行清单条目键「' + k + '」超出机器键闭集（swf-inventory.py:97-105）——生成器键面变了，MACHINE_KEYS 闭集要同步');
-			}
+			Assert.isTrue(Reflect.hasField(e, "path"), "条目缺 path（机器键）");
+			Assert.isTrue(Reflect.hasField(e, "bytes"), "条目缺 bytes（机器键）");
+			Assert.isTrue(Reflect.hasField(e, "category"), "条目缺 category（机器键）");
+			var fpsGroup = Reflect.hasField(e, "fps") && Reflect.hasField(e, "frames") && Reflect.hasField(e, "stage");
+			Assert.isTrue(fpsGroup || Reflect.hasField(e, "unparsed"), "条目既无 fps/frames/stage 也无 unparsed（swf-inventory.py:97-105 两种产出形态）");
 		}
 	}
 }

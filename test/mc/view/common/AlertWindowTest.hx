@@ -1,6 +1,7 @@
 package mc.view.common;
 
 import mc.view.common.AlertWindow;
+import support.MaterialFakes;
 import utest.Assert;
 
 /**
@@ -14,15 +15,30 @@ import utest.Assert;
  * "tip" → 双隐、y=60；缺省/无 type → 双隐、y=130；data.text 存在时
  * height=alertText.height+alertText.y+70、confirmButton.y=height-50）。
  *
- * 测试形态：ctor 常量面在 stub 即完整（src 逐字入 stub）会先绿；
- * type 分派面等 implement 充真身。alertText 文本高度依赖字体测量——
- * eval 无真字体但 TextField.height 对给定 htmlText 是确定值，断言用
- * 相对关系（height == alertText.height + alertText.y + 70）而不是绝对
- * 像素数，规避字体环境耦合。
+ * **本组当前红于两道独立闸门，均属 write-tests 期可接受失败形态**：
+ * 1. ctor 撞 LipiPanel 的 eval `#2024`（LipiPanel.hx initPanel 末段把
+ *    `_titleIMG`/`_closeButton` 等子件加进 contentPane、误配成自加自——
+ *    容器内实测 `new LipiPanel()`/`new AlertWindow()` 同崩 Error #2024，
+ *    属 main 既有 LipiUI 库底座缺陷、#86 交付面，非 #87 逻辑；
+ *    write-tests 职责不含修库、留 implement/库底座修正）；
+ * 2. implement 充真身后 init 的素材通道需假域注入——getMaterial
+ *   （"SuccessIcon"/"ErrorIcon"）原文**无 null 守卫**（:84-85 直取即读
+ *   .x/.y），素材缺失即 NPE。support/MaterialFakes 假域注入让两个符号
+ *   按名命中（MaterialFakes.hx 类头——编译表锚定 + push 普通域），
+ *   init 才能走完装配段。round 1 review 驳回的「NPE 永红」即由注入解法。
+ *
+ * alertText 文本高度依赖字体测量——eval 无真字体但 TextField.height 对
+ * 给定 htmlText 是确定值，断言用相对关系（height == alertText.height +
+ * alertText.y + 70）而不是绝对像素数，规避字体环境耦合。隔离：MaterialLib
+ * 是单例，teardown reset 归位（MaterialProxyTest 等以注册表为空为前提）。
  */
 @:access(mc.view.common.AlertWindow)
 class AlertWindowTest {
 	public function new() {}
+
+	function teardown() {
+		MaterialFakes.reset();
+	}
 
 	// ctor 常量（AlertWindow.as:34-42）：缺省宽 320、高 280、窗名、模态
 	public function test_ctor_defaults() {
@@ -41,9 +57,9 @@ class AlertWindowTest {
 	}
 
 	// data.type 四分（:143-168）：success/error/tip/缺省各自的图标显隐与
-	// 文本 y。需要先 init() 装配（init 在 stub 里 throw——本测试此刻必
-	// 败，implement 后转绿）
+	// 文本 y。MaterialFakes.install 让 init 的 SuccessIcon/ErrorIcon 命中
 	public function test_type_branches_icon_visibility_and_text_y() {
+		MaterialFakes.install();
 		var win = new AlertWindow();
 		win.init();
 		win.data = {type: "success", text: "x"};
@@ -70,6 +86,7 @@ class AlertWindowTest {
 	// 高度重算（:172-176）：data.text 进来后 height=alertText.height+
 	// alertText.y+70、confirmButton.y=height-50
 	public function test_height_recalculation() {
+		MaterialFakes.install();
 		var win = new AlertWindow();
 		win.init();
 		win.data = {type: "success", text: "一行文本"};
@@ -84,6 +101,7 @@ class AlertWindowTest {
 
 	// 无 text 键 → 高度不重算（:171 hasOwnProperty 门）
 	public function test_no_text_key_keeps_height() {
+		MaterialFakes.install();
 		var win = new AlertWindow();
 		win.init();
 		win.data = {type: "success"}; // 无 text

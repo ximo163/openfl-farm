@@ -4,26 +4,35 @@
 	mc_data 的 <animals> 并入 mc_main 主配置（FarmWorld.as:227 appendChild），
 	mc_card 的 <cards> 同理。本文件的元素/属性按部署包真实下发抄录：
 	- postUrl/folder/version/openControl/security：
-	  legacy/deploy/QFarmFlash/source/core/source/xml/mod/mc_main.php:8-22
-	  （$url 按生产形态实例化为 http://appimg.qq.com/mc——addPrefix 的
-	  appimg 替换链依赖该域名字面，GetCropID.as:211-219）
-	- animal 1001（鸡）：mc_data.php:5575-5601 全文抄录（childNum 20、
-	  house 窝、sound 1、u 个、product 鸡蛋、无 v 属性——getAnimalV 的
-	  `|| ""` 空串分支；nextText/nextTime 六档 14400,14400,129600,15,
-	  21585,158400）
-	- animal 1083（白玉猴）：mc_data.php isActivity 唯一样本（isActivity=1、
+	  legacy/deploy/QFarmFlash/source/core/source/xml/mod/mc_main.php:7-18。
+	  postUrl 六个 url 形属性原文全部是 "$url/mymc.php?mod="（全文件零
+	  mync、零 pyimg——pengyou 变体同 $url 同 mymc.php，getCommonUrlNc/
+	  Farm 的两分支在生产读到同值）；$url 按生产形态实例化为
+	  http://appimg.qq.com/mc——addPrefix 的 appimg 替换链依赖该域名字面
+	  （GetCropID.as:211-219）
+	- version 无 language 属性（mc_main.php:9 原文如此）——Language.lang
+	  走属性缺失分支
+	- animal 1001（鸡）：mc_data.php:5575-5619 全文抄录（childNum 20、house 窝、
+	  sound 1、u 个、product 鸡蛋、无 v 属性——getAnimalV 的 `|| ""` 空串
+	  分支；nextTime 六档 14400,14400,129600,15,21585,158400；info 12 条
+	  <l> 逐条全录）
+	- animal 1083（白玉猴）：mc_data.php:3585-3605 全文抄录（isActivity=1、
 	  isProductActivity=1——getActivity 双分支的 true 侧；1001 无该属性
-	  充当 false 侧）
-	- animal 1502（牛）：mc_data.php（v="1" 非空样本——getAnimalV 非空
-	  分支与 getAnimalURL 的 ?v= 拼接；house 棚、sound 1、childNum 12、
-	  u 瓶、product 牛奶；nextTime 六档 32400,32400,216000,15,43185,280800）
-	- cards 2001/2002：mc_card.php:8-9（isLock=1/0 两样本，src 的 $url
-	  实例化同上）
-	- openControl 六项：mc_main.php:12-17 逐字（harvestall 的 time 小时表、
+	  充当 false 侧；nextTime 六档 25200,25200,129600,15,43185,180000；
+	  info 4 条 <l> 逐条全录）
+	- animal 1502（牛）：mc_data.php:2555-2593 全文抄录（v="1" 非空样本——
+	  getAnimalV 非空分支与 getAnimalURL 的 ?v= 拼接；house 棚、sound 1、
+	  childNum 12、u 瓶、product 牛奶；nextTime 六档
+	  32400,32400,216000,15,43185,280800；info 10 条 <l> 逐条全录）
+	- cards 2001/2002：mc_card.php:8-9 抄录（isLock 两张都是 1——真实卡表
+	  8 张全为 isLock="1"，不存在 0 样本；src 的 $url 实例化同上）
+	- tip / <l> 排版：部署原文是多行缩进排版（文本节点带首尾空白），
+	  fixture 内联单行、文本内容逐字——首尾空白是 XML 排版不是被测内容
+	- openControl 六项：mc_main.php:10-17 逐字（harvestall 的 time 小时表、
 	  sprice 的日期窗、wild 带 openexp、pack open=false）
 	- warehouse/product：GetCropID.getProductTip 读
 	  _xml.warehouse.product.(@id==val).tip（GetCropID.as:366-376）；
-	  mc_data.php:5699 的 <warehouse /> 在部署包里是空元素（产品提示
+	  mc_data.php 末尾的 <warehouse /> 在部署包里是空元素（产品提示
 	  由运行期 addon 或下发更新并入）——tip 存在性由源码证实，文本值
 	  无 legacy 出处，仅作解析通路钉
 	- game/record：GetCropID.getGameRecord 读 _xml.game.record[0]
@@ -34,9 +43,9 @@
 	fixture 不虚造该属性，测试钉空串分支。
 -->
 <main>
-	<postUrl url="http://appimg.qq.com/mc/mymc.php?mod=" commonFarm="http://appimg.qq.com/mc/mymc.php?mod=" commonNc="http://appimg.qq.com/mc/mync.php?mod=" url_pengyou="http://pyimg.qq.com/mc/mymc.php?mod=" commonFarm_pengyou="http://pyimg.qq.com/mc/mymc.php?mod=" commonNc_pengyou="http://pyimg.qq.com/mc/mync.php?mod=" fbRequest="gb_buy" cftRequest="gb_buy" verifyRequest="shop_verify"/>
+	<postUrl url="http://appimg.qq.com/mc/mymc.php?mod=" commonFarm="http://appimg.qq.com/mc/mymc.php?mod=" commonNc="http://appimg.qq.com/mc/mymc.php?mod=" url_pengyou="http://appimg.qq.com/mc/mymc.php?mod=" commonFarm_pengyou="http://appimg.qq.com/mc/mymc.php?mod=" commonNc_pengyou="http://appimg.qq.com/mc/mymc.php?mod=" fbRequest="gb_buy" cftRequest="gb_buy" verifyRequest="shop_verify"/>
 	<folder url="http://appimg.qq.com/mc/module/mc/"/>
-	<version value="" loginurl="http://i.qzone.qq.com/" language=""/>
+	<version value="" loginurl="http://i.qzone.qq.com/"/>
 	<openControl>
 		<item name="tool" open="true"/>
 		<item name="pack" open="false"/>
@@ -50,33 +59,54 @@
 		<animal childNum="20" house="窝" id="1001" name="鸡" price="700" product="鸡蛋" sf="0" sound="1" u="个">
 			<nextText value="幼仔,成长期,生产期,生产期,待产期,收获期"/>
 			<nextTime value="14400,14400,129600,15,21585,158400"/>
-			<tip>鸡（英文：chicken）是家禽之一。</tip>
+			<tip>鸡（英文：chicken    ）是家禽之一，品种很多。头部有红色肉冠，雄性的善啼好斗，能报晓，鸡肉和鸡蛋可供食用。</tip>
 			<info>
 				<l>鸡是人类饲养最普遍的家禽之一。</l>
 				<l>咖啡奶可补钙质。</l>
+				<l>发光并非太阳的专利，你也可以发光。</l>
+				<l>Ladies and 乡亲们，我想死你们了！</l>
+				<l>QQ农场和牧场的金币是通用的哦。</l>
+				<l>睡觉是养生第一要素。</l>
+				<l>人家有的是背景，而我有的只是背影。</l>
+				<l>大家排队站好，一会儿老鹰来了玩游戏。</l>
+				<l>带翅膀的不一定都能飞。</l>
+				<l>早起的小鸡有虫吃，早起的虫儿被我吃。</l>
+				<l>高中代数老师：“说话不许出声音！”</l>
+				<l>老虎不发猫，你当我是病危呀!</l>
 			</info>
 		</animal>
 		<animal childNum="8" desc="" house="窝" id="1083" isActivity="1" isProductActivity="1" isvip="0" name="白玉猴" price="1200" product="白玉羽毛" sf="0" sound="0" u="只" v="0">
 			<nextText value="幼仔,成长期,生产期,生产期,待产期,收获期"/>
-			<nextTime value="14400,14400,129600,15,21585,158400"/>
-			<tip>白玉猴</tip>
+			<nextTime value="25200,25200,129600,15,43185,180000"/>
+			<tip>中秋国庆活动期间，收集白玉猴仔，可在“月兔儿”处换取中秋国庆宝盒。活动结束后动物将会下架。</tip>
 			<info>
-				<l>白玉猴提示一</l>
+				<l>猜灯谜：嫦娥下凡(打一花名) —月季</l>
+				<l>猜灯谜：举头望明月(打一中药名)—当归</l>
+				<l>猜灯谜：爱好旅游（打一成语）—喜出望外</l>
+				<l>猜灯谜：笑死人（打一成语）—乐极生悲</l>
 			</info>
 		</animal>
 		<animal childNum="12" house="棚" id="1502" name="牛" price="3000" product="牛奶" sf="0" sound="1" u="瓶" v="1">
 			<nextText value="幼仔,成长期,生产期,生产期,待产期,收获期"/>
 			<nextTime value="32400,32400,216000,15,43185,280800"/>
-			<tip>牛（英文：cow）是草食性反刍家畜。</tip>
+			<tip>牛（英文：cow    ）是草食性反刍家畜，属于哺乳纲。它具有多种用途，牛肉和牛乳可供食用，牛皮属工业原料。</tip>
 			<info>
 				<l>牛在中国文化中是勤力的象征。</l>
 				<l>樱桃是补铁的上佳食品。</l>
+				<l>什么都略懂一点，生活就会更多彩一点。</l>
+				<l>如果不出去走走，你会以为这就是世界。</l>
+				<l>走自己的路，让别人打车去吧。</l>
+				<l>别看它是一条黑母牛，牛奶一样是白的。</l>
+				<l>好久没有人把牛皮吹得这么清新脱俗了。</l>
+				<l>青青河边草，我要吃到老。</l>
+				<l>不想当厨子的裁缝不是好司机。</l>
+				<l>喝纯净水，产纯牛奶，所以我很单纯。</l>
 			</info>
 		</animal>
 	</animals>
 	<cards>
 		<card id="2001" isLock="1" name="圣诞老人卡" src="http://appimg.qq.com/mc/module/ui/allcards/Card_2001.swf"/>
-		<card id="2002" isLock="0" name="圣诞树卡" src="http://appimg.qq.com/mc/module/ui/allcards/Card_2002.swf"/>
+		<card id="2002" isLock="1" name="圣诞树卡" src="http://appimg.qq.com/mc/module/ui/allcards/Card_2002.swf"/>
 	</cards>
 	<warehouse>
 		<product id="1001"><tip>鸡蛋的产品提示</tip></product>

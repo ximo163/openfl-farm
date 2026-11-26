@@ -15,7 +15,7 @@ import utest.Assert;
  * （sqrt((exp+25)/100)-0.5）；getAnimalNum :859-885（>=8→10；窝：1→2、
  * 2→3、>=3→n+2；棚&&!=0→n+2；else 0）；showFriendSum :491-506（空搜索
  * 用 friendList、否则 filterFriendList，ceil(len/friendPageNum)，0→1）；
- * friendPageNum :1376-1379（恒 10）；friendFilter :1211-1215（userName
+ * friendPageNum :1354-1357（恒 10）；friendFilter :1211-1215（userName
  * 正则 `.*?value.*` i）、friendFilterByUin :549-552（uin 同型正则）；
  * filterFriendList :1333-1341（userName 过滤 + qzone 追加 uin 过滤、
  * uniq 去重）；uniq :1051-1066（按 uId 去重、保序）；hostFid :898-905

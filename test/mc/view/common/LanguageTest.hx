@@ -17,9 +17,12 @@ import utest.Assert;
  * 串替换——序号替换在键循环内，param2 无键时一次都不跑）；内置表
  * :12-25（buyNum "输入数量（{minNum}~{maxNum}）" :19）。
  *
- * INI 注入同 GetCropIDTest（fixture test/fixtures/mc-ini.xml 的 version
- * language="" 抄录 mc_main.php:10）。_currentLang 是静态缓存位——setup
- * 经 @:access 复位 "" 逼 lang 重解析，避免跨用例污染。
+ * INI 注入同 GetCropIDTest。fixture 的 <version> 抄录 mc_main.php:9——
+ * 原文 **没有 language 属性**（`value="" loginurl="http://i.qzone.qq.com/"`
+ * 仅此而已），language="" 是 round 1 的编造值，本轮已删。lang 的缺省
+ * 解析因此走**属性缺失分支**（`== null`），这才是生产形态；空串分支
+ * （`== ""`）另用 Xml.set 现场注入驱动。_currentLang 是静态缓存位——
+ * setup 经 @:access 复位 "" 逼 lang 重解析，避免跨用例污染。
  *
  * stub 期 replaceText/L/lang 全 throw not implemented——本测试必然等
  * implement 充真身才绿（write-tests 的意图即如此）。
@@ -41,8 +44,22 @@ class LanguageTest {
 		Assert.equals("en", Language.EN);
 	}
 
-	// lang（:54-69）：fixture version language="" → 空串分支落 "cn"
-	public function test_lang_defaults_cn_when_empty() {
+	// lang（:54-69）：fixture 的 version **无 language 属性**（生产形态——
+	// mc_main.php:9）→ 缺失分支（`== null`）落 "cn"
+	public function test_lang_defaults_cn_when_attr_missing() {
+		Assert.equals("cn", Language.lang);
+	}
+
+	// lang 空串分支（:64 `== "" || == null` 同落 cn——AS3 双条件并列）。
+	// fixture 不含该属性，现场注入 "" 驱动空串半边：生产虽不走此支，源码
+	// 显式写出这个守卫、implement 的等价物须保留同形
+	public function test_lang_defaults_cn_when_attr_empty_string() {
+		var xml = Xml.parse(FIXTURE);
+		for (e in xml.firstElement().elementsNamed("version")) {
+			e.set("language", "");
+		}
+		INI.getInstance().data = xml;
+		Language._currentLang = "";
 		Assert.equals("cn", Language.lang);
 	}
 

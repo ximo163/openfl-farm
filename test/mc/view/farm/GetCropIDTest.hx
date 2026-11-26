@@ -192,21 +192,27 @@ class GetCropIDTest {
 	}
 
 	// :322-364 getCommonUrlNc/Farm：mode==qzone 或 xymode=="qq.com" 走
-	// common*，否则 *_pengyou 变体（postUrl 属性抄录 mc_main.php:9）
+	// common*，否则 *_pengyou 变体。**注意真实部署形态**：mc_main.php:7 的
+	// postUrl 六个 url 形属性原文全部是 `$url/mymc.php?mod=`（同 $url 同
+	// mymc.php——全文件零 mync、零 pyimg，fixture 头注释），pengyou 变体
+	// 与非 pengyou 在生产读到**同值**。两分支因此断言同一串，本测试钉的
+	// 是「分支各自取对了属性、且两属性同值」的真实配置语义，不是编造分歧。
 	public function test_commonUrl_mode_branches() {
-		// qzone → 非 pengyou
+		var mymc = "http://appimg.qq.com/mc/mymc.php?mod=";
+		// qzone → 非 pengyou 属性 commonNc/commonFarm
 		LocalData.mode = "qzone";
-		Assert.equals("http://appimg.qq.com/mc/mync.php?mod=", GetCropID.getCommonUrlNc());
-		Assert.equals("http://appimg.qq.com/mc/mymc.php?mod=", GetCropID.getCommonUrlFarm());
+		Assert.equals(mymc, GetCropID.getCommonUrlNc());
+		Assert.equals(mymc, GetCropID.getCommonUrlFarm());
 		// xymode=="qq.com" 同路（即便 mode 非 qzone）
 		LocalData.mode = "";
 		LocalData.xymode = "qq.com";
-		Assert.equals("http://appimg.qq.com/mc/mync.php?mod=", GetCropID.getCommonUrlNc());
-		// 两者都不沾 → pengyou
+		Assert.equals(mymc, GetCropID.getCommonUrlNc());
+		Assert.equals(mymc, GetCropID.getCommonUrlFarm());
+		// 两者都不沾 → pengyou 变体——真实配置下同值
 		LocalData.mode = "";
 		LocalData.xymode = "";
-		Assert.equals("http://pyimg.qq.com/mc/mync.php?mod=", GetCropID.getCommonUrlNc());
-		Assert.equals("http://pyimg.qq.com/mc/mymc.php?mod=", GetCropID.getCommonUrlFarm());
+		Assert.equals(mymc, GetCropID.getCommonUrlNc());
+		Assert.equals(mymc, GetCropID.getCommonUrlFarm());
 	}
 
 	// :490-493 idToWareName / :638-642 idToToolName ——纯拼接（这两个方法
@@ -222,11 +228,15 @@ class GetCropIDTest {
 		Assert.isFalse(GetCropID.canSellCubTip());
 	}
 
-	// :507-517 idToCardLockStatus：cards.card.@isLock parseInt
-	// （mc_card.php:8-9 抄录：2001 isLock=1、2002 isLock=0）
+	// :507-517 idToCardLockStatus：cards.card.@isLock parseInt。
+	// mc_card.php:8-9 抄录——真实卡表全部 8 张都是 isLock="1"，**不存在
+	// isLock="0" 样本**（round 1 把 2002 编成 0，本轮按真实值重写）。两张
+	// fixture 卡都钉 1。locked/missing 的 NaN→0 边界（parseInt("") → NaN、
+	// Haxe 侧 int(NaN) 或 Std.parseInt 的 null→0 语义）是 implement 的取值
+	// 细节，不在本测试断言——fixture 无该样本，注备录。
 	public function test_idToCardLockStatus() {
 		Assert.equals(1, GetCropID.idToCardLockStatus("2001"));
-		Assert.equals(0, GetCropID.idToCardLockStatus("2002"));
+		Assert.equals(1, GetCropID.idToCardLockStatus("2002"));
 	}
 
 	// :552-562 idToCardName
@@ -240,9 +250,12 @@ class GetCropIDTest {
 		Assert.equals("http://appimg.qq.com/mc/module/ui/allcards/Card_2001.swf", GetCropID.idToCardSrc("2001"));
 	}
 
-	// :430-440 getTipInfo：animals tip 元素文本
+	// :430-440 getTipInfo：animals tip 元素文本逐字。mc_data.php:5575-5619
+	// 抄录全文——注意 "chicken" 后 **四个空格**（round 1 截断并丢了空格，
+	// 本轮抄原文全句）：fixture 头注释已注明 tip/<l> 排版是把原文多行缩进
+	// 内联成单行、文本逐字。
 	public function test_getTipInfo() {
-		Assert.equals("鸡（英文：chicken）是家禽之一。", GetCropID.getTipInfo("1001"));
+		Assert.equals("鸡（英文：chicken    ）是家禽之一，品种很多。头部有红色肉冠，雄性的善啼好斗，能报晓，鸡肉和鸡蛋可供食用。", GetCropID.getTipInfo("1001"));
 	}
 
 	// :366-376 getProductTip：warehouse.product tip（存在性由源码证实，

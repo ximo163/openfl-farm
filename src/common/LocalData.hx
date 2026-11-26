@@ -51,7 +51,10 @@ class LocalData {
 
 	// LocalData.as:112-118（getInstance(param1 = "FarmWorld")——实例方法
 	// setObject/getObject 的 SharedObject 通道 stub 抛 not implemented，
-	// 真身随 mcloader 片；issue #87 的 RequestManager 测试不触实例通道）
+	// 真身随 mcloader 片；issue #87 的 RequestManager 测试会触到 setObject
+	// ——addUin/addAction/resetUin 的内存 mutation 先于该调用发生，测试以
+	// try/catch 容忍 stub 掷错后只断言内存态，implement/mcloader 补全后
+	// 容忍分支不再触发）
 	public function new() {}
 
 	public static var instance:LocalData;

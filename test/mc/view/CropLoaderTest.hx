@@ -1,22 +1,26 @@
 package mc.view;
 
 import mc.view.CropLoader;
+import openfl.display.Loader;
+import openfl.events.Event;
 import utest.Assert;
 
 /**
  * mc.view.CropLoader 纯逻辑（issue #87 write-tests，对 stub 失败）：
- * 批量 Loader 队列的常量与存取面。
+ * 批量 Loader 队列的常量、存取与 loadNext 的 FIFO/收尾语义。
  *
  * 期望值出处：legacy/decompiled/Master2_v_142/scripts/mc/view/CropLoader.as
  * —— ITEM_COMPLETE="item_complete"（:15）；load :40-58（param1 null 时
  * throw Error("需要设置urlArray或urls参数")）；loadNext :101-116（队列
- * shift 出 url 逐个 load、空了 comp() 收尾）；urlArray :91-99 与
- * contents :118-121 plain 存取；onIOError :30-34（失败 url 记 "error"
- * 字符串并 loadNext 继续）。
+ * shift 出 url——`if(_loc1_)` 真值门：falsy 串不 load 也不 comp、纯消耗；
+ * 队列空 → comp()）；comp :81-99（先 dispatchEvent(Event.COMPLETE) 再摘
+ * 4 个 contentLoaderInfo 监听、try-close 吞错、`_loader=null`）。
  *
- * 网络/定时面（Loader.load、setTimeout 50ms）不在 eval 单测——本测试钉
- * 常量、存取、null 入参异常、以及 urlArray 队列 shift 语义（经
- * @:access 直调 loadNext 避免定时器）。
+ * 网络/定时面（Loader.load 真加载、load() 入口的 setTimeout 50ms）不在
+ * eval 单测——本测试经 @:access 直调私有 loadNext/直置 _urlArray/_loader
+ * 绕过定时器，把 FIFO 消耗与 comp 收尾同步钉住，**不再是注释备录的占位**。
+ * Loader.close 在 openfl 9.5.2 只警告不掷（容器内实测——"close is not
+ * implemented" 警告），comp() 的 try-close 吞错段在 eval 安全走完。
  */
 @:access(mc.view.CropLoader)
 class CropLoaderTest {
@@ -50,15 +54,57 @@ class CropLoaderTest {
 		Assert.equals(arr, loader.urlArray);
 	}
 
-	// loadNext 队列语义（:101-116）：逐个 shift、空时 comp() 收尾——
-	// comp 依赖 _loader 实例（load 路径才建），直接调 loadNext 在无
-	// loader 态会撞 null——本测试通过 load 入口驱动但 50ms 定时面在
-	// eval 不泵……改写：直接布置 _urlArray 与 _loader 形态不可测，
-	// 钉「shift 语义」本身——队列内容按 FIFO 消耗。这条只能等
-	// implement 的网络截获形态补真值，先占位
-	public function test_loadNext_fifo_documented() {
-		// loadNext :101-116——_urlArray.shift() 逐个消耗、空时 comp()；
-		// shift 是 FIFO：先入先出。真值断言由 implement 期补
-		Assert.isTrue(true);
+	// loadNext 的 falsy 消耗（:104-108）：`_urlArray=[""]` —— shift 出
+	// 空串，`if(_loc1_)` 真值门拒绝 → 不 load、**也不 comp**（队列还非空
+	// 判断先走 length>0 分支、走不到 else 的 comp）——纯消耗一格。队列
+	// 清零后下一次 loadNext 才进 comp。这条把「shift 是 FIFO 消耗」与
+	// 「falsy 不触发收尾」两个语义一并钉住
+	public function test_loadNext_falsy_url_consumed_without_comp() {
+		var loader = new CropLoader();
+		loader._urlArray = [""];
+		loader._loader = new Loader(); // comp 需要非 null loader——本路径不进 comp
+		var compFired = 0;
+		loader.addEventListener(Event.COMPLETE, function(e) compFired++);
+		loader.loadNext();
+		// 空串被消耗（FIFO shift）
+		Assert.equals(0, loader._urlArray.length);
+		// 不 load 不 comp——COMPLETE 未派发、loader 未清空
+		Assert.equals(0, compFired);
+		Assert.notNull(loader._loader);
+	}
+
+	// loadNext 空队列进 comp（:111-113 → :81-99）：COMPLETE 同步派发、
+	// 4 监听摘除、try-close 吞错、`_loader=null`——装配真 Loader 直调
+	public function test_loadNext_empty_queue_comp_finishes() {
+		var loader = new CropLoader();
+		loader._urlArray = [];
+		loader._loader = new Loader();
+		var compFired = 0;
+		loader.addEventListener(Event.COMPLETE, function(e) compFired++);
+		loader.loadNext();
+		// comp() 先派发 COMPLETE（:83）
+		Assert.equals(1, compFired);
+		// `_loader=null`（:98——摘监听+close 后清空）
+		Assert.isNull(loader._loader);
+	}
+
+	// FIFO 顺序（:105 shift——先入先出 + :107 非空串进 load 分支）：
+	// 用 support.RecordingLoader（覆写 load 只记 url——真身 load 在 eval
+	// 读 Lib.current.loaderInfo 崩 null，RecordingLoader.hx 类头注释）
+	// 驱动真 url，直接钉「load 的 url 顺序 = 队列 FIFO 顺序」，
+	// 比推断剩余队列更贴近被测语义
+	public function test_loadNext_fifo_order() {
+		var loader = new CropLoader();
+		loader._urlArray = ["first.swf", "second.swf", "third.swf"];
+		var rec = new support.RecordingLoader();
+		loader._loader = rec;
+		loader.loadNext();
+		Assert.equals("first.swf", rec.loadedUrls[0]); // 首元素先出
+		loader.loadNext();
+		Assert.equals("second.swf", rec.loadedUrls[1]); // FIFO 非 LIFO
+		loader.loadNext();
+		Assert.equals("third.swf", rec.loadedUrls[2]);
+		Assert.equals(3, rec.loadedUrls.length);
+		Assert.equals(0, loader._urlArray.length); // 队列耗尽
 	}
 }

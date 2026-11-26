@@ -56,6 +56,13 @@ suites:
   # haxe.Json.parse 在真后端数据上红 CI（#7 web-smoke 两轮），自编 fixture
   # 查不出来，这个 2 秒的 grep 在容器里就拦住。
   json-facade: { cmd: "bash checks/json-facade-only.sh", timeout: 2m }
+  # test 树卫生机器门（issue #70，#56 import.hx 遮蔽事故的机械化收口）：
+  # 判式/豁免/坑见 handbook/architecture/test-tree-gates.md。python3 不是
+  # python——agent 容器没有 python 别名，照 python 接线 verify 直接 127。
+  # 接线由人完成：.orchestrator/ 在编排器阶段合同里硬编码保护（配置层
+  # pipeline.yaml 的 protected: 不含它，两层以合同层为准），agent 不可写。
+  test-stub-scan: { cmd: "python3 tools/scan_test_stubs.py", timeout: 1m }
+  module-path-scan: { cmd: "python3 tools/scan_module_paths.py", timeout: 1m }
 
 preflight: [manifest, compile, test, json-facade]   # test 无 junit，靠退出码做 expect: fail 基线
 
@@ -77,6 +84,8 @@ stages:
       - compile                       # 测试和 stub 能编译
       - json-facade                   # 测试引入的 src 改动也不许绕过 JSON 门面
       - { suite: test, expect: fail } # 新测试在实现之前失败（靠退出码判定）
+      - test-stub-scan                # #70 机器门：stub 错放 test/ 当场拦（#56 教训）
+      - module-path-scan              # #70 机器门：跨树重复模块路径即遮蔽风险
     attempts: 4
     escalate: { after: 2, models: [strong2] }
 
@@ -104,7 +113,7 @@ stages:
     protect_since: write-tests
     append_only: ["test/**"]
     protected: ["test/fixtures/"]
-    verify: [compile, test, json-facade]
+    verify: [compile, test, json-facade, test-stub-scan, module-path-scan]   # 后两个：#70 机器门
     ci: true    # 开 PR 并等 required_checks：html5 构建和冒烟在 GitHub 上
     attempts: 4
     escalate: { after: 2, models: [strong, strong2] }

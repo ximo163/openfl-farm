@@ -397,6 +397,16 @@ class TestMain {
 		// 的脚本侧（tools/scan_test_stubs.py / scan_module_paths.py）
 		runner.addCase(new tools.TestStubScanTest());
 		runner.addCase(new tools.ModulePathScanTest());
+		// issue #77：新手引导真机文字残留（#65 后续，write-tests 阶段，对
+		// 带盲区的现行 HelpGuideWiring 失败）——range 补洞的两个盲区：
+		// walk 下钻 SimpleButton 四态子树（9 个 DefineEditText 真例化在按钮
+		// up/over/down 状态 sprite 里，非死符号）、attach 后第一个
+		// ENTER_FRAME 一次性重放（真机 41 条告警 = 修复在真实加载流一条未
+		// 生效）；fixture（test/fixtures/help-fields.json）钉死 41 字段的
+		// HTML 原文与 32 直挂 + 9 按钮状态的挂载账（提取自
+		// legacy/decompiled/help/swf.xml）。node 真实流测试与真机复验按
+		// issue 走 implement 阶段 + owner
+		runner.addCase(new shim.HelpGuideWiringTest());
 		Report.create(runner);
 		runner.run();
 	}

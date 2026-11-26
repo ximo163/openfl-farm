@@ -1535,9 +1535,77 @@
 - **文字类告警在 node 可复现、可计数**：openfl 内部 Log 全走
   console.warn，垫片环境拦 console.warn 数特定文案即得逐字段计数（32
   字段 32 条，修复后 0）；textWidth 读取触发 __updateLayout，不需要
-  真渲染。真机 41 条对 32 个实例化字段的差额 = 9 个 DefineEditText 是
-  任何时间轴都没放置的死符号 + 部分字段多次布局重复计数——修完后同
-  根源全消，别按 41 去对表。
+  真渲染。真机 41 条告警的真实账（**#77 2026-11-25 更正，本条原判
+  「9 个死符号+重复计数」系误判**）：= 32 个页直挂字段 + 9 个
+  **SimpleButton 状态内字段**（下一页 5/7/9、上一页 25/27/29、我明白了
+  76/78/80，DefineButton2 的 up/over/down 态各一份），各告警一次——
+  9 个不是死符号：swf 库 AnimateButtonSymbol.__createObject 经
+  SimpleButton.__constructor 静态钩子把四态子件建出来，真实例化真参与
+  布局（原版 Flash 按钮文字就是渲染的），只是挂在按钮状态子树里、不在
+  页直挂子树上，当年 node 探针只数页子树才漏了它们。且探针的「修复后
+  0 命中」验证的是探针手工触发 textWidth 的顺序（修复先于布局），不是
+  LocalSwfLoader 真实加载流的顺序——真机 attachContent 时刻页时间轴
+  子件还没上树，attach 时刻的一遍修复在真实流里一条都不生效。防：
+  (1) 「符号有没有实例化」要沿库实例化链（__constructor 钩子/四态子件）
+  核实到显示对象类型，PLACE 记录不是唯一实例化通道；(2) 验证修复有效
+  性必须走真实加载流（真帧推进），探针手工触发布局的顺序不代表真机
+  相位（ENTER_FRAME 派发 → __enterFrame 时间轴推进 → render 布局）。
+
+## 2026-11 · #77（help 文字修复的两个盲区：SimpleButton 状态子树 + 修复时点）
+
+- **swf 资产的「字段账」必须含 DefineButton2 状态子树**：BUTTONRECORD
+  的 up/over/down 态放文字（help 三按钮族：每按钮三态各一份
+  DefineEditText）时，这些字段**在页直挂子树上不可见**——SimpleButton
+  不是 DisplayObjectContainer，任何「遍历容器找 TextField」的 walk 到
+  按钮就停。修复/审计类 walk 遇 SimpleButton 必须特判下钻
+  upState/overState/downState/hitTestState（四态是公共属性，可空、可非
+  容器——默认构造的 SimpleButton upState 是裸 DisplayObject、over/down
+  为 null，判空判容器缺一不可）。help 的 hitTest 真按钮是纯 shape 无
+  文字，但下钻四态比三态更防御（同族 swf 不保证同款形态）。
+- **文本修复的真正时点敌人是 Loader_onComplete 的 width/height 量测，
+  不是「子件挂载晚」（node 真实流探针闭合，2026-11-25 更正本条初稿的
+  错位假设）**：openfl 9.5.2 `Loader_onComplete`（Loader.hx:781-785）为
+  补 `contentLoaderInfo.width/height` 读 `content.width/content.height`，
+  该读**递归量测整棵子树**、对每个文本字段触发 `__updateLayout` 真实
+  布局——这就是 issue「显示不对称的注记」推演不闭环缺的那一环：布局
+  的首次发生点在加载完成路径里、不在渲染帧。因此挂在 Loader_onComplete
+  **之后**的修复（无论 attach 时刻还是 ENTER_FRAME 重放）都已晚——洞
+  已告警、布局组已残缺，range 簿记补上也救不回已中断的布局。修复必须
+  **先于 Loader_onComplete**（LocalSwfLoader.attachContent 把
+  HelpGuideWiring.attach 调到 Loader_onComplete 之前）。探针同时证伪
+  「attach 时刻子件还没上树」的假设：Animate 库实例化（getMovieClip）
+  同步建完整时间轴树，attach 时刻 59 个字段实例已全部在树——初稿按
+  真机告警反推的「挂载晚」不成立，只是告警发生在更早的量测点。防：
+  (1) 修复/审计显示树的胶水，时点分析要追到**第一个触发量测/布局的
+  库内部读**（width/height/getBounds/textWidth 一族），不是追到「回调
+  挂上」为止；(2) ENTER_FRAME 一次性重放仍保留（兜帧脚本翻页/帧内
+  挂载形态，幂等无叠加），但它不是主修复面——主修复面必须落在首个
+  量测点之前。
+- **验证「修复在真实流生效」的 node 探针必须复刻 html5 构建的编译
+  defines 与帧相位**（本 issue 验收 4 交付物 `tools/HelpRealFlowProbe.hx`
+  实证）：① 裸 `haxe -js` 没有 `-D tools`，`lime.utils.Assets.loadLibrary`
+  的工具分支（`#if (tools && !display && !macro)`）编译掉、返回**永不
+  complete 的空 Future**——LocalSwfLoader 在 node 里根本走不通，这正
+  是 #75 当年用「手工 textWidth 探针」代替真实流的隐形原因；按
+  `export/html5/haxe/release.hxml` 的 define 集（`-D tools -D html5 -D web
+  -D openfl-html5 -D lime-html5 -D lime-canvas -D lime-dom -D lime-webgl
+  -D lime-howlerjs -D howlerjs`）编译后 Assets.loadLibrary 同步完成、
+  真实流全链可跑（警告：`-D tools` 必须配 html5 全家，单加会因
+  ImageBuffer 的原生/浏览器条件分歧编译红）。② 装库用
+  `AnimateLibrary.loadFromBytes` + `lime.utils.Assets.registerLibrary`
+  把库塞进注册表，Assets.loadLibrary 即命中（node 垫片无资产清单）。
+  ③ 帧相位按 openfl Stage.__onLimeRender（Stage.hx:2433-2439）逐字复制
+  ——broadcastEvent(ENTER_FRAME/FRAME_CONSTRUCTED/EXIT_FRAME) 三广播
+  （走 DisplayObject.__broadcastEvents 注册表，拷贝快照再派——一次性
+  监听自摘会边遍历边改数组）+ `__enterFrame(deltaTime)`；broadcast 注册
+  不要求上舞台（stage==null 命中第二支派发条件）。④ 对照组不可省：
+  probe-only（跳过修复）必须见告警全发出，才证明探针通道有牙——#75
+  的假信心就是验证链本身没牙。
+- **openfl 自带诊断开关 `-D openfl_trace_text_layout_groups`**
+  （TextEngine.hx:1746-1750）：逐组打 LG line,w,h,x,y,"text",start,end，
+  真机 logcat 一眼对账每个字段的组态——文字渲染类问题先上诊断构建
+  定位断点在哪一环（内容组存不存在/被没被渲染），比纯推演布局循环
+  快。
 
 ## 2026-11 · #63（基类 Dynamic 字段盲区补扫：名单装配的污染边界）
 

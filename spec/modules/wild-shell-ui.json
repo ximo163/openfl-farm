@@ -1,0 +1,284 @@
+{
+ "version": 1,
+ "module": "wild-shell-ui",
+ "swf": "WildShellNc_v_5",
+ "description": "野生动物壳（农场侧）：module/mc/farm/wild/WildShellNc_v_5.swf（wild.com 一族 16 类；不走 nc_main moduleList，FarmApplication.loadWildShell 按配置 beastLoaderUrl 显式 Loader.load 拉进 main3 子 ApplicationDomain，onWildComplete 反射 Utils.getClass(\"wild.com.Shell.WildShell\") 实例化并注入 BeastAPI）。宿主侧契约类 CmdAPI/IBeastAPI/EvtAPI 与 wild 子系统宿主代码在 main3（805 类、activities 模块 cut 保留批），本 swf 内是 shell 自己的实现侧：WildShell.initConfig(api) 先 URLLoader 拉 wild_v_37.xml 配置（api.beastConfigUrl = Settings.wildXML），init 后 CmdSetup.setup 解析 beastBase（ParserBeast → BeastBase{info:BeastInfo,bReturn:BeastReturn,drop:CrystalDrop} 三个 dynamic Array 子类）并 render FarmStage——农场景里放羊动物入口（WildAnimal 点击切野外舞台、悬停换 Wild_Cursor/FightFlag 光标旗标与发光滤镜）、冒泡旗标 3 秒自动隐藏；checkUpdate 发现放养时间到点（returntime/stealtime+3600 ≤ serverTime）回发 cgi_farm_hpage_beast 同步；getNick 按 ownerId/isfarm 拉好友昵称（cgi_farm_beast_getnick）供悬停提示「xxx 投放的<动物名>，赶紧驱赶吧。」。wild_v_37.xml 的 wildmodule 节再驱动 ModuleManager.loadModule 在活动时间窗内异步加载野外场景 swf（WildScene/ToolScene 与素材，牧场批次范围外）。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php:81（beastLoaderUrl=module/mc/farm/wild/WildShellNc_v_5.swf）与 :82（wildXML=module/mc/farm/wild/wild_v_37.xml）与 :85-88（drop9/wildanimal/wildaction/wildaweapon 素材前缀）",
+  "legacy/decompiled/WildShellNc_v_5/scripts/（16 类；symbolclass/symbols.csv 仅 frame0=wild.com.Shell.WildShell）",
+  "legacy/decompiled/main3_v_221/scripts/module/FarmApplication.as:270（onWildComplete → Utils.getClass(\"wild.com.Shell.WildShell\")）、:586-595（loadWildShell：Loader.load beastLoaderUrl，LoaderContext applicationDomain=CommonData.applicationDomain 共域）、:754-768（_beast 到位 → beastAPI 装配 + loadWildShell 触发）",
+  "legacy/decompiled/main3_v_221/scripts/framework/api/beast/BeastAPI.as:503-521（postRequest → CmdBeastDefs.getIdByCgi → NetHelper.sendRequest）与 :188-208（getURL 素材 URL 拼装）",
+  "legacy/decompiled/main3_v_221/scripts/framework/api/beast/cmd/CmdBeastDefs.as:31-33,49-50,115-120（CMD_WILD_HPAGE_BEAST=10011→cgi_farm_hpage_beast、CMD_WILD_GET_NICK=10012→cgi_farm_beast_getnick，走 _ncCommUrl 前缀）",
+  "legacy/deploy/QFarmFlash/source/core/mync.php:113,124-125（白名单整名 cgi_farm_beast_getnick / cgi_farm_hpage_beast）",
+  "legacy/deploy/QFarmFlash/source/core/module/mc/farm/wild/wild_v_37.xml（wildmodule scene/tool 模块加载配置 + beast/weapon/crystal 数据）",
+  "spec/protocol.json entries.nc.mods（mod 参数/返回权威，S1）"
+ ],
+ "notes": [
+  "拉起链与 #30 四 UI swf 不同：不在 nc_main.php moduleList，而是 main3 FarmApplication 拉用户数据发现 _beast 非空时装配 BeastAPI（beastConfigUrl=Settings.wildXML → wild_v_37.xml）并 loadWildShell() 显式 Loader.load beastLoaderUrl——加载进 main3 子 ApplicationDomain（LoaderContext applicationDomain=CommonData.applicationDomain），反射实例化后 wildShell.initConfig(beastAPI) 注入宿主 API。",
+  "宿主契约类归属：IBeastAPI/EvtAPI（包级顶级）与 wild.com.Shell.command.CmdAPI 在 main3 的 805 类内（activities 模块 cut 保留批，activities.json 已登记）；本 swf 的 16 类全部 import 这些宿主类，cross_module_imports 记 activities/farm-basic（activities 收宿主契约与 BeastAPI，farm-basic 收 NetHelper/framework 基础设施与 module.FarmApplication 拉起链）。",
+  "Master2_v_142（牧场侧）有一套同名 wild.com 类（DataShell/CmdSetup/FarmStage/WildAnimal/Weapon/DataScene/DataTools 等，pasture 模块 350 类口径内）——是牧场批次 WildShell_v_33 家族的宿主侧副本，与本 swf 的农场壳各自独立编译，不要混淆；本清单只收 WildShellNc_v_5 内的 16 类。",
+  "两 postRequest 调用走 mc 通道参数（\"mc\"）：CmdSetup.updateServer/getNick 的 postRequest 第 5 参 common=\"mc\"——但 CmdBeastDefs 里这两个 CMD 的 url 拼的是 _ncCommUrl（农场网关 mync.php），mync.php 白名单均收录；postRequest 实现（BeastAPI.as:503-521）实际不区分 param5 于 URL 选择（cmdId 反查后 NetHelper.sendRequest 统一通道），\"mc\" 仅为语义标记，原样照记。",
+  "com.adobe.serialization.json.JSON.decode 用于 InIData.beast[0].@dy/@dy1（动物站立位 y 坐标 JSON 数组）与 weapon rect 解析——JSON 库在 happyfarm3_v_149 预加载器（外部依赖，不在 805 类内，pasture.json notes 同款口径）。",
+  "WildAnimal 素材链：_API.getURL(\"wildanimal\",{id}) → nc_addon <wildanimal>module/mc/farm/wild/</wildanimal> + \"wildanimal_<id>.swf\"，requestClass(\"Wild_Animal_<id>\",...) 取符号；武器掉落物 getURL(\"wildaweapon\",{id}) → 同前缀 + \"weapon<id>.swf\"、符号 \"Weapon_Over_<id>\"；FightFlag/WildPowerBar2/WildMaoPaoFlag/Wild_Animal_Num_txt/Wild_Animal_Back_txt 等符号经 _API.getMaterial 从宿主素材库取（由 ModuleManager.loadModule 预载 material ApplicationDomain 供 pushToMaterialLib）。这些是牧场批次素材（spec/swf-code-baseline.json wild 族登记），本 issue 边界外、仅记引用链。",
+  "WildShell.initConfig 里 loaderInfo.hasOwnProperty(\"uncaughtErrorEvents\") 的 duck-typing 订阅 uncaughtError 并 preventDefault——AS3 原版容错行为照记，openfl 无 uncaughtErrorEvents 等价物时按 shim 处理（翻译批次的事）。",
+  "ModuleManager.loadModule 按 wildmodule.module 的 @start/@end 时间窗（配置写死 2010-01-01~2099-01-01，恒真）加载 scene（WildScene_v_25）/tool（ToolScene_v_24）模块：CropLoader 批量预载 material 素材（LoaderContext applicationDomain=_API.appCurrentDomain），完成后 pushToMaterialLib 再 Loader.load 主 swf——加载产物无引用持有、无监听，行为原样照记。",
+  "issue #66 边界：wild/ 下其余素材（牧场版 WildShell_v_33、WildScene_v_25、ToolScene_v_24、weapon/wildanimal 族）在 baseline 登记为牧场批次、不在本清单。"
+ ],
+ "counts": {
+  "classes": 16
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Scene/DataScene.as",
+   "class": "wild.com.Scene.DataScene",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "野外场景数据单例（攻击类型/武器/掉落/奖励事件总线）",
+   "loc": 205,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/DataShell.as",
+   "class": "wild.com.Shell.DataShell",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "壳数据单例（动物/昵称/配置查询 + rollOverFilter 滤镜常量）",
+   "loc": 209,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/WildShell.as",
+   "class": "wild.com.Shell.WildShell",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "入口壳/文档类（initConfig 注入宿主 API、拉 wild_v_37.xml、挂事件）",
+   "loc": 145,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "wild_v_37.xml（wild 配置：wildmodule 模块加载表 + beast/weapon/crystal 数据）",
+     "via": "WildShell.initConfig() → URLLoader.load(new URLRequest(api.addPrefix(api.beastConfigUrl)))；beastConfigUrl=Settings.wildXML ← nc_addon.php:82 <wildXML>module/mc/farm/wild/wild_v_37.xml</wildXML>",
+     "evidence": "WildShellNc_v_5/scripts/wild/com/Shell/WildShell.as:101-104,115-120；nc_addon.php:82"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/business/analyzer/IParser.as",
+   "class": "wild.com.Shell.business.analyzer.IParser",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "解析器接口",
+   "loc": 12,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/business/analyzer/setup/ParserBeast.as",
+   "class": "wild.com.Shell.business.analyzer.setup.ParserBeast",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "解析器：beastBase Object → BeastBase（info/return/drop 三段）",
+   "loc": 30,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/command/CmdSetup.as",
+   "class": "wild.com.Shell.command.CmdSetup",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "壳命令：setup/render/时间到点回发/昵称拉取",
+   "loc": 213,
+   "mods": [
+    {
+     "mod": "cgi_farm_hpage_beast",
+     "via": "CmdSetup.as:82-88 updateServer()（{isfarm,ownerId}）→ _API.postRequest(\"cgi_farm_hpage_beast\") → main3 framework/api/beast/BeastAPI.as:503-521 postRequest → CmdBeastDefs.getIdByCgi → CMD_WILD_HPAGE_BEAST(10011)（CmdBeastDefs.as:31,49）→ NetHelper.sendRequest（_ncCommUrl 前缀拼 mync.php 网关）"
+    },
+    {
+     "mod": "cgi_farm_beast_getnick",
+     "via": "CmdSetup.as:144-157 getNick()（{ownerId,isfarm}）→ _API.postRequest(\"cgi_farm_beast_getnick\") → main3 framework/api/beast/BeastAPI.as:503-521 postRequest → CmdBeastDefs.getIdByCgi → CMD_WILD_GET_NICK(10012)（CmdBeastDefs.as:33,50）→ NetHelper.sendRequest（_ncCommUrl 前缀拼 mync.php 网关）"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "activities",
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/model/beast/BeastBase.as",
+   "class": "wild.com.Shell.model.beast.BeastBase",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "模型：beastBase 三段聚合（info/bReturn/drop）",
+   "loc": 24,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/model/beast/BeastInfo.as",
+   "class": "wild.com.Shell.model.beast.BeastInfo",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "模型：放养动物列表（dynamic Array 子类）",
+   "loc": 22,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/model/beast/BeastReturn.as",
+   "class": "wild.com.Shell.model.beast.BeastReturn",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "模型：返还动物列表（dynamic Array 子类）",
+   "loc": 22,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/model/crystal/CrystalDrop.as",
+   "class": "wild.com.Shell.model.crystal.CrystalDrop",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "模型：水晶掉落列表（dynamic Array 子类）",
+   "loc": 22,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/stage/FarmStage.as",
+   "class": "wild.com.Shell.stage.FarmStage",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "农场景：放羊动物入口排布 + 冒泡旗标 + 数量/返回文本",
+   "loc": 200,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "WildMaoPaoFlag / Wild_Animal_Num_txt / Wild_Animal_Back_txt 素材符号（宿主素材库，经 ModuleManager material 预载）",
+     "via": "CmdAPI.api.getMaterial(\"WildMaoPaoFlag\"/\"Wild_Animal_Num_txt\"/\"Wild_Animal_Back_txt\")",
+     "evidence": "WildShellNc_v_5/scripts/wild/com/Shell/stage/FarmStage.as:39,77,82"
+    },
+    {
+     "pattern": "动物站立位坐标 JSON（InIData.beast[0].@dy 牧场 /@dy1 农场，如 dy1=\"[400,460,520]\"）",
+     "via": "com.adobe.serialization.json.JSON.decode(DataShell.InIData.beast[0].@dy/@dy1)",
+     "evidence": "WildShellNc_v_5/scripts/wild/com/Shell/stage/FarmStage.as:40-48；wild_v_37.xml beast 节 dy/dy1 属性"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/stage/Weapon.as",
+   "class": "wild.com.Shell.stage.Weapon",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "武器掉落物部件（<类型>_Over_<id> 符号静态展示）",
+   "loc": 31,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "武器掉落素材符号（param1+\"_Over_\"+id：Weapon_Over_<id> / Fight_Over_<id>，宿主素材库）",
+     "via": "CmdAPI.api.getMaterial(param1 + \"_Over_\" + data[\"id\"])",
+     "evidence": "WildShellNc_v_5/scripts/wild/com/Shell/stage/Weapon.as:19"
+    }
+   ],
+   "interactions": [],
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Shell/stage/WildAnimal.as",
+   "class": "wild.com.Shell.stage.WildAnimal",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "野生动物部件（加载动画/状态机/悬停交互/武器与血条挂接）",
+   "loc": 430,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/mc/farm/wild/wildanimal_<id>.swf（动物动画 swf，符号 Wild_Animal_<id>，含 Stand/Faint 等帧标签；id=1..5+19 等，wild_v_37.xml beast.info 节）",
+     "via": "_API.getURL(\"wildanimal\",{id}) → nc_addon <wildanimal>module/mc/farm/wild/</wildanimal> 前缀 + \"wildanimal_<id>.swf\"；_API.requestClass(\"Wild_Animal_<id>\", init, url)",
+     "evidence": "WildShellNc_v_5/scripts/wild/com/Shell/stage/WildAnimal.as:65-66,112；main3 framework/api/beast/BeastAPI.as:191-194；nc_addon.php:86"
+    },
+    {
+     "pattern": "module/mc/farm/wild/weapon<id>.swf（武器掉落动画 swf，符号 Weapon_Over_<id>）",
+     "via": "_API.getURL(\"wildaweapon\",{id}) → <wildaweapon> 前缀 + \"weapon<id>.swf\"；_API.requestClass(\"Weapon_Over_<id>\", addWeaponOnMaterial, url)",
+     "evidence": "WildShellNc_v_5/scripts/wild/com/Shell/stage/WildAnimal.as:156-157；BeastAPI.as:199-202；nc_addon.php:88"
+    },
+    {
+     "pattern": "FightFlag / WildPowerBar2 素材符号（宿主素材库）",
+     "via": "_API.getMaterial(\"FightFlag\"/\"WildPowerBar2\")",
+     "evidence": "WildShellNc_v_5/scripts/wild/com/Shell/stage/WildAnimal.as:335,396"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/Tools/DataTools.as",
+   "class": "wild.com.Tools.DataTools",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "工具数据单例（放养槽/士气经验/可放生数事件总线）",
+   "loc": 158,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "activities"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/comm/CropLoader.as",
+   "class": "wild.com.comm.CropLoader",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "素材批量加载器（url 队列逐个 Loader.load，material 模式收 ApplicationDomain）",
+   "loc": 132,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.COMPLETE",
+    "HTTPStatusEvent.HTTP_STATUS",
+    "IOErrorEvent.IO_ERROR",
+    "ProgressEvent.PROGRESS"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/WildShellNc_v_5/scripts/wild/com/comm/ModuleManager.as",
+   "class": "wild.com.comm.ModuleManager",
+   "swf": "WildShellNc_v_5",
+   "subsystem": "模块加载调度（wildmodule 节时间窗判定 + material 预载 + 主 swf 加载；文件内私有类 ModuleLoader）",
+   "loc": 110,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "wildmodule scene/tool 模块主 swf 与其 material 素材（WildScene_v_25.swf + wild_ui_scene_v_6.swf；ToolScene_v_24.swf + wild_ui_title_v_2.swf/wild_ui_tools_v_3.swf——牧场批次范围，此处仅记加载链）",
+     "via": "ModuleManager.loadModule(param1 XML) → ModuleLoader.addModule：material 逐个 _API.addPrefix 后 CropLoader.load（LoaderContext applicationDomain=_API.appCurrentDomain），COMPLETED 后 pushToMaterialLib 并 Loader.load 主 url",
+     "evidence": "WildShellNc_v_5/scripts/wild/com/comm/ModuleManager.as:29-45,83-108；wild_v_37.xml:3-11 wildmodule 节"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE"
+   ],
+   "cross_module_imports": [
+    "activities"
+   ]
+  }
+ ]
+}

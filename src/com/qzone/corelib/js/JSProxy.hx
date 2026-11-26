@@ -19,4 +19,15 @@ class JSProxy {
 	public static function getHead(param1:String, param2:Int):String {
 		return QzoneJSAPI.getHead(param1, param2);
 	}
+
+	// JSProxy.as:361-364（addGToken：ExternalInterface.call(
+	// "SwfAppLib.method.attachDefParam",url) as String——宿主 JS 给 URL 加
+	// g_tk 鉴权参）。issue #86 为 com.minutes.net.HTTPRequest 编译链补签名。
+	// PORT-NOTE(qq-outlet)：宿主集成出口按统一决策落 shim.QQOutlets.call——
+	// 独立部署无宿主返 null，HTTPRequest 的 `tk != null && tk != ""` 判空
+	// 支原样落空、URL 不加参（与原版在非 QZone 页面的兜底一致）。
+	public static function addGToken(param1:String):String {
+		var _loc1_:Dynamic = shim.QQOutlets.call("SwfAppLib.method.attachDefParam", param1);
+		return Std.isOfType(_loc1_, String) ? cast(_loc1_, String) : null;
+	}
 }

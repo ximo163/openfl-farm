@@ -1,6 +1,9 @@
 package com.qzone.utils;
 
-// com.qzone.utils.StringUtil —— StringUtil.as 逐句对应（issue #9）。AS3
+// com.qzone.utils.StringUtil —— StringUtil.as 逐句对应（issue #9 按 main3
+// 变体翻译；issue #86 并入 Master2 变体差异：tirmCallBack/
+// getFixedLengthString 两个 main3 没有的方法、getFloatNumber 按参截位——
+// #7/#8 惯例共有类不一致时以 Master2 变体为准）。AS3
 // `final class`（Haxe 无 final 类，语义只差禁止继承，无运行时影响）。
 // PORT-NOTE: 原版依赖 flash.xml 的 XMLDocument/XMLNode（E4X 文本节点序列
 // 化做 HTML 转义）；openfl 本版本无 openfl.xml 包，htmlEscape/htmlUnescape
@@ -117,13 +120,54 @@ class StringUtil {
 		return StringTools.htmlUnescape(param1);
 	}
 
-	// StringUtil.as:118-121。PORT-NOTE: 原版 `param1.toFixed(2)` 无视
-	// param2（原样照抄）；Haxe 无 toFixed，手工定两位小数四舍五入
+	// Master2 变体并入（issue #86，Master2 StringUtil.as:86-98，main3 无）：
+	// `_callback(...)` 包装剥离——前缀命中则剥前 10 字符，末位非 `}` 则截到
+	// 最后一个 `}`（含）。PORT-NOTE: `substr(0,10).toLocaleLowerCase()` 与
+	// `lastIndexOf`/`substr` 是 AS3 String 旧式索引语义；Haxe 的 substr 同
+	// 语义直用
+	public static function tirmCallBack(param1:String):String {
+		if (param1.substr(0, 10).toLowerCase() == "_callback(") {
+			param1 = param1.substr(10);
+		}
+		var _loc2_:Int = param1.lastIndexOf("}");
+		if (_loc2_ != param1.length - 1) {
+			param1 = param1.substr(0, _loc2_ + 1);
+		}
+		return param1;
+	}
+
+	// Master2 变体并入（issue #86，Master2 StringUtil.as:136-146，main3 无）：
+	// 左侧补零到 param2 位（与 getZeroString 同效果不同实现路径，照抄）
+	public static function getFixedLengthString(param1:Int, param2:Int):String {
+		var _loc3_:String = Std.string(param1);
+		var _loc4_:Int = param2 - _loc3_.length;
+		var _loc5_:Int = 1;
+		while (_loc5_ <= _loc4_) {
+			_loc3_ = "0" + _loc3_;
+			_loc5_++;
+		}
+		return _loc3_;
+	}
+
+	// StringUtil.as:118-121（Master2 变体 :151：Master2 是
+	// `param1.toFixed(param2)` 按参截位，main3 是 `param1.toFixed(2)` 无视
+	// param2——#7/#8 惯例以 Master2 变体为准；两变体在 param2=2 缺省调用时
+	// 同值）。PORT-NOTE: Haxe 无 toFixed，手工定 param2 位小数四舍五入
 	public static function getFloatNumber(param1:Float, param2:UInt = 2):String {
-		var cents:Int = Math.round(Math.abs(param1) * 100);
-		var intPart:Int = Std.int(cents / 100);
-		var frac:Int = cents % 100;
-		return (param1 < 0 ? "-" : "") + intPart + "." + (frac < 10 ? "0" : "") + frac;
+		var scale:Int = 1;
+		var i:Int = 0;
+		while (i < param2) {
+			scale *= 10;
+			i++;
+		}
+		var scaled:Int = Math.round(Math.abs(param1) * scale);
+		var intPart:Int = Std.int(scaled / scale);
+		var frac:Int = scaled % scale;
+		var fracStr:String = Std.string(frac);
+		while (fracStr.length < param2) {
+			fracStr = "0" + fracStr;
+		}
+		return (param1 < 0 ? "-" : "") + intPart + "." + fracStr;
 	}
 
 	// StringUtil.as:123-138

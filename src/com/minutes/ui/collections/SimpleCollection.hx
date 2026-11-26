@@ -2,22 +2,19 @@ package com.minutes.ui.collections;
 
 import openfl.display.DisplayObject;
 import openfl.display.Sprite;
-import openfl.errors.Error;
 
 /**
- * com.minutes.ui.collections.SimpleCollection —— SimpleCollection.as 的
- * write-tests stub（issue #86 牧场库底座，LipiUI 组件库片）。本阶段只立
- * 签名面：字段照 AS3 声明（_width/_height 初值 100），测试触到的访问器
- * 方法体 throw，真身随 implement 补。
+ * com.minutes.ui.collections.SimpleCollection —— SimpleCollection.as 逐句
+ * 对应（issue #86 牧场库底座，LipiUI 组件库片）。
  * legacy/decompiled/Master2_v_142/scripts/com/minutes/ui/collections/SimpleCollection.as。
  *
  * PORT-NOTE（AS3 override width/height → Haxe）：Sprite 的同名属性不允许
- * 子类重声明，只重载访问器——src/com/minutes/ui/core/LipiUIComponent.hx
- * 同款形态（:25-27/:49-63/:59-63 的三个 override）。
+ * 子类重声明，只重载访问器——LipiUIComponent.hx / qui 控件同款形态。
+ * _width/_height 是类的私有存储字段，与 Sprite 测量通道脱钩（原版如此）。
  */
 @:keep
 class SimpleCollection extends Sprite {
-	// :9
+	// SimpleCollection.as:9
 	private var _bg:DisplayObject;
 
 	// :11-13（AS3 Number 字段初值 100）
@@ -26,41 +23,63 @@ class SimpleCollection extends Sprite {
 	// :12
 	private var _height:Float = 100;
 
+	// :15-18
 	public function new() {
 		super();
-		throw new Error("not implemented");
 	}
 
 	// :20-23
 	public var bg(get, set):DisplayObject;
 
-	// :20-23（write-tests stub：真身随 implement）
 	private function get_bg():DisplayObject {
-		throw new Error("not implemented");
+		return this._bg;
 	}
 
-	// :30-47（write-tests stub：真身随 implement）
+	// :30-47（首装/换装两分支：换装先 removeChild 旧件再写透尺寸——
+	// 两分支后段逐字相同，照抄不合并不重排）
 	private function set_bg(param1:DisplayObject):DisplayObject {
-		throw new Error("not implemented");
+		if (this._bg == null) {
+			this._bg = param1;
+			this._bg.width = this.width;
+			this._bg.height = this.height;
+			addChild(this._bg);
+		} else {
+			removeChild(this._bg);
+			this._bg = param1;
+			this._bg.width = this.width;
+			this._bg.height = this.height;
+			addChild(this._bg);
+		}
+		return param1;
 	}
 
-	// :25-27（override 等价面，见类头 PORT-NOTE；write-tests stub：真身随 implement）
+	// :25-27（override 等价面，见类头 PORT-NOTE）
 	private override function get_width():Float {
-		throw new Error("not implemented");
+		return this._width;
 	}
 
-	// :64-72（write-tests stub：真身随 implement）
+	// :64-72（两维都写透 bg：先 width 后 height）
 	private override function set_width(param1:Float):Float {
-		throw new Error("not implemented");
+		this._width = param1;
+		if (this._bg != null) {
+			this._bg.width = this.width;
+			this._bg.height = this.height;
+		}
+		return param1;
 	}
 
-	// :59-63（write-tests stub：真身随 implement）
+	// :59-63
 	private override function get_height():Float {
-		throw new Error("not implemented");
+		return this._height;
 	}
 
-	// :49-57（write-tests stub：真身随 implement）
+	// :49-57（两维都写透 bg：先 width 后 height——与 set width 同序）
 	private override function set_height(param1:Float):Float {
-		throw new Error("not implemented");
+		this._height = param1;
+		if (this._bg != null) {
+			this._bg.width = this.width;
+			this._bg.height = this.height;
+		}
+		return param1;
 	}
 }

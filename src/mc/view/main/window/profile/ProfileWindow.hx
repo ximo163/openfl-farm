@@ -116,7 +116,7 @@ class ProfileWindow extends BaseWindow {
 	}
 
 	// ProfileWindow.as:108-168
-	override public function init():Void {
+	override public function init(param1:openfl.geom.Rectangle = null):Void {
 		this.mainData = MData.getInstance().mainData;
 		this.profileHead = new ProfileHead();
 		this.profileHead.visible = !this.mainData.profileLoading;

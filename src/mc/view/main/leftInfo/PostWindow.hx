@@ -26,7 +26,7 @@ class PostWindow extends AddButtonWindow {
 	}
 
 	// PostWindow.as:25-43
-	override public function init():Void {
+	override public function init(param1:openfl.geom.Rectangle = null):Void {
 		this.postText = new TextField();
 		this.postText.wordWrap = true;
 		this.postText.multiline = true;
@@ -42,7 +42,7 @@ class PostWindow extends AddButtonWindow {
 		this.postText.addEventListener(TextEvent.LINK, this._LINK);
 		addChild(this.postText);
 		addButton("确定", "ButtonOrange", 65, 25, this.confirmFn);
-		super.init();
+		super.init(param1);
 	}
 
 	// PostWindow.as:45-57

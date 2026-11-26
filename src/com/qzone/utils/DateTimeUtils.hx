@@ -4,9 +4,15 @@ import shim.As3;
 
 /**
  * com.qzone.utils.DateTimeUtils —— DateTimeUtils.as 逐句对应（issue #18
- * farm-basic 收尾：工具函数片整类翻译）。纯静态工具：秒/毫秒格式化、日期解析、
- * 闰年、同日判断。getTime/getDate/getDateTime/getTimeString 读真实时钟
- * （Date.now()），不进单测，运行行为由 CI 场景比对覆盖。
+ * farm-basic 收尾：工具函数片整类翻译，按 main3 变体；issue #86 核对
+ * Master2 变体差异：Master2 没有 formatSecondCount/isSameDay 两个方法，
+ * 且 getDate 的日期零补判是 `_loc1_.getDate() > 0`（main3 是 > 9）——
+ * #7/#8 惯例共有类不一致时以 Master2 变体为准，getDate 改照 Master2；
+ * formatSecondCount/isSameDay 是 main3 变体多出的方法，保留（Master2
+ * 变体少方法不构成删除理由——农场侧调用面在用）。纯静态工具：秒/毫秒
+ * 格式化、日期解析、闰年、同日判断。getTime/getDate/getDateTime/
+ * getTimeString 读真实时钟（Date.now()），不进单测，运行行为由 CI 场景
+ * 比对覆盖。
  */
 class DateTimeUtils {
 	public function new() {}
@@ -25,12 +31,14 @@ class DateTimeUtils {
 		return _loc2_ + ":" + _loc3_ + ":" + _loc4_;
 	}
 
-	// :25-32
+	// :25-32（Master2 变体：日期零补判 `_loc1_.getDate() > 0`——恒真，日期
+	// 永不零补（main3 是 > 9）。原版怪癖/疑似笔误，照抄不修正——两变体
+	// 不一致以 Master2 为准，见类头）
 	public static function getDate():String {
 		var _loc1_:Date = Date.now();
 		var _loc2_:String = Std.string(_loc1_.getFullYear());
 		var _loc3_:String = _loc1_.getMonth() + 1 > 9 ? Std.string(_loc1_.getMonth() + 1) : "0" + (_loc1_.getMonth() + 1);
-		var _loc4_:String = _loc1_.getDate() > 9 ? Std.string(_loc1_.getDate()) : "0" + _loc1_.getDate();
+		var _loc4_:String = _loc1_.getDate() > 0 ? Std.string(_loc1_.getDate()) : "0" + _loc1_.getDate();
 		return _loc2_ + "-" + _loc3_ + "-" + _loc4_;
 	}
 

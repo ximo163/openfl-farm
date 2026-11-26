@@ -489,6 +489,51 @@ class As3 {
 		return new Date(year, month - 1, day, h, m, sec);
 	}
 
+	/**
+	 * AS3 全局 `isNaN(x)`：先把 x 按 Number() 规则转换再判 NaN——数字串转
+	 * 数值（isNaN("30")==false）、**空串转 0**（isNaN("")==false，Number("")
+	 * ==0）、非数字串/undefined 为 true（Number(undefined)==NaN；
+	 * Number(null)==0 为 false，但 AS3 里 null 与 undefined 在 `*` 形参上
+	 * 同源，本仓 Dynamic 落 null 统一按 undefined 语义——与 intOf 的
+	 * undefined/null → 0 判法不同：那是 int() 强转，这是 isNaN 判）。
+	 * Haxe 的 Math.isNaN 不做转换（eval 实测 Math.isNaN("")==true、
+	 * "" < 1 为 false——与 AS3 两个分支都错位）。
+	 */
+	public static function isNaN(v:Dynamic):Bool {
+		if (v == null) {
+			return true;
+		}
+		if (Std.isOfType(v, Bool)) {
+			return false;
+		}
+		if (Std.isOfType(v, Int) || Std.isOfType(v, Float)) {
+			return Math.isNaN(v);
+		}
+		if (Std.isOfType(v, String)) {
+			var s:String = v;
+			if (s == "") {
+				return false; // Number("") == 0
+			}
+			var f:Null<Float> = Std.parseFloat(s);
+			// parseFloat 是前缀解析（"5abc"→5），Number() 是整串严格转换
+			// ——整串须是合法数字（可带首尾空白），否则 NaN
+			if (f == null || Math.isNaN(f)) {
+				return true;
+			}
+			var trimmed = StringTools.trim(s);
+			var back = Std.string(f);
+			// "5"→"5"、"3.7"→"3.7"、"5 "→trim 后 "5"；SciNote/前导零等形态
+			// AS3 也接受（Number("05")==5、Number("5e2")==500）——宽松判：
+			// parseFloat 解析出的数值重新转串后与 trim 同或 trim 本身就是合法
+			// 数字字面量（全串数字字符+至多一个小数点+可选前导符号/指数段）
+			if (back == trimmed) {
+				return false;
+			}
+			return ~/^[-+]?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/.match(trimmed) == false;
+		}
+		return true;
+	}
+
 	static function toNumber(v:Dynamic):Float {
 		if (v == null) {
 			return Math.NaN;

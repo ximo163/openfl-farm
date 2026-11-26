@@ -78,8 +78,26 @@ task_update 应答回显的是**刚完成的旧任务**且 taskFlag=2（待领�
   在无 Timeline 实例上静默丢弃，FrameScriptCompensation 头注同证）；
   文字根因 B 是 openfl 9.5.2 HTMLParser 的 `</p>` 换行不入 range
   （见 lessons #65 条），修复走 issue 路径 b（range 簿记补洞，不动文字
-  内容/格式，无 deviations 项）。41 个字段里 32 个被五页帧 1 引用（树
-  上全集、一次修复完备），9 个是死符号永不实例化。
+  内容/格式，无 deviations 项）。41 个字段 = 32 个页直挂 + **9 个
+  SimpleButton 状态内字段**（下一页/上一页/我明白了按钮 up/over/down
+  态各一份，swf 库 AnimateButtonSymbol 经 SimpleButton.__constructor
+  钩子真实例化、真参与布局——#65 教训条「9 个死符号」是误判，#77
+  真机复验 41 条告警 = 32 + 9 各一条）。SimpleButton 不是
+  DisplayObjectContainer，只在容器上递归的 walk 到按钮就停，修复必须
+  特判遍历 upState/overState/downState/hitTestState（#77 盲区一）；
+  且**修复必须先于 Loader_onComplete**（#77 盲区二的真正闭合环，
+  node 真实流探针实证见 lessons #77 条）：openfl 的完成路径为补
+  contentLoaderInfo.width/height 读 content.width/height，递归量测
+  整棵子树、逐字段触发首次真实布局——挂在 Loader_onComplete 之后
+  的修复都已晚（洞已告警、布局组已残缺）。attachContent 因此把
+  HelpGuideWiring.attach 调到 Loader_onComplete 之前；「attach 后第一
+  个 ENTER_FRAME」一次性重放仍保留（帧相位 ENTER_FRAME 派发 → 时间轴
+  推进 → render，重放落在首帧渲染前）兜帧内挂载形态，幂等无叠加。
+  node 真实流验收（issue #77 验收 4 第一条）归
+  `tools/HelpRealFlowProbe.hx`：走 LocalSwfLoader 真链 + Stage 帧相位
+  推进，断言全实例末 range end == text.length、console.warn 0 命中——
+  编译必须带 html5 构建的 define 集（裸 -js 的 Assets.loadLibrary 是
+  永不完成的空 Future，见 lessons #77 条）。
 - 冒烟必经：uid=1 fixture `"welcome":1` → StartupData._welcome==true →
   showNewGuide 在 CI web-smoke 一定执行，help 库缺声明就是 404 红叉。
 

@@ -89,6 +89,19 @@ class LocalSwfLoader extends Loader {
 	// openfl 原生完成路径的落点（见上：super./@:access 不能出现在本地函数内）
 	@:access(openfl.display.Loader)
 	private function attachContent(content:DisplayObject, libraryId:String):Void {
+		// #65 help.swf 帧脚本等价 + DefineEditText 文字修复：help 自带完整
+		// AS3（非 #58 那种原语帧脚本），已 1:1 翻译成 help0316_fla 类，
+		// 等价执行/文字 range 补洞归 HelpGuideWiring（why 见其头注；只按
+		// help 库挂，不向同族 swf 扩散）。**必须先于 Loader_onComplete**：
+		// openfl 9.5.2 Loader_onComplete（Loader.hx:783-784）为补
+		// contentLoaderInfo.width/height 读 content.width/content.height，
+		// 该读递归量测整棵子树、对每个文本字段触发 __updateLayout 真实布局
+		// ——真机 41 条告警即此（#77 盲区二的真正闭合环：布局发生在 attach
+		// 回调之前的完成路径里，attach 时刻再修已晚，洞已告警、布局组已
+		// 残缺）。修复前置后，量测走到的都是补过洞的 range，告警 0。
+		if (libraryId == "help" && Std.isOfType(content, MovieClip)) {
+			HelpGuideWiring.attach(cast(content, MovieClip));
+		}
 		Loader_onComplete(content);
 		// #58 帧脚本补偿（根时间轴场景）：getMovieClip("") 的根符号无
 		// SymbolClass 名，导出器不给 scriptSource（AnimateLibraryExporter
@@ -96,13 +109,6 @@ class LocalSwfLoader extends Loader {
 		// 主轴末帧 dispatchEvent("end")）查表回挂，库无登记则无操作
 		if (Std.isOfType(content, MovieClip)) {
 			FrameScriptCompensation.attach(cast(content, MovieClip), libraryId, "");
-			// #65 help.swf 帧脚本等价 + DefineEditText 文字修复：help 自带完整
-			// AS3（非 #58 那种原语帧脚本），已 1:1 翻译成 help0316_fla 类，
-			// 等价执行/文字 range 补洞归 HelpGuideWiring（why 见其头注；只按
-			// help 库挂，不向同族 swf 扩散）
-			if (libraryId == "help") {
-				HelpGuideWiring.attach(cast(content, MovieClip));
-			}
 		}
 	}
 }

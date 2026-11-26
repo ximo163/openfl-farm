@@ -1535,9 +1535,77 @@
 - **文字类告警在 node 可复现、可计数**：openfl 内部 Log 全走
   console.warn，垫片环境拦 console.warn 数特定文案即得逐字段计数（32
   字段 32 条，修复后 0）；textWidth 读取触发 __updateLayout，不需要
-  真渲染。真机 41 条对 32 个实例化字段的差额 = 9 个 DefineEditText 是
-  任何时间轴都没放置的死符号 + 部分字段多次布局重复计数——修完后同
-  根源全消，别按 41 去对表。
+  真渲染。真机 41 条告警的真实账（**#77 2026-11-25 更正，本条原判
+  「9 个死符号+重复计数」系误判**）：= 32 个页直挂字段 + 9 个
+  **SimpleButton 状态内字段**（下一页 5/7/9、上一页 25/27/29、我明白了
+  76/78/80，DefineButton2 的 up/over/down 态各一份），各告警一次——
+  9 个不是死符号：swf 库 AnimateButtonSymbol.__createObject 经
+  SimpleButton.__constructor 静态钩子把四态子件建出来，真实例化真参与
+  布局（原版 Flash 按钮文字就是渲染的），只是挂在按钮状态子树里、不在
+  页直挂子树上，当年 node 探针只数页子树才漏了它们。且探针的「修复后
+  0 命中」验证的是探针手工触发 textWidth 的顺序（修复先于布局），不是
+  LocalSwfLoader 真实加载流的顺序——真机 attachContent 时刻页时间轴
+  子件还没上树，attach 时刻的一遍修复在真实流里一条都不生效。防：
+  (1) 「符号有没有实例化」要沿库实例化链（__constructor 钩子/四态子件）
+  核实到显示对象类型，PLACE 记录不是唯一实例化通道；(2) 验证修复有效
+  性必须走真实加载流（真帧推进），探针手工触发布局的顺序不代表真机
+  相位（ENTER_FRAME 派发 → __enterFrame 时间轴推进 → render 布局）。
+
+## 2026-11 · #77（help 文字修复的两个盲区：SimpleButton 状态子树 + 修复时点）
+
+- **swf 资产的「字段账」必须含 DefineButton2 状态子树**：BUTTONRECORD
+  的 up/over/down 态放文字（help 三按钮族：每按钮三态各一份
+  DefineEditText）时，这些字段**在页直挂子树上不可见**——SimpleButton
+  不是 DisplayObjectContainer，任何「遍历容器找 TextField」的 walk 到
+  按钮就停。修复/审计类 walk 遇 SimpleButton 必须特判下钻
+  upState/overState/downState/hitTestState（四态是公共属性，可空、可非
+  容器——默认构造的 SimpleButton upState 是裸 DisplayObject、over/down
+  为 null，判空判容器缺一不可）。help 的 hitTest 真按钮是纯 shape 无
+  文字，但下钻四态比三态更防御（同族 swf 不保证同款形态）。
+- **文本修复的真正时点敌人是 Loader_onComplete 的 width/height 量测，
+  不是「子件挂载晚」（node 真实流探针闭合，2026-11-25 更正本条初稿的
+  错位假设）**：openfl 9.5.2 `Loader_onComplete`（Loader.hx:781-785）为
+  补 `contentLoaderInfo.width/height` 读 `content.width/content.height`，
+  该读**递归量测整棵子树**、对每个文本字段触发 `__updateLayout` 真实
+  布局——这就是 issue「显示不对称的注记」推演不闭环缺的那一环：布局
+  的首次发生点在加载完成路径里、不在渲染帧。因此挂在 Loader_onComplete
+  **之后**的修复（无论 attach 时刻还是 ENTER_FRAME 重放）都已晚——洞
+  已告警、布局组已残缺，range 簿记补上也救不回已中断的布局。修复必须
+  **先于 Loader_onComplete**（LocalSwfLoader.attachContent 把
+  HelpGuideWiring.attach 调到 Loader_onComplete 之前）。探针同时证伪
+  「attach 时刻子件还没上树」的假设：Animate 库实例化（getMovieClip）
+  同步建完整时间轴树，attach 时刻 59 个字段实例已全部在树——初稿按
+  真机告警反推的「挂载晚」不成立，只是告警发生在更早的量测点。防：
+  (1) 修复/审计显示树的胶水，时点分析要追到**第一个触发量测/布局的
+  库内部读**（width/height/getBounds/textWidth 一族），不是追到「回调
+  挂上」为止；(2) ENTER_FRAME 一次性重放仍保留（兜帧脚本翻页/帧内
+  挂载形态，幂等无叠加），但它不是主修复面——主修复面必须落在首个
+  量测点之前。
+- **验证「修复在真实流生效」的 node 探针必须复刻 html5 构建的编译
+  defines 与帧相位**（本 issue 验收 4 交付物 `tools/HelpRealFlowProbe.hx`
+  实证）：① 裸 `haxe -js` 没有 `-D tools`，`lime.utils.Assets.loadLibrary`
+  的工具分支（`#if (tools && !display && !macro)`）编译掉、返回**永不
+  complete 的空 Future**——LocalSwfLoader 在 node 里根本走不通，这正
+  是 #75 当年用「手工 textWidth 探针」代替真实流的隐形原因；按
+  `export/html5/haxe/release.hxml` 的 define 集（`-D tools -D html5 -D web
+  -D openfl-html5 -D lime-html5 -D lime-canvas -D lime-dom -D lime-webgl
+  -D lime-howlerjs -D howlerjs`）编译后 Assets.loadLibrary 同步完成、
+  真实流全链可跑（警告：`-D tools` 必须配 html5 全家，单加会因
+  ImageBuffer 的原生/浏览器条件分歧编译红）。② 装库用
+  `AnimateLibrary.loadFromBytes` + `lime.utils.Assets.registerLibrary`
+  把库塞进注册表，Assets.loadLibrary 即命中（node 垫片无资产清单）。
+  ③ 帧相位按 openfl Stage.__onLimeRender（Stage.hx:2433-2439）逐字复制
+  ——broadcastEvent(ENTER_FRAME/FRAME_CONSTRUCTED/EXIT_FRAME) 三广播
+  （走 DisplayObject.__broadcastEvents 注册表，拷贝快照再派——一次性
+  监听自摘会边遍历边改数组）+ `__enterFrame(deltaTime)`；broadcast 注册
+  不要求上舞台（stage==null 命中第二支派发条件）。④ 对照组不可省：
+  probe-only（跳过修复）必须见告警全发出，才证明探针通道有牙——#75
+  的假信心就是验证链本身没牙。
+- **openfl 自带诊断开关 `-D openfl_trace_text_layout_groups`**
+  （TextEngine.hx:1746-1750）：逐组打 LG line,w,h,x,y,"text",start,end，
+  真机 logcat 一眼对账每个字段的组态——文字渲染类问题先上诊断构建
+  定位断点在哪一环（内容组存不存在/被没被渲染），比纯推演布局循环
+  快。
 
 ## 2026-11 · #63（基类 Dynamic 字段盲区补扫：名单装配的污染边界）
 
@@ -1581,3 +1649,126 @@
 - **haxelib 库名是 libhxcpp 不是 hxcpp**：hxcpp 4.x 在 NDK26/新工具链
   编不过，继任者改名 libhxcpp（6.0.0-rc.2，android.yml 已锁）；
   `haxelib list` 里也是 libhxcpp。冒烟脚本的环境检查按新名探。
+
+## 2026-11 · #67（考证件进 test/：import.hx 的正用——反射目标类的强制入编）
+
+- **测试经 `Type.resolveClass` 反射取的类，光放进 test/ 不等于进编译
+  图——零编译期引用时类整体不存在，反射恒 null**：#67 的考证结论落点
+  是纯 const 字符串类（test/Issue67TriageNotes.hx），验收测试用
+  `Type.resolveClass("Issue67TriageNotes")` 取（write-tests 阶段类不
+  存在，直接 import 会编译失败，只能反射）。implement 把类写出来后
+  断言仍全红、报「实际文本:（空）」——Haxe 只编译从 main 可达的
+  类型（src/shim/SymbolClass.hx:67 的 DCE 锚教训同病），`@:keep` 救
+  不了整体不进产物（4.3.6 --interp 实测：`@:keep` 加类加字段、
+  `-dce no`、`--macro Compiler.keep` 全部无效——类根本没被 type，
+  keep 是 DCE 阶段的保险不是 typing 阶段的牵引）。解法：classpath
+  根放 `import.hx` 写 `import Issue67TriageNotes;`——默认导入机制
+  对每个编译单元生效（不受目录边界限制：main 在子目录同样生效），
+  import 即构成 typing 牵引，类进编译图后反射可得。这是 import.hx
+  的**正用**（#56 教训是遮蔽滥用：import 优先级压同包同名类型，
+  制造永不编译的僵尸 stub；本条不遮蔽任何名字，只做牵引）。影响
+  面自查规矩：放之前全仓 grep 确认 `-cp test` 只出现在 test.hxml
+  （html5/cpp 生产编译不含 test/ classpath），否则牵引会泄漏进产物。
+- **块注释里写 glob 形态（`decompiled/*/scripts/`）＝注释提前闭合**：
+  `*/` 是结束符不看语境，`decompiled/<名>/scripts/` 这类写法才安全；
+  编译器报 `Expected }` 且行号指在注释内部时先查这个。
+
+## 2026-11 · #68（17 件无归属带代码 swf 加载链考证）
+
+- **插件框架是「proxy 在宿主、载荷在外部 swf」两段式，两段要分开查引用**：
+  plugin 三兄弟（MailPromotion/Promotions/Weekend）文件名在配置与反编译里零
+  命中，但 main3 scripts/plugins/ 里 MailPromotionProxy/WeekendSalePluginProxy
+  的 proxy 类**存在**——宿主侧挂载点活着不代表链路活：PluginManager.as:45
+  纯配置驱动遍历，nc_addon.php plugins JSON 没有对应条目，proxy 永不实例化。
+  考证「某插件 swf 有没有引用」必须三层都查：配置条目（nc_addon plugins
+  JSON）→ 宿主 proxy 类（main3 scripts/plugins/）→ 文件名直接命中；只有
+  第一层是承重墙。PromotionsPlugin 连 proxy 类都不存在，是更死的一档。
+- **secondList 键的消费方可能在模块体内而不在宿主里——grep 范围必须覆盖
+  所有已反编译 swf**：nc_addon secondList 是「键→URL」声明表，消费形态是
+  `Settings.getSecondUrl("键名")`。freegift 键（nc_addon.php:289）在 main3
+  宿主全树 grep 不到调用方，曾据此误判「死键+零消费方」——实际消费方在
+  **gifts_v_11 模块体内**（FreeGiftView.as:299 getSecondUrl("freegift") +
+  :300 requestClass 加载 FREE_BG="freegiftBg"，符号就在 freegift_v_5 里）：
+  免费礼物模块的窗口背景素材经此键加载，是常驻活跃链路。教训两层：(1)
+  宿主反射加载的外部模块（Utils.getClass 取类、类体在模块 swf 内）会把
+  消费代码带出宿主 grep 范围，查「键有没有调用方」必须 grep **全部**
+  decompiled/<swf>/scripts/ 而不只是 main3/happyfarm3 宿主；(2) 自己前序
+  考证（#67 gifts）里就出现过的文件要优先纳入排查半径——漏掉自己引过的
+  模块是最低级漏查。漂移核查仍要双向核（配置 v_6/部署 v_5 → 请求 404），
+  但「键活文件死」与「死键+死文件」的定级结论形态完全不同：前者是活跃
+  模块素材依赖（同 recall 口径建议立项），后者才可冻结。
+- **同名线索跨端命中可能是伪命中，要读上下文再引**：Master2 FarmCommand.as
+  的 `_recallTime` 看着像 recall 模块的牧场侧证据，读 :890-897 上下文是拍
+  蚊子（killFly）ecode!=0 的重试计数器——变量名巧合。issue 原文引它作
+  「recall 命中」是误引，考证的责任之一就是排除这种干扰线索并写明排除
+  理由。防：grep 命中后必须读命中行的上下文语义，名字相似不等于同一功能。
+- **协议注册在案 ≠ 客户端有调用方**：singleFes/houseKeeper 两件在 main3 有
+  CMD_SINGLE_FES/CMD_HOUSE_KEEPER 常量定义 + ServerServices cmdMap 注册，
+  但反编译全树除这两处外零命中——协议层是死注册（调用方已拆除）；houseKeeper
+  更彻底：PHP 侧 cgi_farm_housekeeper.php mod 文件本身不存在。考证「零引用」
+  时要把这种「残迹链」写明（注册行号 + 调用方缺位 + 后端 mod 缺位），
+  否则下一个人会误以为链路活着。
+- **配置驱动的活动/插件，「快照里走不到」与「链路死」要分开表态**：
+  collecting 的窗口（expire 2050）对快照 serverTime 为真、但 gray 黄钻门
+  把 uid1（vip='[]' → yellowstatus=0）挡在门外——链路本身完整活跃，只是
+  快照帐户口径不走；这与 monthEnd 的「窗口过期+版本漂移双死」本质不同。
+  活跃判定要分层：时间窗（serverTime 比对）/ 开关（gray、fairy、zhaohuiOpen）
+  / 漂移（配置版本 vs 部署版本）/ 消费方存在性，逐层表态再合并结论。
+
+## 2026-11 · #70（机器门收口：判式单源与门禁判式的两个形状坑）
+
+- **门禁判式钉在 Haxe 半边、python 只做壳，不再养双实现**：#63 的
+  DynWriteScan/scan_dyn_writes 双实现要「两侧同步改、输出逐字节对齐」地
+  养着（改判式忘了另一半＝门禁与测试各说各话）；#70 起机器门定型为三层
+  ——判式（纯逻辑，utest 钉死）+ *Run.hx 胶水（走目录/exit 码，DynWriteScanRun
+  先例）+ python 壳（subprocess 拉起 haxe、透传退出码）。判式只有一份，
+  python 半边改不了行为；haxe 侧编不过时门同样退非零（门跑不起来＝不放
+  行，失败方向一致，不用特意区分）。
+- **源码行级判式里，字符串遮罩必须先于剔 `//` 注释、且要与原文等长**：
+  先剔注释会把 URL 字面量（"http://x"）里的 `//` 当注释起点，截掉后面的
+  真代码——这种顺序错造成的是**漏报**不是误报，门禁静默放行，比误报危险
+  得多。等长遮罩（字符串内容逐字符换空白、转义对占两格）让截断位可以在
+  遮罩前/后文本上互换使用（#70 的条件 4「遮罩前逐字短语」就靠它）。
+- **「非标识符边界」不能当 throw 语句位的判据，得用白名单**：doc 注释/
+  散文里 `` `throw "not implemented"` `` 的反引号引用形态，「throw 前是
+  任意非标识符字符」的宽判式会把它当真 stub（误伤面大于捕获面——正常
+  叙事注释就写不了这个惯用语了）。白名单（行首/空白/;{}()=）钉死「语句
+  位」的枚举语义；宁可漏掉未来某种怪异前缀，不可误伤文档（#70 的
+  test_no_hit_idiom_quoted_in_doc_comment 锚点）。
+
+## 2026-11 · #70 收尾（接线交付物 BLOCKED：两层保护与容器解释器名）
+
+- **「X 对 agent 可写」不能只对 pipeline yaml 的 protected 清单断言——
+  阶段合同另有一层硬编码保护**：issue #70 写「pipeline.yaml 的 checks 行
+  是 agent 可写」，四份流水线 yaml（pipeline/chore/plan/spec）的
+  protected 清单确实都不含 `.orchestrator/`（配置层核实无误）；但编排器
+  运行时组装进每个 agent 阶段提示词的 Rules 节又硬编码保护
+  `.orchestrator/`、`.claude/`、`.mcp.json`，并声明「违反的 attempt 在
+  一切开始前被拒」——attempt 1 的手册页把「受保护路径」写成了无出处断言
+  被 review 驳回（review 只看得到 yaml 层），而按 issue 授权直接改 yaml
+  又会撞合同层。两层冲突时合同层赢：接线交付物以 BLOCKED 收场，由所有者
+  裁决——**已裁决落地：2026-11-26 人直接把接线写进 main（commit
+  `f830e635`，suites 注释里记了这段），两门在 write-tests/implement 的
+  verify 生效，无需再动 pipeline.yaml**。防：
+  断言可写性前先看自己 prompt 的 Rules 节（每个 agent 都有一份）；合同层
+  与配置层打架时不静默改判归属，显式抛给所有者。
+- **给人和 CI 写的命令行要用容器里真实存在的解释器名**：接线片段照 issue
+  原文写 `python tools/scan_test_stubs.py`，agent 容器只有
+  `/usr/bin/python3`（`python` → command not found），人照片段接线 verify
+  直接 127（review round 1 驳回点之一）。防：片段/文档里给人和 CI 的
+  可执行命令一律 `python3`；python 壳 docstring 的「容器无 `python`
+  别名」注记是事实出处。
+
+## 2026-11 · #83（swf-inventory 归并：JSON 逐字搬运不能过 parse）
+
+- **「逐字保留」契约束不了 haxe.Json 的 round-trip**：`Json.parse` 把数字
+  字面归一（`25.0`→`25`、eval 上 Int/Float 各自进坑），parse 后 stringify
+  出来的不是原文。凡是「旧文件里的值子串逐字搬进新文件」的判式（手写增
+  补保留、JSON 配置的热补丁合并），值一律走**位置扫描**从原文截取，
+  parse 只做形状校验——SwfInventoryMerge 的 PosScanner 模式（实文件
+  6290 条零 diff + 幂等验证过）。防：写这类判式前先问「值里有没有可能
+  出现 25.0/1e3/前导零之外的字面形态」，有就不能过 parse。
+- **typedef 不能写在类体里**（`Expected }` 编译错——模块内私类型提到
+  文件顶层、标 `private typedef`）；**动态花括号键名在对象字面量里不存
+  在**（`{keys: …}` 逐字段构造 typedef 时字段名是写死的，构造数据驱动
+  的键集用 Map）。

@@ -18,6 +18,12 @@ stages:
     # 无人值守下不留未校准的短板。
     max_turns: 200
     timeout: 90m
+    # confirm（teamgram plan.yaml 同款，orchestrator-agent issue #64 语义）：
+    # 拆分评论先落伞 issue、任务停 needs-approval，/agent approve 后才建子
+    # issue。默认 false=直接建。骨架期漏装：2026-11-26 #22 首跑跳过审核直接
+    # 建了 8 个子 issue（必答项没等所有者拍板）——「拆分批准由人定」靠这个
+    # 闸才存在。
+    confirm: true
     # attempts/escalate 不写也写不得：编排器校验把 plan 阶段上的这两个键当
     # ConfigError 拒绝（orchestrator-agent internal/pipeline/project.go 的
     # planNoEffectProblems，其 issue #32）——plan 阶段永远走默认 3 次尝试

@@ -44,7 +44,7 @@ class SHA1Test {
 		var cases:Array<{input:String, expect:String}> = [
 			{input: "", expect: "da39a3ee5e6b4b0d3255bfef95601890afd80709"},
 			{input: "abc", expect: "a9993e364706816aba3e25717850c26c9cd0d89d"}, // RFC 3174 A.2 官方向量
-			{input: "Hello", expect: "f7ff9e8b7bb2e09b70a35a5d785e0cc5d9d0abf0"},
+			{input: "Hello", expect: "f7ff9e8b7bb2e09b70935a5d785e0cc5d9d0abf0"},
 			{input: "The quick brown fox jumps over the lazy dog", expect: "2fd4e1c67a2d28fced849ee1bb76e7391b93eb12"},
 			{input: StringTools.rpad("", "a", 55), expect: "c1c8bbdc22796e28c0e15163d20899b65621d65a"}, // 55B：0x80 恰进本块尾
 			{input: StringTools.rpad("", "a", 56), expect: "c2db330f6083854c99d4b5bfb6e8f29f201be699"}, // 56B：0x80 逼出第二块

@@ -366,17 +366,54 @@ class TestMain {
 		// 原样；读环境变量与合并点接线归 implement
 		runner.addCase(new tools.BootSmokeVerdictTest());
 		runner.addCase(new shim.SwfUrlBaseCppTest());
-		// issue #66：功能 UI swf 规格提取（write-tests 阶段，对缺失清单
-		// 失败）——cards_v_1/quickshoot_v_0/WildShellNc_v_5 三件并入规格：
-		// 三清单（cards-game-ui/quickshoot-ui/wild-shell-ui）顶层形状镜像
-		// #30、条目 path ↔ legacy/decompiled/<swf>/scripts/ 的 .as 全集双射
-		// （条条有出处、不漏报不多报）；swf-inventory 三件 code 块四键
-		// 对账；_index external 分组增三键（pull 回指 main3 侧反射入口）、
-		// total_classes 77→113、805 校验不动、moduleList 两行改道；
-		// mods ↔ spec/protocol.json entries.nc.mods（S1）可解或带 note
-		// （cgi_farm_login_draw 白名单外不可达须 note）；cross_module_
-		// imports 解析为既有模块名
-		runner.addCase(new FeatureUIModuleSpecsTest());
+		// issue #67：普查待分诊桶三件（gifts_v_11/farmui_full_v_40/farmui1_v_42）
+		// 加载链考证定级（write-tests 阶段，结论文件不存在/family reason 占位
+		// 而失败）——研究任务的验收门：三件各自的「引用出处 → 活跃/非活跃 →
+		// 定级建议」结论要素（nc_main.php:22/:11 与 mc_main.php:21 引用行、
+		// ModuleFreeGift 反射链、freegifts visible 表与 gift_send 白名单缺位、
+		// farmui_full 207 DoABC 的 stub/帧脚本族定性与 #58 对齐、farmui1
+		// 农场侧排查结论）、「未验证」必须带卡点说明、baseline 匹配口径不动。
+		// 考证结论的落点：farmui1 写进 mc/main/* 族 reason（issue 点名更新
+		// 的唯一在账条目）；gifts/farmui_full 已在 main_swfs 无账可写，
+		// 结论按 test/** append-only 落新文件 test/Issue67TriageNotes.hx
+		// （纯 const 字符串类，implement 新建即转绿）
+		runner.addCase(new SwfTriageBaselineTest());
+		// issue #68：农场侧 17 件无归属带代码 swf 加载链考证定级（write-tests
+		// 阶段，结论文件 src/Issue68TriageNotes.hx 空串 stub 不转绿）——研究任务
+		// 的验收门：17 件全覆盖（键集合恰 17、每件非空）、「引用出处 → 活跃/
+		// 非活跃 → 定级建议」要素齐全（nc_addon.php:121/:128/:288/:289 与
+		// plugins 节锚点、happyfarm3 FarmLite.as:366 lite_ui 预加载器硬引用、
+		// main3 module/recall 模块链）、行号级出处可核对、「未验证」必须带
+		// 卡点说明、五件未定位引用项与插件三兄弟的「零引用或链路」收口、
+		// freegift/monthEnd 版本漂移与窗口过期点名项。结论落点是产品交付物
+		// （非测试零件）：17 件均已进 main_swfs 无 baseline 账可写，按 stub
+		// 归树规矩落 src/Issue68TriageNotes.hx（write-tests 建空串 stub，
+		// implement 原地填即转绿——src/ 不受 test/** append-only 约束）
+		runner.addCase(new Issue68TriageTest());
+		// issue #70：机器门收口两件——test/** 禁 throw-stub 扫描（#56 僵尸
+		// stub 归树规矩的差集报警）与跨树重复模块路径扫描（-cp tools 后
+		// 三棵树共享包空间的静默遮蔽枚举）。write-tests 阶段对 stub 失败；
+		// 被测是纯逻辑（行集→命中/冲突），走目录/exit 码/接线归 implement
+		// 的脚本侧（tools/scan_test_stubs.py / scan_module_paths.py）
+		runner.addCase(new tools.TestStubScanTest());
+		runner.addCase(new tools.ModulePathScanTest());
+		// issue #77：新手引导真机文字残留（#65 后续，write-tests 阶段，对
+		// 带盲区的现行 HelpGuideWiring 失败）——range 补洞的两个盲区：
+		// walk 下钻 SimpleButton 四态子树（9 个 DefineEditText 真例化在按钮
+		// up/over/down 状态 sprite 里，非死符号）、attach 后第一个
+		// ENTER_FRAME 一次性重放（真机 41 条告警 = 修复在真实加载流一条未
+		// 生效）；fixture（test/fixtures/help-fields.json）钉死 41 字段的
+		// HTML 原文与 32 直挂 + 9 按钮状态的挂载账（提取自
+		// legacy/decompiled/help/swf.xml）。node 真实流测试与真机复验按
+		// issue 走 implement 阶段 + owner
+		runner.addCase(new shim.HelpGuideWiringTest());
+		// issue #83：swf-inventory 生成器手写增补保留逻辑（决策点 a：同
+		// path 条目的手写键在再生成后存活——#30 四条 code 块被 399a5faa CI
+		// 再生成抹掉、无测试钉住无人察觉的收口）。write-tests 阶段对 stub
+		// 失败；被测是 JSON 文本进→出的纯逻辑（tools.SwfInventoryMerge，
+		// stub 在 tools/tools/ 归树），读文件/写回/接线归 implement 与人裁
+		// 决的脚本侧
+		runner.addCase(new tools.SwfInventoryMergeTest());
 		Report.create(runner);
 		runner.run();
 	}

@@ -1,0 +1,140 @@
+{
+ "version": 1,
+ "module": "cards-game-ui",
+ "swf": "cards_v_1",
+ "description": "签到翻牌游戏界面本体：module/ui/cards_v_1.swf（module.cardsgame 一族 5 类；main3 侧入口桩 ModuleCardsGame 归 activities 模块已译保留批）。初始化时 CardsGameModel.cardsGameQuery 拉取签到板数据（cgi_farm_login_home），登录天数/剩余翻牌数/连续签到奖励到位后 CardsGameWindow 九宫格翻牌：点牌 cgi_pasture_signin（flag=2）领奖，黄钻用户每天可翻 2 张、普通 1 张；bonus>0 时经同一 mod（flag=1）再发连续签到礼包（main3 侧 GiftWindow 展示）。cardActivityStart/End 配置区间内窗口换活动版素材（CardsGameWindowActivity_v_0.swf），三张实物卡（30/60/100 天签到里程碑）点击 ActivityClickGet(t) → cgi_farm_login_draw 领兑换码、CD-KEY 复制（System.setClipboard）与外链跳转。窗口素材不在本 swf：经 RSLManager.requestClass 按 Settings.getSecondUrl(\"CardsGameWindow\"/\"CardsGameActivityWindow\") 查 secondList 加载 module/ui/cardgames/ 两 swf。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php:21（Cards Module → module/ui/cards_v_1.swf）",
+  "legacy/decompiled/cards_v_1/scripts/（5 类；symbolclass/symbols.csv 仅 frame0=module.cardsgame.CardsGameWrapper，无其他导出符号）",
+  "legacy/decompiled/main3_v_221/scripts/module/cardsgame/ModuleCardsGame.as:23（onModuleLoadSuccess → Utils.getClass(\"module.cardsgame.CardsGameController\")）",
+  "legacy/decompiled/main3_v_221/scripts/module/uitools/widgets/LeftSideToolBar.as:87,155,235-236（__cards__ 按钮 → Consts.MSG_SHOW_CARDSGAMEWINDOW）",
+  "legacy/decompiled/main3_v_221/scripts/framework/net/CommandDefs.as:92,94,96,222 + framework/net/ServerServices.as:138-140,175（CMD→mod 串）",
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php:60-62,75-76（CardsGameOpenVip/RenewalVip/AllowLvl、cardActivityStart/End）与 :206+（cardsGameRewards 配置）与 :291-292（secondList CardsGameWindow/CardsGameActivityWindow 两素材 swf）",
+  "spec/protocol.json entries.nc.mods（mod 参数/返回权威，S1）"
+ ],
+ "notes": [
+  "拉起链同 farm-shop-ui：main3 侧 ModuleCardsGame（activities 模块保留批已译为 stub）经 Module.onModuleLoadSuccess 反射 Utils.getClass(\"module.cardsgame.CardsGameController\") 取控制器；左侧工具栏 __cards__ 按钮点击 dispatch Consts.MSG_SHOW_CARDSGAMEWINDOW，CardsGameController.refreshCardsGameData 监听该消息后发 CMD_REFRESH_CARDSGAME_DATA 刷新。",
+  "本 swf 由 main3 加载进其子 ApplicationDomain：common/framework/entities/com.adobe.serialization 等宿主类绑定 main3 份（farm-basic）或预加载器 happyfarm3_v_149 份（Settings/CommonData/Utils/QzoneJSAPI/RSLManager/EventRecorder，同 #30 四清单口径），cross_module_imports 一律记 farm-basic。",
+  "issue #66 点名：ABC 常量池含 ExternalInterface / navigateToURL——CardsGameWindow.onOpenVipLink 经 ExternalInterface.call(\"window.open\",url) 开黄钻开通/续费页（URL 为配置 CardsGameOpenVip/RenewalVip=tools.php?mod=vip），navigateToURL 三处外链（blog.qq.com 两篇公告、_ActivityLinks 三条 photo.qq.com 兑换页）；照片上传形态的 ExternalInterface 不在此 swf。这些涉及黄钻/外链的行为按 deviations 流程登记（spec/deviations.json 的 no-qzone-jsapi 族已覆盖 ExternalInterface 出口为 no-op 的方针；navigateToURL 按 CLAUDE.md src/shim 目标相关等价物处理），规格只描述原版是什么，不发明等价物。",
+  "cgi_farm_login_draw（CMD_GET_CARDSGAME_ACTIVITY=652）不在 mync.php $mod_list 白名单（:33-35 只有 login_home/login_click/pasture_signin）、spec/protocol.json 亦无条目：本部署实物卡活动领奖链路服务端不可达（见 CardsGameModel mods 条目 note），翻译时保持客户端行为原样。",
+  "窗口素材二进制在 secondList 的两个外部 swf（CardsGameWindow_v_0/CardsGameWindowActivity_v_0，nc_addon.php:291-292），本 swf 只含代码、不含窗口符号：CardsGameWindow.initalize 经 RSLManager.requestClass(cardsGameWindowClass=\"CardsGameWindow\") 异步取回，addWindow 里 Utils.getMaterial(\"CardsGameWindow\"/\"CardsGameActivityDH\"/\"BoxButton_1\"等) 全是对外部素材的符号名引用。",
+  "翻牌九宫格坐标 itemPos 两组：常规 [-213,-119,-25]×[-46,42,128]，活动期 x 各左移 100（-313/-219/-125）且窗口 x=-100、三礼包图标 x 由 163 改 63——硬编码坐标逐字照抄（画面保真）。",
+  "CardsGameModel.getReward 与 getBonusGift 同发 CMD_GET_CARDSGAME_REWARD（mod=cgi_pasture_signin），仅参数不同：领奖 {flag:2,pid:_lastRewardID,yellow:0/1}、连续签到礼包 {flag:1,days:loginDays}。",
+  "模块拆分口径：ModuleCardsGame（main3 侧桩）不在本清单——它属 main3 的 805 类、已在 activities 模块保留批（activities.json module.cardsgame.ModuleCardsGame）；本清单只收 cards_v_1.swf 内的 5 类。"
+ ],
+ "counts": {
+  "classes": 5
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/cards_v_1/scripts/module/cardsgame/CardsGameController.as",
+   "class": "module.cardsgame.CardsGameController",
+   "swf": "cards_v_1",
+   "subsystem": "控制器",
+   "loc": 182,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/cards_v_1/scripts/module/cardsgame/CardsGameModel.as",
+   "class": "module.cardsgame.CardsGameModel",
+   "swf": "cards_v_1",
+   "subsystem": "模型",
+   "loc": 176,
+   "mods": [
+    {
+     "mod": "cgi_farm_login_home",
+     "via": "CardsGameModel.as:44-47 cardsGameQuery() → CommandDefs.CMD_GET_CARDSGAME_DATA(58)（main3 framework/net/CommandDefs.as:92）→ NetHelper.sendRequest → main3 framework/net/ServerServices.as:138 m_cmdMap mod=cgi_farm_login_home"
+    },
+    {
+     "mod": "cgi_farm_login_click",
+     "via": "CardsGameModel.as:49-52 refreshCardsGameData() → CommandDefs.CMD_REFRESH_CARDSGAME_DATA(60)（CommandDefs.as:96）→ main3 framework/net/ServerServices.as:139 mod=cgi_farm_login_click"
+    },
+    {
+     "mod": "cgi_pasture_signin",
+     "via": "CardsGameModel.as:54-61 getReward()（{flag:2,pid,yellow}）与 :160-166 getBonusGift()（{flag:1,days}）→ CommandDefs.CMD_GET_CARDSGAME_REWARD(59)（CommandDefs.as:94）→ main3 framework/net/ServerServices.as:140 mod=cgi_pasture_signin"
+    },
+    {
+     "mod": "cgi_farm_login_draw",
+     "note": "unknown：cgi_farm_login_draw 不在 mync.php $mod_list 白名单（:33-35 仅 login_home/login_click/pasture_signin，dispatch 未命中→无输出），spec/protocol.json entries.nc.mods 亦无该 mod 条目；本部署实物卡活动领奖链路不可达",
+     "via": "CardsGameModel.as:77-82 ActivityClickGet(t)（{t}）→ CommandDefs.CMD_GET_CARDSGAME_ACTIVITY(652)（CommandDefs.as:222）→ main3 framework/net/ServerServices.as:175 mod=cgi_farm_login_draw"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/cards_v_1/scripts/module/cardsgame/CardsGameWindow.as",
+   "class": "module.cardsgame.CardsGameWindow",
+   "swf": "cards_v_1",
+   "subsystem": "视图：九宫格翻牌窗口（+活动期实物卡区）",
+   "loc": 530,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "module/ui/cardgames/CardsGameWindow_v_0.swf（常规窗口素材）/ CardsGameWindowActivity_v_0.swf（活动期窗口素材，cardActivityStart/End 区间内）",
+     "via": "CardsGameWindow.initalize() → RSLManager.requestClass(\"CardsGameWindow\", addWindowTimer, Settings.getSecondUrl(\"CardsGameWindow\"|\"CardsGameActivityWindow\"))；addWindow/ActivityDHWindow 内 Utils.getMaterial(\"CardsGameWindow\"/\"CardsGameActivityDH\"/\"TurnOverBg1\"/\"TurnOverBg2\"/\"BoxButton_1\"/\"BoxButton_2\") 符号名引用",
+     "evidence": "nc_addon.php secondList {\"id\":\"CardsGameWindow\",\"src\":\"module/ui/cardgames/CardsGameWindow_v_0.swf\"} 与 {\"id\":\"CardsGameActivityWindow\",\"src\":\"module/ui/cardgames/CardsGameWindowActivity_v_0.swf\"}；cards_v_1/scripts/module/cardsgame/CardsGameWindow.as:249-257,420,262"
+    },
+    {
+     "pattern": "奖励物品图标 swf（Settings.getCardsGameReward(id) 的 type/cId 分发：种子/金币/材料等，main3 common.view.MaterialProxy 系）",
+     "via": "CardsGameWindow.addWindow() _gift{1,2,3}IDMaterialProxy.setContent(type, cId)",
+     "evidence": "cards_v_1/scripts/module/cardsgame/CardsGameWindow.as:440-463；nc_addon.php:206+ cardsGameRewards 配置"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/cards_v_1/scripts/module/cardsgame/CardsGameWindowItem.as",
+   "class": "module.cardsgame.CardsGameWindowItem",
+   "swf": "cards_v_1",
+   "subsystem": "部件：翻牌格（含卡背/翻面/数量文本）",
+   "loc": 172,
+   "mods": [],
+   "assets": [
+    {
+     "pattern": "翻面底板素材符号 TurnOverBg1/TurnOverBg2、按钮素材 BoxButton_1/BoxButton_2（CardsGameWindow 同源外部 swf 符号）",
+     "via": "Utils.getMaterial(\"TurnOverBg1\"/\"TurnOverBg2\")（addTurnOverBg）、Utils.getMaterial(\"BoxButton_1\"/\"BoxButton_2\")（addButton）",
+     "evidence": "cards_v_1/scripts/module/cardsgame/CardsGameWindowItem.as:118-122,161-166"
+    },
+    {
+     "pattern": "奖励物品图标 swf（同 CardsGameWindow 礼包图标链路）",
+     "via": "MaterialProxy(MaterialProxy.CARDSGAME).setContent(type, cId)",
+     "evidence": "cards_v_1/scripts/module/cardsgame/CardsGameWindowItem.as:51-53,76-82"
+    }
+   ],
+   "interactions": [
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_OVER",
+    "MouseEvent.ROLL_OUT"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/cards_v_1/scripts/module/cardsgame/CardsGameWrapper.as",
+   "class": "module.cardsgame.CardsGameWrapper",
+   "swf": "cards_v_1",
+   "subsystem": "入口壳",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  }
+ ]
+}

@@ -1,0 +1,262 @@
+{
+ "version": 1,
+ "module": "quickshoot-ui",
+ "swf": "quickshoot_v_0",
+ "description": "快速拍照与健康模式界面本体：module/ui/quickshoot_v_0.swf 一个 swf 装两个功能（15 类；main3 侧入口桩 ModuleQuickShoot 归 activities 模块已译保留批，同一 onModuleLoadSuccess 里先后反射取 QuickShootController 与 HealthController 两个控制器）。快速拍照：MSG_CAMERA 消息触发，QuickShootController 截取农场景层（LAYER_SCENE_CONTENT 1000×768 BitmapData.draw 截屏，大模式 _bigMode 缩放 1.3）+ 玩家栏 __playerbar__ + 好友栏 __friendbar__ + CameraShootLogo 水印合成预览；QuickShootWindow「快照预览」窗口（分辨率单选 800×600/1000×768、标题 30 字/描述 200 字计数），确认后 QzoneJSAPI.getUpUrl 经宿主 JS 异步取上传 URL，JPGEncoder(80) 压缩 POST application/octet-stream 上传；成功后 window.open 看照片，Cookies CameraShoot 记每天 5 次上限。健康模式：HealthView 开启/关闭窗口（小时/分两个 ComboBox，模式文案 HM_* 语言串）、HealthConfirmWindow 二次确认，item&act=healthMode 一个 mod 开（{time:\"h|m\"}）关（{close:1}）两用；HealthModel 依 HealthMode 实体与服务端时间维护开启状态/可取消窗口，HealthController.onGameLoop 按 HEALTH_MODE_COUNTDOWN 周期 updateHealthMode 超时检测。",
+ "sources": [
+  "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php:20（Quick Shoot Module → module/ui/quickshoot_v_0.swf）",
+  "legacy/decompiled/quickshoot_v_0/scripts/（15 类；symbolclass/symbols.csv 仅 frame0=module.quickshoot.QuickShootWrapper，无其他导出符号）",
+  "legacy/decompiled/main3_v_221/scripts/module/quickshoot/ModuleQuickShoot.as:29,36（onModuleLoadSuccess → Utils.getClass(\"module.quickshoot.QuickShootController\") 与 (\"module.health.HealthController\")）",
+  "legacy/decompiled/main3_v_221/scripts/framework/net/CommandDefs.as:154（CMD_OPEN_HEALTH=110）+ framework/net/ServerServices.as:121（mod=item&act=healthMode）",
+  "legacy/deploy/QFarmFlash/source/core/mync.php:60（白名单整名 item_healthmode）",
+  "legacy/decompiled/happyfarm3_v_149/scripts/common/misc/QzoneJSAPI.as:87-96（getUpUrl → ExternalInterface.call(GET_UPURL)，宿主 JS 回调 setUploadUrl）",
+  "spec/protocol.json entries.nc.mods.item_healthmode（mod 参数/返回权威，S1）"
+ ],
+ "notes": [
+  "拉起链同 farm-shop-ui：main3 侧 ModuleQuickShoot（activities 模块保留批已译为 stub）经 Module.onModuleLoadSuccess 反射取控制器——注意一个模块桩拉**两个** swf 内控制器（QuickShootController 与 HealthController，module.health 包同住在本 swf），健康模式逻辑因此随本清单走。",
+  "本 swf 由 main3 加载进其子 ApplicationDomain：com.qzone.qui 组件库、common/framework/entities 等宿主类绑定 main3 份（farm-basic）；com.adobe.serialization.json.JSON 在 happyfarm3_v_149 预加载器（pasture.json notes 同款口径：外部依赖，不在 805 类内）。",
+  "qui 库本地副本 6 类（ComboBox/List/ListBase/ListItemRenderer/ComboBoxDefaultSkin/ListItemDefaultSkin）：main3 的 qui 组件库没有 ComboBox/List 一族（main3 com/qzone/qui/controls 下无这两个类），本 swf 自带编译副本供 HealthView 小时/分下拉用；ComboBox extends Label、List extends ListBase extends ScrollBase，宿主 main3 的 Label/ScrollBase/Style/PopUpManager 等在 farm-basic。",
+  "com.adobe.images.JPGEncoder/BitString 为本 swf 特有（main3/Master2 均无 com.adobe.images 包）：JPEG 编码器（标准霍夫曼表内联常量、质量 80），供照片 POST 字节流编码。",
+  "照片上传不经 CommandDefs/NetHelper 命令通道：QuickShootController.postScreen（:223-232）URLLoader 直连 _saveQuickShootUrl（Settings.getStringAttribute(\"quick_shoot_url\") 初始值 + QzoneJSAPI.getUpUrl 宿主 JS 经 CommonData.addCallBackProxy(\"setUploadUrl\") 回调覆盖；URL 先经 /refer=[a-zA-Z]*/ig 替换再拼 ?needcompress=0&charset=utf-8&output_charset=utf-8&albumid=&picname=<encodeURIComponent>.jpg&desc=<encodeURIComponent>），POST application/octet-stream、data 为 JPGEncoder(80).encode(BitmapData)。按口径（镜像 #30：swf 内直连网关的非命令调用不入 mods）不登记进 mods，此处记为原始行为描述；上传 URL 依赖 QZone 宿主 fusion2 JS，按 deviations 流程（no-qzone-jsapi 族）处理出口。",
+  "ExternalInterface 两处：confirmQuickShoot SUCCESS 分支 ExternalInterface.call(\"window.open\",this._serverPicUrl) 看照片；QzoneJSAPI.getUpUrl 的 ExternalInterface.call(GET_UPURL) 经预加载器 shim。同属 no-qzone-jsapi deviations 覆盖面，规格不发明等价物。",
+  "每日计数 Cookies \"CameraShoot\" 格式 <toDateString>_<counter>，confirmQuickShoot 计数 >=5 时弹 ALERT_TYPE_TIP「每天最多拥有5次拍照留念机会。」。",
+  "健康模式状态机：item_healthmode 返回 m_extra.date（\"yyyy-mm-dd|yyyy-mm-dd\"）转中文期间串；canCancelHealthMode 仅在服务端 _set==1 && _canClose==1 或当日小时未过开始时刻时为 true；checkTimeCanPick 按 (hour+HEALTH_MODE_TOTAL_HOURS)%24 区间与分钟边界判定。needLevel 由 Settings hmv2level 配置读取（黄钻等级门槛，未达走 HM_UPDATING 文案）。",
+  "模块拆分口径：ModuleQuickShoot（main3 侧桩）不在本清单——它属 main3 的 805 类、已在 activities 模块保留批（activities.json module.quickshoot.ModuleQuickShoot）；本清单只收 quickshoot_v_0.swf 内的 15 类。"
+ ],
+ "counts": {
+  "classes": 15
+ },
+ "classes": [
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/com/adobe/images/BitString.as",
+   "class": "com.adobe.images.BitString",
+   "swf": "quickshoot_v_0",
+   "subsystem": "JPEG 编码库本地副本：位串值对象",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/com/adobe/images/JPGEncoder.as",
+   "class": "com.adobe.images.JPGEncoder",
+   "swf": "quickshoot_v_0",
+   "subsystem": "JPEG 编码库本地副本：编码器（标准霍夫曼/量化表内联，quality 参数构造）",
+   "loc": 623,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/com/qzone/qui/controls/ComboBox.as",
+   "class": "com.qzone.qui.controls.ComboBox",
+   "swf": "quickshoot_v_0",
+   "subsystem": "qui 库本地副本：下拉选择框（main3 qui 库无此类）",
+   "loc": 333,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK",
+    "MouseEvent.MOUSE_DOWN",
+    "MouseEvent.MOUSE_UP",
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/com/qzone/qui/controls/List.as",
+   "class": "com.qzone.qui.controls.List",
+   "swf": "quickshoot_v_0",
+   "subsystem": "qui 库本地副本：列表（main3 qui 库无此类）",
+   "loc": 65,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/com/qzone/qui/controls/listClasses/ListBase.as",
+   "class": "com.qzone.qui.controls.listClasses.ListBase",
+   "swf": "quickshoot_v_0",
+   "subsystem": "qui 库本地副本：列表基类（main3 qui 库无此类）",
+   "loc": 533,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "Event.COMPLETE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/com/qzone/qui/controls/listClasses/ListItemRenderer.as",
+   "class": "com.qzone.qui.controls.listClasses.ListItemRenderer",
+   "swf": "quickshoot_v_0",
+   "subsystem": "qui 库本地副本：列表条目渲染（main3 qui 库无此类）",
+   "loc": 180,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.ROLL_OUT",
+    "MouseEvent.ROLL_OVER"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/com/qzone/qui/skins/ComboBoxDefaultSkin.as",
+   "class": "com.qzone.qui.skins.ComboBoxDefaultSkin",
+   "swf": "quickshoot_v_0",
+   "subsystem": "qui 库本地副本：下拉框默认皮肤符号表（静态 Class 引用 ComboBoxSkin/ComboBoxSelectedSkin/ComboBoxArrow）",
+   "loc": 19,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/com/qzone/qui/skins/ListItemDefaultSkin.as",
+   "class": "com.qzone.qui.skins.ListItemDefaultSkin",
+   "swf": "quickshoot_v_0",
+   "subsystem": "qui 库本地副本：列表条目默认皮肤符号表（静态 Class 引用 ListItemOverSkin/ListItemSelectedSkin）",
+   "loc": 17,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/module/health/HealthConfirmWindow.as",
+   "class": "module.health.HealthConfirmWindow",
+   "swf": "quickshoot_v_0",
+   "subsystem": "窗口：健康模式开/关二次确认",
+   "loc": 104,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/module/health/HealthController.as",
+   "class": "module.health.HealthController",
+   "swf": "quickshoot_v_0",
+   "subsystem": "健康模式控制器",
+   "loc": 332,
+   "mods": [],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/module/health/HealthModel.as",
+   "class": "module.health.HealthModel",
+   "swf": "quickshoot_v_0",
+   "subsystem": "健康模式模型",
+   "loc": 278,
+   "mods": [
+    {
+     "mod": "item",
+     "act": "healthMode",
+     "via": "HealthModel.as:59-67 openHealthMode()（{time:\"<小时>|<分钟>\"}）与 :206-209 closeHealthMode()（{close:1}）→ CommandDefs.CMD_OPEN_HEALTH(110)（main3 framework/net/CommandDefs.as:154）→ NetHelper.sendRequest → main3 framework/net/ServerServices.as:121 m_cmdMap mod=item&act=healthMode"
+    }
+   ],
+   "assets": [],
+   "interactions": [],
+   "cross_module_imports": [
+    "activities",
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/module/health/HealthView.as",
+   "class": "module.health.HealthView",
+   "swf": "quickshoot_v_0",
+   "subsystem": "视图：健康模式开启/关闭窗口（时/分下拉）",
+   "loc": 277,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/module/quickshoot/QuickShootController.as",
+   "class": "module.quickshoot.QuickShootController",
+   "swf": "quickshoot_v_0",
+   "subsystem": "拍照控制器（截屏合成/上传/计数）",
+   "loc": 342,
+   "mods": [
+    {
+     "raw": "Settings.getStringAttribute(\"quick_shoot_url\") + QzoneJSAPI.getUpUrl 宿主 JS 回调下发（setUploadUrl）的上传 URL",
+     "note": "照片上传不经 mync.php 网关/CommandDefs 命令通道：URLLoader 直连 POST（application/octet-stream，JPGEncoder(80) 字节流，query needcompress=0&charset=utf-8&output_charset=utf-8&albumid=&picname=<encodeURIComponent>.jpg&desc=<encodeURIComponent>）；URL 取 QZone 宿主 fusion2 JS（no-qzone-jsapi deviations 族覆盖出口），镜像 #30 对直连网关非命令调用不入 mods 键引用的口径，以 raw+note 登记",
+     "via": "QuickShootController.as:196-234 postScreen() → URLLoader.load(new URLRequest(_saveQuickShootUrl + \"?needcompress=0...\"))（:223-232）"
+    }
+   ],
+   "assets": [
+    {
+     "pattern": "CameraShootWindow / CameraShootLogo 素材符号（宿主 main3 素材库引用）",
+     "via": "QuickShootWindow 构造 Utils.getMaterial(\"CameraShootWindow\")；buildPreview Utils.getMaterial(\"CameraShootLogo\")",
+     "evidence": "quickshoot_v_0/scripts/module/quickshoot/QuickShootWindow.as:54；QuickShootController.as:322"
+    },
+    {
+     "pattern": "按钮皮肤符号 ButtonOrange/ButtonBlue（宿主 main3 素材库）",
+     "via": "Utils.getClass(\"ButtonOrange\"/\"ButtonBlue\") 赋值 confirmButton/cancelButton.defaultSkin",
+     "evidence": "quickshoot_v_0/scripts/module/quickshoot/QuickShootWindow.as:75,85"
+    }
+   ],
+   "interactions": [
+    "Event.COMPLETE",
+    "IOErrorEvent.IO_ERROR",
+    "SecurityErrorEvent.SECURITY_ERROR",
+    "TimerEvent.TIMER"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/module/quickshoot/QuickShootWindow.as",
+   "class": "module.quickshoot.QuickShootWindow",
+   "swf": "quickshoot_v_0",
+   "subsystem": "视图：快照预览窗口（分辨率单选/字数计数/状态三态）",
+   "loc": 252,
+   "mods": [],
+   "assets": [],
+   "interactions": [
+    "Event.CHANGE",
+    "MouseEvent.CLICK"
+   ],
+   "cross_module_imports": [
+    "farm-basic"
+   ]
+  },
+  {
+   "path": "legacy/decompiled/quickshoot_v_0/scripts/module/quickshoot/QuickShootWrapper.as",
+   "class": "module.quickshoot.QuickShootWrapper",
+   "swf": "quickshoot_v_0",
+   "subsystem": "入口壳",
+   "loc": 16,
+   "mods": [],
+   "assets": [],
+   "interactions": []
+  }
+ ]
+}

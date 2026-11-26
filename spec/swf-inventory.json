@@ -12079,7 +12079,14 @@
    "stage": [
     500,
     375
-   ]
+   ],
+   "code": {
+    "decompiled": "legacy/decompiled/WildShellNc_v_5/",
+    "symbol_class": "wild.com.Shell.WildShell",
+    "classes": 16,
+    "module_spec": "spec/modules/wild-shell-ui.json",
+    "note": "功能 UI 代码 swf（issue #66 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"
+   }
   },
   {
    "path": "module/mc/farm/wild/WildShell_v_33.swf",
@@ -58390,7 +58397,14 @@
    "stage": [
     500,
     375
-   ]
+   ],
+   "code": {
+    "decompiled": "legacy/decompiled/cards_v_1/",
+    "symbol_class": "module.cardsgame.CardsGameWrapper",
+    "classes": 5,
+    "module_spec": "spec/modules/cards-game-ui.json",
+    "note": "功能 UI 代码 swf（issue #66 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"
+   }
   },
   {
    "path": "module/ui/decorate_v_0.swf",
@@ -69044,7 +69058,14 @@
    "stage": [
     500,
     375
-   ]
+   ],
+   "code": {
+    "decompiled": "legacy/decompiled/quickshoot_v_0/",
+    "symbol_class": "module.quickshoot.QuickShootWrapper",
+    "classes": 15,
+    "module_spec": "spec/modules/quickshoot-ui.json",
+    "note": "功能 UI 代码 swf（issue #66 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"
+   }
   },
   {
    "path": "module/ui/qzonegift_v_0.swf",

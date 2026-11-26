@@ -97,6 +97,14 @@
       "ported": "不移植（所有者 2026-11-22 拍板）。src/framework/api/ 两个 stub 保留作编译占位（启动链 new 调用点不空挂），行为永久缺位；spec/modules/farm-basic.json 与 _index.json 已同步移出并对账（805 公式加 plugin_api_stubs_kept: 2 桶）",
       "why": "QQ 插件生态在独立部署下无宿主可接，且 no-qzone-jsapi / no-qq-telemetry deviations 已切断其出口——701 行死管道，照 activities 砍除先例处理",
       "date": "2026-11-22"
+    },
+    {
+      "id": "feature-ui-swfs-external-links",
+      "module": "cards_v_1 / quickshoot_v_0 / WildShellNc_v_5 外部功能 swf（issue #66 规格提取批次，spec/modules/cards-game-ui.json 等三清单）",
+      "original": "黄钻/外链出口散在三个 swf：cards_v_1 CardsGameWindow.onOpenVipLink 经 ExternalInterface.call(\"window.open\", url) 开黄钻开通/续费页（URL 为配置 CardsGameOpenVip/RenewalVip=tools.php?mod=vip），navigateToURL 四处硬编码腾讯外链（blog.qq.com 两篇公告 http://blog.qq.com/qzone/1006666001/1312167689.htm 与 .../1331087399.htm、_ActivityLinks 三条 photo.qq.com 实物卡兑换页 app.photo.qq.com/cgi-bin/app/cgi_redict_kadang?from=hd-farm{One,Two,Three}-120229）；quickshoot_v_0 QuickShootController 确认后 ExternalInterface.call(\"window.open\", _serverPicUrl) 看照片、QzoneJSAPI.getUpUrl 经 fusion2 GET_UPURL 取上传地址（宿主 JS 回调 setUploadUrl）；WildShellNc_v_5 无 ExternalInterface/navigateToURL 调用（ABC 常量池核对），其 wildmodule 外链加载（WildScene/ToolScene）是 swf 素材加载不是网页外链",
+      "ported": "翻译批次处理时按既有出口方针照落到 shim：navigateToURL 调用点照翻、指向 src/shim/NavigateToURL.hx（html5 window.open、非浏览器目标留痕不抛，PersonInfo 先例）；ExternalInterface 出口同 no-qzone-jsapi / qqoutlets-shim 方针 no-op 或安全默认值（宿主 fusion2 不存在）——本登记不改写两条 shim 既有偏差，仅把覆盖范围扩到这三个外部 swf 的调用点",
+      "why": "issue #66 要什么 4 明确要求「cards_v_1 的 ABC 常量池含 ExternalInterface / navigateToURL，涉及黄钻/外链的按 deviations 流程登记，不要发明等价物」——外链目标是腾讯 2012 年运营页面与黄钻支付链路，独立部署无对应物；出口行为与 main3/预加载器同源，适用同一组 shim 方针",
+      "date": "2026-11-26"
     }
   ]
 }

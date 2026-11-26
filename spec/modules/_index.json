@@ -40,13 +40,17 @@
   }
  ],
  "external": {
-  "description": "功能 UI swf 分组（issue #30）：nc_main.php moduleList 中 main3 之外异步加载的界面 swf，控制器由 main3 侧桩经 Utils.getClass 解析（加载进 main3 子 ApplicationDomain）。这些类不计入 breakdown 与 counts_check——对账口径不变：805 只覆盖 main3+Master2，功能 swf 另计（external.total_classes = 77 = Σ 各清单 counts.classes）。",
+  "description": "功能 UI swf 分组（issue #30 四件 + issue #66 三件）：nc_main.php moduleList 中 main3 之外异步加载的界面 swf（WildShellNc_v_5 例外：不走 moduleList，由 FarmApplication.loadWildShell 按 nc_addon beastLoaderUrl 显式加载），控制器由 main3 侧桩/反射点经 Utils.getClass 解析（加载进 main3 子 ApplicationDomain）。这些类不计入 breakdown 与 counts_check——对账口径不变：805 只覆盖 main3+Master2，功能 swf 另计（external.total_classes = 113 = Σ 各清单 counts.classes）。",
   "sources": [
    "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_main.php:9-24（moduleList）",
    "legacy/decompiled/shop_v_7/scripts/（25 类，symbolclass 仅 frame0=module.shop.ShopWrapper）",
    "legacy/decompiled/warehouse_v_23/scripts/（29 类，symbolclass 仅 frame0=module.warehouse.WarehouseWrapper）",
    "legacy/decompiled/pool_v_13/scripts/（14 类，symbolclass 仅 frame0=module.water.WaterWrapper）",
-   "legacy/decompiled/decorate_v_0/scripts/（9 类，symbolclass 仅 frame0=module.decorate.DecorateWrapper）"
+   "legacy/decompiled/decorate_v_0/scripts/（9 类，symbolclass 仅 frame0=module.decorate.DecorateWrapper）",
+   "legacy/decompiled/cards_v_1/scripts/（5 类，symbolclass 仅 frame0=module.cardsgame.CardsGameWrapper，issue #66 反编译扩清单）",
+   "legacy/decompiled/quickshoot_v_0/scripts/（15 类，symbolclass 仅 frame0=module.quickshoot.QuickShootWrapper，issue #66 反编译扩清单）",
+   "legacy/decompiled/WildShellNc_v_5/scripts/（16 类，symbolclass 仅 frame0=wild.com.Shell.WildShell，issue #66 反编译扩清单）",
+   "legacy/deploy/QFarmFlash/source/core/source/xml/mod/nc_addon.php:81（beastLoaderUrl=module/mc/farm/wild/WildShellNc_v_5.swf，非 moduleList 拉起）"
   ],
   "swfs": {
    "shop_v_7": {
@@ -72,9 +76,27 @@
     "classes": 9,
     "document_class": "module.decorate.DecorateWrapper",
     "pull": "main3 module/decorate/ModuleDecorate.as:47 Utils.getClass(\"module.decorate.DecorateController\")"
+   },
+   "cards_v_1": {
+    "module_spec": "spec/modules/cards-game-ui.json",
+    "classes": 5,
+    "document_class": "module.cardsgame.CardsGameWrapper",
+    "pull": "nc_main.php:21 Cards Module → main3 module/cardsgame/ModuleCardsGame.as:23 onModuleLoadSuccess Utils.getClass(\"module.cardsgame.CardsGameController\")；左侧工具栏 __cards__ 按钮（LeftSideToolBar.as:87/:155/:236 MSG_SHOW_CARDSGAMEWINDOW）"
+   },
+   "quickshoot_v_0": {
+    "module_spec": "spec/modules/quickshoot-ui.json",
+    "classes": 15,
+    "document_class": "module.quickshoot.QuickShootWrapper",
+    "pull": "nc_main.php:20 Quick Shoot Module → main3 module/quickshoot/ModuleQuickShoot.as:29 Utils.getClass(\"module.quickshoot.QuickShootController\") 与 :36 Utils.getClass(\"module.health.HealthController\")（健康模式同住本 swf）"
+   },
+   "WildShellNc_v_5": {
+    "module_spec": "spec/modules/wild-shell-ui.json",
+    "classes": 16,
+    "document_class": "wild.com.Shell.WildShell",
+    "pull": "nc_addon.php:81 beastLoaderUrl → main3 module/FarmApplication.as:586 loadWildShell（:766 _beast 到位触发）→ :270 onWildComplete Utils.getClass(\"wild.com.Shell.WildShell\") initConfig(beastAPI)"
    }
   },
-  "total_classes": 77,
+  "total_classes": 113,
   "moduleList_reconciliation": [
    {
     "module": "(moduleList 外) <loading>",
@@ -127,14 +149,14 @@
    {
     "module": "Quick Shoot Module",
     "url": "module/ui/quickshoot_v_0.swf",
-    "disposition": "不入类清单：activities 砍除模块的 UI（main3 壳 module.quickshoot 已随保留批译为 stub，UI swf 未反编译、整模块不移植）",
-    "source": "nc_main.php:20；本文件 ignored.activities；spec/deviations.json module-activities-cut"
+    "disposition": "quickshoot-ui（15 类；issue #66 反编译扩清单后提取——原「activities 砍除模块的 UI、未反编译」说法随 #66 反编译+提取失效：UI swf 本体独立成清单，main3 壳 module.quickshoot 仍属 activities 保留批）",
+    "source": "nc_main.php:20；spec/modules/quickshoot-ui.json"
    },
    {
     "module": "Cards Module",
     "url": "module/ui/cards_v_1.swf",
-    "disposition": "不入类清单：activities 砍除模块的 UI（module.cardsgame 壳已随保留批译为 stub，UI swf 未反编译、不移植）",
-    "source": "nc_main.php:21；本文件 ignored.activities；spec/deviations.json module-activities-cut"
+    "disposition": "cards-game-ui（5 类；issue #66 反编译扩清单后提取——原「activities 砍除模块的 UI、未反编译」说法随 #66 反编译+提取失效：UI swf 本体独立成清单，main3 壳 module.cardsgame 仍属 activities 保留批）",
+    "source": "nc_main.php:21；spec/modules/cards-game-ui.json"
    },
    {
     "module": "FreeGift Module",

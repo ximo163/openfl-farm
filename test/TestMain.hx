@@ -407,6 +407,13 @@ class TestMain {
 		// legacy/decompiled/help/swf.xml）。node 真实流测试与真机复验按
 		// issue 走 implement 阶段 + owner
 		runner.addCase(new shim.HelpGuideWiringTest());
+		// issue #83：swf-inventory 生成器手写增补保留逻辑（决策点 a：同
+		// path 条目的手写键在再生成后存活——#30 四条 code 块被 399a5faa CI
+		// 再生成抹掉、无测试钉住无人察觉的收口）。write-tests 阶段对 stub
+		// 失败；被测是 JSON 文本进→出的纯逻辑（tools.SwfInventoryMerge，
+		// stub 在 tools/tools/ 归树），读文件/写回/接线归 implement 与人裁
+		// 决的脚本侧
+		runner.addCase(new tools.SwfInventoryMergeTest());
 		Report.create(runner);
 		runner.run();
 	}

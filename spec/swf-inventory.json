@@ -58415,7 +58415,14 @@
    "stage": [
     500,
     375
-   ]
+   ],
+   "code": {
+    "decompiled": "legacy/decompiled/decorate_v_0/",
+    "symbol_class": "module.decorate.DecorateWrapper",
+    "classes": 9,
+    "module_spec": "spec/modules/farm-decorate-ui.json",
+    "note": "功能 UI 代码 swf（issue #30 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"
+   }
   },
   {
    "path": "module/ui/dialogs/ArborDayActivityContext_v_0.swf",
@@ -69047,7 +69054,14 @@
    "stage": [
     500,
     375
-   ]
+   ],
+   "code": {
+    "decompiled": "legacy/decompiled/pool_v_13/",
+    "symbol_class": "module.water.WaterWrapper",
+    "classes": 14,
+    "module_spec": "spec/modules/water-ui.json",
+    "note": "功能 UI 代码 swf（issue #30 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"
+   }
   },
   {
    "path": "module/ui/quickshoot_v_0.swf",
@@ -69109,7 +69123,14 @@
    "stage": [
     500,
     375
-   ]
+   ],
+   "code": {
+    "decompiled": "legacy/decompiled/shop_v_7/",
+    "symbol_class": "module.shop.ShopWrapper",
+    "classes": 25,
+    "module_spec": "spec/modules/farm-shop-ui.json",
+    "note": "功能 UI 代码 swf（issue #30 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"
+   }
   },
   {
    "path": "module/ui/singleFes_v_0.swf",
@@ -69153,7 +69174,14 @@
    "stage": [
     500,
     375
-   ]
+   ],
+   "code": {
+    "decompiled": "legacy/decompiled/warehouse_v_23/",
+    "symbol_class": "module.warehouse.WarehouseWrapper",
+    "classes": 29,
+    "module_spec": "spec/modules/inventory-ui.json",
+    "note": "功能 UI 代码 swf（issue #30 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"
+   }
   },
   {
    "path": "module/ui/water_ui_v_0.swf",

@@ -344,9 +344,17 @@ class SwfInventoryMergeTest {
 			if (Std.isOfType(p, String)) byPath.set(cast p, e);
 		}
 		// // issue #85 在册三条（2026-11-26 合并，出处 spec/modules/
-		// {cards-game-ui,quickshoot-ui,wild-shell-ui}.json 的 code 块交付；
-		// #30 四条随 #95 恢复后在此清单追加）
-		var known = ["module/ui/cards_v_1.swf", "module/ui/quickshoot_v_0.swf", "module/mc/farm/wild/WildShellNc_v_5.swf"];
+		// {cards-game-ui,quickshoot-ui,wild-shell-ui}.json 的 code 块交付）；
+		// #30 四条 2026-11-26 按 #95 恢复（84c203bb 形态逐字搬运）后追加。
+		var known = [
+			"module/ui/cards_v_1.swf",
+			"module/ui/quickshoot_v_0.swf",
+			"module/mc/farm/wild/WildShellNc_v_5.swf",
+			"module/ui/shop_v_7.swf",
+			"module/ui/warehouse_v_23.swf",
+			"module/ui/pool_v_13.swf",
+			"module/ui/decorate_v_0.swf"
+		];
 		for (p in known) {
 			var e = byPath.get(p);
 			Assert.notNull(e, "在册手写块宿主 " + p + " 缺失（再生成把条目删了？）");

@@ -1758,3 +1758,17 @@
   直接 127（review round 1 驳回点之一）。防：片段/文档里给人和 CI 的
   可执行命令一律 `python3`；python 壳 docstring 的「容器无 `python`
   别名」注记是事实出处。
+
+## 2026-11 · #83（swf-inventory 归并：JSON 逐字搬运不能过 parse）
+
+- **「逐字保留」契约束不了 haxe.Json 的 round-trip**：`Json.parse` 把数字
+  字面归一（`25.0`→`25`、eval 上 Int/Float 各自进坑），parse 后 stringify
+  出来的不是原文。凡是「旧文件里的值子串逐字搬进新文件」的判式（手写增
+  补保留、JSON 配置的热补丁合并），值一律走**位置扫描**从原文截取，
+  parse 只做形状校验——SwfInventoryMerge 的 PosScanner 模式（实文件
+  6290 条零 diff + 幂等验证过）。防：写这类判式前先问「值里有没有可能
+  出现 25.0/1e3/前导零之外的字面形态」，有就不能过 parse。
+- **typedef 不能写在类体里**（`Expected }` 编译错——模块内私类型提到
+  文件顶层、标 `private typedef`）；**动态花括号键名在对象字面量里不存
+  在**（`{keys: …}` 逐字段构造 typedef 时字段名是写死的，构造数据驱动
+  的键集用 Map）。

@@ -1,11 +1,11 @@
 package tools;
 
 /**
- * issue #94 T2/T3 门禁接线——CI wrapper 的判定纯逻辑（write-tests 阶段
- * stub，契约由 test/tools/CiGatesVerdictTest.hx 钉死，implement 原地填充）。
- * 被测类只判两闸退出码与报告文本，不起进程、不读文件、不碰真实时间——
- * 跑双闸、读报告、两闸 `--self-check` 的 CI 同跑（或省略理由）、web.yml
- * 的接线全归 wrapper 脚本半边（implement 阶段交付；.github/ 人管线由人）。
+ * issue #94 T2/T3 门禁接线——CI wrapper 的判定纯逻辑（契约由
+ * test/tools/CiGatesVerdictTest.hx 钉死）。被测类只判两闸退出码与报告文本，
+ * 不起进程、不读文件、不碰真实时间——跑双闸、读报告、两闸 `--self-check`
+ * 的 CI 同跑在 tools/ci-gates.sh 半边（机读胶水 tools/tools/CiGatesScan.hx，
+ * BootSmokeScan 同款分层）；.github/ 人管线由人。
  *
  * 为什么存在：T2/T3 的机器件（tools/RenderGate.mjs、tools/TimelineGate.mjs
  * 及探针）已并入 main 但**零调用**——渲染/时间轴跑偏的 PR 今天照常自动合并
@@ -56,7 +56,11 @@ package tools;
 class CiGatesVerdict {
 	/** 闸退出码 → 三态（契约见类头 1）。 */
 	static public function classifyExit(exit:Int):GateStatus {
-		throw new haxe.Exception("not implemented");
+		// 0/1/2 是两闸声明的契约码；其余非零（node 崩溃/被信号杀的 137/139
+		// 形态）不在契约里＝闸失灵，归基建侧
+		if (exit == 0) return Green;
+		if (exit == 1) return Red;
+		return Infra;
 	}
 
 	/** T2 报告文本 → 判红定位行：拍点键红行（`红 <asset>|<symbol>|<shotId>
@@ -65,7 +69,7 @@ class CiGatesVerdict {
 	 * <asset>：错误——<detail>`——tools/RenderGate.mjs:266）。统计头/
 	 * 红资产行/通过资产段不是定位行。原序原样，单行不截断。 */
 	static public function renderRedLines(report:String):Array<String> {
-		throw new haxe.Exception("not implemented");
+		return extractRedLines(report, "红 ");
 	}
 
 	/** T3 报告文本 → 判红定位行：跑偏行（`跑偏 asset=<asset> [clip=<key>]
@@ -75,7 +79,25 @@ class CiGatesVerdict {
 	 * 盲区的诚实标注不是红（handbook/architecture/timeline-gate.md 判定
 	 * 语义节），资产头行/统计行不进。原序原样，单行不截断。 */
 	static public function timelineRedLines(report:String):Array<String> {
-		throw new haxe.Exception("not implemented");
+		return extractRedLines(report, "跑偏 ");
+	}
+
+	/** 报告 → 定位行：比对红行（行首前缀钉闸：`红 ` 只可能是拍点键红行——
+	 * 统计行的「红 1、」在行中、「红资产：」无空格；`跑偏 ` 只可能是跑偏
+	 * 行——降级行行首是「降级」）+ 资产错误行（两闸同形）。 */
+	static function extractRedLines(report:String, redPrefix:String):Array<String> {
+		var out:Array<String> = [];
+		for (line in report.split("\n")) {
+			if (isErrorLine(line) || StringTools.startsWith(line, redPrefix)) out.push(line);
+		}
+		return out;
+	}
+
+	/** 资产错误行（两闸同形）：`资产 <asset>：错误——<detail>`。头行
+	 * `资产 <asset>：通过（…）/红（…` 同以「资产 」开头，靠「：错误——」
+	 * 区分——错误是执行失败，judge 里不可豁免。 */
+	static function isErrorLine(line:String):Bool {
+		return StringTools.startsWith(line, "资产 ") && StringTools.contains(line, "：错误——");
 	}
 
 	/** 双闸结果 → CI 判定 + step 日志块（判定语义见类头）。timeline 在前
@@ -85,7 +107,78 @@ class CiGatesVerdict {
 	 * 合成条目）。 */
 	static public function judge(timelineExit:Int, timelineReport:String, renderExit:Int, renderReport:String,
 			exemptions:Array<GateExemption>):GateRunVerdict {
-		throw new haxe.Exception("not implemented");
+		var lines:Array<String> = [];
+		// 两闸独立不拖累（类头 2）：不 `A && B` 短路，两闸状态行恒在场
+		var pass = gateBlock(Timeline, "T3 时间轴行为对拍", timelineExit,
+			"export/timeline-gate/report.txt", timelineRedLines(timelineReport), exemptions, lines);
+		pass = gateBlock(Render, "T2 资产渲染对拍", renderExit,
+			"export/render-gate/report.txt", renderRedLines(renderReport), exemptions, lines) && pass;
+		return {pass: pass, exitCode: pass ? 0 : 1, lines: lines};
+	}
+
+	/** 单闸 → step 日志段（状态行 + 定位行）+ 该闸是否放行。 */
+	static function gateBlock(gate:GateKind, name:String, exit:Int, reportPath:String,
+			reds:Array<String>, exemptions:Array<GateExemption>, lines:Array<String>):Bool {
+		var status = classifyExit(exit);
+		if (status == Infra) {
+			// 基建坏不读报告红行：两闸 exit(2) 位点都在落盘之前（类头 2），
+			// 盘上只可能是上一轮陈旧报告；未声明非零码（闸失灵）同归基建侧
+			lines.push(name + "：exit " + exit + "，报告 " + reportPath
+				+ "——gate 基建问题非渲染回归（探针编译失败/缺基线/闸失灵；先修基建，别查渲染回归）");
+			return false;
+		}
+		lines.push(name + "：exit " + exit + "，报告 " + reportPath);
+		var ok = true;
+		for (red in reds) {
+			// 定位行逐字进块——豁免的也照打（不静默放行），未豁免的判红
+			lines.push(red);
+			if (isErrorLine(red)) {
+				ok = false; // 错误行不可豁免（类头 3）：执行失败不是偏差候选
+				continue;
+			}
+			var e = findExemption(exemptions, gate, assetOf(gate, red));
+			if (e != null) {
+				lines.push("  ↑已豁免——登记裁决：" + e.reason);
+			} else {
+				ok = false;
+			}
+		}
+		if (status == Red && reds.length == 0) {
+			// 闸说红而报告里提取不出定位行（闸内不一致/报告丢失）：照红不
+			// 猜绿——豁免只对「看得见」的红生效（类头 3）
+			lines.push("  退出码说红而报告里提取不出定位行——照红不猜绿（报告丢失或行形对不上，先查 gate）");
+			ok = false;
+		}
+		return ok;
+	}
+
+	/** 登记条目按 (gate, asset) 整串匹配（类头 3：闸别不符、资产键不整串
+	 * 相等——basename 同形/子串命中——都不豁免）。 */
+	static function findExemption(exemptions:Array<GateExemption>, gate:GateKind, asset:String):GateExemption {
+		for (e in exemptions) {
+			if (e.gate == gate && e.asset == asset) return e;
+		}
+		return null;
+	}
+
+	/** 定位行 → 资产键。锚点只用 ASCII 段（asset=、空格、|），不用多字节
+	 * 字面量的 .length 算偏移——cpp 目标字符串按 UTF-8 计位会错位（本类只
+	 * 跑 eval，但锚点纪律免得以后有人搬去别的目标）。提取失败返回 ""——
+	 * 登记键对不上，不豁免。 */
+	static function assetOf(gate:GateKind, redLine:String):String {
+		if (gate == Timeline) {
+			// 跑偏 asset=<asset>[ clip=…]
+			var i = redLine.indexOf("asset=");
+			if (i < 0) return "";
+			var rest = redLine.substring(i + "asset=".length);
+			var end = rest.indexOf(" ");
+			return end < 0 ? rest : rest.substring(0, end);
+		}
+		// 红 <asset>|<symbol>|<shotId>：…（资产段 = 首个空格到首个 |）
+		var sp = redLine.indexOf(" ");
+		var bar = redLine.indexOf("|");
+		if (sp < 0 || bar <= sp) return "";
+		return redLine.substring(sp + 1, bar);
 	}
 }
 

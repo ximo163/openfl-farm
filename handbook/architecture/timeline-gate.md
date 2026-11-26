@@ -80,6 +80,14 @@ Math.random()*100))`），改了播放头，属于**脚本驱动播放头的诚�
 （deviations 候选），门禁照实红。降级剪辑 43 个、分布 8 资产
 （FDog100/farmui_full/farmui2/water_ui/farmui1/fish_02/fish_15/Fertilizer）。
 
+CI 接线（#94，2026-11-26）后的机器面：全量对拍长到 70 资产（#58 加了
+RedUp.swf），红仍只有 farmui1 一处（同三剪辑）。本红已按裁决流登记进
+`tools/tools/GateExemptions.hx`（CI wrapper 判定豁免、step 日志照打红行带
+理由），所以 CI 全量对拍出绿而**本闸本身仍照实红**（exit 1）——裸跑
+`node tools/TimelineGate.mjs` 看到的红是预期，不是 CI 状态漂移。裁决流程
+与记录见 [render-gate.md](render-gate.md)「CI 接线与裁决流」节（#94 把
+两闸的裁决面统一归那页）。
+
 ## 非显然约定
 
 - **探针 stdout = 单行 JSON**。库侧日志两条路（haxe trace 的缺字体警告、

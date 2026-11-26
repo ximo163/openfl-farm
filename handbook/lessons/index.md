@@ -1772,3 +1772,22 @@
   文件顶层、标 `private typedef`）；**动态花括号键名在对象字面量里不存
   在**（`{keys: …}` 逐字段构造 typedef 时字段名是写死的，构造数据驱动
   的键集用 Map）。
+
+## 2026-11 · #94（T2/T3 门禁接线）
+
+- **两闸的 `--self-check` 会把自检文本写进 `--out` 缺省路径——就是全量
+  报告路径**（TimelineGate.mjs/RenderGate.mjs 的 self-check 分支与全量分支
+  共用 outFile）。先自检再全量还好（全量覆盖回来），反过来跑自检会把
+  export/*/report.txt 顶成 8 行自检文本——wrapper 判定读的是全量报告，
+  读到的就是错位内容。防：凡在接线里跑 `--self-check`，一律显式
+  `--out export/*/self-check.txt` 分流（tools/ci-gates.sh 就这么写的）；
+  裸跑自检前想清楚 report.txt 要不要留。
+- **两闸全量对拍不能用 `A && B` 串**：先红那闸的非零码会短路掉另一闸——
+  「一个闸的基建错不该把另一个闸的结果埋掉」在 bash 侧的对应物就是逐个
+  跑、逐个采 `$?`（ci-gates.sh）；判定侧的对应物在
+  tools/tools/CiGatesVerdict.judge（两闸状态行恒在场，契约测试钉死）。
+- **把 CJK 行形解析写进 Haxe 时锚点只用 ASCII 段**（`asset=`、空格、`|`）：
+  多字节字面量的 `.length` 做偏移在 cpp（UTF-8 计位）上会错位——eval
+  测试绿不代表别处能跑（#37 null-Int 同族）。本仓库这套判定类只上 eval
+  （test.hxml --interp + `haxe --run`），但锚点纪律顺手就有，别给未来
+  搬目标的人埋雷（CiGatesVerdict.assetOf 的写法）。

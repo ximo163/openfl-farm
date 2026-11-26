@@ -4,10 +4,9 @@ import tools.CiGatesVerdict.GateExemption;
 import tools.CiGatesVerdict.GateKind;
 
 /**
- * issue #94 T2/T3 门禁接线——已裁决登记的偏差候选表（write-tests 阶段
- * stub：空表，farmui1_v_42 首条由 implement 原地登记，契约由
+ * issue #94 T2/T3 门禁接线——已裁决登记的偏差候选表（契约由
  * test/tools/GateExemptionsTest.hx 钉死）。消费方是 tools.CiGatesVerdict
- * 的豁免匹配；wrapper（implement 交付）把本表喂给 judge。
+ * 的豁免匹配；wrapper（tools/ci-gates.sh）把本表喂给 judge。
  *
  * 为什么存在（// issue #94 要什么 3「红≠一律修的裁决流」+ 完成标准
  * 「farmui1_v_42 的已知偏差候选按裁决流登记豁免」）：T3 全量对拍的
@@ -26,7 +25,18 @@ import tools.CiGatesVerdict.GateKind;
  *     要什么 3），本表是它的机器面。
  */
 class GateExemptions {
-	/** 已裁决登记的偏差候选（implement 登记 farmui1_v_42 首条；后续按
-	 * 裁决流增删——每条都要能追到 handbook 页的裁决记录）。 */
-	static public final registered:Array<GateExemption> = [];
+	/** 已裁决登记的偏差候选（后续按裁决流增删——每条都要能追到 handbook
+	 * render-gate 页「CI 接线与裁决流」节的裁决记录）。首条 farmui1_v_42
+	 * @T3：#56 全清单首跑的唯一诚实红，2026-11-26 #94 接线时按裁决流登记
+	 * （定性出处 handbook/architecture/timeline-gate.md「全清单现状」节）。 */
+	static public final registered:Array<GateExemption> = [
+		{
+			gate: Timeline,
+			asset: "source/core/module/mc/main/farmui1_v_42.swf", // assets/legacy-assets.txt:82
+			reason: "farmui1_v_42 的 GiftIcon、farmui1_fla.Timeline_39、farmui1_fla.a_151 三剪辑帧脚本是"
+				+ " gotoAndPlay 族（含 gotoAndPlay(Math.floor(Math.random()*100))），脚本驱动播放头、"
+				+ "期望侧 swf 结构静态提取推不出——非移植跑偏的诚实红，已裁决为偏差候选待人裁"
+				+ "（deviations 候选；#56 全清单首跑发现、#94 接线登记，真回归不适用本条）",
+		},
+	];
 }

@@ -1747,7 +1747,9 @@
   一切开始前被拒」——attempt 1 的手册页把「受保护路径」写成了无出处断言
   被 review 驳回（review 只看得到 yaml 层），而按 issue 授权直接改 yaml
   又会撞合同层。两层冲突时合同层赢：接线交付物以 BLOCKED 收场，由所有者
-  裁决（人按下片段接线，或把 `.orchestrator/` 从合同层放开重跑）。防：
+  裁决——**已裁决落地：2026-11-26 人直接把接线写进 main（commit
+  `f830e635`，suites 注释里记了这段），两门在 write-tests/implement 的
+  verify 生效，无需再动 pipeline.yaml**。防：
   断言可写性前先看自己 prompt 的 Rules 节（每个 agent 都有一份）；合同层
   与配置层打架时不静默改判归属，显式抛给所有者。
 - **给人和 CI 写的命令行要用容器里真实存在的解释器名**：接线片段照 issue

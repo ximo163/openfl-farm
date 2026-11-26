@@ -60,14 +60,21 @@ DynWriteScan/scan_dyn_writes 双实现要「两侧同步改、diff 非空即漂�
   tools.TimelineSpec（僵尸 stub）模块路径不同、靠 import.hx 遮蔽是两个
   模块的协作；test/import.hx（根包 → import）与 test/tools/import.hx
   （包 tools → tools.import）同理不撞。
-- 扫描面：test/、tools/、src/ 三棵树全部 .hx。当前基线零重复（1069 件），
-  无豁免机制——本门没有存量豁免面，别开先例。
+- 扫描面：test/、tools/、src/ 三棵树全部 .hx。当前基线零重复（千余件，
+  件数随树增长、以门自身输出为准），无豁免机制——本门没有存量豁免面，
+  别开先例。
 
-## 接线现状（人管）
+## 接线现状（已落地，人接的）
 
-两道门进 write-tests/implement 的 verify 要改 `.orchestrator/pipeline.yaml`，
-该文件 agent 不可写。**依据是阶段合同，不是 pipeline.yaml 自身**——保护有
-两层，issue #70 的「checks 行 agent 可写」断言只核实了配置层：
+两道门**已在 write-tests/implement 的 verify 里生效**（2026-11-26，人直接
+进 main，commit `f830e635`）：`.orchestrator/pipeline.yaml` 的 `suites:` 有
+`test-stub-scan` / `module-path-scan` 两条（命令 `python3 tools/scan_*.py`，
+timeout 1m），write-tests 与 implement 两个 stage 的 verify 列表都挂了它们。
+agent 收工自检可直接跑 `python3 tools/scan_test_stubs.py` /
+`python3 tools/scan_module_paths.py`——和 verify 里跑的是同一份。
+
+**接线为什么是人接的**（两层保护，issue #70 的「checks 行 agent 可写」断言
+只核实了配置层）：
 
 - 配置层：四份流水线 yaml（pipeline/chore/plan/spec）的 `protected:` 清单
   都不含 `.orchestrator/`（review round 1 核实过，属实）。
@@ -76,21 +83,11 @@ DynWriteScan/scan_dyn_writes 双实现要「两侧同步改、diff 非空即漂�
   里），并声明「违反的 attempt 在一切开始前被拒」——implement 阶段合同
   的保护清单里 `.orchestrator/` 排第一个。
 
-两层冲突以合同层为准：#70 的接线交付物因此以 BLOCKED 收场，由所有者裁决
-（人按下片段接线，或把 `.orchestrator/` 从合同层保护清单放开后重跑）。
-片段命令必须 `python3`——agent 容器没有 `python` 别名（只有
+两层冲突以合同层为准：#70 的接线交付物在 agent 侧以 BLOCKED 收场，所有者
+裁决后人自己落了 `f830e635`（pipeline.yaml 的 suites 注释里也写了这段裁决）。
+命令用 `python3` 是硬约束——agent 容器没有 `python` 别名（只有
 `/usr/bin/python3`），照 `python` 接线 verify 直接 127（review round 1
-驳回点之一）：
-
-```yaml
-  # suites 追加：
-  test-stub-scan: { cmd: "python3 tools/scan_test_stubs.py", timeout: 1m }
-  module-path-scan: { cmd: "python3 tools/scan_module_paths.py", timeout: 1m }
-  # 两个 stage 的 verify 列表各加：test-stub-scan、module-path-scan
-```
-
-接线前 agent 收工自检可直接跑 `python3 tools/scan_test_stubs.py` /
-`python3 tools/scan_module_paths.py`。
+驳回点之一）。
 
 ## 坑
 

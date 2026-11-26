@@ -4,7 +4,23 @@
 //
 // 用法：node tools/run-openfl-node.js <step.js> [step.js 的参数...]
 // 编译：haxe -cp tools -lib lime -lib swf -lib openfl -js step.js -main StepAnimate
-globalThis.pako = require('/usr/local/lib/haxelib/lime/8,3,2/dependencies/pako.min.js');
+// pako：lime 的 html5 后端运行时要的 DEFLATE（zip 装库）。路径不能写死——
+// haxelib root 两处布局不同：编排器容器 /usr/local/lib/haxelib、web-build
+// runner 是 haxelib setup 的 $HOME/haxelib（2026-11-26 runner 首跑写死容器
+// 路径，双闸全资产探针 require 即崩、错误行只剩空尾巴）。候选逐个试，
+// 都不在就 haxelib path lime 现查（任何安装布局都对）。
+globalThis.pako = (() => {
+  const cands = [];
+  if (process.env.HAXELIB_PAKO) cands.push(process.env.HAXELIB_PAKO);
+  if (process.env.HOME) cands.push(process.env.HOME + '/haxelib/lime/8,3,2/dependencies/pako.min.js');
+  cands.push('/usr/local/lib/haxelib/lime/8,3,2/dependencies/pako.min.js');
+  for (const c of cands) { try { return require(c); } catch (e) { /* 试下一个候选 */ } }
+  const limeDir = require('child_process')
+    .execFileSync('haxelib', ['path', 'lime'], { encoding: 'utf8' })
+    .split('\n').map(s => s.trim()).filter(Boolean)[0];
+  if (!limeDir) throw new Error('run-openfl-node: haxelib path lime 为空，找不到 lime 目录');
+  return require(require('path').join(limeDir, 'dependencies/pako.min.js'));
+})();
 
 function mkCtx(el) {
   return new Proxy({}, {

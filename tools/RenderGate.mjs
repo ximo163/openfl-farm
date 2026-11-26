@@ -138,7 +138,11 @@ function runProbe(asset, mode) {
   try { d = jsonLine ? JSON.parse(jsonLine) : null; } catch { d = null; }
   if (!d) {
     const tail = (r.stdout || '').slice(-300);
-    return { asset, kind: 'error', detail: `stdout 末行不是 JSON（exit=${r.status}）… ${tail}` };
+    // 探针崩时真实报错在 stderr（require 抛错/未捕获异常都在那），只拼 stdout
+    // 尾会把环境性崩全遮成空尾巴（2026-11-26 runner 首跑：pako 路径写死容器
+    // 布局，全资产 exit=1 空 stdout，stderr 里才有 MODULE_NOT_FOUND）
+    const errTail = (r.stderr || '').trim().split('\n').slice(-3).join(' | ');
+    return { asset, kind: 'error', detail: `stdout 末行不是 JSON（exit=${r.status}）… ${errTail || tail}` };
   }
   if (d.error) {
     return { asset, kind: 'error', detail: String(d.error).split('\n').slice(0, 3).join(' ') };

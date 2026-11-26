@@ -60,6 +60,16 @@ jobs:
       - name: 单元测试（与编排器 preflight 同一条命令，main 上必须绿）
         run: haxe test.hxml
 
+      # T2/T3 画面门禁（issue #94 接线，A 案：红＝web-build 红，不加新 check 名）。
+      # 实体 tools/ci-gates.sh：双闸 --self-check 注入自检 → 全量对拍（不短路）→
+      # 判定（豁免登记照进步日志）；退出码语义与裁决流见 handbook/architecture/
+      # render-gate.md「CI 接线与裁决流」节。format 探针编译线要，web-build
+      # 原本只装 lime/openfl/swf/utest。
+      - name: T2/T3 画面门禁（双闸 + 注入自检 + 豁免判定）
+        run: |
+          haxelib install format
+          bash tools/ci-gates.sh
+
       - name: 记录版本组（写进日志，H1 定版本用）
         run: haxelib list
 

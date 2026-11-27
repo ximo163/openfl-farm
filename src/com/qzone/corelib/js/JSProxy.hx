@@ -30,4 +30,16 @@ class JSProxy {
 		var _loc1_:Dynamic = shim.QQOutlets.call("SwfAppLib.method.attachDefParam", param1);
 		return Std.isOfType(_loc1_, String) ? cast(_loc1_, String) : null;
 	}
+
+	// JSProxy.as:93-99（openWindow：available 时 ExternalInterface.call(
+	// "window.open",url)——无返回值通道）。issue #87 为 mc.view.common.
+	// AlertWindow.onLinkClicked 的 wildInfo 链接分支编译链补签名。
+	// PORT-NOTE(qq-outlet)：同 addGToken 决策族——QQOutlets.available
+	// 恒 false（独立部署无宿主），调用原样落空，与原版在非 QZone
+	// 页面的兜底一致。
+	public static function openWindow(param1:String):Void {
+		if (shim.QQOutlets.available) {
+			shim.QQOutlets.call("window.open", param1);
+		}
+	}
 }

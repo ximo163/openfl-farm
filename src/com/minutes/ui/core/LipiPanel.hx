@@ -96,11 +96,22 @@ class LipiPanel extends LipiUIComponent {
 		this.initPanel(param1);
 	}
 
+	// PORT-NOTE（super.addChild → super.addChildAt(child, super.numChildren)，
+	// 本方法三处 + addChildToSuper 一处，#87 实证修正）：AVM2 的 super.addChild
+	// 直进父类原生实现、**不经** public 覆写派发——子件落在面板自身显示列表。
+	// openfl 9.5.2 的 addChild 方法体是一行 `addChildAt(child, numChildren)`
+	// 虚拟调用（Haxe super 只上溯方法体、this 不变）：虚拟派发落回本类
+	// addChildAt 覆写（:64-72 重定向进 _contentPane）——initPanel 第一句即成
+	// `_contentPane.addChildAt(_contentPane, …)` 自加，构造即抛 Error #2024
+	// （eval 实证：`new LipiPanel()` 裸构造即崩，牧场窗口族全部 ctor 撞死）。
+	// super.addChildAt 直进父类方法体、不再二次派发（eval 探针实证），索引取
+	// super.numChildren（面板自身真实子数——本类 get_numChildren 覆写已被
+	// 重定向成 _contentPane.numChildren，不能用）= AVM2 的尾部追加语义。
 	private function initPanel(param1:Rectangle = null):Void {
 		this._contentPane = new Sprite();
 		this._contentPane.x = 0;
 		this._contentPane.y = 0;
-		super.addChild(this._contentPane);
+		super.addChildAt(this._contentPane, super.numChildren);
 		this._dragBar = new Sprite();
 		this._dragBar.graphics.beginFill(0, 0);
 		this._dragBar.graphics.drawRect(0, 0, 10, 10);
@@ -108,7 +119,7 @@ class LipiPanel extends LipiUIComponent {
 		this._dragBar.width = width;
 		this._dragBar.height = this.headHeight;
 		this._dragBar.addEventListener(MouseEvent.MOUSE_DOWN, this.dragDown);
-		super.addChild(this._dragBar);
+		super.addChildAt(this._dragBar, super.numChildren);
 		this._closeButton = new LipiUIComponent();
 		this._closeButton.addEventListener(MouseEvent.CLICK, this._closeButtonClick);
 		this._closeButton.width = this.closeWidth;
@@ -117,7 +128,7 @@ class LipiPanel extends LipiUIComponent {
 		this._closeButton.y = this.closeTop;
 		this._closeButton.buttonMode = true;
 		this._closeButton.useHandCursor = true;
-		super.addChild(this._closeButton);
+		super.addChildAt(this._closeButton, super.numChildren);
 		addEventListener(UIEvent.RESIZE, this.onResize);
 		if (LipiDefaultSkin.WindowBg != null) {
 			bgSkin = new LipiSkin(LipiDefaultSkin.WindowBg, param1);
@@ -269,9 +280,10 @@ class LipiPanel extends LipiUIComponent {
 		dispatchEvent(_loc2_);
 	}
 
-	// :234-237
+	// :234-237（super.addChild 的等价通道见 initPanel 行 PORT-NOTE——
+	// 本方法名就叫「加到 super」，语义正是绕过重定向落面板自身列表）
 	public function addChildToSuper(param1:DisplayObject):Void {
-		super.addChild(param1);
+		super.addChildAt(param1, super.numChildren);
 	}
 
 	// :239-242

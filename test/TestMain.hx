@@ -447,6 +447,43 @@ class TestMain {
 		runner.addCase(new com.adobe.crypto.SHA1Test());
 		runner.addCase(new com.minutes.ui.control.NumbericStepperTest());
 		runner.addCase(new com.minutes.ui.collections.SimpleCollectionTest());
+		// issue #87（write-tests 阶段，对 stub 失败）：牧场网络与数据层——
+		// GetCropID id↔名称/URL 拼装与 INI XML 查询（fixture mc-ini.xml）、
+		// FBridge 网栈（RequestManager 熔断/文案、FeartureManager 灰度分桶、
+		// FRequest lastRequest 与 httpUrl 转发）、mc.model（MainData 公式与
+		// 好友过滤、TinItemsData 重映射与旋转、OpenControl 时间窗）、通用
+		// 窗件（AlertWindow/ConfirmWindow/HtmlTextWindow 布局、MaterialProxy
+		// 跳过守卫）、光标（Cursor 派发、CursorClassLib 注册表、CursorTool
+		// ctor）、飘字 Float 派发、GameProxy me 真值表、MouseTip 定位
+		runner.addCase(new mc.view.farm.GetCropIDTest());
+		runner.addCase(new mc.fBridge.FRequestTest());
+		runner.addCase(new mc.fBridge.RequestManagerTest());
+		runner.addCase(new mc.fBridge.FeartureManagerTest());
+		runner.addCase(new mc.model.MainDataTest());
+		runner.addCase(new mc.model.TinItemsDataTest());
+		runner.addCase(new mc.model.OpenControlTest());
+		runner.addCase(new mc.model.DiyDataTest());
+		runner.addCase(new mc.model.FarmDataTest());
+		runner.addCase(new mc.model.TaskDataTest());
+		runner.addCase(new mc.model.ProductDataTest());
+		runner.addCase(new mc.view.common.AlertWindowTest());
+		runner.addCase(new mc.view.common.ConfirmWindowTest());
+		runner.addCase(new mc.view.common.HtmlTextWindowTest());
+		runner.addCase(new mc.view.common.MaterialProxyTest());
+		runner.addCase(new mc.view.common.HListTest());
+		runner.addCase(new mc.view.common.LanguageTest());
+		runner.addCase(new mc.view.common.MoneyIconTest());
+		runner.addCase(new mc.view.main.cursor.CursorTest());
+		runner.addCase(new mc.view.main.cursor.CursorClassLibTest());
+		runner.addCase(new mc.view.main.cursor.CursorToolTest());
+		runner.addCase(new mc.view.main.floating.FloatTest());
+		runner.addCase(new mc.view.main.tip.MouseTipTest());
+		runner.addCase(new mc.view.main.game.ValidateCodeWindowTest());
+		runner.addCase(new mc.view.main.windowControl.WindowClassLibTest());
+		runner.addCase(new mc.view.proxy.GameProxyTest());
+		runner.addCase(new mc.view.CropLoaderTest());
+		runner.addCase(new mc.view.WindowsManagerTest());
+		runner.addCase(new mc.api.AppHelperTest());
 		Report.create(runner);
 		runner.run();
 	}

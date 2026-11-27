@@ -35,8 +35,14 @@ import utest.Assert;
  *
  * 布局推导（width=100、gap=10、三件各宽 30 的通用场景）：
  * left：首件 x=0，逐件 +40 → 0/40/80；childSprite 内容右缘 80+30=110。
- * center：首件 = (100 - (3*(30+10) - 1)) / 2 = (100-119)/2 = -9.5
- * → -9.5/30.5/70.5。right：首件 = 100 - 119 = -19 → -19/21/61。
+ * center：首件 = (100 - (3*(30+10) - 1)) / 2 = (100-119)/2 = -9.5，
+ * **但字节码在 OpDiv 后 OpSub 后各有一次 OToInt**（`_loc1_:int` 的
+ * 收束——出处：legacy/deploy/QFarmFlash/source/core/module/
+ * Master2_v_142.swf DoABC HList.setChildPosition，对照
+ * legacy/decompiled/Master2_v_142/scripts/mc/view/common/HList.as:144
+ * `var _loc1_:int`）：int 收束向零截断，-9.5 → **-9** → 逐件 +40
+ * 得 -9/31/71。right：首件 = 100 - 119 = -19（整数免截）→ -19/21/61。
+ * width=200 center：(200-119)/2 = 40.5 → 截 40。
  * （注意原文公式的 -1 是逐字语义——非排版直觉的 -gap，照抄。）
  *
  * stub 期 ctor 起全 throw not implemented——本测试必然等 implement
@@ -101,14 +107,16 @@ class HListTest {
 		Assert.equals(80.0, childX(list, 2));
 	}
 
-	// align center（:150-159）：首件 = (100 - (3*40 - 1)) / 2 = -9.5
+	// align center（:150-159）：首件 = (100 - (3*40 - 1)) / 2 = -9.5，
+	// 字节码 OpDiv 后 OToInt 向零截断（Master2_v_142.swf DoABC 实证，
+	// 见类头）→ -9 → 逐件 +40 得 -9/31/71
 	public function test_align_center_positions() {
 		var list = buildList();
 		fill3(list);
 		list.align = "center";
-		Assert.floatEquals(-9.5, childX(list, 0));
-		Assert.floatEquals(30.5, childX(list, 1));
-		Assert.floatEquals(70.5, childX(list, 2));
+		Assert.floatEquals(-9, childX(list, 0));
+		Assert.floatEquals(31, childX(list, 1));
+		Assert.floatEquals(71, childX(list, 2));
 	}
 
 	// align right（else 分支 :161-164）：首件 = 100 - 119 = -19
@@ -122,12 +130,13 @@ class HListTest {
 	}
 
 	// width=200 场景的三分支（钉公式对 width 的依赖）：
-	// center (200-119)/2=40.5；right 200-119=81
+	// center (200-119)/2=40.5 → OToInt 截 40（同 center 分支字节码实证）；
+	// right 200-119=81（整数免截）
 	public function test_align_positions_width200() {
 		var list = buildList(200);
 		fill3(list);
 		list.align = "center";
-		Assert.floatEquals(40.5, childX(list, 0));
+		Assert.floatEquals(40, childX(list, 0));
 		list.align = "right";
 		Assert.floatEquals(81.0, childX(list, 0));
 		list.align = "left";

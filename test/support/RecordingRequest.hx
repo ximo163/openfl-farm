@@ -21,12 +21,40 @@ class RecordingRequest extends HTTPRequest {
 	public var postedTimeout:UInt;
 	public var postedReload:Bool;
 	public var postedFormat:String;
-	public var postCount:Int = 0;
+
+	// 计数器用 (get,set) 属性 + Null<Int> backing 惰性归零，不用字段
+	// 初始化器：本类经 Type.createEmptyInstance 构造，初始化器不执行——
+	// eval 实证 `var x:Int = 0` 读出 null、x++ 掷 "Invalid operation:
+	// null + 1"（implement round 1 反馈核实，读写面与字段形态完全一致：
+	// rec.postCount 读、++ 自增都不变）
+	public var postCount(get, set):Int;
+	var postCountBacking:Null<Int> = null;
 
 	// getRequest 截获的入参（对应 FRequest.as:78 的调用位）
 	public var gettedUrl:String;
 	public var gettedValue:Dynamic;
-	public var getCount:Int = 0;
+	public var getCount(get, set):Int;
+	var getCountBacking:Null<Int> = null;
+
+	function get_postCount():Int {
+		if (postCountBacking == null) postCountBacking = 0;
+		return postCountBacking;
+	}
+
+	function set_postCount(v:Int):Int {
+		postCountBacking = v;
+		return v;
+	}
+
+	function get_getCount():Int {
+		if (getCountBacking == null) getCountBacking = 0;
+		return getCountBacking;
+	}
+
+	function set_getCount(v:Int):Int {
+		getCountBacking = v;
+		return v;
+	}
 
 	public function new() {
 		super();

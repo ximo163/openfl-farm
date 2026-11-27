@@ -70,4 +70,154 @@ class MainCommand extends EventDispatcher {
 	public function validateCode(param1:String):Void {
 		throw new openfl.errors.Error("not implemented");
 	}
+
+	// —— issue #88 write-tests 增补签名面（体随牧场命令片充真身）——
+
+	// MainCommand.as:316（buySeed(param1:int, param2:int, param3:Boolean)）
+	public function buySeed(param1:Int, param2:Int, param3:Bool):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:615（taskComp(param1:String):Boolean）
+	public function taskComp(param1:String):Bool {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:601（getUserCub()）
+	public function getUserCub():Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:694（buyDiy 8 参——skinBool/msgBool 是 String）
+	public function buyDiy(param1:Int, param2:String, param3:String, param4:Bool = false, param5:Int = 0, param6:String = "", param7:Int = 0,
+			param8:Bool = false):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:842（sale(param1:int, param2:int, param3:Function = null)）
+	public function sale(param1:Int, param2:Int, param3:Dynamic = null):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:909（diyRenew(param1:int)）
+	public function diyRenew(param1:Int):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:915（lockCrop(param1:String, param2:String)）
+	public function lockCrop(param1:String, param2:String):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:1669（getCropStatus(param1:String = "0", param2:Boolean = true)）
+	public function getCropStatus(param1:String = "0", param2:Bool = true):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:1760（addMoney(param1:Object)）
+	public function addMoney(param1:Dynamic):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:1769（getCdKey(param1:Object)——参数作请求体原样发）
+	public function getCdKey(param1:Dynamic):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:2285（friendNextPage(param1:String = "")）
+	public function friendNextPage(param1:String = ""):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:2720（saleAllMaterial(param1:Array)）
+	public function saleAllMaterial(param1:Array<Dynamic>):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:2790（addFB(param1:Object)）
+	public function addFB(param1:Dynamic):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:2809（checkErrorReturn(param1:Object):Boolean）
+	public function checkErrorReturn(param1:Dynamic):Bool {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:2911（addReward(param1:Array)）
+	public function addReward(param1:Array<Dynamic>):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:2944（buyTool 7 参）
+	public function buyTool(param1:Int, param2:Int, param3:Int, param4:Bool = false, param5:String = "", param6:Int = 0, param7:Bool = false):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3344（setParade()——无参同步，读 mainData.userFarmData）
+	public function setParade():Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3496（floatWindow(param1:String, param2:String = "info")）
+	public function floatWindow(param1:String, param2:String = "info"):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3570（buyThingByCFT(param1:int, param2:String, param3:int, param4:int = 1)）
+	public function buyThingByCFT(param1:Int, param2:String, param3:Int, param4:Int = 1):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3585（checkParade(param1:Object):Boolean——入参合成
+	// 对象 {animal,parade}）
+	public function checkParade(param1:Dynamic):Bool {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3950（addExp(param1:Object)）
+	public function addExp(param1:Dynamic):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:4274（saleAll()）
+	public function saleAll():Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:4280（buyFoodFn(param1:Object)——**public** 原文如此）
+	public function buyFoodFn(param1:Dynamic):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:4308（updateTask()）
+	public function updateTask():Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3163（checkAndReportSteal(param1:Object)——private，
+	// 测试经 @:access 钉早退语义）
+	private function checkAndReportSteal(param1:Dynamic):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3318（friendSort——private 比较器）
+	private function friendSort(param1:Dynamic, param2:Dynamic):Float {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3556（cropSortBycId——private 比较器）
+	private function cropSortBycId(param1:Dynamic, param2:Dynamic):Int {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:3680（cropSortBylv——private 比较器）
+	private function cropSortBylv(param1:Dynamic, param2:Dynamic):Int {
+		throw new openfl.errors.Error("not implemented");
+	}
+
+	// MainCommand.as:2834（logFn——private，驱动链深埋 getAllInfoFn）
+	private function logFn(param1:Dynamic):Void {
+		throw new openfl.errors.Error("not implemented");
+	}
 }

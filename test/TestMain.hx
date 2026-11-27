@@ -484,6 +484,25 @@ class TestMain {
 		runner.addCase(new mc.view.CropLoaderTest());
 		runner.addCase(new mc.view.WindowsManagerTest());
 		runner.addCase(new mc.api.AppHelperTest());
+		// issue #88（write-tests 阶段，对 stub 失败）：牧场命令层——
+		// TaskCommand cgi_up_task 接任务拼装与 currentTask 写面；
+		// DonateAnimalCommand 状态守卫/确认窗 price/2 文案/cgi_donate_animal
+		// 串行闸与应答分派；ToolCommand 队形 mod 转发/whistleData 写面/
+		// checkSameDay；DiyItemCommand 验价 payitem 公式/open==1 双通道/
+		// forDNA 原位重发/buyDiyFn 文案模板；TinItemCommand 三键拼装/
+		// 双通道验价/buyTool 三分支/buyToolFn2 hunter 写面；FarmCommand
+		// 喂食罐头拍蚊扫便偷取收获的守卫与拼装/getUserSeedFn tId 重映射/
+		// requestNum 字面量 bug；MainCommand 任务推进/checkParade 队形/
+		// 排序比较器/出售买入聊天日志 DIY CFT/addReward 键名 bug；
+		// ModuleManager 静态时间窗与 ids trim 解码
+		runner.addCase(new mc.control.TaskCommandTest());
+		runner.addCase(new mc.control.DonateAnimalCommandTest());
+		runner.addCase(new mc.control.ToolCommandTest());
+		runner.addCase(new mc.control.DiyItemCommandTest());
+		runner.addCase(new mc.control.TinItemCommandTest());
+		runner.addCase(new mc.control.FarmCommandTest());
+		runner.addCase(new mc.control.MainCommandTest());
+		runner.addCase(new mc.control.ModuleManagerTest());
 		Report.create(runner);
 		runner.run();
 	}

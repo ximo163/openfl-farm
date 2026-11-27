@@ -44,4 +44,10 @@ class INI {
 		this._data = param1;
 		return param1;
 	}
+
+	// INI.as:30-47（签名面 stub：mode=="qzone" 或 xymode=="" → postUrl.@url
+	// 否则 .@url_pengyou——真身随 mcloader 片，issue #88 命令层测试需要签名）
+	public function getPostUrl():String {
+		throw new Error("not implemented");
+	}
 }

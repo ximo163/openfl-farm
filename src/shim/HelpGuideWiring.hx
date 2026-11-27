@@ -152,6 +152,11 @@ class HelpGuideWiring {
 			var grpCount = (engine.layoutGroups == null) ? 0 : engine.layoutGroups.length;
 			var posList = "";
 			var firstInfo = "none";
+			// 决定性补充（issue #97 第二轮）：positions.length 已证正常却仍不显示，
+			// 唯一剩下的机制是 cairo 渲染循环 CairoTextField.hx:312 `position.glyph == 0`
+			// 跳过 .notdef 字形。抓首组逐 position 的 glyph id + advance.x ——
+			// 全 0/全同 = 字形未塑形（harfbuzz 断）；有效 = 断点在更下游。
+			var glyphInfo = "none";
 			if (engine.layoutGroups != null) {
 				for (i in 0...engine.layoutGroups.length) {
 					var g = engine.layoutGroups[i];
@@ -162,14 +167,55 @@ class HelpGuideWiring {
 					var f0 = engine.layoutGroups[0];
 					firstInfo = "x" + Std.int(f0.offsetX) + ",y" + Std.int(f0.offsetY)
 						+ ",w" + Std.int(f0.width * 10) / 10 + ",h" + f0.height;
+					// 首组逐字形: g<glyph id>a<advance.x 整数>
+					if (f0.positions != null) {
+						glyphInfo = "";
+						var gi = 0;
+						for (pos in f0.positions) {
+							if (gi >= 12) { glyphInfo += "…"; break; }
+							if (glyphInfo != "") glyphInfo += ",";
+							if (pos == null) {
+								glyphInfo += "null";
+							} else {
+								glyphInfo += Std.int(pos.glyph) + "@" + Std.int(pos.advance.x);
+							}
+							gi++;
+						}
+					}
 				}
 			}
 			var fi = openfl.text._internal.TextEngine.getFontInstance(
 				(ranges != null && ranges.length > 0) ? ranges[0].format : null);
 			var fontName = (fi == null) ? "NULL" : fi.fontName;
 			var preview = (engine.text == null) ? "" : engine.text.substr(0, 6);
+			// preview 里的 \n 会把 trace 拆行（真机 logcat 每条 trace 前缀重复），
+			// 换成可见符便于单行解析（不影响语义，诊断专用）
+			preview = StringTools.replace(preview, "\n", "~");
+			// 显示树/变换链（最后一个未抓变量）：glyph 若有效却仍不显示，唯一剩
+			// 的就是渲染被变换/可见性/裁剪干掉。抓 tf 的 visible/alpha/世界坐标宽高/
+			// 父链 visible，以及 textBounds（cairo 裁剪框）。
+			var vis = tf.visible ? "T" : "F";
+			var alpha = Std.int(tf.alpha * 100);
+			var wx = 0.0; var wy = 0.0; var ww = 0.0; var wh = 0.0;
+			try {
+				var wb = tf.getBounds(tf.stage);
+				wx = Std.int(wb.x); wy = Std.int(wb.y); ww = Std.int(wb.width); wh = Std.int(wb.height);
+			} catch (e:Dynamic) {}
+			var chain = "";
+			var par = tf.parent;
+			var depth = 0;
+			while (par != null && depth < 8) {
+				chain += (par.visible ? "." : "!");
+				par = par.parent;
+				depth++;
+			}
+			var tb = engine.textBounds;
+			var tbInfo = (tb == null) ? "null" : (Std.int(tb.x) + "," + Std.int(tb.y) + "," + Std.int(tb.width) + "," + Std.int(tb.height));
 			trace("HTD|" + count + "|" + preview + "|rng" + lastEnd + "/" + textLen
-				+ "|grp" + grpCount + "|pos[" + posList + "]|f0[" + firstInfo + "]|font=" + fontName);
+				+ "|grp" + grpCount + "|pos[" + posList + "]|f0[" + firstInfo + "]|font=" + fontName
+				+ "|gl[" + glyphInfo + "]"
+				+ "|vis" + vis + alpha + "|wb[" + wx + "," + wy + "," + ww + "," + wh + "]|par" + chain
+				+ "|tb[" + tbInfo + "]");
 		});
 		#end
 	}

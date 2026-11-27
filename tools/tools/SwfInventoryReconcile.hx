@@ -1,9 +1,8 @@
 package tools;
 
 /**
- * issue #95：swf-inventory 再生成对账门的判式纯逻辑（write-tests 阶段为
- * stub，契约由 test/tools/SwfInventoryReconcileTest.hx 钉死，implement
- * 原地填充）。
+ * issue #95：swf-inventory 再生成对账门的判式纯逻辑（契约由
+ * test/tools/SwfInventoryReconcileTest.hx 钉死）。
  *
  * 为什么这门存在：#83 完成标准原文「『死了无人察觉』不再可能」——
  * scripts/swf-inventory.py 的再生成回路里手写增补（code/triage/…）任何

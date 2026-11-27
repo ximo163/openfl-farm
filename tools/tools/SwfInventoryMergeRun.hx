@@ -3,9 +3,8 @@ package tools;
 import sys.io.File;
 
 /**
- * issue #95：swf-inventory 生成器手写增补保留的脚本侧胶水 runner（write-
- * tests 阶段为 stub——main 立刻抛，接线后由 implement 填充；契约由
- * test/tools/SwfInventoryMergeRunTest.hx 钉死）。
+ * issue #95：swf-inventory 生成器手写增补保留的脚本侧胶水 runner（契约
+ * 由 test/tools/SwfInventoryMergeRunTest.hx 钉死）。
  *
  * 为什么存在：#83 交付的判式 tools.SwfInventoryMerge 无静态 main，「全
  * 仓引用 SwfInventoryMerge 的只有判式本体、测试、handbook 页」（#95 背

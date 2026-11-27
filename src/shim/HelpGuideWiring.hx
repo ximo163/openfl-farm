@@ -215,7 +215,8 @@ class HelpGuideWiring {
 				+ "|grp" + grpCount + "|pos[" + posList + "]|f0[" + firstInfo + "]|font=" + fontName
 				+ "|gl[" + glyphInfo + "]"
 				+ "|vis" + vis + alpha + "|wb[" + wx + "," + wy + "," + ww + "," + wh + "]|par" + chain
-				+ "|tb[" + tbInfo + "]");
+				+ "|tb[" + tbInfo + "]"
+				+ "|sv" + tf.scrollV + "/" + tf.bottomScrollV + "/" + tf.maxScrollV);
 		});
 		#end
 	}
@@ -274,6 +275,11 @@ class HelpGuideWiring {
 					tf.__layoutDirty = true;
 				}
 			}
+			// issue #97：htmlText 赋值把 caret 放到文末空行（TextField.hx:2604），
+			// 此后每次 __updateLayout 都 setSelection→__updateScrollV 把字段滚到
+			// caret 行（:2388/:2509），内容行被渲染跳过（CairoTextField.hx:264）。
+			// Flash 不随 htmlText 自动滚动；caret 归 0 后每次布局都维持 scrollV=1
+			tf.setSelection(0, 0);
 		} else if (Std.isOfType(child, SimpleButton)) {
 			var btn:SimpleButton = cast child;
 			repairChild(btn.upState);

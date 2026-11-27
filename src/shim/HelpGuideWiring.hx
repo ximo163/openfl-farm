@@ -122,8 +122,78 @@ class HelpGuideWiring {
 		once = function(param1:Event):Void {
 			content.removeEventListener(Event.ENTER_FRAME, once);
 			repairTextRanges(content);
+			// 诊断转储（diag，不入 main）：布局已随首帧推进发生，此时读
+			// 各字段的引擎组态，一次 logcat 定位断点（issue #97）
+			dumpTextDiagnostics(content);
 		};
 		content.addEventListener(Event.ENTER_FRAME, once);
+	}
+
+	// 【诊断专用，不入 main】issue #97：真机文字空白断点定位。对树上每个
+	// TextField 强制刷新布局后 trace 一行 HTD 结构化数据，覆盖五个嫌疑环：
+	//   rng   = 末 range.end / text.length（range 簿记是否补齐，<1 即未补）
+	//   grp   = layoutGroups 数（0=布局循环没产出任何组）
+	//   pos   = 各组 positions.length 列表（全 0=字形/positions 链断，cpp 特有）
+	//   first = 首行组 x,y,w,h（h<=0 即首行高度坍缩——单段字段最可疑形态）
+	//   font  = getFontInstance 解析结果（null=字体兜底链断，查 DeviceFonts）
+	// 真机 logcat 过滤 "HTD|" 即得全字段账，与 cid 对照（文本前缀可认）。
+	private static function dumpTextDiagnostics(content:MovieClip):Void {
+		#if android
+		var count = 0;
+		walkForDiag(content, function(tf:TextField):Void {
+			count++;
+			try {
+				tf.__updateLayout();
+			} catch (e:Dynamic) {}
+			var engine:TextEngine = tf.__textEngine;
+			var textLen = (engine.text == null) ? 0 : engine.text.length;
+			var ranges = engine.textFormatRanges;
+			var lastEnd = (ranges != null && ranges.length > 0) ? ranges[ranges.length - 1].end : -1;
+			var grpCount = (engine.layoutGroups == null) ? 0 : engine.layoutGroups.length;
+			var posList = "";
+			var firstInfo = "none";
+			if (engine.layoutGroups != null) {
+				for (i in 0...engine.layoutGroups.length) {
+					var g = engine.layoutGroups[i];
+					if (posList != "") posList += ",";
+					posList += (g.positions == null) ? "n" : Std.string(g.positions.length);
+				}
+				if (engine.layoutGroups.length > 0) {
+					var f0 = engine.layoutGroups[0];
+					firstInfo = "x" + Std.int(f0.offsetX) + ",y" + Std.int(f0.offsetY)
+						+ ",w" + Std.int(f0.width * 10) / 10 + ",h" + f0.height;
+				}
+			}
+			var fi = openfl.text._internal.TextEngine.getFontInstance(
+				(ranges != null && ranges.length > 0) ? ranges[0].format : null);
+			var fontName = (fi == null) ? "NULL" : fi.fontName;
+			var preview = (engine.text == null) ? "" : engine.text.substr(0, 6);
+			trace("HTD|" + count + "|" + preview + "|rng" + lastEnd + "/" + textLen
+				+ "|grp" + grpCount + "|pos[" + posList + "]|f0[" + firstInfo + "]|font=" + fontName);
+		});
+		#end
+	}
+
+	private static function walkForDiag(obj:DisplayObject, fn:TextField->Void):Void {
+		if (obj == null) return;
+		if (Std.isOfType(obj, TextField)) {
+			fn(cast obj);
+			return;
+		}
+		if (Std.isOfType(obj, SimpleButton)) {
+			var b:SimpleButton = cast obj;
+			walkForDiag(b.upState, fn);
+			walkForDiag(b.overState, fn);
+			walkForDiag(b.downState, fn);
+			walkForDiag(b.hitTestState, fn);
+			return;
+		}
+		if (Std.isOfType(obj, DisplayObjectContainer)) {
+			var c:DisplayObjectContainer = cast obj;
+			for (i in 0...c.numChildren) {
+				walkForDiag(c.getChildAt(i), fn);
+			}
+		}
 	}
 
 	// 树上每个 TextField：textFormatRanges（openfl.Vector，非 Array——裸

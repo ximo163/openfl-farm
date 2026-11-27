@@ -10,6 +10,12 @@ import openfl.events.EventDispatcher;
  */
 @:keep
 class MainCommand extends EventDispatcher {
+	// MainCommand.as:128（private var _tasking:Boolean = false）——任务推进
+	// 出网闸：updateTask 置位、updateTaskFn ecode==0 应答复位。签名面含字段
+	// 本体（测试经 @:access 复位闸位——单例跨用例共享，无此字段测试编译
+	// 不过）；读写逻辑随实现阶段充真身
+	private var _tasking:Bool = false;
+
 	public function new() {
 		super();
 	}

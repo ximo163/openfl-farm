@@ -98,6 +98,15 @@ class MainCommandTest {
 		env.resetStatics();
 		env.swapInRecorder();
 		env.captureViewControl(["animal_change"]);
+		// _tasking 闸复位：legacy updateTask（MainCommand.as:4308-4314）发帖置
+		// true，仅 updateTaskFn 收到 ecode==0 应答才复位（:3230）——上一用例
+		// 若发了 cgi_up_task 而未应答，闸残 true，本用例 taskComp→updateTask
+		// 直接早退不出网。utest 逐用例跑同实例、单例 Command 跨用例共享
+		// （McCommandEnv 类头单例说明节），闸位必须在 setup 清零——否则
+		// 用例间形成顺序锁死（review-tests round 2 驳回点）。经 @:access
+		// 写 private 字段（cropSortBylvOf 同款），出处 MainCommand.as:128
+		// 声明 `private var _tasking:Boolean = false`
+		resetTaskingOf(Command.getInstance().mainCommand);
 		INI.getInstance().data = Xml.parse(FIXTURE);
 		LocalData.parameters = {};
 		var md = MData.getInstance().mainData;
@@ -353,6 +362,13 @@ class MainCommandTest {
 	@:access(mc.control.MainCommand)
 	static function cropSortBylvOf(mc:mc.control.MainCommand, a:Dynamic, b:Dynamic):Int {
 		return mc.cropSortBylv(a, b);
+	}
+
+	// _tasking 闸位清零（MainCommand.as:128 声明、:4314 置位、:3230 复位）——
+	// 单例跨用例共享，setup 必调
+	@:access(mc.control.MainCommand)
+	static function resetTaskingOf(mc:mc.control.MainCommand):Void {
+		mc._tasking = false;
 	}
 
 	@:access(mc.control.MainCommand)

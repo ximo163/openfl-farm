@@ -15,6 +15,13 @@ class DonateAnimalCommand {
 	// DonateAnimalCommand.as:18
 	private static var _instance:DonateAnimalCommand = null;
 
+	// DonateAnimalCommand.as:27（private var _isDonating:Boolean——ctor
+	// :36 置 false；donateRequest :53 闸内早退、:59 发帖后置位、
+	// donateResponse :107 应答复位）——单例跨用例共享，测试 setup 须能
+	// 清零闸位（MainCommand._tasking 同款复位面，见 test
+	// DonateAnimalCommandTest）
+	private var _isDonating:Bool = false;
+
 	public function new() {}
 
 	// DonateAnimalCommand.as:41-48（懒单例——无实例化守卫）

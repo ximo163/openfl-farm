@@ -57,6 +57,16 @@ class TinItemCommandTest {
 		env.resetStatics();
 		env.swapInRecorder();
 		env.captureViewControl([]);
+		// m_pending 闸复位：legacy getTinsInfo（TinItemCommand.as:43-57）
+		// 发帖后置 true，仅 getTinsInfoFn 收到应答才复位（:326）——上一
+		// 用例若发了 cgi_get_toollist 而未应答（或 buyToolFn2 成功块末尾
+		// :97 重拉未应答），闸残 true，本用例首发即被吞。utest 逐用例跑
+		// 同实例、单例 Command.tinCommand 跨用例共享（McCommandEnv 类头
+		// 单例说明节），闸位必须在 setup 清零——否则用例间形成顺序锁死
+		// （review-tests round 2 驳回点，MainCommandTest resetTaskingOf
+		// 同款手法）。经 @:access 写 private 字段，出处 TinItemCommand.as
+		// :18 声明 `private var m_pending:Boolean`
+		resetPendingOf(Command.getInstance().tinCommand);
 		INI.getInstance().data = Xml.parse(FIXTURE);
 		LocalData.parameters = {};
 		MainData.inGameBuyType = "";
@@ -274,5 +284,12 @@ class TinItemCommandTest {
 		env.respond({code: 1, errorType: "IOError", msg: "x"});
 		Assert.isTrue(env.windowEvents.length >= 1);
 		Assert.equals("请求超时，稍后再试", Reflect.field(env.windowEvents[0].arg, "text"));
+	}
+
+	// m_pending 闸位清零（TinItemCommand.as:18 声明、:55 置位、:326
+	// 复位）——resetTaskingOf（MainCommandTest）同款 @:access 私有写
+	@:access(mc.control.TinItemCommand)
+	static function resetPendingOf(tc:mc.control.TinItemCommand):Void {
+		tc.m_pending = false;
 	}
 }

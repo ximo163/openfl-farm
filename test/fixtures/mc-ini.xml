@@ -24,6 +24,19 @@
 	  getAnimalV 非空分支与 getAnimalURL 的 ?v= 拼接；house 棚、sound 1、
 	  childNum 12、u 瓶、product 牛奶；nextTime 六档
 	  32400,32400,216000,15,43185,280800；info 10 条 <l> 逐条全录）
+	- animal 1002（兔子）：mc_data.php:5530-5574 全文抄录（sf="3"——部署
+	  全表 299 条中仅三只 sf 非零：1002 sf=3、1503 sf=18、1008 sf=72，
+	  其余全 0；toolToAnimal 按 @sf==工具id 反查动物（GetCropID.as:
+	  192-202），sf=0 条目测不到真解析通路——issue #88 useTools 特殊食
+	  守卫需要一条真工具→动物映射（tid 3 → 兔子 1002；sf↔农产特殊食
+	  作物 id 的语义互证：兔子 sinfo「喂食胡萝卜可以减少5分钟生长时间」
+	  animaltype.php config/mc:5、胡萝卜是农场作物 id 3 nc_data.php:
+	  6022、松鼠 sf=72↔榛子作物 id 72「松鼠爱吃的食物」nc_data.php:
+	  6090）；nextTime 六档 18000,18000,129600,15,28785,165600；info
+	  12 条 <l> 逐条全录）
+	  排序注意：1002 排在 1083 前纯粹让 @sf=="0" 的首命中 [0] 保持
+	  鸡 1001（XML 文档序取首——GetCropIDTest.test_xml_node_lookup 的
+	  既有断言），与 id 序无关（原版 mc_data 本身非单调序）
 	- cards 2001/2002：mc_card.php:8-9 抄录（isLock 两张都是 1——真实卡表
 	  8 张全为 isLock="1"，不存在 0 样本；src 的 $url 实例化同上）
 	- tip / <l> 排版：部署原文是多行缩进排版（文本节点带首尾空白），
@@ -73,6 +86,25 @@
 				<l>早起的小鸡有虫吃，早起的虫儿被我吃。</l>
 				<l>高中代数老师：“说话不许出声音！”</l>
 				<l>老虎不发猫，你当我是病危呀!</l>
+			</info>
+		</animal>
+		<animal childNum="12" house="窝" id="1002" name="兔子" price="1200" product="小兔崽" sf="3" sound="0" u="只" v="3">
+			<nextText value="幼仔,成长期,生产期,生产期,待产期,收获期"/>
+			<nextTime value="18000,18000,129600,15,28785,165600"/>
+			<tip>兔子（英文：rabbit    ）是草食性哺乳动物，耳大，上唇中间分裂，尾短而向上翘，前肢比后肢短，善于跳跃，兔肉可供食用。</tip>
+			<info>
+				<l>雄兔脚扑朔，雌兔眼迷离……</l>
+				<l>吃黑木耳可补铁。</l>
+				<l>用耐心把冷板凳坐热。</l>
+				<l>您瞧您的长相，也太随心所欲了。</l>
+				<l>QQ农场和牧场的金币是通用的哦。</l>
+				<l>听君一席话，省我十本书。</l>
+				<l>金窝，银窝，不如自家的草窝。</l>
+				<l>它为什么这么脆？它就是一盘大萝卜。</l>
+				<l>人生重要的不是所站位置，是所朝方向。</l>
+				<l>要不是打不过你，我早跟你翻脸了。</l>
+				<l>生活，就是生下来，活下去。</l>
+				<l>无聊就是无人跟你聊天。</l>
 			</info>
 		</animal>
 		<animal childNum="8" desc="" house="窝" id="1083" isActivity="1" isProductActivity="1" isvip="0" name="白玉猴" price="1200" product="白玉羽毛" sf="0" sound="0" u="只" v="0">

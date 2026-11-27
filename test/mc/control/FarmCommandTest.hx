@@ -78,6 +78,8 @@ import utest.Assert;
  * 测试直接以稀疏数组布置。
  */
 class FarmCommandTest {
+	static var FIXTURE:String = sys.io.File.getContent("test/fixtures/mc-ini.xml");
+
 	var env:McCommandEnv;
 
 	public function new() {}
@@ -87,6 +89,10 @@ class FarmCommandTest {
 		env.resetStatics();
 		env.swapInRecorder();
 		env.captureViewControl(["animal_change", "canFeed", "sFeed", "killFlyError", "clearAllBB", "killInsectError", "clearBBError"]);
+		// useTools type 4 经 GetCropID.toolToAnimal 读 INI 动物表——fixture
+		// 注入 + 静态缓存复位（DonateAnimalCommandTest 同款手法）
+		INI.getInstance().data = Xml.parse(FIXTURE);
+		resetCropXml();
 		var md = MData.getInstance().mainData;
 		md.host = {"uId": "100", "money": 5000, "exp": 200, "userName": "主人", "yellowstatus": 1, "yellowlevel": 3, "animal1": 0, "animal2": 0, "animalFood": 0};
 		md.currentUser = {"uId": "100", "me": true};
@@ -195,19 +201,37 @@ class FarmCommandTest {
 		Assert.isFalse(Reflect.hasField(env.rec.postedValue, "uId"));
 	}
 
-	// useTools type 4 三拦截（:197-224）——cId 不符文案含动物名（鸡，
-	// fixture mc-ini.xml animal 1001 name 抄录 mc_data.php:5575）
+	// useTools type 4 cId 拦截（FarmCommand.as:196-204）：toolToAnimal
+	// 经 @sf 反查（GetCropID.as:200）——tid "3" 命中 fixture 兔子
+	// (animal 1002 sf="3"，mc_data.php:5530 抄录；sf↔特殊食语义互证
+	// 见 fixture 类头 1002 条)；场上动物是牛（cId 1502）→ 1502 != 1002
+	// 进拦截分支，文案逐字「只能对" + 兔子名 + "喂这个。」（:200-202）、
+	// type "animal"、serial 取 param1 原位，不发请求。
+	// 对照面：场上改放兔子（cId 1002 匹配）则越过本分支进 SHENGZHANG
+	// 放行——cgi_feed_special 出网（spec/protocol.json entries.mc.mods
+	// .cgi_feed_special，三键 :234-237 serial/uId/tid）——同 tid 两态
+	// 对拍，解析通路错（查不到兔子/查错动物）时两态必有一反
 	public function test_useTools_type4_cid_mismatch() {
 		var md = MData.getInstance().mainData;
-		md.animalData = [null, {serial: 11, status: FarmData.ANIMAL_SHENGZHANG, cId: 1001}];
-		// 工具 tId 1101 对应动物 1001（fixture toolToAnimal sf 通道）——
-		// 用不匹配的动物 cId 1502 逼出「只能对」文案
-		md.animalData[1].cId = 1502;
-		Command.getInstance().farmCommand.useTools(1, {tId: "1101", type: 4});
+		md.animalData = [null, {serial: 11, status: FarmData.ANIMAL_SHENGZHANG, cId: 1502}];
+		Command.getInstance().farmCommand.useTools(1, {tId: "3", type: 4});
 		var op = MData.getInstance().farmData.farmOperate;
 		Assert.notNull(op);
-		Assert.isTrue(Reflect.field(op, "text").indexOf("只能对") == 0);
+		Assert.equals("只能对兔子喂这个。", Reflect.field(op, "text"));
+		Assert.equals("animal", Reflect.field(op, "type"));
+		Assert.equals(1, Reflect.field(op, "serial"));
 		Assert.equals(0, env.rec.postCount);
+
+		// 对照态：兔子在场上（cId 1002 == toolToAnimal("3").@id）→ 放行
+		MData.getInstance().farmData.farmOperate = null;
+		md.animalData = [null, {serial: 11, status: FarmData.ANIMAL_SHENGZHANG, cId: 1002}];
+		Command.getInstance().farmCommand.useTools(1, {tId: "3", type: 4});
+		Assert.isNull(MData.getInstance().farmData.farmOperate);
+		Assert.equals("cgi_feed_special", env.rec.postedUrl);
+		var v = env.rec.postedValue;
+		Assert.equals(11, Reflect.field(v, "serial"));
+		Assert.equals("100", Reflect.field(v, "uId"));
+		Assert.equals(3, Reflect.field(v, "tid"));
 	}
 
 	// useTools type 7 DAICHAN 拦截（:240-245）
@@ -607,5 +631,10 @@ class FarmCommandTest {
 	@:access(mc.control.FarmCommand)
 	static function resetRequestTime(fc:mc.control.FarmCommand):Void {
 		fc.requestTime = {};
+	}
+
+	@:access(mc.view.farm.GetCropID)
+	static function resetCropXml() {
+		mc.view.farm.GetCropID._xml = null;
 	}
 }

@@ -53,6 +53,17 @@ class DonateAnimalCommandTest {
 		env.resetStatics();
 		env.swapInRecorder();
 		env.captureViewControl(["animal_change"]);
+		// _isDonating 闸复位：legacy donateRequest（DonateAnimalCommand.
+		// as:51-60）发帖后置 true，仅 donateResponse 收到应答才复位
+		// （:107——复位是函数体首行，连 errorCode 早退路径也先复位）。
+		// 上一用例若 confirmFn 真发 cgi_donate_animal 而未应答，闸残
+		// true，本用例 confirmFn 首发即被吞。单例跨用例共享
+		// （McCommandEnv 类头单例说明节），闸位必须在 setup 清零——
+		// 否则用例间形成顺序锁死（review-tests round 2 驳回点，
+		// MainCommandTest resetTaskingOf 同款手法）。经 @:access 写
+		// private 字段，出处 DonateAnimalCommand.as:27 声明
+		// `private var _isDonating:Boolean`
+		resetDonatingOf(DonateAnimalCommand.getInstance());
 		// price 查询走 GetCropID.getAnimalInfo(cId).@price——INI fixture
 		// 注入 + 静态缓存复位（GetCropIDTest 同款手法）
 		INI.getInstance().data = Xml.parse(FIXTURE);
@@ -228,5 +239,12 @@ class DonateAnimalCommandTest {
 	@:access(mc.view.farm.GetCropID)
 	static function resetCropXml() {
 		mc.view.farm.GetCropID._xml = null;
+	}
+
+	// _isDonating 闸位清零（DonateAnimalCommand.as:27 声明、:59 置位、
+	// :107 复位）——单例跨用例共享，setup 必调
+	@:access(mc.control.DonateAnimalCommand)
+	static function resetDonatingOf(dc:DonateAnimalCommand):Void {
+		dc._isDonating = false;
 	}
 }

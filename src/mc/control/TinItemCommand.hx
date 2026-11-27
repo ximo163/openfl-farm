@@ -12,6 +12,12 @@ import openfl.events.EventDispatcher;
  */
 @:keep
 class TinItemCommand extends EventDispatcher {
+	// TinItemCommand.as:18（private var m_pending:Boolean——ctor :38 置
+	// false；getTinsInfo :45-48 闸内早退、:55 发帖后置位、getTinsInfoFn
+	// :326 应答复位）——单例跨用例共享，测试 setup 须能清零闸位
+	// （MainCommand._tasking 同款复位面，见 test TinItemCommandTest）
+	private var m_pending:Bool = false;
+
 	public function new() {
 		super();
 	}

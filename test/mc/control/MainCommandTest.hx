@@ -48,13 +48,17 @@ import utest.Assert;
  * buySeed :316 / buySeedFn :2992-3060（{cId,number,isFull} "cgi_buy_animal"；
  * ecode==0：money 取负、isFull → reloadUserSeed、否则按 GetCropID
  * .getHouse 窝/棚计数 animal1/2 += 计数 + animal_change；addMoney/addExp；
- * me 且 !isFull → addAnimal；taskComp goumai）；
+ * me 且 !isFull → addAnimal；taskComp goumai。money 线形**正成本**：
+ * cgi_buy_animal.php:87 echo `"money":price*number` 无负号，客户端
+ * :3010 取负后入账即**扣减**——购买流经济方向）；
  * buyTool :2944-2990（!userFB id==1：param7 在 → farmCommand.addFood(
  * number,1) 转发；否则 {tId,foodnum} "cgi_buy_food"；非 1 → {tId,number}
  * "cgi_buy_tool"；userFB → fbRequest 通道 app_key=LocalData.app_key）；
  * buyFoodFn :4280（reloadUserSeed=true、money 取负、floatWindow
  * alert、setTimeout 2000 后 farmOperate {text:"已放入物品包",type:
- * "toolBar",toolName:"package"}——定时异步面不钉）；
+ * "toolBar",toolName:"package"}——定时异步面不钉；money 线形正成本：
+ * cgi_buy_food.php:49 echo `"money":mc_price*foodnum` 无负号、键面
+ * {alert,money} 无 direction 键）；
  * sendChat :2482 / sendChatFn :4255-4273（{toId,msg,showId,isReply,tName,
  * fName:host.userName} 发往 getPostUrl()+"chat&act=sendChat"；应答
  * code 真 → profile.chat=param1.chat 重设 profile——**不走
@@ -471,7 +475,9 @@ class MainCommandTest {
 		var md = MData.getInstance().mainData;
 		MData.getInstance().farmData.reloadUserSeed = false;
 		mc.buySeed(1001, 2, true);
-		env.respond({ecode: 0, money: -1400, addExp: 4, num: 2, animal: [{cId: 1001}, {cId: 1001}], post_data: {isFull: true, cId: 1001, number: 2}});
+		// money 正成本线形同 test_buySeedFn_house_count 注释（cgi_buy_animal
+		// .php:87）——isFull 分支不消费 money 入账断言，形状仍随真实下发
+		env.respond({ecode: 0, money: 1400, addExp: 4, num: 2, animal: [{cId: 1001}, {cId: 1001}], post_data: {isFull: true, cId: 1001, number: 2}});
 		Assert.isTrue(MData.getInstance().farmData.reloadUserSeed);
 		Assert.equals(0, Reflect.field(md.host, "animal1"));
 		Assert.equals(0, Reflect.field(md.host, "animal2"));
@@ -484,11 +490,16 @@ class MainCommandTest {
 		var mc = Command.getInstance().mainCommand;
 		var md = MData.getInstance().mainData;
 		mc.buySeed(1001, 2, false);
-		env.respond({ecode: 0, money: -1400, addExp: 4, num: 2, animal: [{cId: 1001}, {cId: 1001}], post_data: {isFull: false, cId: 1001, number: 2}});
+		// money 线形是**正成本**：cgi_buy_animal.php:87 echo `"money":` +
+		// ($animaltype[$cid]['price'] * $number)——鸡 price 700
+		// （config/mc/animaltype.php:5）×2=1400，无负号；客户端 :3010
+		// `param1.money = -param1.money` 取负后才 addMoney——生产方向余额
+		// 扣减：5000-1400=3600。fixture 若喂负值则既不符线形、也把
+		// `=-x` 与 Math.abs 等错译洗成不可分辨（#88 review-tests round 4）
+		env.respond({ecode: 0, money: 1400, addExp: 4, num: 2, animal: [{cId: 1001}, {cId: 1001}], post_data: {isFull: false, cId: 1001, number: 2}});
 		Assert.equals(2, Reflect.field(md.host, "animal1"));
 		Assert.equals(0, Reflect.field(md.host, "animal2"));
-		// money 取负入账：-(-1400)=+1400 → 5000+1400=6400
-		Assert.equals(6400, Reflect.field(md.host, "money"));
+		Assert.equals(3600, Reflect.field(md.host, "money"));
 		Assert.isTrue(env.plainEvents.indexOf("animal_change") != -1);
 	}
 
@@ -517,15 +528,22 @@ class MainCommandTest {
 		Assert.equals(3, Reflect.field(env.rec.postedValue, "number"));
 	}
 
-	// buyFoodFn（:1862-1890）：reloadUserSeed 置位、money 取负
+	// buyFoodFn（:4280-4302）：reloadUserSeed 置位、money 取负后入账
 	public function test_buyFoodFn_reload_and_money() {
 		var mc = Command.getInstance().mainCommand;
 		var md = MData.getInstance().mainData;
 		MData.getInstance().farmData.reloadUserSeed = false;
 		mc.buyTool(1, 50, 0, false, "", 0, false);
-		env.respond({ecode: 0, money: -100, direction: "买到了"});
+		// money 线形是**正成本**：cgi_buy_food.php:49 echo `"money":` +
+		// ($mc_price * $foodnum)——mc_price 30/60 按 vip（:15-19）、无负号；
+		// 应答键面 {alert, money}（:49 echo 全文，无 direction 键——原
+		// fixture 的 direction 是杜撰键）。客户端 :4290 `data.money =
+		// -data.money` 取负后 addMoney——生产方向余额扣减 100（fixture
+		// 数额取自 mc_price×foodnum 量级，非协议键约束）：
+		// 5000-100=4900（#88 review-tests round 4）
+		env.respond({ecode: 0, money: 100, alert: "买到了"});
 		Assert.isTrue(MData.getInstance().farmData.reloadUserSeed);
-		Assert.equals(5100, Reflect.field(md.host, "money")); // -(-100)=+100
+		Assert.equals(4900, Reflect.field(md.host, "money"));
 	}
 
 	// —— 聊天/日志组 ——

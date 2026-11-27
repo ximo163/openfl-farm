@@ -58,7 +58,9 @@ import utest.Assert;
  * addFoodDelay 3000ms 定时（异步面不钉）；type==0 背包通道：
  * animalPackFood.amount -= added、reloadUserSeed 置位；addExp==-1 且
  * !totalExp 且 !me → "每天帮忙最多增加300点经验，您已加满" :752-762
- * ——文案逐字、type "food"）；
+ * ——文案逐字、type "food"。money 线形**正成本**：cgi_feed_food.php:105
+ * echo `"money":mc_price*foodnum` 无负号，客户端 :774 取负后入账即
+ * **扣减**）；
  * killFn :883-943（ecode 非零 → floatWindow(direction,"Exclamation")
  * + _recallTime 累加、<3 派 "killFlyError"；errorContent "您下手太慢，
  * 蚊子已经被拍了" 特判——killFly(1,4)+killFly(2,4) 双发 :887-893；
@@ -419,15 +421,18 @@ class FarmCommandTest {
 	}
 
 	// foodFn type 1 购买通道（:736-749）：host.animalFood=total、money 取负
-	// 入账（负负得正——:742 原文 `param1["money"] = -param1["money"]`）
+	// 后入账（:774 原文 `param1["money"] = -param1["money"]`）
 	public function test_foodFn_type1_money_negated() {
 		var md = MData.getInstance().mainData;
 		Command.getInstance().farmCommand.addFood(50, 1);
-		env.respond({type: 1, total: 1050, money: -300, animal: []});
+		// money 线形是**正成本**：cgi_feed_food.php:105 echo `"money":` +
+		// ($mc_price * $foodnum)——mc_price 30/60 按 vip（:16-19）、无负号；
+		// 客户端 :774 取负后 addMoney——生产方向余额扣减：
+		// 5000-300=4700（fixture 300 取自同量级整数）。喂负值会把 `=-x`
+		// 与 Math.abs 等错译洗成不可分辨（#88 review-tests round 4）
+		env.respond({type: 1, total: 1050, money: 300, animal: []});
 		Assert.equals(1050, Reflect.field(md.host, "animalFood"));
-		// money -(-(-300))：先取负 -money=300 入账 → 5000+300……
-		// 原文顺序：money = -money 后 addMoney(param1)——money 键此时 300
-		Assert.equals(5300, Reflect.field(md.host, "money"));
+		Assert.equals(4700, Reflect.field(md.host, "money"));
 	}
 
 	// foodFn type 0 背包通道（:750-771）：animalPackFood.amount -= added

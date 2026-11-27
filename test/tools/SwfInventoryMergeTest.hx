@@ -322,6 +322,66 @@ class SwfInventoryMergeTest {
 	// ------------------------------------------------------------------
 	// 在库事实锁（issue #83 动机节的证据钉死在测试里）
 
+	function test_main_inventory_code_blocks_match_registered_content() {
+		// // issue #95 行动项 3/4 的内容对账锁（2026-11-27 加）：#83 的存活
+		// 锁只管「code 键在不在」，不管内容——恢复错内容（串模块、抄错
+		// classes 数）照样绿。#95 完成标准要求「#30 四条（84c203bb 形态恢
+		// 复）+ #85 三条全部存活」，本锁把七条逐字钉死：
+		// - #30 四条期望值出处：`git show 84c203bb -- spec/swf-inventory.json`
+		//   （五键 decompiled/symbol_class/classes/module_spec/note 逐字；
+		//   2026-11-27 核验：现文件四条与 84c203bb parse 级逐字相等）；
+		// - #85 三条期望值出处：现文件 a5fecc91 时点的在册内容（#85 正当写
+		//   入、未经再生成抹除——这三条从写入起没死过，本身就是 84c203bb
+		//   同形态的正源）。
+		// note 键逐字全串比对——它是七条间的唯一区分面之一（#30/#66 两族
+		// 措辞不同），截断比对会放过串行事故。
+		if (!sys.FileSystem.exists("spec/swf-inventory.json")) {
+			Assert.fail("spec/swf-inventory.json 不在仓（内容对账锁无法核对）");
+			return;
+		}
+		var doc:Dynamic = haxe.Json.parse(File.getContent("spec/swf-inventory.json"));
+		var entries:Array<Dynamic> = cast Reflect.field(doc, "swfs");
+		var byPath = new Map<String, Dynamic>();
+		for (e in entries) {
+			var p:Dynamic = Reflect.field(e, "path");
+			if (Std.isOfType(p, String)) byPath.set(cast p, e);
+		}
+		// 表驱动：path → 五键期望值（出处见类头注释引的两条链路）
+		var expected:Array<Array<Dynamic>> = [
+			// #30 四条（84c203bb 逐字）——// issue #95 行动项 3 恢复对象
+			["module/ui/shop_v_7.swf", "legacy/decompiled/shop_v_7/", "module.shop.ShopWrapper", 25, "spec/modules/farm-shop-ui.json",
+				"功能 UI 代码 swf（issue #30 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"],
+			["module/ui/warehouse_v_23.swf", "legacy/decompiled/warehouse_v_23/", "module.warehouse.WarehouseWrapper", 29, "spec/modules/inventory-ui.json",
+				"功能 UI 代码 swf（issue #30 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"],
+			["module/ui/pool_v_13.swf", "legacy/decompiled/pool_v_13/", "module.water.WaterWrapper", 14, "spec/modules/water-ui.json",
+				"功能 UI 代码 swf（issue #30 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"],
+			["module/ui/decorate_v_0.swf", "legacy/decompiled/decorate_v_0/", "module.decorate.DecorateWrapper", 9, "spec/modules/farm-decorate-ui.json",
+				"功能 UI 代码 swf（issue #30 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"],
+			// #85 三条（现文件在册内容——#66 反编译扩清单族，note 措辞与
+			// #30 族不同，这是两族手写块的区分面）
+			["module/ui/cards_v_1.swf", "legacy/decompiled/cards_v_1/", "module.cardsgame.CardsGameWrapper", 5, "spec/modules/cards-game-ui.json",
+				"功能 UI 代码 swf（issue #66 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"],
+			["module/ui/quickshoot_v_0.swf", "legacy/decompiled/quickshoot_v_0/", "module.quickshoot.QuickShootWrapper", 15, "spec/modules/quickshoot-ui.json",
+				"功能 UI 代码 swf（issue #66 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"],
+			["module/mc/farm/wild/WildShellNc_v_5.swf", "legacy/decompiled/WildShellNc_v_5/", "wild.com.Shell.WildShell", 16, "spec/modules/wild-shell-ui.json",
+				"功能 UI 代码 swf（issue #66 反编译扩清单）：scripts 类数与 module_spec 全类覆盖对账；SymbolClass 仅 frame0 文档类"]
+		];
+		for (row in expected) {
+			var path:String = row[0];
+			var e = byPath.get(path);
+			Assert.notNull(e, path + " 条目缺失（#95 内容对账锁）");
+			if (e == null) continue;
+			var code:Dynamic = Reflect.field(e, "code");
+			Assert.notNull(code, path + " 的 code 块缺失（#95 完成标准：七条全部存活）");
+			if (code == null) continue;
+			Assert.equals(row[1], Std.string(Reflect.field(code, "decompiled")), path + " code.decompiled 与登记内容不符（#30 四条出处 84c203bb 逐字）");
+			Assert.equals(row[2], Std.string(Reflect.field(code, "symbol_class")), path + " code.symbol_class 与登记内容不符");
+			Assert.equals(row[3], Reflect.field(code, "classes"), path + " code.classes 与登记内容不符（scripts 类数对账值）");
+			Assert.equals(row[4], Std.string(Reflect.field(code, "module_spec")), path + " code.module_spec 与登记内容不符");
+			Assert.equals(row[5], Std.string(Reflect.field(code, "note")), path + " code.note 与登记内容不符（note 逐字——#30/#66 两族措辞区分面）");
+		}
+	}
+
 	function test_main_inventory_handwritten_code_blocks_survive() {
 		// // issue #83 锁的「changed for #83」维护点（2026-11-26 触发）：
 		// 原断言「无一带 code 块」钉的是再生成事故后的过渡现状，原锁注释

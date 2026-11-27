@@ -414,6 +414,20 @@ class TestMain {
 		// stub 在 tools/tools/ 归树），读文件/写回/接线归 implement 与人裁
 		// 决的脚本侧
 		runner.addCase(new tools.SwfInventoryMergeTest());
+		// issue #95：swf-inventory 保留判式接线（write-tests 阶段，对 stub
+		// 失败）——#83 判式零调用（#95 背景实锤「全仓引用 SwfInventoryMerge
+		// 的只有判式本体、测试、handbook 页」）的收口两片的纯逻辑面：
+		// 再生成对账门判式（tools.SwfInventoryReconcile：再生成前后手写键
+		// 集合对账三缺口态 missing_entry/missing_key/altered、单文件自检
+		// duplicate_path/null 值、生成器接线静态对账 wiring_missing——
+		// 「任何已登记手写块消失即红」，#83 完成标准「死了无人察觉不再可
+		// 能」的判式落点）与 runner 进程面契约（tools.SwfInventoryMergeRun
+		// 的三文件位参回路、keep 报告行进 stdout、退出码三态 0/1/2、写回
+		// json.dump 形态——#95「runner 随接线同做，不拆」）。scripts/、
+		// checks/、.github/ 人管侧接线 edit 归 implement + 人（#95「执行
+		// 模式与路由」节）
+		runner.addCase(new tools.SwfInventoryReconcileTest());
+		runner.addCase(new tools.SwfInventoryMergeRunTest());
 		// issue #94：T2/T3 门禁接线（write-tests 阶段，对 stub 失败）——
 		// CI wrapper 判定纯逻辑（tools.CiGatesVerdict）：退出码分流（0 绿/
 		// 1 红/2 基建坏、未声明码归基建、基建坏也判 CI 红但行里标注「gate

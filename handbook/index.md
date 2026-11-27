@@ -34,7 +34,7 @@
 | test 树卫生机器门（test/ 禁 throw-stub 与跨树重复模块路径：#56 stub 归树规则的差集报警，tools/scan_test_stubs.py / scan_module_paths.py——判式单源在 tools/tools/） | [architecture/test-tree-gates.md](architecture/test-tree-gates.md) | 判式契约 `test/tools/TestStubScanTest.hx` / `ModulePathScanTest.hx`（原版没有的工具，出处 issue #70） |
 | 帧脚本清查与补偿（资产 swf 的 addFrameScript/frameN 在 openfl 侧复原：FrameScriptCompensation 登记表 + SymbolClass/LocalSwfLoader 接线、FrameScriptAudit 清查器） | [architecture/frame-scripts.md](architecture/frame-scripts.md) | `decompiled farmui_full farmui2 lite_ui Fertilizer water_ui` 的 `<类>.as`（swf 未反编译时 ABC 清查 op 流）；机制出处 `haxelib swf` AnimateLibraryExporter/AnimateTimeline |
 | cpp 目标基址改写与启动冒烟（QFARM_BASE_URL、tools/cpp-boot-smoke.sh、三断言判定 BootSmokeVerdict） | [architecture/net.md](architecture/net.md)（cpp 目标的基址改写节） | `src/shim/SwfUrlBase.hx`、`src/shim/FlashVars.hx`、`src/shim/AndroidHttpRequest.hx` |
-| swf-inventory 手写增补保留（再生成时同 path 条目的 code/triage 等手写键逐字存活：SwfInventoryMerge 纯逻辑、机器键闭集、位置扫描器逐字搬运） | [architecture/swf-inventory-merge.md](architecture/swf-inventory-merge.md) | 判式契约 `test/tools/SwfInventoryMergeTest.hx`（原版没有的工具，出处 issue #83；84c203bb 手写形态出处） |
+| swf-inventory 手写增补保留与接线（再生成时同 path 条目的 code/triage 等手写键逐字存活：SwfInventoryMerge 纯逻辑、机器键闭集、位置扫描器逐字搬运；#95 接线 runner MergeRun + 对账判式 Reconcile——人管 scripts/checks/.github 接线落地前的活体锚点语义） | [architecture/swf-inventory-merge.md](architecture/swf-inventory-merge.md) | 判式契约 `test/tools/SwfInventoryMergeTest.hx`/`SwfInventoryReconcileTest.hx`/`SwfInventoryMergeRunTest.hx`（原版没有的工具，出处 issue #83/#95；84c203bb 手写形态出处） |
 | 环境、工具、反直觉的坑 | [lessons/index.md](lessons/index.md) | — |
 
 还没有页面的子系统：翻译完成时由实现 agent 建页并在表里加一行。

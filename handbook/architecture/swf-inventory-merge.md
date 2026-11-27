@@ -1,4 +1,4 @@
-# swf-inventory 手写增补保留（issue #83）
+# swf-inventory 手写增补保留与接线（issue #83 判式 / #95 接线与对账门）
 
 仓库自建的归并纯逻辑（原版没有对应物，出处 issue #83 决策点 a）。动
 `tools/tools/SwfInventoryMerge.hx`、或要写/改「在 spec/swf-inventory.json 里
@@ -23,13 +23,34 @@
 
 | 层 | 文件 | 职责 |
 |---|---|---|
-| 判式（纯逻辑） | `tools/tools/SwfInventoryMerge.hx` | JSON 文本进 → JSON 文本出；契约由 `test/tools/SwfInventoryMergeTest.hx` 钉死（`haxe test.hxml`） |
-| 脚本侧（人管） | `scripts/swf-inventory.py`（或其后置步骤） | 读旧文件/调判式/写回/exit 码——**不在 agent 边界内**，接线由所有者落地 |
+| merge 判式（纯逻辑） | `tools/tools/SwfInventoryMerge.hx` | JSON 文本进 → JSON 文本出；契约由 `test/tools/SwfInventoryMergeTest.hx` 钉死（`haxe test.hxml`） |
+| 对账判式（纯逻辑，#95） | `tools/tools/SwfInventoryReconcile.hx` | 再生成前后手写键集合对账（missing_entry/missing_key/altered）、单文件自检（duplicate_path/null 值）、生成器接线静态对账（wiring_missing）；契约由 `test/tools/SwfInventoryReconcileTest.hx` 钉死 |
+| runner（进程面胶水，#95） | `tools/tools/SwfInventoryMergeRun.hx` | 三文件位参（旧清单/生成产物/写回路径）→ 调 merge → 落盘；`keep <path> <键>` 行进 stdout；退出码 0/1/2（TestStubScanRun 先例） |
+| 脚本侧（人管） | `scripts/swf-inventory.py`（或其后置步骤） | 生成产物先写临时文件 → 调 runner → 写回 spec 路径——**不在 agent 边界内**，接线由所有者落地 |
+| CI 侧（人管） | `.github/workflows/legacy-decompile.yml` | 补装 haxe + merge 运行步——**不在 agent 边界内** |
 
 **改判式只能改 Haxe 半边**，且必须与测试同改（#63 判式单源教训）。机器键
 闭集 `MACHINE_KEYS`（path/bytes/category/fps/frames/stage/unparsed）写死在
-类里——生成器加了新产出键时，`test_main_inventory_has_6290_entries_with_
-machine_keys_only` 会红，提醒同步闭集（这是有意的活体锚点）。
+merge 类里，对账判式**引用**它的 `isHandwrittenKey` 不复制闭集（判式单源
+只有一份）。
+
+### 接线证据判式（#95，agent 可写侧已交付的部分）
+
+人管两侧的接线没落地前，`SwfInventoryReconcile.workflowKeepsHandwritten` 喂
+仓内真实两份文本必报 `wiring_missing`——这是有意的活体锚点：判式查两份
+文本里有没有 `tools.SwfInventoryMergeRun` 的调用痕迹（写死的锚串，接线形态
+变了同改判式与测试）。**锚点的生命周期如实写清**：
+`test_workflow_wiring_absent_on_current_main` 断言方向是「接线缺位」，
+所以在接线缺位期间该测试为**绿**；人管接线落地（两份文本都出现
+`tools.SwfInventoryMergeRun`）的那一刻判式转为 `pass=true`，该测试当场
+**转红**——web.yml 对全分支每次 push 跑 `haxe test.hxml`，红着 push 会被
+CI 拒收。因此接线的人**必须在同一改动里处理该测试**：反转断言改判接线在
+则绿，或直接删除该用例（判式两方向的合成语料覆盖已由
+`test_workflow_wiring_present_when_merge_step_in_workflow` /
+`test_workflow_wiring_missing_when_only_*_side` 钉死，仓内状态耦合面只此
+一条）。**接线不做这一步就毕不了业**——这不是测试腐化，是锚点完成使命
+的信号。脚本侧裸奔面（`json.dump` 直写 spec 路径）与工作流侧裸奔面
+（没装 haxe 步）各算一条缺口——半接线等于没接线。
 
 ## 核心语义（判式一句话版）
 
@@ -57,12 +78,20 @@ machine_keys_only` 会红，提醒同步闭集（这是有意的活体锚点）�
 - 顶层 `swfs` 之外的键（生成器未来加的）按原插入序透传，尾随逗号只在
   有余键时出现——空数组形态 `"swfs": []` 与 python 同形。
 
-## 机器门面（再生成前后对账）
+## 机器门面（再生成前后对账，#95）
 
-issue 完成标准要求「死了无人察觉」不再可能。现状：
+issue 完成标准要求「死了无人察觉」不再可能。#95 落地后现状：
 
-- 判式本体已被 `test/tools/SwfInventoryMergeTest.hx` 钉死（21 个用例，
-  含在库事实锁——现行清单 6290 条无一带 code 块、键集 ⊆ 机器键闭集）。
-- **脚本侧接线（再生成回路里调 merge）与 CI 对账门禁归 scripts/ 与
-  checks/，都是人管路径**——agent 侧的交付到判式为止，接线裁决见
-  issue #83 原文「执行模式」节。
+- merge 判式已被 `test/tools/SwfInventoryMergeTest.hx` 钉死（含在库事实
+  锁——七条手写 code 块的内容逐字对账）。
+- **runner 已交付**（`tools/tools/SwfInventoryMergeRun.hx`，进程面契约由
+  `test/tools/SwfInventoryMergeRunTest.hx` 钉死）：三文件位参、keep 行、
+  退出码三态——#83「判式交付、接线悬空」的 tools/ 侧缺口已收口。
+- **对账判式已交付**（`tools/tools/SwfInventoryReconcile.hx`）：三个面
+  （再生成前后对账/单文件自检/接线静态对账）都是纯逻辑，进程面壳
+  （走 exit 码进 checks/）与脚本/工作流接线 edit 都归人管路径。
+- **scripts/、checks/、.github/ 的人管接线仍待所有者落地**——在落地前，
+  `test_workflow_wiring_absent_on_current_main` 保持接线缺位期绿、接线落地
+  时转红的活体锚点语义（见上节：转红是预定信号，接线的人须在同一改动里
+  反转/重写该用例）；#95 完成标准「触发一次再生成七条全存活」只能在那之
+  后验证。

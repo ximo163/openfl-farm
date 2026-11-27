@@ -90,6 +90,14 @@ class McCommandEnv {
 	}
 
 	function onWindowEvent(e:WindowEvent):Void {
+		// 强类型读出三件载荷：windowName/windowArgument/window 全是
+		// WindowEvent 的 (get,set) 访问器——eval 的 Dynamic 反射只见物理
+		// 字段，若经 Dynamic 读（如 listener 参数裸 `Dynamic` 化后取用）
+		// 恒 null（lessons #8「eval/js 的 Dynamic 反射」条，probe 实证：
+		// Reflect.field(captured,"window") 也是 null）。此处签名即
+		// WindowEvent，属性访问编译期走 getter，落进捕获数组的是读出的
+		// **值**——后续测试从数组里取 win 是 Dynamic 但对象本体是
+		// ConfirmWindow 真身，再 cast 回强类型即可读窗的访问器
 		windowEvents.push({kind: e.type, name: e.windowName, arg: e.windowArgument, win: e.window});
 	}
 

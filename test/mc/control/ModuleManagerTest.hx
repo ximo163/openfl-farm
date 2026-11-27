@@ -133,14 +133,30 @@ class ModuleManagerTest {
 		Assert.isNull(WeekendSaleHelper.ids);
 	}
 
-	// 边界严格开区间（:53 `<` 严格）：now == start 或 == end 不命中
+	// 边界严格开区间（:55 `<` 严格——`_loc7_ < _loc9_ && _loc9_ < _loc8_`）：
+	// now == start 不命中、now == end 不命中。窗换算用与实现同一只解析器
+	// （Date.fromString——实现侧 Haxe 等价物对应 AS3 new Date(str)）：
+	// 两端都用本地时间换算，差值与容器时区无关（裸 epoch 换算按 UTC 是
+	// 时区脆弱的——Haxe/AS3 日期串解析皆本地时间）
 	public function test_checkSubModule_boundary_exclusive() {
-		// start 2023-11-13 00:00:00 UTC = 1699833600 秒
-		CommonData.serverTime = 1699833600;
+		var startStr = "2023-11-13 00:00:00";
+		var endStr = "2023-11-15 00:00:00";
 		injectSubmodule('<data><submodule>'
-			+ '<module name="weekendSale" start="2023-11-13 00:00:00" end="2023-11-15 00:00:00" url="m.swf"><ids>[1]</ids></module>'
+			+ '<module name="weekendSale" start="' + startStr + '" end="' + endStr + '" url="m.swf"><ids>[1]</ids></module>'
 			+ '</submodule></data>');
+		// now == start → 不命中（严格小于）
+		CommonData.serverTime = Date.fromString(startStr).getTime() / 1000;
 		ModuleManager.checkSubModule();
 		Assert.isNull(WeekendSaleHelper.ids);
+		// now == end → 不命中
+		CommonData.serverTime = Date.fromString(endStr).getTime() / 1000;
+		resetModuleXml();
+		ModuleManager.checkSubModule();
+		Assert.isNull(WeekendSaleHelper.ids);
+		// 对照：窗内 1 秒 → 命中（同一 fixture 证明窗本体有效）
+		CommonData.serverTime = Date.fromString(startStr).getTime() / 1000 + 1;
+		resetModuleXml();
+		ModuleManager.checkSubModule();
+		Assert.notNull(WeekendSaleHelper.ids);
 	}
 }

@@ -4,6 +4,7 @@ import common.INI;
 import mc.control.DonateAnimalCommand;
 import mc.model.FarmData;
 import mc.model.MData;
+import mc.view.common.ConfirmWindow;
 import support.McCommandEnv;
 import utest.Assert;
 
@@ -14,10 +15,10 @@ import utest.Assert;
  *
  * 期望值出处：
  * legacy/decompiled/Master2_v_142/scripts/mc/control/DonateAnimalCommand.as
- * —— donateAnimal :66-120（param1 null/data null → 早退；status==
+ * —— donateAnimal :62-103（param1 null/data null → 早退；status==
  * ANIMAL_SHENGCHAN(4) → farmOperate "生产中动物不能操作！"；status==
  * ANIMAL_SHOUHUO(6) → "成熟动物请收获！"——两文案 type "animal"、serial
- * 取 param1.data.serial；其余状态开 ConfirmWindow：文案模板 :84 逐字
+ * 取 param1.data.serial；其余状态开 ConfirmWindow：文案模板 :91 逐字
  * "动物还没有成熟，爱心捐赠将获得感谢金<b><font color=\"#4DA337\">" +
  * price/2 + "</font></b>金币。<BR/>您确定要这么做吗？<BR/>温馨提示：
  * 爱心捐赠不获得经验。"——price 出处 mc_data animals 配置（fixture
@@ -27,11 +28,11 @@ import utest.Assert;
  * "cgi_donate_animal", {serial:param1}, donateResponse)，serial 出处
  * spec/protocol.json entries.mc.mods.cgi_donate_animal（1 基序号，
  * cgi_donate_animal.php:5 (int)$_REQUEST['serial']）；
- * donateResponse :122-152（errorCode+errorContent 双键在 →
+ * donateResponse :105-126（errorCode+errorContent 双键在 →
  * floatWindow(errorContent) 早退；cId/direction/money 三键齐 →
  * addMoney+floatWindow(direction)+onDonateSuccess——成功应答形状出处
  * cgi_donate_animal.php:59 echo '{"cId":…,"direction":"爱心捐赠成功！",
- * "money":…,"serial":…}'）；onDonateSuccess :154-175（cId==0 或
+ * "money":…,"serial":…}'）；onDonateSuccess :141-161（cId==0 或
  * serial==0 早退；与 _targetAnimal.data 的 cId/serial 不符早退；
  * plands.removeAnimal + ViewControl 派 Event("animal_change")）。
  *
@@ -99,7 +100,11 @@ class DonateAnimalCommandTest {
 		DonateAnimalCommand.getInstance().donateAnimal(animal);
 		Assert.equals(1, env.windowEvents.length);
 		Assert.equals(WindowEvent_OPEN(), env.windowEvents[0].kind);
-		var win:Dynamic = env.windowEvents[0].win;
+		// 窗经强类型读：data/confirmFn 是 (get,set) 访问器，eval 的
+		// Dynamic 反射只见物理字段、读经 Dynamic 恒 null（lessons
+		// #8「eval/js 的 Dynamic 反射」条）——DonateAnimalCommand.as:94
+		// 造的就是 mc.view.common.ConfirmWindow
+		var win:ConfirmWindow = cast env.windowEvents[0].win;
 		Assert.notNull(win);
 		var data:Dynamic = win.data;
 		Assert.notNull(data);
@@ -108,41 +113,46 @@ class DonateAnimalCommandTest {
 		Assert.equals(0, env.rec.postCount);
 	}
 
-	// 确认后发请求（onConfirmDonate :143-152 → donateRequest :51-60）：
+	// 确认后发请求（onConfirmDonate :128-139 → donateRequest :51-60）：
 	// mod 串逐字 "cgi_donate_animal"，参数体仅 serial 一键、取目标动物
 	// data.serial。confirmFn 触发：窗的 confirmFn 是公开 setter
 	// （ConfirmWindow.as 成员面），测试直接调窗上的 confirmFn——等价
-	// 用户点确定（窗按钮显示层不进单测）
+	// 用户点确定（窗按钮显示层不进单测）。confirmFn 无 null 守卫
+	// （ConfirmWindow.as:129-131 `this.confirmFn()` 直调——原文未赋即点
+	// 确定 NPE；donateAnimal :99 恒赋值后才开窗，本链路不触 NPE）
 	public function test_confirm_posts_serial() {
 		var animal = makeAnimal(1001, 5, FarmData.ANIMAL_SHENGZHANG);
 		DonateAnimalCommand.getInstance().donateAnimal(animal);
-		var win:Dynamic = env.windowEvents[0].win;
+		var win:ConfirmWindow = cast env.windowEvents[0].win;
 		win.confirmFn();
 		Assert.equals(1, env.rec.postCount);
 		Assert.equals("cgi_donate_animal", env.rec.postedUrl);
 		Assert.equals(5, Reflect.field(env.rec.postedValue, "serial"));
 	}
 
-	// _isDonating 闸（:52-55）：请求未应答时第二次 donateRequest 不出网
+	// _isDonating 闸（:52-55）：请求未应答时第二次 donateRequest 不出网。
+	// 注：原文 confirmFn 用后不清（ConfirmWindow 的 confirmButtonClick
+	// 关窗路径有 `_confirmFn = null` 清位——confirmFn 读取面仍返回命令
+	// 闭包；二次调用走的是 donateRequest 的 _isDonating 闸而非窗态）
 	public function test_donateRequest_pending_gate() {
 		var animal = makeAnimal(1001, 5, FarmData.ANIMAL_SHENGZHANG);
 		DonateAnimalCommand.getInstance().donateAnimal(animal);
-		var win:Dynamic = env.windowEvents[0].win;
+		var win:ConfirmWindow = cast env.windowEvents[0].win;
 		win.confirmFn();
 		win.confirmFn(); // 闸内：第二发不出网
 		Assert.equals(1, env.rec.postCount);
 	}
 
-	// 应答成功（:122-152 + cgi_donate_animal.php:59）：cId/direction/
+	// 应答成功（:105-126 + cgi_donate_animal.php:59）：cId/direction/
 	// money 三键齐 → addMoney（host.money 累加）、animal_change 派发、
 	// _isDonating 复位。cId/serial 与目标动物一致才移除（onDonateSuccess
-	// :160-165）——Host money 累加面：addMoney 的 money 是 price/2=350
+	// :143-160）——Host money 累加面：addMoney 的 money 是 price/2=350
 	public function test_donateResponse_success_adds_money_and_dispatches() {
 		var md = MData.getInstance().mainData;
 		md.host = {"uId": "100", "money": 1000, "userName": "me"};
 		var animal = makeAnimal(1001, 5, FarmData.ANIMAL_SHENGZHANG);
 		DonateAnimalCommand.getInstance().donateAnimal(animal);
-		var win:Dynamic = env.windowEvents[0].win;
+		var win:ConfirmWindow = cast env.windowEvents[0].win;
 		win.confirmFn();
 		env.plainEvents = [];
 		// cgi_donate_animal.php:59 echo 形状（money=price/2）
@@ -156,14 +166,14 @@ class DonateAnimalCommandTest {
 	}
 
 	// 应答 cId/serial 与目标不符 → 不移除不派 animal_change
-	// （onDonateSuccess :168-171 早退）——但 addMoney/floatWindow 在前
-	// 已执行（:145-150），money 仍累加：原文顺序如此照抄
+	// （onDonateSuccess :151-153 早退）——但 addMoney/floatWindow 在前
+	// 已执行（:122-123），money 仍累加：原文顺序如此照抄
 	public function test_donateResponse_mismatched_serial_no_animal_change() {
 		var md = MData.getInstance().mainData;
 		md.host = {"uId": "100", "money": 1000, "userName": "me"};
 		var animal = makeAnimal(1001, 5, FarmData.ANIMAL_SHENGZHANG);
 		DonateAnimalCommand.getInstance().donateAnimal(animal);
-		var win:Dynamic = env.windowEvents[0].win;
+		var win:ConfirmWindow = cast env.windowEvents[0].win;
 		win.confirmFn();
 		env.plainEvents = [];
 		env.respond({cId: 1001, direction: "爱心捐赠成功！", money: 350, serial: 9});
@@ -171,14 +181,14 @@ class DonateAnimalCommandTest {
 		Assert.equals(-1, env.plainEvents.indexOf("animal_change"));
 	}
 
-	// errorCode+errorContent 双键 → 早退（:135-139）：不加钱、不派
+	// errorCode+errorContent 双键 → 早退（:113-118）：不加钱、不派
 	// animal_change
 	public function test_donateResponse_error_pair_early_exit() {
 		var md = MData.getInstance().mainData;
 		md.host = {"uId": "100", "money": 1000, "userName": "me"};
 		var animal = makeAnimal(1001, 5, FarmData.ANIMAL_SHENGZHANG);
 		DonateAnimalCommand.getInstance().donateAnimal(animal);
-		var win:Dynamic = env.windowEvents[0].win;
+		var win:ConfirmWindow = cast env.windowEvents[0].win;
 		win.confirmFn();
 		env.plainEvents = [];
 		env.respond({errorCode: 1, errorContent: "动物状态已变化"});

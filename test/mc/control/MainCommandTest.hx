@@ -16,74 +16,73 @@ import utest.Assert;
  * 与应答分派、checkParade 队形校验、排序比较器。
  *
  * 期望值出处：legacy/decompiled/Master2_v_142/scripts/mc/control/MainCommand.as
- * —— taskComp :2790-2820（currentTask.taskFlag==1 且 taskList[taskId].name
- * ==param1 → updateTask+true；taskId==0 首任务同样放行；taskList 十件
+ * —— taskComp :615-630（currentTask.taskFlag==1 或 taskId==0，且
+ * taskList[taskId].name==param1 → updateTask+true；taskList 十件
  * 0 help/1 shourou/2 goumai/3 mucao1/4 shengchan1/5 shouhuo/6 maichu/
  * 7 mucao2/8 shengchan2/9 touqie——:36-46 表逐字）；
- * updateTask :2748-2787（_tasking 闸——true 直返；"cgi_up_task" {act:2}
- * ——act 2 出处 :2759；updateTaskFn ecode==0 → _tasking 复位；
+ * updateTask :4308 / updateTaskFn :3220（"cgi_up_task" {act:2}；
  * checkErrorReturn||!task → currentTask={taskId:TASK_MAX+1, taskFlag:0}
- * 越界封顶 :2776-2781；否则 updata=param1、currentTask=task）；
- * checkErrorReturn :3220-3260（顺序——validateCode 先、errorContent
+ * 越界封顶；否则 updata=param1、currentTask=task）；
+ * checkErrorReturn :2809-2832（顺序——validateCode 先、errorContent
  * trim 非空 → alertWindow 先于 IOError 检查；IOError/httpStatus/
  * timeOut → "请求超时，稍后再试"（无句号）；errorType 在恒 true）；
- * alertWindow :2675-2685（WindowEvent.OPEN "AlertWindow" {type,text,
- * textLinkHandle=false}）；addMoney :2652-2659（money 键非零才动；
- * Number(host.money)+int(money)）；addExp :2661-2668（**无 <=0 闸**——
- * 与 FarmCommand 不同，负值照加）；addFB :2646-2650（FB 键 int+int）；
- * checkParade :2144-2200（parade.p==0 → false 直返；animals 里 status 4
+ * alertWindow :1158（WindowEvent.OPEN "AlertWindow" {type,text,
+ * textLinkHandle=false}）；addMoney :1760（money 键非零才动；
+ * Number(host.money)+int(money)）；addExp :3950（**无 <=0 闸**——
+ * 与 FarmCommand 不同，负值照加）；addFB :2790（FB 键 int+int）；
+ * checkParade :3585-3650（parade.p==0 → false 直返；animals 里 status 4
  * 在 → "动物生产中，请稍后。"；buyTime!=0 计数——p1/p2 需 ≥5、p3∈{6,10,
  * 15}、p4∈{9,16}、p5∈{8,12,16}；任一不足 → "主人没有设置欢迎队形。"；
- * 全过 → paradeError null+true）；setParadeFn :2214-2230（成功 →
+ * 全过 → paradeError null+true）；setParade :3344-3357（成功 →
  * viewWhistleData=parade+mpData={info:parade.i}；失败 viewWhistleData
- * null）；friendSort :3318-3336（private——pf desc 先、sortField desc 后、
+ * null）；friendSort :3318（private——pf desc 先、sortField desc 后、
 	 * 全平 0）；
- * cropSortBylv/cropSortBycId :3655-3670（private；<= → -1 else 1——
+ * cropSortBylv :3680 / cropSortBycId :3556（private；<= → -1 else 1——
 	 * **非三分支**）；
- * sale/saleFn :1658-1690（{cId,num} "cgi_sale_product"；cId 2000<x<
+ * sale :842 / saleFn（{cId,num} "cgi_sale_product"；cId 2000<x<
  * 3000 → reloadUserMaterial+getUserMaterial+CommonEvent
  * "sellMaterialSuccess"；否则 "sellCropSuccess"+reloadUserCrop+
- * getUserCrop；direction 或 "操作成功！"）；saleAll :1692-1698
- * （{saleAll:1}）；saleAllMaterial :1700-1710（{cIds:join(",")} 发往
+ * getUserCrop；direction 或 "操作成功！"）；saleAll :4274
+ * （{saleAll:1}）；saleAllMaterial :2720（{cIds:join(",")} 发往
  * ""+version+"repertory&act=saleAll"）；
- * buySeed/buySeedFn :1720-1780（{cId,number,isFull} "cgi_buy_animal"；
+ * buySeed :316 / buySeedFn :2992-3060（{cId,number,isFull} "cgi_buy_animal"；
  * ecode==0：money 取负、isFull → reloadUserSeed、否则按 GetCropID
  * .getHouse 窝/棚计数 animal1/2 += 计数 + animal_change；addMoney/addExp；
  * me 且 !isFull → addAnimal；taskComp goumai）；
- * buyTool :1782-1860（!userFB id==1：param7 在 → farmCommand.addFood(
+ * buyTool :2944-2990（!userFB id==1：param7 在 → farmCommand.addFood(
  * number,1) 转发；否则 {tId,foodnum} "cgi_buy_food"；非 1 → {tId,number}
- * "cgi_buy_tool"；userFB → fbRequest 12 键 app_key=LocalData.app_key）；
- * buyFoodFn :1862-1890（reloadUserSeed=true、money 取负、floatWindow
+ * "cgi_buy_tool"；userFB → fbRequest 通道 app_key=LocalData.app_key）；
+ * buyFoodFn :4280（reloadUserSeed=true、money 取负、floatWindow
  * alert、setTimeout 2000 后 farmOperate {text:"已放入物品包",type:
  * "toolBar",toolName:"package"}——定时异步面不钉）；
- * sendChat/sendChatFn :2360-2420（{toId,msg,showId,isReply,tName,
+ * sendChat :2482 / sendChatFn :4255-4273（{toId,msg,showId,isReply,tName,
  * fName:host.userName} 发往 getPostUrl()+"chat&act=sendChat"；应答
- * code 真 → profile.chat=param1.chat 重设 profile）；
- * clearLogFn :2440-2456（ecode==0 → profile.log=[] 重设）；
- * getCropStatus :1695-1710（"cgi_enter?" {uId,flag:1,newitem:2}——mod
+ * code 真 → profile.chat=param1.chat 重设 profile——**不走
+ * checkErrorReturn/alertWindow**）；
+ * clearLogFn :2266（ecode==0 → profile.log=[] 重设）；
+ * getCropStatus :1669（"cgi_enter?" {uId,flag:1,newitem:2}——mod
  * 串带问号照抄；farmCommand.isShouhuo=false 复位）；
- * getUserCubFn :1550-1620（amount>0 过滤、tId"40"&&type==4 →
+ * getUserCubFn :3265（amount>0 过滤、tId"40"&&type==4 →
  * animalPackFood、userSeed=userCub=filtered；errorType 网络系 →
  * userCubErr 模板 "请求超时，<a href='event:reload'><u><font color=
  * '#ff6600'>点击重试</font></u></a>"；direction → userCubErr 原样；
  * 否则 "系统繁忙，请稍候重试。"——带句号）；
- * logFn :2300-2340（ecode==0：行重映射 {time:t, domain, qq:opuin,
+ * logFn :2834-2875（ecode==0：行重映射 {time:t, domain, qq:opuin,
  * msg:cn, type}；post_data.log==1 → loadedLog=true）；
- * diyRenew :2120-2130（{id} "mod=item&act=renew"）；getCdKey :2132-2142
- * （"mod=market&act=change"）；lockCrop :2100-2118（type=="11" →
+ * diyRenew :909（{id} "mod=item&act=renew"）；getCdKey :1769
+ * （"mod=market&act=change"）；lockCrop :915（type=="11" →
  * version+"cgi_farm_set_lock" {crop:cId+":1",type,cId}；否则
  * "cgi_get_repertory" {target:"lock",cId}）；
- * cftPostValue :1980-2040（app_key "QQMCZZ"、payitem、paytype 0、
- * payinfo、channel "tenpay"、subchannel 7001、format "JSON"、preType、
- * itemId——九键）；cftBuyDiyFn :2042-2098（成功 preType 6 me-only
- * items 写回；preType 5 → getCropStatus("0",false)）；
- * buyDiy/buyDiyFn :1930-1978（{itemId,skinBool,msgBool,yellow:0/1,
+ * buyThingByCFT :3570 / cftBuyDiyFn :3115（cftPostValue：app_key
+ * "QQMCZZ"、payitem、paytype 0、payinfo、channel "tenpay"、
+ * subchannel 7001、format "JSON"、preType、itemId——九键）；
+ * buyDiy :694-716 / buyDiyFn :3770（{itemId,skinBool,msgBool,yellow:0/1,
  * useFB?} "cgi_buy_item"；code==1 → CommonEvent "buyDiySuccess"
  * data=post_data.itemId、floatWindow "购买装饰成功"、me items 写回）；
- * addReward :2580-2640（eType 7 → addExp({exp:eNum})——**原版键名 bug**
+ * addReward :2911-2942（eType 7 → addExp({exp:eNum})——**原版键名 bug**
  * 传 {exp:...} 对象当 param；eType 6 → addMoney；eType 2 →
  * reloadUserItems=true）；
- * friendNextPage :2560-2578（showFriendPage+1<=sum → +1 else 1 回卷；
+ * friendNextPage :2285-2297（showFriendPage+1<=sum → +1 else 1 回卷；
  * pageHandler 切片 (showFriendPage-1)*friendPageNum——friendPageNum
  * 恒 10）。
  */
@@ -118,7 +117,7 @@ class MainCommandTest {
 
 	// —— 任务推进组 ——
 
-	// taskComp（MainCommand.as:2790-2820）：taskFlag 1 且名字命中 →
+	// taskComp（MainCommand.as:615-630）：taskFlag 1 或 taskId 0 且名字命中 →
 	// updateTask 出网（cgi_up_task act 2）；名字不命中 → 不动
 	public function test_taskComp_match_posts_updateTask() {
 		var td = TaskData.getInstance();
@@ -137,14 +136,14 @@ class MainCommandTest {
 		Assert.equals(0, env.rec.postCount);
 	}
 
-	// taskId==0 首任务（help）放行（:2795-2799）
+	// taskId==0 首任务（help）放行（:618 的 taskId==0 折）
 	public function test_taskComp_first_task_zero() {
 		var td = TaskData.getInstance();
 		td.currentTask = {taskId: 0, taskFlag: 1};
 		Assert.isTrue(Command.getInstance().mainCommand.taskComp("help"));
 	}
 
-	// taskFlag!=1 → 不动（:2793 闸）
+	// taskFlag!=1 且 taskId!=0 → 不动（:618 闸）
 	public function test_taskComp_flag_gate() {
 		var td = TaskData.getInstance();
 		td.currentTask = {taskId: 2, taskFlag: 0};
@@ -152,7 +151,7 @@ class MainCommandTest {
 		Assert.equals(0, env.rec.postCount);
 	}
 
-	// updateTaskFn 应答（:2768-2787）：task 缺失 → 封顶 TASK_MAX+1/
+	// updateTaskFn 应答（:3220-3263）：task 缺失 → 封顶 TASK_MAX+1/
 	// taskFlag 0；task 在 → currentTask 换位
 	public function test_updateTaskFn_cap_beyond_max() {
 		var mc = Command.getInstance().mainCommand;
@@ -161,7 +160,7 @@ class MainCommandTest {
 		mc.taskComp("touqie");
 		env.respond({ecode: 0});
 		var ct = td.currentTask;
-		// TASK_MAX=9（:47 表十件 0-9）→ 封顶 10、taskFlag 0
+		// TASK_MAX=9（TaskData.as:16 常量；taskList 表 :162-173 十件 0-9）→ 封顶 10、taskFlag 0
 		Assert.equals(10, Reflect.field(ct, "taskId"));
 		Assert.equals(0, Reflect.field(ct, "taskFlag"));
 	}
@@ -178,22 +177,38 @@ class MainCommandTest {
 
 	// —— checkErrorReturn 顺序组 ——
 
-	// errorContent 优先于 IOError（:3230-3240 顺序）：两者俱在时
-	// errorContent 弹窗，不是超时文案
+	// errorContent 优先于 IOError（:2817-2825 顺序）：两者俱在时
+	// errorContent 弹窗，不是超时文案。checkErrorReturn 是 public
+	// （MainCommand.as:2809）——直接驱动：sendChatFn（:2399 系）只记
+	// 事件/换 profile.chat，不走 checkErrorReturn，不是本方法的驱动链
 	public function test_checkErrorReturn_errorContent_before_ioerror() {
-		// 经 sendChat 应答驱动——MainCommand 内部走 checkErrorReturn
-		Command.getInstance().mainCommand.sendChat("200", "100", 0, "hi", "对方");
-		env.respond({errorType: "IOError", errorContent: "内容非法"});
+		var r = Command.getInstance().mainCommand.checkErrorReturn({errorType: "IOError", errorContent: "内容非法"});
+		Assert.isTrue(r);
 		Assert.isTrue(env.windowEvents.length >= 1);
 		Assert.equals("内容非法", Reflect.field(env.windowEvents[0].arg, "text"));
 	}
 
-	// errorContent trim 空白 → 不弹（StringUtil.trim :3232）；IOError 独占
-	// → "请求超时，稍后再试"（无句号 :3244）
+	// errorContent trim 空白 → 不弹（StringUtil.trim :2819）；IOError 独占
+	// → "请求超时，稍后再试"（无句号 :2824）
 	public function test_checkErrorReturn_ioerror_text() {
-		Command.getInstance().mainCommand.sendChat("200", "100", 0, "hi", "对方");
-		env.respond({errorType: "IOError"});
+		var r = Command.getInstance().mainCommand.checkErrorReturn({errorType: "IOError"});
+		Assert.isTrue(r);
+		Assert.isTrue(env.windowEvents.length >= 1);
 		Assert.equals("请求超时，稍后再试", Reflect.field(env.windowEvents[0].arg, "text"));
+	}
+
+	// errorType 缺失 → false 不弹窗（:2831 尾返）
+	public function test_checkErrorReturn_no_errorType_false() {
+		var r = Command.getInstance().mainCommand.checkErrorReturn({ecode: 0});
+		Assert.isFalse(r);
+		Assert.equals(0, env.windowEvents.length);
+	}
+
+	// validateCode 第一闸（:2813-2816）：errorContent 同存也不弹、直返 true
+	public function test_checkErrorReturn_validatecode_first() {
+		var r = Command.getInstance().mainCommand.checkErrorReturn({errorType: "validateCode", errorContent: "内容非法"});
+		Assert.isTrue(r);
+		Assert.equals(0, env.windowEvents.length);
 	}
 
 	// —— 数值入账组 ——
@@ -430,26 +445,30 @@ class MainCommandTest {
 		Assert.isFalse(Reflect.field(v, "isFull"));
 	}
 
-	// buySeedFn isFull（:1745-1760）：isFull → reloadUserSeed 置位、不加
-	// 窝棚计数
+	// buySeedFn isFull（:3007-3014）：isFull → reloadUserSeed 置位、不加
+	// 窝棚计数。应答 body 带 animal/num 键：isFull 分支虽不进计数循环
+	// （:3020-3031），但 taskComp("goumai") false 的文案路径无条件读
+	// param1["animal"][0] 与 param1["num"]（:3045-3049）——忠实实现撞上
+	// 缺键应答即空访问，两键随真实下发形状补齐
 	public function test_buySeedFn_isfull_reload() {
 		var mc = Command.getInstance().mainCommand;
 		var md = MData.getInstance().mainData;
 		MData.getInstance().farmData.reloadUserSeed = false;
 		mc.buySeed(1001, 2, true);
-		env.respond({ecode: 0, money: -1400, addExp: 4, post_data: {isFull: true, cId: 1001, number: 2}});
+		env.respond({ecode: 0, money: -1400, addExp: 4, num: 2, animal: [{cId: 1001}, {cId: 1001}], post_data: {isFull: true, cId: 1001, number: 2}});
 		Assert.isTrue(MData.getInstance().farmData.reloadUserSeed);
 		Assert.equals(0, Reflect.field(md.host, "animal1"));
 		Assert.equals(0, Reflect.field(md.host, "animal2"));
 	}
 
-	// buySeedFn 非 isFull（:1750-1765）：窝/棚计数——鸡 1001 house 窝
-	// （fixture animal 1001 house="窝"）→ animal1 += 2
+	// buySeedFn 非 isFull（:3015-3034）：窝/棚计数循环逐条读
+	// param1.animal[].cId（:3020-3031——鸡 1001 house 窝，fixture animal
+	// 1001 house="窝"）→ animal1 += 2
 	public function test_buySeedFn_house_count() {
 		var mc = Command.getInstance().mainCommand;
 		var md = MData.getInstance().mainData;
 		mc.buySeed(1001, 2, false);
-		env.respond({ecode: 0, money: -1400, addExp: 4, post_data: {isFull: false, cId: 1001, number: 2}});
+		env.respond({ecode: 0, money: -1400, addExp: 4, num: 2, animal: [{cId: 1001}, {cId: 1001}], post_data: {isFull: false, cId: 1001, number: 2}});
 		Assert.equals(2, Reflect.field(md.host, "animal1"));
 		Assert.equals(0, Reflect.field(md.host, "animal2"));
 		// money 取负入账：-(-1400)=+1400 → 5000+1400=6400
@@ -681,15 +700,15 @@ class MainCommandTest {
 		env.respond({code: 1, post_data: {itemId: 101, skinBool: "s", msgBool: "m"}, money: -100});
 		Assert.equals(1, datas.length);
 		Assert.equals(101, datas[0]);
-		// me 态 items["1"] 原位写回（:3791-3796）
+		// me 态 items["1"] 原位写回（buyDiyFn :3770 系）
 		Assert.equals(101, Reflect.field(Reflect.field(md.items, "1"), "id"));
 		Assert.equals("s", Reflect.field(Reflect.field(md.items, "1"), "skin"));
 	}
 
-	// buyThingByCFT（:3570-3583）：九键请求体——app_key 恒 "QQMCZZ"、
+	// buyThingByCFT（:3570）：九键请求体——app_key 恒 "QQMCZZ"、
 	// payitem=type*10000+itemId+"-"+number+"-"+thingName、paytype 0、
 	// channel "tenpay"、subchannel 7001、format "JSON"、preType=type、
-	// itemId；随后 buyCFTConfirm :688-692 发到 INI cftRequest（fixture
+	// itemId；随后发往 INI cftRequest（fixture
 	// "gb_buy"）
 	public function test_buyThingByCFT_nine_keys() {
 		Command.getInstance().mainCommand.buyThingByCFT(101, "背景", 6, 1);

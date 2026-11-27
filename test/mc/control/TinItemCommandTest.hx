@@ -42,8 +42,8 @@ import utest.Assert;
  * ("0",false)；type==10 && appid=="353" → direction 换驱赶武器长文案
  * :294-295 逐字；errorType 网络系 → "请求超时，稍后再试"）。
  *
- * expToGrade 依赖 host.exp——MainData 公式 100n(n+1) 门槛（MainData.as:
- * 893-896）：exp 200 → plv 1、exp 600 → plv 2。
+ * expToGrade 依赖 host.exp——MainData 公式 `sqrt((exp+25)/100)-0.5` 取整
+ * （MainData.as:893-895）：exp 200 → sqrt(2.25)-0.5=1.0 → plv 1。
  */
 class TinItemCommandTest {
 	static var FIXTURE:String = sys.io.File.getContent("test/fixtures/mc-ini.xml");
@@ -70,9 +70,10 @@ class TinItemCommandTest {
 		env.releaseViewControl();
 	}
 
-	// getTinsInfo（TinItemCommand.as:46-58）：三键逐字——yellowstatus 1、
-	// yellowlevel 3、plv=expToGrade(200)=1（exp 200 是 grade1 门槛
-	// 100*1*2=200，MainData.as:893-896）
+	// getTinsInfo（TinItemCommand.as:43-57）：三键逐字——yellowstatus 1、
+	// yellowlevel 3、plv=expToGrade(200)=1（sqrt((200+25)/100)-0.5=1.0，
+	// MainData.as:893-895）。postRequest2 通道（:50）与 postRequest 同
+	// 走 HTTPRequest.postRequest 出网——recorder 截获面一致
 	public function test_getTinsInfo_three_keys() {
 		Command.getInstance().tinCommand.getTinsInfo();
 		Assert.equals(1, env.rec.postCount);

@@ -72,9 +72,14 @@ class DiyItemCommandTest {
 		Assert.equals(1, env.rec.postCount);
 		Assert.equals("shop_verify", env.rec.postedUrl);
 		Assert.equals("60101-2-背景A", Reflect.field(env.rec.postedValue, "payitem"));
-		// 请求体仅 payitem 一键（:59-61——_loc10_ 新建只写 payitem）
+		// 请求体业务键仅 payitem 一键（:59-61——_loc10_ 新建只写 payitem）；
+		// FRequest 装饰段对 value 原位加写 farmTime/farmKey/pastureKey/uIdx
+		// 四键（FRequest.as:150-162）——剔四件装饰键后不得有第二件业务键
 		var keys = Reflect.fields(env.rec.postedValue);
-		Assert.equals(1, keys.length);
+		for (k in keys) {
+			Assert.isTrue(k == "payitem" || k == "farmTime" || k == "farmKey" || k == "pastureKey" || k == "uIdx",
+				"unexpected key " + k);
+		}
 	}
 
 	// returnFn 的 open=="1" 分支（:151-173）：验价应答带 open "1" → 直发

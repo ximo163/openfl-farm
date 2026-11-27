@@ -15,19 +15,19 @@ import utest.Assert;
  * 前置守卫与应答分派。
  *
  * 期望值出处：legacy/decompiled/Master2_v_142/scripts/mc/control/FarmCommand.as
- * —— addFly :171-180（{uId:currentUserId, num:param1, type:1} 发
+ * —— addFly :178-187（{uId:currentUserId, num:param1, type:1} 发
  * cgi_demolish_pasture——type 恒 1 出处 cgi_demolish_pasture.php 使坏
  * 通道；spec/protocol.json entries.mc.mods.cgi_demolish_pasture）；
- * killFly :640-651（{uId,num:param2,type:1,pos:param1}——type 1 拍蚊、
- * pos 键随参，cgi_help_pasture.php:7 type==1 分支）；clearBB :950-961
+ * killFly :640-659（{uId,num:param2,type:1,pos:param1}——type 1 拍蚊、
+ * pos 键随参，cgi_help_pasture.php:7 type==1 分支）；clearBB :965-975
  * （同形 type 2 扫便，cgi_help_pasture.php:71 type==2 分支）；
- * addFood :559-581（me → {foodnum,type} 两键；非 me → 补 uId/nick——
+ * addFood :535-557（me → {foodnum,type} 两键；非 me → 补 uId/nick——
  * cgi_feed_food.php:22/69/106 type 三分支出处）；
- * ShengChan :659-700（status!=DAICHAN(3) 拦截——me "不是生产期或收获期，
+ * ShengChan :661-700（status!=DAICHAN(3) 拦截——me "不是生产期或收获期，
  * 不能操作罐头可加速生长"/非 me "不是生产期,不能操作"——两文案逐字
  * :665-679，注意标点差异：me 版用「或收获期，」非 me 版用「,」；
  * 放行后 me {serial} 单键/非 me 补 uId/nick 发 cgi_post_product）；
- * useTools :182-267（type 4 特殊食：cId 不符 "只能对"+name+"喂这个。"、
+ * useTools :189-277（type 4 特殊食：cId 不符 "只能对"+name+"喂这个。"、
  * SHENGCHAN "不能对生产中的动物操作"、SHOUHUO "不能对收获期的动物操作"
  * ——三文案 :197-224；放行 cgi_feed_special {serial,uId,tid}；type 7
  * 罐头：DAICHAN "当前状态不能使用罐头" :240-245 同款拦截，放行
@@ -38,38 +38,38 @@ import utest.Assert;
  * "手下留情，给主人留一点吧" :1042-1056；all → value -1；postValue 四键
  * {version:1, uId, type:value, nick} :1068-1073——version 恒 1，mod
  * 出处 cgi_steal_product.php:5-6 + spec/protocol.json）；ShouHuo
- * :1087-1185（harvesttype 1：非 all 先扫生产同 cId 拦截；all → type -1；
+ * :1153-1230（harvesttype 1：非 all 先扫生产同 cId 拦截；all → type -1；
  * 请求 {version:1, type, harvesttype:1}；harvesttype 2：serial 取
  * animalData[param1].serial；param3 all 且无可收获动物 "当前没有可以
- * 收获的动物哦！" type "animal" serial 原位 :1155-1161；all → serial -1；
+ * 收获的动物哦！" type "animal" serial 原位 :1211-1218；all → serial -1；
  * 请求 {version:1, serial:_loc8_, harvesttype:2, serialIndex:_loc7_}
  * ——harvesttype/serialIndex 出处 cgi_harvest_product.php:7/131 +
  * spec/protocol.json）；
- * getUserSeedFn :809-872（tId 重映射：4 位长 "11" 前缀 → "16"+substr(2,2)、
- * "10" 前缀 → "15"+substr(2,2) :828-836；"40" → "20000" :837-839——
- * 映射逐字；amount<=0 滤掉 :824-827；sortIndex=parseInt 映射后字符串
- * :840；sortOn NUMERIC|DESCENDING :849；tId "40" type 4 → animalPackFood
- * :842-845）；appendActivityItems :339-379（typeP+cId 双键匹配覆盖
- * amount、未中 push 新增、concat 返回）；
- * flyFn :447-476（errorType "-2005" 特判 maxFly/leftFly/maxErrInfo——
+ * getUserSeedFn :822-875（tId 重映射：4 位长 "11" 前缀 → "16"+substr(2,2)、
+ * "10" 前缀 → "15"+substr(2,2) :844-854；"40" → "20000" :855-857——
+ * 映射逐字；amount<=0 滤掉 :841-842；sortIndex=parseInt 映射后字符串
+ * :859；sortOn NUMERIC|DESCENDING :868；tId "40" type 4 → animalPackFood
+ * :862-865）；appendActivityItems :378-414（typeP+cId 双键匹配、命中时
+ * 活动值覆盖背包值 :395-397、未中 concat 垫尾 :403-411）；
+ * flyFn :449-476（errorType "-2005" 特判 maxFly/leftFly/maxErrInfo——
  * :450-456；成功：num=total、mynum+=num、flyNum1=floor(num/2)、
  * flyNum2=num-flyNum1、leftFly=leftnum——:466-473）；
- * foodFn :604-806（type==1 购买通道：host.animalFood=total、money 取负、
+ * foodFn :739-820（type==1 购买通道：host.animalFood=total、money 取负、
  * addFoodDelay 3000ms 定时（异步面不钉）；type==0 背包通道：
  * animalPackFood.amount -= added、reloadUserSeed 置位；addExp==-1 且
  * !totalExp 且 !me → "每天帮忙最多增加300点经验，您已加满" :752-762
  * ——文案逐字、type "food"）；
- * killFn :874-917（ecode 非零 → floatWindow(direction,"Exclamation")
+ * killFn :883-943（ecode 非零 → floatWindow(direction,"Exclamation")
  * + _recallTime 累加、<3 派 "killFlyError"；errorContent "您下手太慢，
  * 蚊子已经被拍了" 特判——killFly(1,4)+killFly(2,4) 双发 :887-893；
  * 成功：killFly(pos,num)、addExp==0 且 !totalExp → "每天帮忙最多增加
  * 300点经验，您已加满" type "fly" :906-916）；
- * clearBBFn :1297-1330（"您下手太慢，便便已经被清理了" 特判 bbData.
+ * clearBBFn :1411-1438（"您下手太慢，便便已经被清理了" 特判 bbData.
  * num=0 + "clearAllBB"；成功：repNum==0 且 !totalBB → "每天最多清理
  * 100坨便便，您已满，不再入库" :1307-1313；clearBBPos=pos、bbData.num
  * 自减——先行自减在 setter 之后 :1317-1318 顺序照抄）；
- * requestNum :1332-1353（**原版 bug 照抄**：`this.requestTime["type"]`
- * 键名恒字面量 "type" 不用 param1——:1334/1340/1351 三处同键；
+ * requestNum :1440-1462（**原版 bug 照抄**：`this.requestTime["type"]`
+ * 键名恒字面量 "type" 不用 param1——:1442/1446/1451-1459 三处同键；
  * num>5 且 10 秒内 → false 闸门）。
  *
  * 说明：getTimer() 时间面经 FarmCommand 内部 requestStartTime 记录，
@@ -328,7 +328,7 @@ class FarmCommandTest {
 		Assert.equals(0, env.rec.postCount);
 	}
 
-	// harvesttype 2 all 有可收获 → serial -1、serialIndex 原位（:1170-1183）
+	// harvesttype 2 all 有可收获 → serial -1、serialIndex 原位（:1220-1227）
 	public function test_shouhuo_type2_all_serial_minus1() {
 		var md = MData.getInstance().mainData;
 		md.animalData = [null, {serial: 42, status: FarmData.ANIMAL_SHOUHUO, cId: 1001}];
@@ -501,34 +501,63 @@ class FarmCommandTest {
 
 	// —— 纯逻辑工具 ——
 
-	// appendActivityItems（:339-379）：typeP+cId 双键匹配覆盖 amount、
-	// 未中 concat 新增。私有方法经 useTools 链路不可达——经
-	// getUserSeedFn 的 activityItems 合并点间接驱动（:851-855：
-	// activityItems 在且 !reloadActivityItems → 合并后写 userSeed）
-	public function test_appendActivityItems_merge_via_userseed() {
+	// appendActivityItems（:378-414）：typeP+cId 双键匹配（:395）——命中
+	// 时**活动侧 amount 覆盖服务端 amount**（:397 `_loc3_.amount =
+	// _loc4_.amount`——param1 是被盖的背包数组、param2 是活动数组，覆盖
+	// 方向照抄）、未中 concat 垫尾（:403-411）。私有方法经 getUserSeedFn
+	// 的 activityItems 合并点间接驱动（:869-871：activityItems 在且
+	// !reloadActivityItems → 合并后写 userSeed）。
+	// 服务端条目形状出处 cgi_get_package.php:21-53 echo 拼装——背包条目
+	// 键面 {amount,tId,tName,type[,tDesc,lv,price,appid]} **无 cId/typeP
+	// 键**：生产上 cId==undefined 恒不命中（重复 id 在水果/工具/goods
+	// 三段 JSON 键上互斥，不可能同 id 双条），活动卡恒 concat 追加。
+	// 双键覆盖路径按源码逐字可达（同背包数组内重复 cId 条目的病态形状）——
+	// fixture 显式布置重复 cId 的服务端双条钉死覆盖方向（覆盖错向时
+	// 第二条断言反成）
+	public function test_appendActivityItems_concat_unmatched_via_userseed() {
 		var fc = Command.getInstance().farmCommand;
 		var fd = MData.getInstance().farmData;
 		fd.reloadUserSeed = true;
 		fd.userSeed = null;
+		// 活动条目形状出处 onActivityItems :997-1004（cId=propid、
+		// amount=count、typeP 1、type -1）
 		fd.activityItems = [
 			{cId: "9001", typeP: 1, amount: 3, type: -1},
 			{cId: "9002", typeP: 1, amount: 1, type: -1}
 		];
 		fd.reloadActivityItems = false;
 		fc.getUserSeed();
-		env.respond([{tId: "9001", type: "-1", typeP: 1, amount: 9}, {tId: "1101", type: "4", amount: 2}]);
-		// 9001 双键命中 → amount 被服务端值覆盖（:367-370）；9002 未中
-		// → concat 新增垫尾
-		var seed = fd.userSeed;
-		var found9001:Dynamic = null;
-		var found9002:Dynamic = null;
-		for (it in seed) {
-			if (Reflect.field(it, "cId") == "9001" || Reflect.field(it, "tId") == "9001") found9001 = it;
-			if (Reflect.field(it, "cId") == "9002") found9002 = it;
-		}
-		Assert.notNull(found9001);
-		Assert.equals(9, Reflect.field(found9001, "amount"));
-		Assert.notNull(found9002);
+		env.respond([{tId: "1101", type: "4", amount: 2}]); // 真实形状：无 cId/typeP
+		// 服务端条无 cId 键 → 双键匹配恒不中（:395）——两活动卡 concat
+		// 垫尾（:411），原背包条在前
+		var seed:Array<Dynamic> = cast fd.userSeed;
+		Assert.equals(3, seed.length);
+		Assert.equals("1101", Reflect.field(seed[0], "tId"));
+		Assert.equals("9001", Reflect.field(seed[1], "cId"));
+		Assert.equals(3, Reflect.field(seed[1], "amount")); // 活动 amount 原样
+		Assert.equals("9002", Reflect.field(seed[2], "cId"));
+	}
+
+	// 双键命中时的覆盖方向钉（:395-397）：同 cId 重复条目的服务端数组
+	// + 同 cId/typeP 活动卡 → 命中条 amount 被活动值覆盖、第二条不命中
+	// 原样。断言命中位序[0] 与未中位序[1] 的 amount 分野——覆盖方向
+	// 写反时两位数值对调立即现形
+	public function test_appendActivityItems_overwrite_direction() {
+		var fc = Command.getInstance().farmCommand;
+		var fd = MData.getInstance().farmData;
+		fd.reloadUserSeed = true;
+		fd.userSeed = null;
+		fd.activityItems = [{cId: "9001", typeP: 1, amount: 3, type: -1}];
+		fd.reloadActivityItems = false;
+		fc.getUserSeed();
+		env.respond([
+			{tId: "9001", cId: "9001", typeP: 1, type: "-1", amount: 9},
+			{tId: "9001", type: "-1", amount: 7} // 无 cId 键 → 不命中原样
+		]);
+		var seed:Array<Dynamic> = cast fd.userSeed;
+		Assert.equals(2, seed.length); // 活动卡命中不再 concat（:403-411）
+		Assert.equals(3, Reflect.field(seed[0], "amount")); // 9 被覆盖成 3（:397）
+		Assert.equals(7, Reflect.field(seed[1], "amount"));
 	}
 
 	// requestNum（:1440-1462）：**原版 bug 照抄**——hasOwnProperty 检查

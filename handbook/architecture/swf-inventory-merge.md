@@ -37,11 +37,20 @@ merge 类里，对账判式**引用**它的 `isHandwrittenKey` 不复制闭集�
 ### 接线证据判式（#95，agent 可写侧已交付的部分）
 
 人管两侧的接线没落地前，`SwfInventoryReconcile.workflowKeepsHandwritten` 喂
-仓内真实两份文本必红（`wiring_missing`）——这是有意的活体锚点：判式查两份
+仓内真实两份文本必报 `wiring_missing`——这是有意的活体锚点：判式查两份
 文本里有没有 `tools.SwfInventoryMergeRun` 的调用痕迹（写死的锚串，接线形态
-变了同改判式与测试）。**人管接线落地后该断言翻绿**，不需要改测试。脚本侧
-裸奔面（`json.dump` 直写 spec 路径）与工作流侧裸奔面（没装 haxe 步）各算
-一条缺口——半接线等于没接线。
+变了同改判式与测试）。**锚点的生命周期如实写清**：
+`test_workflow_wiring_absent_on_current_main` 断言方向是「接线缺位」，
+所以在接线缺位期间该测试为**绿**；人管接线落地（两份文本都出现
+`tools.SwfInventoryMergeRun`）的那一刻判式转为 `pass=true`，该测试当场
+**转红**——web.yml 对全分支每次 push 跑 `haxe test.hxml`，红着 push 会被
+CI 拒收。因此接线的人**必须在同一改动里处理该测试**：反转断言改判接线在
+则绿，或直接删除该用例（判式两方向的合成语料覆盖已由
+`test_workflow_wiring_present_when_merge_step_in_workflow` /
+`test_workflow_wiring_missing_when_only_*_side` 钉死，仓内状态耦合面只此
+一条）。**接线不做这一步就毕不了业**——这不是测试腐化，是锚点完成使命
+的信号。脚本侧裸奔面（`json.dump` 直写 spec 路径）与工作流侧裸奔面
+（没装 haxe 步）各算一条缺口——半接线等于没接线。
 
 ## 核心语义（判式一句话版）
 
@@ -82,5 +91,7 @@ issue 完成标准要求「死了无人察觉」不再可能。#95 落地后现�
   （再生成前后对账/单文件自检/接线静态对账）都是纯逻辑，进程面壳
   （走 exit 码进 checks/）与脚本/工作流接线 edit 都归人管路径。
 - **scripts/、checks/、.github/ 的人管接线仍待所有者落地**——在落地前，
-  `test_workflow_wiring_absent_on_current_main` 保持红转绿的活体锚点语义
-  （见上节）；#95 完成标准「触发一次再生成七条全存活」只能在那之后验证。
+  `test_workflow_wiring_absent_on_current_main` 保持接线缺位期绿、接线落地
+  时转红的活体锚点语义（见上节：转红是预定信号，接线的人须在同一改动里
+  反转/重写该用例）；#95 完成标准「触发一次再生成七条全存活」只能在那之
+  后验证。

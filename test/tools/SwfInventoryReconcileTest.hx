@@ -258,12 +258,24 @@ class SwfInventoryReconcileTest {
 	// 器化——「零调用」不能再靠人肉 grep 发现）
 
 	function test_workflow_wiring_absent_on_current_main() {
-		// 本测试是 write-tests 阶段必须红的核心证据锁之一：#95 背景实锤
-		// 「CI legacy-decompile.yml:55 仍直接 python3 scripts/swf-inventory.
-		// py……全仓引用 SwfInventoryMerge 的只有判式本体、测试、handbook
-		// 页」。喂当前仓内真实两份文本，判式必须报 wiring_missing——接线
-		// 落地（人管 edit）后本测试翻绿，这正是对账门「接线在不在」的活
-		// 体锚点
+		// 本测试是对账门「接线在不在」的活体锚点：喂仓内真实两份人管文
+		// 本，断言判式报 wiring_missing。生命周期如实写清——web.yml 对全
+		// 分支每次 push 跑 haxe test.hxml：
+		// 1. write-tests 阶段它必须红（接线缺位 + 判式是 stub——对 stub
+		//    失败是本轮的红的合法来源）；
+		// 2. 判式实现落地而人管接线仍缺位（#95 背景实锤「CI
+		//    legacy-decompile.yml:55 仍直接 python3 scripts/swf-inventory.
+		//    py……全仓引用 SwfInventoryMerge 的只有判式本体、测试、
+		//    handbook 页」）期间它**绿**；
+		// 3. 人管接线（scripts/swf-inventory.py + legacy-decompile.yml 出
+		//    现 SwfInventoryMergeRun 调用痕迹）落地的那一刻它**转红**——
+		//    断言方向是「接线缺位」，接线在了断言必败。这不是事故，是预
+		//    定动作的信号：接线的人必须在**同一改动**里处理本测试——
+		//    反转断言改判 pass=true/零 gaps（锚点语义换成「接线在则绿」）
+		//    或直接删除本用例（判式两方向的合成语料覆盖已由
+		//    test_workflow_wiring_present_when_merge_step_in_workflow /
+		//    test_workflow_wiring_missing_when_only_*_side 钉死，仓内状
+		//    态耦合面只此一条）。不改就红着 push，CI 当场拒收。
 		if (!sys.FileSystem.exists(".github/workflows/legacy-decompile.yml")
 			|| !sys.FileSystem.exists("scripts/swf-inventory.py")) {
 			Assert.fail("工作流/生成器脚本不在仓（静态对账无对象）");
@@ -273,7 +285,7 @@ class SwfInventoryReconcileTest {
 			File.getContent(".github/workflows/legacy-decompile.yml"),
 			File.getContent("scripts/swf-inventory.py"));
 		var kinds = gapKinds(r);
-		Assert.isFalse(Reflect.field(r, "pass"), "当前 main 接线缺位必须红（#95 背景：零调用实锤）——接线落地后本断言翻绿");
+		Assert.isFalse(Reflect.field(r, "pass"), "接线缺位期间本断言为绿；人管接线落地时本测试转红——须与接线同一改动里反转/重写本用例（见上方注释），不得红着 push");
 		Assert.contains("wiring_missing", kinds);
 	}
 

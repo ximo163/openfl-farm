@@ -94,7 +94,13 @@ stages:
     kind: review
     model: judge
     prompt: prompts/review-tests.md
-    max_turns: 120
+    # 250/60m（2026-11-27 #88 教训）：120 turns 审不完命令层巨兽（7.5k 行
+    # legacy × 对应测试树），round 1 五连 no-verdict（2 次撞默认 30m 超时 +
+    # 3 次烧尽 120 turns）烧 $29.71 才出第一个真 verdict；实测 ~5-8s/call，
+    # 250 turns ≈ 21-33m，60m 给足余量。小片（#94 实测 38 turns/7m50s）
+    # 远够不着上限，成本只在大片真实发生时发生。
+    max_turns: 250
+    timeout: 60m
     on_reject: write-tests
     max_rejects: 5
     escalate: { after: 3, models: [judge2] }

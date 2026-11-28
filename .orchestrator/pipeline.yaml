@@ -113,10 +113,12 @@ stages:
     # （第二轮 401 turns / 1h21m / $14.15 收尾时闭包仍未写完）——成规模的模块
     # 翻译一轮写完就是这个量级。
     max_turns: 1000
-    # 240m 与 1000 turns 配套：实测 4.5~5 次调用/分钟，120m 只容 ~550 次，
-    # 不放时间的话轮次上限永远不会生效（issue #3 attempt-1 就是被时间墙
-    # 杀掉过没写完的会话）。
-    timeout: 240m
+    # 420m（2026-11-28 从 240m 调，#88 实锤）：命令层片 7.5k 行单会话写不完——
+    # try-3 被旧 3h 活动顶杀时 3h 仍在正常干活（291/1000 调用、12.4 万输出
+    # token 没写完）。活动顶现已按 stage timeout 派生（orchestrator-agent
+    # #394，11d4a1c），这个超时不再被削短；420m 给 4.3k 单类巨兽按 try-2
+    # 实测节奏（85m/12.2 万 token 仍在中途）约 3 倍余量。
+    timeout: 420m
     protect_since: write-tests
     append_only: ["test/**"]
     protected: ["test/fixtures/"]
